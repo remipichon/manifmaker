@@ -1,6 +1,8 @@
 Schemas = {};
 SimpleSchema.messages({
     unknownId: `[label] could not be find in database`,
+    unknownIdOrDuplicateId: `[label] could not be find in database or is duplicated`,
+    duplicate: `[label] is duplicated`,
     endBeforeStart: `[label] must be after start date`,
     startAfterEnd: `[label] must be before end date`,
     timeSlotConflictDate: `Time slot can't overlap. Check time slot start and end date conflicts with all others time slots`,
@@ -69,3 +71,28 @@ Schemas.helpers.allSkillsOptions = function () {
     return result;
 };
 
+Schemas.helpers.allRolesOptions = function () {
+    var skills = Meteor.roles.find({}).fetch();
+    var result = [];
+    _.each(skills, function (role) {
+        result.push({
+            label: role.name,
+            value: role.name
+        });
+    });
+
+    return result;
+};
+
+Schemas.helpers.allGroupRolesOptions = function () {
+    var skills = GroupRoles.find({}).fetch();
+    var result = [];
+    _.each(skills, function (groupRole) {
+        result.push({
+            label: groupRole.name + " : " +groupRole.roles,
+            value: groupRole._id
+        });
+    });
+
+    return result;
+};

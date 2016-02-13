@@ -1,14 +1,87 @@
+initAccessRightData =  function(){
+
+    var assignmentReadyTeam = Teams.insert({name: ASSIGNMENTREADYTEAM});
+
+
+    //create roles
+    _.each(RolesEnum, function(role) {
+        Roles.createRole(role);
+    });
+
+
+    //create groups and add roles to groups
+    var admin = GroupRoles.insert({name: "admin",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.ASSIGNMENTVALIDATION,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE,RolesEnum.confMaker]
+    });
+    var bureau = GroupRoles.insert({name: "bureau",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE]
+    });
+    var hard = GroupRoles.insert({name: "hard",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.TASKREAD,RolesEnum.TASKWRITE]
+    });
+    var soft = GroupRoles.insert({name: "soft",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.TASKREAD]
+    });
+    var resplog = GroupRoles.insert({name: "respLog",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.EQUIPMENTVALIDATION]
+    });
+
+    Accounts.createUser({
+        username: "admin",
+        email: "admin@yopmail.com",
+        password: "admin"
+    });
+    var adminId = Users.insert({
+        name: "admin",
+        loginUserId: Meteor.users.findOne({username: "admin"})._id
+    });
+    Accounts.createUser({
+        username: "hard",
+        email: "hard@yopmail.com",
+        password: "hardhard"
+    });
+    var hardId = Users.insert({
+        name: "hard",
+        loginUserId: Meteor.users.findOne({username: "hard"})._id
+    });
+    Accounts.createUser({
+        username: "resplog",
+        email: "resplog@yopmail.com",
+        password: "resplogresplog"
+    });
+    var respLogId = Users.insert({
+        name: "resplog",
+        loginUserId: Meteor.users.findOne({username: "resplog"})._id
+    });
+    Accounts.createUser({
+        username: "soft",
+        email: "soft@yopmail.com",
+        password: "softsoft"
+    });
+    var softId = Users.insert({
+        name: "soft",
+        loginUserId: Meteor.users.findOne({username: "soft"})._id
+    });
+
+
+    _setGroupRolesToUsers(adminId,admin);
+    _setGroupRolesToUsers(hardId,hard);
+    _setGroupRolesToUsers(respLogId,resplog);
+    _setGroupRolesToUsers(softId,soft);
+
+
+
+};
+
+
 populateData = function () {
 
-    _.each(AllCollections, function (coll) {
-        coll.remove({});
-    });
+
 
     //teams
     var team1Id = Teams.insert({name: "team1"});
     var team2Id = Teams.insert({name: "team2"});
     var team3Id = Teams.insert({name: "team3"});
-    var assignmentReadyTeam = Teams.insert({name: ASSIGNMENTREADYTEAM});
 
 
     //places
@@ -52,8 +125,14 @@ populateData = function () {
     });
 
     //users
+    Accounts.createUser({
+        username: "user1",
+        email: "user1@yopmail.com",
+        password: "user1"
+    });
     var user1Id = Users.insert({
         name: "user1",
+        loginUserId: Meteor.users.findOne({username:"user1"})._id,
         teams: [team1Id],
         skills: [skill1Id],
         availabilities: [
@@ -63,9 +142,15 @@ populateData = function () {
             }
         ]
     });
+    Accounts.createUser({
+        username: "user2",
+        email: "user2@yopmail.com",
+        password: "user2"
+    });
     var user2Id = Users.insert({
         name: "user2",
-        teams: [team2Id],
+        loginUserId: Meteor.users.findOne({username:"user1"})._id,
+        teams: [team2Id,team3Id],
         skills: [skill2Id],
         availabilities: [
             {
@@ -74,8 +159,14 @@ populateData = function () {
             }
         ]
     });
+    Accounts.createUser({
+        username: "user3",
+        email: "user3@yopmail.com",
+        password: "user3"
+    });
     var user3Id = Users.insert({
         name: "user3",
+        loginUserId: Meteor.users.findOne({username:"user1"})._id,
         //teams: [team3Id],
         skills: [skill2Id,skill3Id],
         availabilities: [
@@ -89,8 +180,14 @@ populateData = function () {
             }
         ]
     });
+    Accounts.createUser({
+        username: "user4",
+        email: "user4@yopmail.com",
+        password: "user4"
+    });
     var user4Id = Users.insert({
         name: "user4",
+        loginUserId: Meteor.users.findOne({username:"user1"})._id,
         //teams: [team3Id],
         skills: [skill2Id,skill3Id,skill1Id,skill4Id],
         availabilities: [
@@ -359,5 +456,5 @@ getDateFromDate = function (day, month, year) {
     var now = new Date();
     year = year || now.getYear();
     month = month || now.getMonth();
-    return new Date(year, month, day, 0, 0, 0);
+    return new moment(year +" "+ month +" "+ day +" 0 0 0" , "YYYY MM DD HH mm ss").toDate()
 };

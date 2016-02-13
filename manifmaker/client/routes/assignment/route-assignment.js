@@ -6,26 +6,10 @@ AssignmentController = RouteController.extend({
             this.render('AssignmentHome', {to: 'mainContent'});
             this.render("assignmentMenu", {to: "topNavBar"})
             assignmentCalendarIsRendered = true;
-
-
-
-
-
-
-
-
         }
 
         this.next();
 
-        //
-        //this.wait(Meteor.subscribe('teams'));
-        //
-        //if (this.ready()) {
-        //    this.next();
-        //} else {
-        //    console.log("waiting teams data"); //TODO add a spinner
-        //}
     },
 
     onAfterAction: function () {
@@ -68,7 +52,7 @@ Router.route('/assignment/user/:userId', function () {
         if (this.ready()) {
             Router.go("/assignment/userToTask/" + this.params.userId);
         } else {
-            console.log("waiting user data"); //TODO add a spinner
+            console.log("Route /assignemnt/user/:userId : waiting user data"); //TODO add a spinner
         }
 
     }, {
@@ -94,7 +78,7 @@ Router.route('/assignment/task/:taskId', function () {
         if (this.ready()) {
             Router.go("/assignment/taskToUser/" + this.params.taskId);
         } else {
-            console.log("waiting task data"); //TODO add a spinner
+            console.log("Route assignment/task/:taskId : waiting task data"); //TODO add a spinner
         }
 
     }, {

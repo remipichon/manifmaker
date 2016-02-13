@@ -4,7 +4,8 @@
  * @locus Anywhere
  * @instancename collection
  */
-Users = new Mongo.Collection("users");
+Users = new Mongo.Collection("users_custom"); //TODO utiliser la meme collection que le package accounts ?
+
 /**
  * @memberOf Models
  * @summary Task collection
@@ -27,23 +28,6 @@ Assignments = new Mongo.Collection("assignment");
  * @instancename collection
  */
 Groups = new Mongo.Collection("groups");
-
-/**
- * @memberOf Models
- * @summary References of all the MongoDB collections
- * @locus Anywhere
- * @instancename object
- */
-AllCollections = {
-    Users: Users,
-    Tasks: Tasks,
-    Assignments: Assignments,
-    Skills: Skills,
-    Teams: Teams,
-    Places: Places,
-    Groups: Groups,
-    AssignmentTerms: AssignmentTerms
-};
 
 /**
  * @memberOf Models

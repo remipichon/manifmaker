@@ -7,6 +7,7 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("users", function () {
+        //TODO ne pas envoyer les roles des users si pas le role 'user'
         return Users.find({});
     });
 
@@ -14,10 +15,15 @@ Meteor.startup(function () {
      * @memberOf Meteor Publish
      * @locus server
      * @summary Tasks publication. No query, publish all Tasks data.
+     *
+     * Role required : read
      * @returns {Collection}
      */
     Meteor.publish("tasks", function () {
-        return Tasks.find({});
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.TASKREAD,"Task"))
+            return Tasks.find({});
+        else
+            return [];
     });
 
     /**
@@ -78,6 +84,27 @@ Meteor.startup(function () {
      */
     Meteor.publish("assignment-terms", function () {
         return AssignmentTerms.find({});
+    });
+
+    /**
+     * @memberOf Meteor Publish
+     * @locus server
+     * @summary GroupRoles publication. No query, publish all GroupRoles data.
+     * @returns {Collection}
+     */
+    Meteor.publish("group-roles", function () {
+        return GroupRoles.find({});
+    });
+
+    /**
+     * @memberOf Meteor Publish
+     * @locus server
+     * @summary Roles publication. No query, publish all Roles data.
+     * @returns {Collection}
+     */
+    Meteor.publish("roles", function () {
+        //TODO limit to user with role 'role'
+        return Meteor.roles.find({});
     });
 
 });

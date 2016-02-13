@@ -60,23 +60,53 @@ Schemas.Users = new SimpleSchema({
         label: "Users Name",
         max: 100
     },
+    loginUserId: {
+        label: "User login link to collection managed by Account package",
+        type: SimpleSchema.RegEx.Id,
+        optional: true
+    },
+    groupRoles: {
+        label: "User roles to gain a set of less or more data and features",
+        type: [SimpleSchema.RegEx.Id],
+        optional: true,
+        custom: function () {
+            this.value = _.compact(this.value);
+            if(GroupRoles.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
+                return "unknownIdOrDuplicateId"
+        }
+    },
+    'groupRoles.$': {
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allGroupRolesOptions
+            }
+        }
+    },
     teams: {
         label: "User teams",
         type: [SimpleSchema.RegEx.Id],
         optional: true,
         custom: function () {
-            _.each(this.value, function (teamId) {
-                if (!Teams.findOne(teamId))
-                    return "unknownId"
-            });
+            this.value = _.compact(this.value);
+            if(Teams.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
+                return "unknownIdOrDuplicateId"
         },
         autoValue: function () {
             if (this.isInsert) {
                 //trick pour les filtres, tous les users appartiennement au moins à l'équipe ASSIGNMENTREADYTEAM
                 var assignmentReadyTeam = Teams.findOne({name: ASSIGNMENTREADYTEAM});
-                if(!this.value) this.value = [];
-                this.value.push(assignmentReadyTeam._id);
+                if(!this.value)
+                    this.value = [];
+                else if (!_.contains(this.value,assignmentReadyTeam._id)) //we don't add it we it already have it (when autoform do the check several times)
+                    this.value.push(assignmentReadyTeam._id);
                 return this.value;
+            }
+        },
+    },
+    'teams.$': {
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allTeamsOptions
             }
         }
     },
@@ -85,10 +115,16 @@ Schemas.Users = new SimpleSchema({
         type: [SimpleSchema.RegEx.Id],
         optional: true,
         custom: function () {
-            _.each(this.value, function (skill) {
-                if (!Skills.findOne(skill._id))
-                    return "unknownId"
-            });
+            this.value = _.compact(this.value);
+            if(Skills.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
+                return "unknownIdOrDuplicateId"
+        }
+    },
+    'skills.$': {
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allSkillsOptions
+            }
         }
     },
     availabilities: {

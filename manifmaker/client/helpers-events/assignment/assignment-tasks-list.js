@@ -213,7 +213,6 @@ Template.assignmentTasksList.events({
     },
 
     "click .task": function(event){
-        console.log("clicked on task");
         SelectedTaskBreadCrumb.set(this);
     },
 
@@ -317,3 +316,8 @@ Template.assignmentTasksList.events({
         DisplayAssignedTask.set($($(event.target)[0]).is(':checked'));
     }
 });
+
+Template.assignmentTasksList.rendered = function(){
+    $('#assignment-task-list-collapsible').collapsible({});
+};
+

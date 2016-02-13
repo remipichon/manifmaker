@@ -61,6 +61,10 @@ function preSelectedUserByUserName(name) {
 
 
 Meteor.startup(function () {
+    Accounts.ui.config({
+        passwordSignupFields: "USERNAME_ONLY"
+    });
+
     Meteor.subscribe("skills");
     Meteor.subscribe("users");
     Meteor.subscribe("tasks");
@@ -68,6 +72,8 @@ Meteor.startup(function () {
     Meteor.subscribe("assignments");
     Meteor.subscribe("teams");
     Meteor.subscribe("groups");
+    Meteor.subscribe("group-roles");
+    Meteor.subscribe("roles");
     Meteor.subscribe("assignment-terms", function () {
         AssignmentServiceClient.setCalendarTerms();
     });
@@ -79,7 +85,7 @@ Meteor.startup(function () {
     SimpleSchema.debug = true;
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
-            console.log(name + " error:", error);
+            console.log("AutoForm.addHooks : "+name + " error:", error);
         }
     });
 
