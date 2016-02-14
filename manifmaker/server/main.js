@@ -69,6 +69,14 @@ Meteor.startup(function () {
     Assignments.before.remove(ServerAssignmentService.allowDelete);
 
 
+    var referencesCollections = [Skills, Teams, Places, AssignmentTerms, GroupRoles];
+    referencesCollections.forEach(ReferenceCollection => {
+        ReferenceCollection.before.insert(ServerReferenceCollectionsService.allowInsert);
+        ReferenceCollection.before.update(ServerReferenceCollectionsService.allowUpdate);
+        ReferenceCollection.before.remove(ServerReferenceCollectionsService.allowDelete);
+    });
+
+
 });
 
 

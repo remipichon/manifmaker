@@ -27,7 +27,9 @@
             {{/if}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Update</button>
-        {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id}}Delete {{this.name}}{{/quickRemoveButton}}
+        {{#if isInRole RolesEnum.USERDELETE}}
+            {{#quickRemoveButton class="btn btn-default" collection="Users" _id=this._id}}Delete{{/quickRemoveButton}}
+        {{/if}}
     {{/autoForm}}
 </template>
 

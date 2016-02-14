@@ -2,28 +2,46 @@ initAccessRightData =  function(){
 
     var assignmentReadyTeam = Teams.insert({name: ASSIGNMENTREADYTEAM});
 
-
     //create roles
+    var adminRoles = [];
     _.each(RolesEnum, function(role) {
         Roles.createRole(role);
+        adminRoles.push(role);
     });
 
 
     //create groups and add roles to groups
     var admin = GroupRoles.insert({name: "admin",
-        roles : [RolesEnum.ASSIGNMENTTASKUSER,RolesEnum.USERWRITE,RolesEnum.USERREAD, RolesEnum.MANIFMAKER,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.ASSIGNMENTVALIDATION,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE,RolesEnum.confMaker]
-    });
+        roles : adminRoles});
     var bureau = GroupRoles.insert({name: "bureau",
-        roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE]
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.USERWRITE,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE]
     });
     var hard = GroupRoles.insert({name: "hard",
-        roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.TASKREAD,RolesEnum.TASKWRITE, RolesEnum.USERWRITE]
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.TASKREAD,RolesEnum.TASKWRITE]
     });
     var soft = GroupRoles.insert({name: "soft",
         roles : [RolesEnum.MANIFMAKER,RolesEnum.TASKREAD]
     });
-    var resplog = GroupRoles.insert({name: "respLog",
-        roles : [RolesEnum.MANIFMAKER,RolesEnum.EQUIPMENTVALIDATION]
+    var respLog = GroupRoles.insert({name: "respLog",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.CONFMAKER]
+    });
+    var respSecu = GroupRoles.insert({name: "respSecu",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.CONFMAKER]
+    });
+    var humain = GroupRoles.insert({name: "humain",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.ASSIGNMENTVALIDATION,RolesEnum.CONFMAKER,RolesEnum.ASSIGNMENTTASKUSER]
+    });
+    var allUser = GroupRoles.insert({name: "allUser",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.USERWRITE,RolesEnum.USERDELETE,RolesEnum.ROLE]
+    });
+    var allTask = GroupRoles.insert({name: "allTask",   
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.ASSIGNMENTVALIDATION]
+    });
+    var allConf = GroupRoles.insert({name: "allConf",
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.CONFMAKER]
+    });
+    var minimal = GroupRoles.insert({name: "minimal",
+        roles : [RolesEnum.MANIFMAKER]
     });
 
     Accounts.createUser({
@@ -63,6 +81,24 @@ initAccessRightData =  function(){
         loginUserId: Meteor.users.findOne({username: "resplog"})._id
     });
     Accounts.createUser({
+        username: "respsecu",
+        email: "respsecu@yopmail.com",
+        password: "respsecurespsecu"
+    });
+    var respSecuId = Users.insert({
+        name: "respsecu",
+        loginUserId: Meteor.users.findOne({username: "respsecu"})._id
+    });
+    Accounts.createUser({
+        username: "humain",
+        email: "humain@yopmail.com",
+        password: "humainhumain"
+    });
+    var humainId = Users.insert({
+        name: "humain",
+        loginUserId: Meteor.users.findOne({username: "humain"})._id
+    });
+    Accounts.createUser({
         username: "soft",
         email: "soft@yopmail.com",
         password: "softsoft"
@@ -76,9 +112,10 @@ initAccessRightData =  function(){
     _setGroupRolesToUsers(adminId,admin);
     _setGroupRolesToUsers(hardId,hard);
     _setGroupRolesToUsers(bureauId,bureau);
-    _setGroupRolesToUsers(respLogId,resplog);
+    _setGroupRolesToUsers(respLogId,respLog);
+    _setGroupRolesToUsers(respSecuId,respSecu);
+    _setGroupRolesToUsers(humainId,humain);
     _setGroupRolesToUsers(softId,soft);
-
 
 
 };
