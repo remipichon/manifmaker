@@ -10,6 +10,8 @@ RolesEnum = {
     EQUIPMENTVALIDATION: "equipmentValidation",
     ASSIGNMENTVALIDATION: "assignmentValidation",
 
+    //assignment
+    ASSIGNMENTTASKUSER: "assignmentTaskUser",
 
     //user
     USERREAD: "userRead",

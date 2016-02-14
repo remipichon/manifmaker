@@ -11,7 +11,7 @@ initAccessRightData =  function(){
 
     //create groups and add roles to groups
     var admin = GroupRoles.insert({name: "admin",
-        roles : [RolesEnum.USERWRITE,RolesEnum.USERREAD, RolesEnum.MANIFMAKER,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.ASSIGNMENTVALIDATION,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE,RolesEnum.confMaker]
+        roles : [RolesEnum.ASSIGNMENTTASKUSER,RolesEnum.USERWRITE,RolesEnum.USERREAD, RolesEnum.MANIFMAKER,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.ASSIGNMENTVALIDATION,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE,RolesEnum.confMaker]
     });
     var bureau = GroupRoles.insert({name: "bureau",
         roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE]
@@ -475,5 +475,5 @@ getDateFromDate = function (day, month, year) {
     var now = new Date();
     year = year || now.getYear();
     month = month || now.getMonth();
-    return new moment(year +" "+ month +" "+ day +" 0 0 0" , "YYYY MM DD HH mm ss").toDate()
+    return new Date(year, month, day, 0, 0, 0);
 };

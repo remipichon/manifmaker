@@ -34,6 +34,10 @@ ServerTaskService =
                     throw new Meteor.Error("403","Can't update task time slot data if task is not open or refused");
                 }
             }
+
+            if(_.contains(fieldNames,"assignments"))
+                if(modifier.$set.assignments)
+                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
         }
 
         static allowDelete(userId, doc){

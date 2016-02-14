@@ -74,7 +74,11 @@ ServerUserService =
 
             if(_.contains(fieldNames,"groupRoles"))
                 if(modifier.$set.groupRoles)
-                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ROLE, doc, 'task');
+                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ROLE, doc, 'user');
+
+            if(_.contains(fieldNames,"assignments"))
+                if(modifier.$set.assignments)
+                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
 
         }
 

@@ -60,10 +60,13 @@ Meteor.startup(function () {
     Tasks.before.update(ServerTaskService.allowUpdate);
     Tasks.before.remove(ServerTaskService.allowDelete);
 
-    //allow/deny policy
     Users.before.insert(ServerUserService.allowInsert);
     Users.before.update(ServerUserService.allowUpdate);
     Users.before.remove(ServerUserService.allowDelete);
+
+    Assignments.before.insert(ServerAssignmentService.allowInsert);
+    Assignments.before.update(ServerAssignmentService.allowUpdate);
+    Assignments.before.remove(ServerAssignmentService.allowDelete);
 
 
 });
