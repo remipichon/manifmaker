@@ -3,7 +3,9 @@ Meteor.startup(function () {
     /**
      * @memberOf Meteor Publish
      * @locus server
-     * @summary Users publication. No query, publish all Users data.
+     * @summary Users publication. Publish all Users data if role associated or only current user data
+     *
+     * Role required : read
      * @returns {Collection}
      */
     Meteor.publish("users", function () {
@@ -33,10 +35,15 @@ Meteor.startup(function () {
      * @memberOf Meteor Publish
      * @locus server
      * @summary Assignments publication. No query, publish all Assignments data.
+     *
+     * Role required : assignment
      * @returns {Collection}
      */
     Meteor.publish("assignments", function () {
-        return Assignments.find({});
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"Assignment"))
+            return Assignments.find({});
+        else
+            return [];
     });
 
     /**
@@ -106,7 +113,7 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("roles", function () {
-        //TODO limit to user with role 'role'
+        //TODO limit to user with role 'role' => i don't know...
         return Meteor.roles.find({});
     });
 

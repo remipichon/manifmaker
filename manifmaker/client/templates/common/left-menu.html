@@ -30,7 +30,9 @@
                         </div>
                     </li>
                 {{/if}}
-                <li><a href="{{pathFor route='assignment.calendar'}}">Assignment</a></li>
+                {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+                    <li><a href="{{pathFor route='assignment.calendar'}}">Assignment</a></li>
+                {{/if}}
                 {{#if isInRole RolesEnum.USERREAD}}
                     <li><a href="{{pathFor route='user.list'}}">Users</a></li>
                 {{else}}

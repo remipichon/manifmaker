@@ -2,6 +2,8 @@ assignmentCalendarIsRendered = false;
 
 AssignmentController = RouteController.extend({
     onBeforeAction: function () {
+        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ASSIGNMENTTASKUSER, "assignment");
+
         if (!assignmentCalendarIsRendered) {
             this.render('AssignmentHome', {to: 'mainContent'});
             this.render("assignmentMenu", {to: "topNavBar"})

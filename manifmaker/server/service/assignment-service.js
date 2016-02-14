@@ -81,12 +81,11 @@ ServerAssignmentService =
 
 
         static allowInsert(userId, doc){
-           // SecurityServiceServer.grantAccessToItem(userId,RolesEnum.ASSIGNMENTTASKUSER, doc,'assignment');
+           SecurityServiceServer.grantAccessToItem(userId,RolesEnum.ASSIGNMENTTASKUSER, doc,'assignment');
         }
 
         static allowUpdate(userId, doc, fieldNames, modifier, options){
-           // SecurityServiceServer.grantAccessToItem(userId,RolesEnum.ASSIGNMENTTASKUSER, doc,'assignment');
-
+           SecurityServiceServer.grantAccessToItem(userId,RolesEnum.ASSIGNMENTTASKUSER, doc,'assignment');
         }
 
         static allowDelete(userId, doc){
