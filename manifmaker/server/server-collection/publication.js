@@ -7,8 +7,11 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("users", function () {
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"Task"))
+            return Users.find({});
+        else
+            return Users.find({loginUserId : this.userId});
         //TODO ne pas envoyer les roles des users si pas le role 'user'
-        return Users.find({});
     });
 
     /**

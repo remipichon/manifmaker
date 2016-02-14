@@ -4,8 +4,10 @@ SecurityServiceServer =
         static grantAccessToItem(userId, neededRole, doc, type) {
             if (Roles.userIsInRole(userId, neededRole))
                 console.info(`access granted with ${neededRole} on type item ${type} for user ${userId} to task ${doc._id}`);
-            else
+            else {
+                console.error("thrown to client 403", `Forbidden, user ${userId} don't have access right ${neededRole}`);
                 throw new Meteor.Error("403", `Forbidden, user don't have access right`);
+            }
 
         }
 

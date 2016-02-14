@@ -11,13 +11,13 @@ initAccessRightData =  function(){
 
     //create groups and add roles to groups
     var admin = GroupRoles.insert({name: "admin",
-        roles : [RolesEnum.MANIFMAKER,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.ASSIGNMENTVALIDATION,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE,RolesEnum.confMaker]
+        roles : [RolesEnum.USERWRITE,RolesEnum.USERREAD, RolesEnum.MANIFMAKER,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.ASSIGNMENTVALIDATION,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE,RolesEnum.confMaker]
     });
     var bureau = GroupRoles.insert({name: "bureau",
-        roles : [RolesEnum.MANIFMAKER,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE]
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE]
     });
     var hard = GroupRoles.insert({name: "hard",
-        roles : [RolesEnum.MANIFMAKER,RolesEnum.TASKREAD,RolesEnum.TASKWRITE]
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.TASKREAD,RolesEnum.TASKWRITE, RolesEnum.USERWRITE]
     });
     var soft = GroupRoles.insert({name: "soft",
         roles : [RolesEnum.MANIFMAKER,RolesEnum.TASKREAD]
@@ -45,6 +45,15 @@ initAccessRightData =  function(){
         loginUserId: Meteor.users.findOne({username: "hard"})._id
     });
     Accounts.createUser({
+        username: "bureau",
+        email: "bureau@yopmail.com",
+        password: "bureaubureau"
+    });
+    var bureauId = Users.insert({
+        name: "bureau",
+        loginUserId: Meteor.users.findOne({username: "bureau"})._id
+    });
+    Accounts.createUser({
         username: "resplog",
         email: "resplog@yopmail.com",
         password: "resplogresplog"
@@ -66,11 +75,21 @@ initAccessRightData =  function(){
 
     _setGroupRolesToUsers(adminId,admin);
     _setGroupRolesToUsers(hardId,hard);
+    _setGroupRolesToUsers(bureauId,bureau);
     _setGroupRolesToUsers(respLogId,resplog);
     _setGroupRolesToUsers(softId,soft);
 
 
 
+};
+
+function _setGroupRolesToUsers(userId,groupId){
+    var group = GroupRoles.findOne(groupId);
+    Users.update(userId,{
+        $set: {
+            groupRoles : [groupId]
+        }
+    });
 };
 
 

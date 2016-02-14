@@ -5,13 +5,23 @@
 
     {{> reactiveTable settings=usersList }}
 
-    <a href="/user">Create a new User</a>
+    {{#if isInRole RolesEnum.USERWRITE}}
+        <a href="/user">Create a new User</a>
+    {{/if}}
 </template>
 
 
 <template name="userButtons">
-    <a class="btn btn-primary" href="/user/{{_id}}">Update</a>
-    {{#quickRemoveButton class="btn btn-default" collection="Users" _id=this._id}}Delete{{/quickRemoveButton}}
+    {{#if displayUpdateButtons}}
+        <a class="btn btn-primary" href="/user/{{_id}}">Update</a>
+    {{else}}
+        {{#if isInRole RolesEnum.USERREAD}}
+            <a class="btn btn-primary" href="/user/{{_id}}/read">Read</a>
+        {{/if}}
+    {{/if}}
+    {{#if isInRole RolesEnum.USERDELETE}}
+        {{#quickRemoveButton class="btn btn-default" collection="Users" _id=this._id}}Delete{{/quickRemoveButton}}
+    {{/if}}
 </template>
 
 

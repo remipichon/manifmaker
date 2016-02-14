@@ -10,6 +10,11 @@ RolesEnum = {
     EQUIPMENTVALIDATION: "equipmentValidation",
     ASSIGNMENTVALIDATION: "assignmentValidation",
 
+
+    //user
+    USERREAD: "userRead",
+    USERWRITE: "userWrite",
+    USERDELETE: "userDelete",
     //conf
     CONFMAKER: "confMaker",
     ROLE: "role"

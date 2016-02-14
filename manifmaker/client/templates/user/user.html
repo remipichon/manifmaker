@@ -30,3 +30,22 @@
         {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id}}Delete {{this.name}}{{/quickRemoveButton}}
     {{/autoForm}}
 </template>
+
+<template name="readUserForm">
+
+    {{# autoForm collection="Users" doc=this id="readUserForm" type="readonly"}}
+        <fieldset>
+            <legend>Update User {{this.name}}</legend>
+            {{> afQuickField name='name'}}
+            {{> afQuickField name="teams"}}
+            {{> afQuickField name="skills"}}
+            {{#if isInRole 'role'}}
+                {{#if this.loginUserId}}
+                    {{> afQuickField name="groupRoles"}}
+                {{else}}
+                    User don't have a associated login account, can't add roles.
+                {{/if}}
+            {{/if}}
+        </fieldset>
+    {{/autoForm}}
+</template>

@@ -61,4 +61,25 @@ ServerUserService =
             }
 
         }
+
+
+        static allowInsert(userId, doc){
+            SecurityServiceServer.grantAccessToItem(userId,RolesEnum.USERWRITE, doc,'user');
+        }
+
+        static allowUpdate(userId, doc, fieldNames, modifier, options){
+
+            if(userId !== doc.loginUserId)
+                SecurityServiceServer.grantAccessToItem(userId,RolesEnum.USERWRITE, doc,'user');
+
+            if(_.contains(fieldNames,"groupRoles"))
+                if(modifier.$set.groupRoles)
+                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ROLE, doc, 'task');
+
+        }
+
+        static allowDelete(userId, doc){
+            SecurityServiceServer.grantAccessToItem(userId,RolesEnum.USERDELETE, doc,'task');
+        }
+
     }
