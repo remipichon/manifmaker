@@ -9,7 +9,8 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("users", function () {
-        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"Task"))
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"Task")
+        || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"Assignment"))
             return Users.find({});
         else
             return Users.find({loginUserId : this.userId});
@@ -25,7 +26,8 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("tasks", function () {
-        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.TASKREAD,"Task"))
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.TASKREAD,"Task")
+        || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"Assignment"))
             return Tasks.find({});
         else
             return [];
