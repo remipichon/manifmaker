@@ -74,6 +74,12 @@ Meteor.startup(function () {
     Meteor.subscribe("groups");
     Meteor.subscribe("group-roles");
     Meteor.subscribe("roles");
+    Meteor.subscribe("equipment-categories");
+    Meteor.subscribe("equipment-storages");
+    Meteor.subscribe("equipments");
+    Meteor.subscribe("water-supplies");
+    Meteor.subscribe("water-disposals");
+    Meteor.subscribe("power-supplies");
     Meteor.subscribe("assignment-terms", function () {
         AssignmentServiceClient.setCalendarTerms();
     });

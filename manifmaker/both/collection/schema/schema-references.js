@@ -34,6 +34,16 @@ Schemas.references.Teams = new SimpleSchema({
         type: String,
         label: "Team Name",
         max: 100
+    },
+    type: {  //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "Teams type",
+        defaultValue: "Teams"
+    },
+    baseUrl: { //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "Team base URL",
+        defaultValue: "team"
     }
 });
 /**
@@ -209,6 +219,11 @@ Schemas.references.GroupRoles = new SimpleSchema({
             }
         }
     },
+    type: {  //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "Roles type",
+        defaultValue: "Roles"
+    },
     baseUrl: { //TODO pas possible d'etre saisie par le user
         type: String,
         label: "Group roles base URL",
@@ -223,4 +238,208 @@ Schemas.references.GroupRoles = new SimpleSchema({
  */
 GroupRoles = new Mongo.Collection("group_roles");
 GroupRoles.attachSchema(Schemas.references.GroupRoles);
+
+
+Schemas.references.options.EquipmentCategory = {
+    PLURAL_REFERENCE_URL: "equipment-categories",
+    REFERENCE_URL: "equipment-category",
+    REFERENCE_COLLECTION_NAME: "EquipmentCategories",
+    REFERENCE_MONGO_COLLECTION_NAME: "equipment_categories", //TODO remove for all references
+    REFERENCE_LABEL: "Equipment Category",
+};
+Schemas.references.EquipmentCategories = new SimpleSchema({
+    name: {
+        type: String,
+        label: "Equipment Category Name",
+        max: 100
+    },
+    type: {  //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "Equipment categories type",
+        defaultValue: "EquipmentCategories"
+    },
+    baseUrl: { //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "Equipment Category base URL",
+        defaultValue: "equipment-category"
+    }
+});
+/**
+ * @memberOf Models
+ * @summary EquipmentCategories collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+EquipmentCategories = new Mongo.Collection("equipment_categories");
+EquipmentCategories.attachSchema(Schemas.references.EquipmentCategories);
+
+
+
+Schemas.references.options.Equipments = {
+    PLURAL_REFERENCE_URL: "equipments",
+    REFERENCE_URL: "equipment",
+    REFERENCE_COLLECTION_NAME: "Equipments",
+    REFERENCE_MONGO_COLLECTION_NAME: "equipments", //TODO remove for all references
+    REFERENCE_LABEL: "Equipment",
+};
+Schemas.references.Equipments = new SimpleSchema({
+    name: {
+        type: String,
+        label: "Equipments Name",
+        max: 100
+    },
+    type: {  //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "Equipments type",
+        defaultValue: "Equipments"
+    },
+    baseUrl: { //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "Equipments base URL",
+        defaultValue: "equipment"
+    }
+});
+/**
+ * @memberOf Models
+ * @summary Equipments collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+Equipments = new Mongo.Collection("equipments");
+Equipments.attachSchema(Schemas.references.Equipments);
+
+Schemas.references.options.WaterSupply = {
+    PLURAL_REFERENCE_URL: "water-supplies",
+    REFERENCE_URL: "water-supply",
+    REFERENCE_COLLECTION_NAME: "WaterSupplies",
+    REFERENCE_MONGO_COLLECTION_NAME: "water_supplies", //TODO remove for all references
+    REFERENCE_LABEL: "Water supply",
+};
+Schemas.references.WaterSupplies = new SimpleSchema({
+    name: {
+        type: String,
+        label: "WaterSupply Name",
+        max: 100
+    },
+    type: {  //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "WaterSupply type",
+        defaultValue: "WaterSupplies"
+    },
+    baseUrl: { //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "WaterSupply base URL",
+        defaultValue: "water-supply"
+    }
+});
+/**
+ * @memberOf Models
+ * @summary WaterSupplies collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+WaterSupplies = new Mongo.Collection("water_supplies");
+WaterSupplies.attachSchema(Schemas.references.WaterSupplies);
+
+
+Schemas.references.options.WaterDisposal = {
+    PLURAL_REFERENCE_URL: "water-disposals",
+    REFERENCE_URL: "water-disposal",
+    REFERENCE_COLLECTION_NAME: "WaterDisposals",
+    REFERENCE_MONGO_COLLECTION_NAME: "water_disposals", //TODO remove for all references
+    REFERENCE_LABEL: "Water disposal",
+};
+Schemas.references.WaterDisposals = new SimpleSchema({
+    name: {
+        type: String,
+        label: "WaterDisposal Name",
+        max: 100
+    },
+    type: {  //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "WaterDisposal type",
+        defaultValue: "WaterDisposals"
+    },
+    baseUrl: { //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "WaterDisposal base URL",
+        defaultValue: "water-disposal"
+    }
+});
+/**
+ * @memberOf Models
+ * @summary WaterDisposals collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+WaterDisposals = new Mongo.Collection("water_disposals");
+WaterDisposals.attachSchema(Schemas.references.WaterDisposals);
+
+
+Schemas.references.options.PowerSupplies = {
+    PLURAL_REFERENCE_URL: "power-supplies",
+    REFERENCE_URL: "power-supply",
+    REFERENCE_COLLECTION_NAME: "PowerSupplies",
+    REFERENCE_MONGO_COLLECTION_NAME: "power_supplies", //TODO remove for all references
+    REFERENCE_LABEL: "Power Supply",
+};
+Schemas.references.PowerSupplies = new SimpleSchema({
+    name: {
+        type: String,
+        label: "PowerSupply Name",
+        max: 100
+    },
+    type: {  //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "PowerSupply type",
+        defaultValue: "PowerSupplies"
+    },
+    baseUrl: { //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "PowerSupply base URL",
+        defaultValue: "power-supply"
+    }
+});
+/**
+ * @memberOf Models
+ * @summary PowerSupplies collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+PowerSupplies = new Mongo.Collection("power_supplies");
+PowerSupplies.attachSchema(Schemas.references.PowerSupplies);
+
+
+Schemas.references.options.EquipmentStorage = {
+    PLURAL_REFERENCE_URL: "equipment-storages",
+    REFERENCE_URL: "equipment-storage",
+    REFERENCE_COLLECTION_NAME: "EquipmentStorages",
+    REFERENCE_MONGO_COLLECTION_NAME: "equipment_storages", //TODO remove for all references
+    REFERENCE_LABEL: "Equipment Storage",
+};
+Schemas.references.EquipmentStorages = new SimpleSchema({
+    name: {
+        type: String,
+        label: "EquipmentStorage Name",
+        max: 100
+    },
+    type: {  //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "EquipmentStorage type",
+        defaultValue: "EquipmentStorages"
+    },
+    baseUrl: { //TODO pas possible d'etre saisie par le user
+        type: String,
+        label: "EquipmentStorage base URL",
+        defaultValue: "equipment-storage"
+    }
+});
+/**
+ * @memberOf Models
+ * @summary EquipmentStorages collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+EquipmentStorages = new Mongo.Collection("equipment_storages");
+EquipmentStorages.attachSchema(Schemas.references.EquipmentStorages);
 

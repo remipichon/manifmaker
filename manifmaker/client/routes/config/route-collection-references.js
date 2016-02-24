@@ -10,7 +10,13 @@ AllCollections = {
     Teams: Teams,
     Places: Places,
     AssignmentTerms: AssignmentTerms,
-    GroupRoles: GroupRoles
+    GroupRoles: GroupRoles,
+    EquipmentCategories: EquipmentCategories,
+    Equipments: Equipments,
+    WaterSupplies: WaterSupplies,
+    WaterDisposals: WaterDisposals,
+    PowerSupplies: PowerSupplies,
+    EquipmentStorages: EquipmentStorages
 };
 
 var confMakerReactiveTables = [];
@@ -85,7 +91,12 @@ _.each(Schemas.references.options, function (referenceOptions) {
 //post
     Router.route('/' + REFERENCE_URL, function () {
             SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.CONFMAKER);
-            this.render(REFERENCE_URL + '-insert', {to: 'mainContent'});
+            this.render(REFERENCE_URL + '-insert', {
+                data: {
+                  options: referenceOptions
+                },
+                to: 'mainContent'
+            });
         },
         {name: REFERENCE_URL + '.create'}
     );
@@ -102,10 +113,8 @@ _.each(Schemas.references.options, function (referenceOptions) {
             var current = this.params._id;
             this.render(REFERENCE_URL + '-update', {
                 data: {
+                    collection: AllCollections[REFERENCE_COLLECTION_NAME],
                     document: AllCollections[REFERENCE_COLLECTION_NAME].findOne(current),
-                    PLURAL_REFERENCE_URL: referenceOptions.PLURAL_REFERENCE_URL,
-                    REFERENCE_URL: referenceOptions.REFERENCE_URL,
-                    REFERENCE_COLLECTION_NAME: referenceOptions.REFERENCE_COLLECTION_NAME
                 },
                 to: 'mainContent'
             });

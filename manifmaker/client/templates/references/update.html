@@ -1,5 +1,5 @@
 <template name="team-update">
-    {{# autoForm collection="Teams" doc=document  id="updateTeamForm" type="update"}}
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.name}}</legend>
             {{> afQuickField name='name'}}
@@ -10,7 +10,7 @@
 </template>
 
 <template name="place-update">
-    {{# autoForm collection="Places" doc=document  id="updatePlaceForm" type="update"}}
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.name}}</legend>
             {{> afQuickField name='name'}}
@@ -21,7 +21,7 @@
 </template>
 
 <template name="skill-update">
-    {{# autoForm collection="Skills" doc=document  id="updateSkillForm" type="update"}}
+    {{# autoForm collection=collection doc=document  id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.key}}</legend>
             {{> afQuickField name='key'}}
@@ -33,7 +33,7 @@
 </template>
 
 <template name="assignment-term-update">
-    {{# autoForm collection="AssignmentTerms" doc=document  id="updateAssignmentTerm" type="update"}}
+    {{# autoForm collection=collection doc=document  id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.date}}</legend>
             {{> afQuickField name="start"}}
@@ -45,7 +45,7 @@
 </template>
 
 <template name="group-role-update">
-    {{# autoForm collection="GroupRoles" doc=document  id="updateGroupRole" type="update"}}
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.date}}</legend>
             {{> afQuickField name="name"}}
@@ -56,4 +56,69 @@
     {{/autoForm}}
 </template>
 
+<template name="equipment-category-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="equipment-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="water-supply-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="water-disposal-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="power-supply-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="equipment-storage-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
 

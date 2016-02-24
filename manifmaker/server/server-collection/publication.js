@@ -124,4 +124,70 @@ Meteor.startup(function () {
         return Meteor.roles.find({});
     });
 
+    /**
+     * @memberOf Meteor Publish
+     * @locus server
+     * @summary Equipment Categories publication. No query, publish all Roles data.
+     * @returns {Collection}
+     */
+    Meteor.publish("equipment-categories", function () {
+        return EquipmentCategories.find({});
+    });
+
+
+    /**
+     * @memberOf Meteor Publish
+     * @locus server
+     * @summary Equipment Categories publication. No query, publish all Roles data.
+     * @returns {Collection}
+     */
+    Meteor.publish("power-supplies", function () {
+        return PowerSupplies.find({});
+    });
+
+
+
+    /**
+     * @memberOf Meteor Publish
+     * @locus server
+     * @summary Water supply publication. No query, publish all Roles data.
+     * @returns {Collection}
+     */
+    Meteor.publish("water-supplies", function () {
+        return WaterSupplies.find({});
+    });
+
+    /**
+     * @memberOf Meteor Publish
+     * @locus server
+     * @summary Water disposal publication. No query, publish all Roles data.
+     * @returns {Collection}
+     */
+    Meteor.publish("water-disposals", function () {
+        return WaterDisposals.find({});
+    });
+
+
+    /**
+     * @memberOf Meteor Publish
+     * @locus server
+     * @summary Equipments publication. No query, publish all Roles data.
+     * @returns {Collection}
+     */
+    Meteor.publish("equipments", function () {
+        return Equipments.find({});
+    });
+
+
+
+    /**
+     * @memberOf Meteor Publish
+     * @locus server
+     * @summary Equipment Storage publication. No query, publish all Roles data.
+     * @returns {Collection}
+     */
+    Meteor.publish("equipment-storages", function () {
+        return EquipmentStorages.find({});
+    });
+
 });

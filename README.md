@@ -2,11 +2,7 @@
 Add a reference collection
 ===========================
 
-Add the schema to /both/collection/schema/schema-references.js
-
-Add the newly created Mongo Collection to the AllCollections array in /both/collection/both-collection.js
-
-Add the specs to create routes in /client/routes/config/route-collection-references.js
+Add the schema to /both/collection/schema/schema-references.js (to create Schema and Mongo Collection and generatares every needed routes)
 
 * PLURAL_REFERENCE_URL : url for the list (GET)
 * REFERENCE_URL: url to create (POST), update and delete
@@ -16,14 +12,41 @@ Add the specs to create routes in /client/routes/config/route-collection-referen
 * TEMPLATE_ROW: the template to render one row of the list
 
 
-Add your specific template to each of the files in /client/templates/references/
+See Schemas.references.Teams for a minimal collection reference example. 
+ 
+Please note that you need to add the following fields to have the "update" button working (sorry...)
+
+baseUrl: { 
+        type: String,
+        label: "Team base URL",
+        defaultValue: "team"
+}
+
+
+Please note that you need to add the following fields to have the "remove" button working (sorry...)
+
+ type: { 
+        type: String,
+        label: "Teams type",
+        defaultValue: "Teams"
+    },
+
+
+Add the newly created Mongo Collection to the AllCollections array in /client/routes/config/route-collection-references.js
+(can't be put in another place as this project don't have any dependency manager)
+
+
+Add your specific template to each of the files in /client/templates/references/ (just copy/paste and update the existing templates to your needs. Be careful with
+singular and plural to have everything correctly generated)
 
 * insert.html : template to create a new reference document
-* list.html : template to display the list of the reference collection
 * update.html :  template to update a reference document
 
 
 and add your new Collection to publish/subscribe policy
+
+
+You should follow the current populate/clean policy
 
 
 

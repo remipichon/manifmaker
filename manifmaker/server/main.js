@@ -12,6 +12,12 @@ function deleteAll() {
     Groups.remove({});
     Skills.remove({});
     Teams.remove({});
+    EquipmentCategories.remove({});
+    Equipments.remove({});
+    WaterSupplies.remove({});
+    WaterDisposals.remove({});
+    PowerSupplies.remove({});
+    EquipmentStorages.remove({});
 
     AssignmentTerms.remove({});
 
