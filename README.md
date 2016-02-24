@@ -13,6 +13,33 @@ Add the schema to /both/collection/schema/schema-references.js (to create Schema
 
 
 See Schemas.references.Teams for a minimal collection reference example. 
+
+
+If you want to reference one of the users references collections, you should add a field like name as :
+
+CollectionName_Id  : eg  EquipmentCategories_Id 
+
+It will display the "name" field of the references collection in the list
+
+Basic references field with custom verification that the _id actually exists and autoform to generate the dropdown
+
+EquipmentCategories_Id: {
+        type: SimpleSchema.RegEx.Id,
+        label: "Equipment Category",
+        custom: function () {
+            if (!EquipmentCategories.findOne(this.value))
+                return "unknownId";
+            return 1
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allEquipmentCategoriesOptions
+            }
+        },
+    },
+
+
+
  
 Please note that you need to add the following fields to have the "update" button working (sorry...)
 
@@ -47,6 +74,9 @@ and add your new Collection to publish/subscribe policy
 
 
 You should follow the current populate/clean policy
+
+
+
 
 
 

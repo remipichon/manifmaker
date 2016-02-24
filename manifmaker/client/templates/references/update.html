@@ -72,7 +72,9 @@
         <fieldset>
             <legend>Update {{document.name}}</legend>
             {{> afQuickField name="name"}}
-        </fieldset>
+            {{> afQuickField name="quantity"}}
+            {{> afQuickField name="targetUsage"}}
+            {{> afQuickField name="EquipmentCategories_Id"}}        </fieldset>
         <button type="submit" class="btn btn-primary">Update</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}

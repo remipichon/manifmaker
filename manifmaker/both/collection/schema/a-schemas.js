@@ -43,6 +43,19 @@ Schemas.helpers.allPlacesOptions = function () {
     return result;
 };
 
+Schemas.helpers.allEquipmentCategoriesOptions  = function () {
+    var categories = EquipmentCategories.find({}).fetch();
+    var result = [];
+    _.each(categories, function (category) {
+        result.push({
+            label: category.name,
+            value: category._id
+        });
+    });
+
+    return result;
+};
+
 
 Schemas.helpers.allUsersOptions = function () {
     var users = Users.find({}).fetch();

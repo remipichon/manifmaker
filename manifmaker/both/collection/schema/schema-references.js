@@ -205,7 +205,7 @@ Schemas.references.GroupRoles = new SimpleSchema({
         custom: function () {
             Roles.getAllRoles();
             this.value = _.compact(this.value);
-            if(_.uniq(this.value).length !== this.value.length)
+            if (_.uniq(this.value).length !== this.value.length)
                 return "duplicate"
         },
         autoValue: function () {
@@ -274,7 +274,6 @@ EquipmentCategories = new Mongo.Collection("equipment_categories");
 EquipmentCategories.attachSchema(Schemas.references.EquipmentCategories);
 
 
-
 Schemas.references.options.Equipments = {
     PLURAL_REFERENCE_URL: "equipments",
     REFERENCE_URL: "equipment",
@@ -287,6 +286,47 @@ Schemas.references.Equipments = new SimpleSchema({
         type: String,
         label: "Equipments Name",
         max: 100
+    },
+    quantity: {
+        type: Number,
+        label: "Equipment available quantity",
+        min: 0,
+    },
+    targetUsage: {
+        type: String,
+        label: "Equipment target usage",
+        autoform: {
+            afFieldInput: {
+                options: [
+                    {
+                        label: "Task only",
+                        value: "Task only"
+                    },
+                    {
+                        label: "Activity only",
+                        value: "Activity only"
+                    },
+                    {
+                        label: "Both Activity and Task",
+                        value: "Both Activity and Task"
+                    }
+                ]
+            }
+        }
+    },
+    EquipmentCategories_Id: {
+        type: SimpleSchema.RegEx.Id,
+        label: "Equipment Category",
+        custom: function () {
+            if (!EquipmentCategories.findOne(this.value))
+                return "unknownId";
+            return 1
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allEquipmentCategoriesOptions
+            }
+        },
     },
     type: {  //TODO pas possible d'etre saisie par le user
         type: String,

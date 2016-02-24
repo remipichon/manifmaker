@@ -35,13 +35,26 @@ _.each(Schemas.references.options, function (referenceOptions) {
     _.each(schemaFields,(field, key) => {
         if (key === "baseUrl" || key === "type") //pas moyen de faire mieux, SchemasCollection n'accepte aucun attribut en trop
             return;
-        reactiveTableFields.push(
-            {
-                key: key,
-                label: field.label,
-                fnAdjustColumnSizing: true
-            }
-        );
+        if(key.indexOf("Id") !== -1){ //it's a reference to another collection !
+            reactiveTableFields.push(
+                {
+                    key: key,
+                    label: field.label,
+                    fnAdjustColumnSizing: true,
+                    fn: function (teamId, Task) {
+                        return AllCollections[key.split("_")[0]].findOne(teamId).name;
+                    }
+                }
+            );
+        } else {
+            reactiveTableFields.push(
+                {
+                    key: key,
+                    label: field.label,
+                    fnAdjustColumnSizing: true
+                }
+            );
+        }
 
     });
 

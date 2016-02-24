@@ -39,7 +39,8 @@
                     <li><a href="{{pathFor route='user.list'}}">Me</a></li>
                 {{/if}}
                 {{#if isInRole RolesEnum.CONFMAKER}}
-                    <li><a href="{{pathFor route='confMaker'}}">ConfMaker</a></li>
+                    <!--<li><a href="{{pathFor route='confMaker'}}">ConfMaker</a></li>-->
+                    <li><a href="/conf-maker">ConfMaker</a></li>
                 {{/if}}
             {{else}}
                 You must be logged ...
