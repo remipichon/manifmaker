@@ -145,6 +145,22 @@ populateData = function () {
     var place2Id = Places.insert({name: "place2"});
     var place3Id = Places.insert({name: "place3"});
 
+
+    //equipment categories
+    var equipmentCategory1 = EquipmentCategories.insert({name: "category1"});
+    var equipmentCategory2 = EquipmentCategories.insert({name: "category2"});
+    var equipmentCategory3 = EquipmentCategories.insert({name: "category3"});
+
+    //equipment
+    var equipment11 = Equipments.insert({name: "equipment11", quantity: 10, targetUsage: EquipementTargetUsage.ACTIVITY, EquipmentCategories_Id: equipmentCategory1});
+    var equipment12 = Equipments.insert({name: "equipment12", quantity: 10, targetUsage: EquipementTargetUsage.TASK, EquipmentCategories_Id: equipmentCategory1});
+    var equipment13 = Equipments.insert({name: "equipment13", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory1});
+
+    var equipment21 = Equipments.insert({name: "equipment21", quantity: 10, targetUsage: EquipementTargetUsage.ACTIVITY, EquipmentCategories_Id: equipmentCategory2});
+    var equipment22 = Equipments.insert({name: "equipment22", quantity: 10, targetUsage: EquipementTargetUsage.TASK, EquipmentCategories_Id: equipmentCategory2});
+    var equipment23 = Equipments.insert({name: "equipment23", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
+
+
     //skills
     var skill1Id = Skills.insert({
         key: "RESP_TASK_1",

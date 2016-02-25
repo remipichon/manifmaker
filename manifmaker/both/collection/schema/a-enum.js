@@ -63,3 +63,10 @@ ValidationTypeUrl = {
  REFUSED -> READY
  READY -> REFUSED
 */
+
+
+EquipementTargetUsage = {
+    TASK : "Task only",
+    ACTIVITY : "Activity only",
+    BOTH : "Both activity and task"
+};

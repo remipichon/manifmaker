@@ -299,16 +299,16 @@ Schemas.references.Equipments = new SimpleSchema({
             afFieldInput: {
                 options: [
                     {
-                        label: "Task only",
-                        value: "Task only"
+                        label: EquipementTargetUsage.TASK,
+                        value: EquipementTargetUsage.TASK
                     },
                     {
-                        label: "Activity only",
-                        value: "Activity only"
+                        label: EquipementTargetUsage.ACTIVITY,
+                        value: EquipementTargetUsage.ACTIVITY
                     },
                     {
-                        label: "Both Activity and Task",
-                        value: "Both Activity and Task"
+                        label: EquipementTargetUsage.BOTH,
+                        value: EquipementTargetUsage.BOTH
                     }
                 ]
             }

@@ -84,6 +84,21 @@ Schemas.helpers.allSkillsOptions = function () {
     return result;
 };
 
+Schemas.helpers.allEquipmentsForTaskOptions = function () {
+    var query = Equipments.find({targetUsage: {
+        $in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.ACTIVITY]
+    }}).fetch();
+    var result = [];
+    _.each(query, function (item) {
+        result.push({
+            label: item.name,
+            value: item._id
+        });
+    });
+
+    return result;
+};
+
 Schemas.helpers.allRolesOptions = function () {
     var skills = Meteor.roles.find({}).fetch();
     var result = [];
