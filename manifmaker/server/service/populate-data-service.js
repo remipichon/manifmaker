@@ -358,20 +358,6 @@ populateData = function () {
                 }
             ]
         },
-        equipments: [
-            {
-            equipmentId: equipment11,
-            quantity: 11
-            },
-            {
-                equipmentId: equipment12,
-                quantity: 12
-            },
-            {
-                equipmentId: equipment21,
-                quantity: 21
-            }
-        ]
     });
     updateTaskEquipmentQuantity(task1d, equipment11,11);
     updateTaskEquipmentQuantity(task1d, equipment12,12);

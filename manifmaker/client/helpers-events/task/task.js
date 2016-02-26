@@ -13,7 +13,8 @@ Template.updateTaskForm.helpers({
     },
 
     autoformNameForQuantity: function() {
-        //tout ca parce que Spacebars ne supporte pas @index....
+        //tout ca parce que Spacebars ne supporte pas @index...
+        var currentEditingTaskId = SelectedUpdatedOrReadedTask.get();
         var currentTask = Tasks.findOne(currentEditingTaskId);
         var equipments = Tasks.findOne(currentEditingTaskId).equipments;
         var index = equipments.indexOf(_.findWhere(equipments,{equipmentId :this.equipmentId}))
@@ -21,6 +22,7 @@ Template.updateTaskForm.helpers({
     },
     autoformNameForEquipmentId: function() {
         //tout ca parce que Spacebars ne supporte pas @index....
+        var currentEditingTaskId = SelectedUpdatedOrReadedTask.get();
         var currentTask = Tasks.findOne(currentEditingTaskId);
         var equipments = Tasks.findOne(currentEditingTaskId).equipments;
         var index = equipments.indexOf(_.findWhere(equipments,{equipmentId :this.equipmentId}))

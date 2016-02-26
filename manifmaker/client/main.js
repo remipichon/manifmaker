@@ -13,6 +13,7 @@ TaskNeededTeamFilter = new ReactiveVar(null);
 TaskSkillsFilter = new ReactiveVar(null);
 UserSkillsFilter = new ReactiveVar(defaultFilter);
 SelectedTask = new ReactiveVar(null);
+SelectedUpdatedOrReadedTask = new ReactiveVar(null); //cymer spacebar
 SelectedTaskBreadCrumb = new ReactiveVar(null); //TODO voir si on peut la merger avec SelectedTask
 SelectedTimeSlot = new ReactiveVar(null);
 SelectedDate = new ReactiveVar(null);
