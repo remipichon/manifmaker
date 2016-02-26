@@ -24,29 +24,22 @@
     {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update"}}
         <fieldset>
             <legend>Update Task {{this.name}}</legend>
-
-            <p>equipments</p>
-
-            {{#each equipments}}
-                {{equipmentName}}
-                {{> afQuickField name=autoformNameForQuantity}}
-                {{> afQuickField name=autoformNameForEquipmentId}}
+            {{> afQuickField name='name'}}
+            {{> afQuickField name='description'}}
+            {{> afQuickField name="teamId"}}
+            {{> afQuickField name="placeId"}}
+            {{> afQuickField name="liveEventMasterId"}}
+            {{> afQuickField name="masterId"}}
+            <h4>Equipments</h4>
+            {{#each equipmentsCategories}}
+                <h4>{{name}}</h4>
+                {{#each equipments this}}
+                    {{name}}
+                    {{> afQuickField name=autoformNameForQuantity}}
+                    {{> afQuickField name=autoformNameForEquipmentId}}
+                {{/each}}
             {{/each}}
-
-
-            <!--{{> afQuickField name='name'}}-->
-            <!--{{> afQuickField name='description'}}-->
-            <!--{{> afQuickField name="teamId"}}-->
-            <!--{{> afQuickField name="placeId"}}-->
-            <!--{{> afQuickField name="liveEventMasterId"}}-->
-            <!--{{> afQuickField name="masterId"}}-->
-
-
-
-            <!--{{> afQuickField name="equipments"}}-->
-
-
-            <!--{{> afQuickField name="timeSlots"}}-->
+            {{> afQuickField name="timeSlots"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Update</button>
         {{#if isInRole RolesEnum.TASKDELETE}}
@@ -54,7 +47,7 @@
         {{/if}}
     {{/autoForm}}
 
-    <!--
+
     <div class="row">
 
         <ul class="collapsible popout" data-collapsible="accordion">
@@ -197,7 +190,6 @@
             {{/if}}
         {{/if}}
     </div>
-    -->
 </template>
 
 
