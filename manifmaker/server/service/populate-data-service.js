@@ -14,7 +14,7 @@ initAccessRightData =  function(){
     var admin = GroupRoles.insert({name: "admin",
         roles : adminRoles});
     var bureau = GroupRoles.insert({name: "bureau",
-        roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.USERWRITE,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE]
+        roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.USERWRITE,RolesEnum.USERDELETE,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ROLE]
     });
     var hard = GroupRoles.insert({name: "hard",
         roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.TASKREAD,RolesEnum.TASKWRITE]
@@ -373,6 +373,11 @@ populateData = function () {
             }
         ]
     });
+    updateTaskEquipmentQuantity(task1d, equipment11,11);
+    updateTaskEquipmentQuantity(task1d, equipment12,12);
+    updateTaskEquipmentQuantity(task1d, equipment21,21);
+
+
     var task2d = Tasks.insert({
         name: "task 2",
         teamId: team2Id,
@@ -543,4 +548,12 @@ getDateFromDate = function (day, month, year) {
     year = year || now.getYear();
     month = month || now.getMonth();
     return new Date(year, month, day, 0, 0, 0);
+};
+
+updateTaskEquipmentQuantity = function(taskId, equipmentId, quantity){
+    Tasks.update({_id: taskId, "equipments.equipmentId":equipmentId },{
+        $set : {
+            "equipments.$.quantity": quantity
+        }
+    });
 };

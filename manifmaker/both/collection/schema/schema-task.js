@@ -18,6 +18,7 @@ Schemas.EquipmentAsked = new SimpleSchema({
         type: Number,
         label: "Task equipment needed quantity",
         min: 0,
+        optional: true,
         autoform: {
             afFormGroup: {
                 label: false
@@ -330,6 +331,13 @@ Schemas.Tasks = new SimpleSchema({
         label: "Task equipments",
         type: [Schemas.EquipmentAsked],
         optional: true,
+        autoValue: function () {
+            if(this.isInsert){
+                //initialize all equipment to null quantity
+                return _.map(Equipments.find().fetch(),function(item){return {equipmentId: item._id, quantity: null};})
+            }
+        },
+
     }
 });
 
