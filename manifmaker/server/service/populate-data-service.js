@@ -34,7 +34,7 @@ initAccessRightData =  function(){
     var allUser = GroupRoles.insert({name: "allUser",
         roles : [RolesEnum.MANIFMAKER,RolesEnum.USERREAD,RolesEnum.USERWRITE,RolesEnum.USERDELETE,RolesEnum.ROLE]
     });
-    var allTask = GroupRoles.insert({name: "allTask",   
+    var allTask = GroupRoles.insert({name: "allTask",
         roles : [RolesEnum.MANIFMAKER,RolesEnum.TASKREAD,RolesEnum.TASKWRITE,RolesEnum.TASKDELETE,RolesEnum.ACCESSPASSVALIDATION,RolesEnum.EQUIPMENTVALIDATION,RolesEnum.ASSIGNMENTVALIDATION]
     });
     var allConf = GroupRoles.insert({name: "allConf",
@@ -357,7 +357,21 @@ populateData = function () {
                     stateAfter: ValidationState.OPEN,
                 }
             ]
-        }
+        },
+        equipments: [
+            {
+            equipmentId: equipment11,
+            quantity: 11
+            },
+            {
+                equipmentId: equipment12,
+                quantity: 12
+            },
+            {
+                equipmentId: equipment21,
+                quantity: 21
+            }
+        ]
     });
     var task2d = Tasks.insert({
         name: "task 2",

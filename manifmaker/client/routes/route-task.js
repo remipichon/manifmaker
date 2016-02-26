@@ -48,6 +48,13 @@ Router.route('/task/:_id', function () {
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
         console.info("routing", "/task/" + this.params._id);
 
+
+    //TODO UGLY
+
+        currentEditingTaskId = this.params._id;
+
+    //UGLY
+
         this.render('updateTaskForm', {
             data: function () {
                 var currentTask = this.params._id;

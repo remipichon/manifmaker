@@ -1,12 +1,16 @@
 //order matters !
 
 Schemas.EquipmentAsked = new SimpleSchema({
-    equipmentsId : {
+    equipmentId : {
         type: SimpleSchema.RegEx.Id,
         label: "Tasks Equipment needed",
+        optional: true,
         autoform: {
             afFieldInput: {
-                options: Schemas.helpers.allEquipmentsForTaskOptions
+                type: "hidden"
+            },
+            afFormGroup: {
+                label: false
             }
         }
     },
@@ -14,6 +18,11 @@ Schemas.EquipmentAsked = new SimpleSchema({
         type: Number,
         label: "Task equipment needed quantity",
         min: 0,
+        autoform: {
+            afFormGroup: {
+                label: false
+            }
+        }
     }
 });
 
@@ -321,12 +330,6 @@ Schemas.Tasks = new SimpleSchema({
         label: "Task equipments",
         type: [Schemas.EquipmentAsked],
         optional: true,
-        custom: function () {
-            this.value = _.compact(this.value);
-            this.value = _.map(this.value,function(item){return item.equipmentsId});
-            if (Equipments.find({_id: {$in: this.value}}).fetch().length !== this.value.length)
-                return "unknownIdOrDuplicateId"
-        }
     }
 });
 

@@ -1,4 +1,4 @@
-function deleteAll() {
+deleteAll = function() {
     Meteor.roles.remove({});
     GroupRoles.remove({});
     Meteor.users.remove({});
