@@ -1,8 +1,5 @@
 <template name="insertTaskForm">
 
-
-
-
     {{# autoForm collection="Tasks" id="insertTaskForm" type="insert"}}
         <fieldset>
             <legend>Add a Task</legend>
@@ -31,6 +28,8 @@
             {{> afQuickField name="liveEventMasterId"}}
             {{> afQuickField name="masterId"}}
             <h4>Equipments</h4>
+            {{> afQuickField name="equipmentStorageId"}}
+            {{> afQuickField name="powerSupplyId"}}
             {{#each equipmentsCategories}}
                 <h4>{{name}}</h4>
                 {{#each equipments this}}

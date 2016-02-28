@@ -21,7 +21,7 @@ Schemas.EquipmentAsked = new SimpleSchema({
         optional: true,
         autoform: {
             afFormGroup: {
-                label: false
+                label: false,
             }
         }
     }
@@ -336,7 +336,27 @@ Schemas.Tasks = new SimpleSchema({
                 //initialize all equipment to null quantity
                 return _.map(Equipments.find().fetch(),function(item){return {equipmentId: item._id, quantity: null};})
             }
-        },
+        }
+    },
+    powerSupplyId :{
+        label: "Task power supply",
+        type: SimpleSchema.RegEx.Id,
+        optional: true,
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allPowerSuppliesOptions
+            }
+        }
+    },
+    equipmentStorageId :{
+        label: "Task equipment storage",
+        type: SimpleSchema.RegEx.Id,
+        optional: true,
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allEquipmentStoragesOptions
+            }
+        }
 
     }
 });

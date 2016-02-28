@@ -160,6 +160,14 @@ populateData = function () {
     var equipment22 = Equipments.insert({name: "equipment22", quantity: 10, targetUsage: EquipementTargetUsage.TASK, EquipmentCategories_Id: equipmentCategory2});
     var equipment23 = Equipments.insert({name: "equipment23", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
 
+    //storage
+    var equipmentStorage1 = EquipmentStorages.insert({name: "equipmentStorage1"});
+    var equipmentStorage2 = EquipmentStorages.insert({name: "equipmentStorage2"});
+
+    //power supply
+    var powerSupply1 = PowerSupplies.insert({name: "powerSupply1"});
+    var powerSupply2 = PowerSupplies.insert({name: "powerSupply2"});
+
 
     //skills
     var skill1Id = Skills.insert({

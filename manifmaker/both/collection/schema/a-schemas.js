@@ -57,6 +57,34 @@ Schemas.helpers.allEquipmentCategoriesOptions  = function () {
 };
 
 
+Schemas.helpers.allPowerSuppliesOptions  = function () {
+    var list = PowerSupplies.find({}).fetch();
+    var result = [];
+    _.each(list, function (item) {
+        result.push({
+            label: item.name,
+            value: item._id
+        });
+    });
+
+    return result;
+};
+
+
+Schemas.helpers.allEquipmentStoragesOptions  = function () {
+    var list = EquipmentStorages.find({}).fetch();
+    var result = [];
+    _.each(list, function (item) {
+        result.push({
+            label: item.name,
+            value: item._id
+        });
+    });
+
+    return result;
+};
+
+
 Schemas.helpers.allUsersOptions = function () {
     var users = Users.find({}).fetch();
     var result = [];
