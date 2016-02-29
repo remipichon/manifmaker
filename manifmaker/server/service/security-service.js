@@ -11,6 +11,14 @@ SecurityServiceServer =
 
         }
 
+        static testAccessToItem(userId, neededRole, doc, type) {
+            if (Roles.userIsInRole(userId, neededRole))
+                return true;
+            else {
+                return false;
+            }
+        }
+
         static grantAccessToCollection(userId, neededRole, collection) {
             if (Roles.userIsInRole(userId, neededRole)) {
                 console.info(`access granted with ${neededRole} on collection ${collection} for user ${userId}`);

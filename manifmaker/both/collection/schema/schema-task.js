@@ -334,7 +334,7 @@ Schemas.Tasks = new SimpleSchema({
         autoValue: function () {
             if(this.isInsert){
                 //initialize all equipment to null quantity
-                return _.map(Equipments.find().fetch(),function(item){return {equipmentId: item._id, quantity: null};})
+                return _.map(Equipments.find({targetUsage:{$in:[EquipementTargetUsage.BOTH,EquipementTargetUsage.TASK]}}).fetch(),function(item){return {equipmentId: item._id, quantity: null};})
             }
         }
     },
