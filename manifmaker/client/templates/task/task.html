@@ -28,17 +28,19 @@
             {{> afQuickField name="liveEventMasterId"}}
             {{> afQuickField name="masterId"}}
             <h4>Equipments</h4>
-            {{> afQuickField name="equipmentStorageId"}}
-            {{> afQuickField name="powerSupplyId"}}
+            {{> afQuickField readonly=isEquipmentReadOnly name="equipmentStorageId"}}
+            {{> afQuickField readonly=isEquipmentReadOnly name="powerSupplyId"}}
             {{#each equipmentsCategories}}
                 <h4>{{name}}</h4>
                 {{#each equipments this}}
                     {{name}}
-                    {{> afQuickField name=autoformNameForQuantity}}
-                    {{> afQuickField name=autoformNameForEquipmentId}}
+                    {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForQuantity}}
+                    {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForEquipmentId}}
                 {{/each}}
             {{/each}}
-            {{> afQuickField name="timeSlots"}}
+
+            TODO : isAssignmentReadOnly : {{isAssignmentReadOnly}}
+            {{> afArrayField name="timeSlots"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Update</button>
         {{#if isInRole RolesEnum.TASKDELETE}}

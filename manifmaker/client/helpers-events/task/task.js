@@ -13,6 +13,26 @@ Template.updateTaskForm.helpers({
     },
 
 
+    isEquipmentReadOnly: function(){
+        if(Roles.userIsInRole(Meteor.userId(),RolesEnum.EQUIPMENTVALIDATION))
+            return false;
+        if(this.equipmentValidation !== ValidationState.OPEN && (this.equipmentValidation !== ValidationState.REFUSED))
+            return true;
+        return false;
+    },
+
+
+    isAssignmentReadOnly: function(){
+        //tout ca parce que Spacebars ne supporte pas @index...
+        var currentEditingTaskId = SelectedUpdatedOrReadedTask.get();
+        var currentTask = Tasks.findOne(currentEditingTaskId);
+        if(Roles.userIsInRole(Meteor.userId(),RolesEnum.ASSIGNMENTVALIDATION))
+            return false;
+        if(currentTask.timeSlotValidation !== ValidationState.OPEN && (currentTask.timeSlotValidation !== ValidationState.REFUSED))
+            return true;
+        return false;
+    },
+
     equipmentsCategories: function() {
         var categories = EquipmentCategories.find().fetch();
         //remove categories which have nothing to display for this target
