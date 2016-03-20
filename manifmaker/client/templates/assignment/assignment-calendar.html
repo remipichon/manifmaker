@@ -26,47 +26,46 @@
                                              style="height: {{height}};"
                                              data-toggle="popover" title="{{displayHoursMinute start}} to {{displayHoursMinute end}}"
                                              data-content='
-
                                                 <div>
-<div class="collection">
-    {{#each peopleNeeded}}
-        <div class="peopleNeed collection-item" data-_id="{{_id}}">
-            {{#if userId }}
-                <div class="user">{{userName}}</div>
-            {{/if}}
-            {{#if teamId}}
-                <div class="team">{{teamName}}</div>
-            {{/if}}
-            <div>
-                {{#each skills}}
-                    <div class="skill">{{labelSkills}}</div>
-                {{/each}}
-            </div>
-        </div>
-    {{/each}}
-</div>
+                                                    <div class="collection">
+                                                        {{#each peopleNeeded}}
+                                                            <div class="peopleNeed collection-item" data-_id="{{_id}}">
+                                                                {{#if userId }}
+                                                                    <div class="user">{{userName}}</div>
+                                                                {{/if}}
+                                                                {{#if teamId}}
+                                                                    <div class="team">{{teamName}}</div>
+                                                                {{/if}}
+                                                                <div>
+                                                                    {{#each skills}}
+                                                                        <div class="skill">{{labelSkills}}</div>
+                                                                    {{/each}}
+                                                                </div>
+                                                            </div>
+                                                        {{/each}}
+                                                    </div>
 
-Already Assigned
-<div class="collection">
-    {{#each peopleNeededAssigned}}
-        <div class="peopleNeed assigned  collection-item" data-_id="{{_id}}">
-            Assigned to {{displayUser}}
-            <i>
-            {{#if userId }}
-                <div class="user">{{userName}}</div>
-            {{/if}}
-            {{#if teamId}}
-                <div class="team">{{teamName}}</div>
-            {{/if}}
-            <div>
-                {{#each skills}}
-                    <div class="skill">{{labelSkills}}</div>
-                {{/each}}
-            </div>
-            </i>
-        </div>
-    {{/each}}
-</div>
+                                                    Already Assigned
+                                                    <div class="collection">
+                                                        {{#each peopleNeededAssigned}}
+                                                            <div class="peopleNeed assigned  collection-item" data-_id="{{_id}}">
+                                                                Assigned to {{displayUser}}
+                                                                <i>
+                                                                {{#if userId }}
+                                                                    <div class="user">{{userName}}</div>
+                                                                {{/if}}
+                                                                {{#if teamId}}
+                                                                    <div class="team">{{teamName}}</div>
+                                                                {{/if}}
+                                                                <div>
+                                                                    {{#each skills}}
+                                                                        <div class="skill">{{labelSkills}}</div>
+                                                                    {{/each}}
+                                                                </div>
+                                                                </i>
+                                                            </div>
+                                                        {{/each}}
+                                                    </div>
                                              <div>
                                              '>
 

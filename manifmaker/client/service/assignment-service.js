@@ -92,7 +92,7 @@ AssignmentServiceClient =
 
         /**
          * @memberOf AssignmentServiceClient
-         * @summary Init Materialize popover HTML component on assignment page
+         * @summary Init Materialize popover HTML component on assignment page and setup a custom leave which hide popover when mouse leave
          * @locus client
          */
         static initAssignmentPopover() {
@@ -118,7 +118,7 @@ AssignmentServiceClient =
                 }
             };
 
-            $('body').popover({html: true, selector: '[data-popover]', trigger: 'click hover', placement: 'auto', delay: {show: 50, hide: 400}});
+            $('body').popover({html: true, selector: '.creneau[data-popover]', trigger: 'click hover', placement: 'auto', delay: {show: 50, hide: 400}});
 
             $(document).on("click", ".popover .peopleNeed.assigned", function (event) {
                 AssignmentService.readSelectedPeopleNeedAndTimeSlotFromPopover(event, true);
