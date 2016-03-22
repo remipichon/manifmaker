@@ -11,11 +11,11 @@
 
 
     <div class="form-group">
-        {{> SimpleSelectComponent title="Update user1 team" filterPlaceHolder="Ceci est le search place holder"
+        {{> MultipleSelectComponent title="Update user1 team" filterPlaceHolder="Ceci est le search place holder"
                 optionCollection="Teams" optionValueName="name"
                 updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}
 
-        {{> SimpleSelectComponent title="Update user2 skills" filterPlaceHolder="Ceci est le search place holder"
+        {{> MultipleSelectComponent title="Update user2 skills" filterPlaceHolder="Ceci est le search place holder"
             optionCollection="Skills" optionValueName="label"
             updateCollection="Users" updateItemId=user2Id updateItemPath="skills"}}
 

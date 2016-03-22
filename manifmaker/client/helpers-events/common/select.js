@@ -1,11 +1,11 @@
 
-class SimpleSelectComponent extends BlazeComponent {
+class MultipleSelectComponent extends BlazeComponent {
 
     //TODO could'nt figure out how to use constructor with this.data
     fakeConstructorWithDataArguments(){
         //select popover init arguments
         if(! this.data().optionCollection || ! window[this.data().optionCollection])
-            throw new Meteor.Error("SimpleSelectComponent : optionCollection should be Collection instance in the window scope");
+            throw new Meteor.Error("MultipleSelectComponent : optionCollection should be Collection instance in the window scope");
         this.optionCollection = window[this.data().optionCollection]; //should be in window scope
         this.optionValueName = this.data().optionValueName || "name";
         this.title =  this.data().title || this.data().optionCollection;
@@ -13,7 +13,7 @@ class SimpleSelectComponent extends BlazeComponent {
 
         //item update arguments
         if(! this.data().updateCollection || ! window[this.data().updateCollection])
-            throw new Meteor.Error("SimpleSelectComponent : updateCollection should be Collection instance in the window scope");
+            throw new Meteor.Error("MultipleSelectComponent : updateCollection should be Collection instance in the window scope");
         this.updateCollection = this.data().updateCollection; //should be in window scope
         this.updateItemId = this.data().updateItemId; //mongoId
         this.updateItemPath = this.data().updateItemPath; //path to an array
@@ -105,4 +105,4 @@ class SimpleSelectComponent extends BlazeComponent {
     }
 }
 
-SimpleSelectComponent.register('SimpleSelectComponent');
+MultipleSelectComponent.register('MultipleSelectComponent');
