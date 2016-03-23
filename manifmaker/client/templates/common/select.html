@@ -7,7 +7,7 @@
              data-toggle="popover" title="{{title}}"
              data-content='
                  <div class="row">
-                    <input id="last_name" type="text" placeholder="{{filterPlaceHolder}}">
+                    <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
                 </div>
                 <div class="row">
                     <div class="custom-select-options">
@@ -33,4 +33,16 @@
 
     </div>
 
+    {{cloneSearchResultInPopover}}
+
+
+</template>
+
+
+<template name="customSelectPopoverOption">
+    <ul class="collection">
+        {{#each collectionItemsPopover}}
+            <li class="collection-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
+        {{/each}}
+    </ul>
 </template>

@@ -51,6 +51,28 @@ UsersIndex = new EasySearch.Index({
     fields: ['name'],
     engine: new EasySearch.Minimongo()
 });
+/**
+ * @memberOf Models
+ * @summary EasySearch settings to perform search by name on Teams
+ * @locus Anywhere
+ * @instancename object
+ */
+TeamsIndex = new EasySearch.Index({
+    collection: Teams,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+/**
+ * @memberOf Models
+ * @summary EasySearch settings to perform search by label on Skills
+ * @locus Anywhere
+ * @instancename object
+ */
+SkillsIndex = new EasySearch.Index({
+    collection: Skills,
+    fields: ['label'],
+    engine: new EasySearch.Minimongo()
+});
 
 
 //using schema

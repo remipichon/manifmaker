@@ -5,8 +5,13 @@ class MultipleSelectComponent extends BlazeComponent {
     fakeConstructorWithDataArguments(){
         //select popover init arguments
         if(! this.data().optionCollection || ! window[this.data().optionCollection])
-            throw new Meteor.Error("MultipleSelectComponent : optionCollection should be Collection instance in the window scope");
+            throw new Meteor.Error("MultipleSelectComponent : optionCollection should be Collection instance in the window scope. Given :"+this.data().optionCollection);
         this.optionCollection = window[this.data().optionCollection]; //should be in window scope
+
+        if(! this.data().optionCollectionIndex || ! window[this.data().optionCollectionIndex])
+            throw new Meteor.Error("MultipleSelectComponent : optionCollectionIndex should be EasySearch.Index instance in the window scope. Given :"+this.data().optionCollectionIndex);
+        this.optionCollectionIndex = window[this.data().optionCollectionIndex];
+
         this.optionValueName = this.data().optionValueName || "name";
         this.title =  this.data().title || this.data().optionCollection;
         this.filterPlaceHolder =  this.data().filterPlaceHolder || "Filter...";
@@ -22,12 +27,19 @@ class MultipleSelectComponent extends BlazeComponent {
     constructor(){
         super();
         this.isRendered = false;
+        this.searchQuery = new ReactiveVar(null);
     }
 
     onRendered(){
+        //this.$(".custom-select-label-wrapper[data-popover]").on("show.bs.popover",this.onPopoverShow);
         this.$('.custom-select-label-wrapper[data-popover]').popover({html: true, trigger: 'click', placement: 'bottom', delay: {show: 50, hide: 400}});
         this.isRendered = true;
     }
+
+    onPopoverShow(){
+        this.searchQuery.set("");
+    }
+
 
     template() {
         return 'simpleSelect';
@@ -37,12 +49,31 @@ class MultipleSelectComponent extends BlazeComponent {
         return this.optionCollection.find();
     }
 
+    cloneSearchResultInPopover(){
+        var searchQuery = this.searchQuery.get();
+
+        var tmpl = Template.instance();
+        if(tmpl.view.isRendered) {
+
+            var data = this.optionCollectionIndex.search(searchQuery).fetch();
+
+            //a trick to find the dom of the popover, not very strong
+            var parentNode = this.$(`.custom-select-label-wrapper[data-popover]`).parent().find(".popover .popover-content").find(".custom-select-options");
+
+            parentNode.html("");//saaaallle
+            //TODO should use blazeview to remove view
+
+            var blazeView = Blaze.renderWithData(Template.customSelectPopoverOption, {collectionItemsPopover: data}, parentNode[0]);
+        }
+    }
+
     collectionSelectedItems(){
         return this.optionCollection.find({
             _id: {
                 $in : this.optionsToUpdate()
             }
         });
+
     }
 
     optionsToUpdate() {
@@ -70,7 +101,9 @@ class MultipleSelectComponent extends BlazeComponent {
     events() {
         return [{
             'change .custom-select-options :checkbox': this.onCheckboxOptionsChange,
-        }];
+            'input .search-input': this.performSearch,
+            "show.bs.popover .custom-select-label-wrapper[data-popover]": this.onPopoverShow
+    }];
     }
 
     addOption(addedOptionId){
@@ -102,6 +135,10 @@ class MultipleSelectComponent extends BlazeComponent {
             this.addOption(_id);
         else
             this.removeOption(_id);
+    }
+
+    performSearch(e){
+        this.searchQuery.set($(e.target).val());
     }
 }
 
