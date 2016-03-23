@@ -1,43 +1,4 @@
-<template name="multipleSelectComponent">
-
-    {{fakeConstructorWithDataArguments}}
-
-    <div class="col-md-3">
-        <div class="custom-select-label-wrapper hasPopover" data-popover="true"
-             data-toggle="popover" title="{{title}}"
-             data-content='
-                 <div class="row">
-                    <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
-                </div>
-                <div class="row">
-                    <div class="custom-select-options">
-                        <ul class="collection">
-                            {{#each collectionItems}}
-                                <li class="collection-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-
-                </div>
-         '>
-            <label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}} <span class="glyphicon glyphicon-cog" aria-hidden="true"></span></label>
-        </div>
-
-        <div class="selected-options">
-            <ul class="collection">
-                {{#each collectionSelectedItems}}
-                    <li class="collection-item">{{optionValue}}</li>
-                {{/each}}
-            </ul>
-        </div>
-
-    </div>
-
-    {{cloneSearchResultInPopover}}
-
-</template>
-
-<template name="singleMandatorySelectComponent">
+<template name="selectComponent">
 
     {{fakeConstructorWithDataArguments}}
 
@@ -77,7 +38,7 @@
 </template>
 
 
-<template name="singleNonMandatorySelectComponent">
+<template name="nonMandatorySelectComponent">
 
     {{fakeConstructorWithDataArguments}}
 
@@ -89,9 +50,11 @@
                     <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
                 </div>
                 <div class="row">
-                    <div class="clear">{{clearMessage}}<i class="material-icons">delete</i></div>
                     <div class="custom-select-options">
                         <ul class="collection">
+                            <li class="collection-item">
+                               <div class="clear">{{clearMessage}}<i class="material-icons">delete</i></div>
+                            </li>
                             {{#each collectionItems}}
                                 <li class="collection-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
                             {{/each}}
@@ -117,46 +80,6 @@
 
 </template>
 
-
-<template name="multipleNonMandatorySelectComponent">
-
-    {{fakeConstructorWithDataArguments}}
-
-    <div class="col-md-3">
-        <div class="custom-select-label-wrapper hasPopover" data-popover="true"
-             data-toggle="popover" title="{{title}}"
-             data-content='
-                 <div class="row">
-                    <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
-                </div>
-                <div class="row">
-                    <div class="clear">{{clearMessage}}<i class="material-icons">delete</i></div>
-                    <div class="custom-select-options">
-                        <ul class="collection">
-                            {{#each collectionItems}}
-                                <li class="collection-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-
-                </div>
-         '>
-            <label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}} <span class="glyphicon glyphicon-cog" aria-hidden="true"></span></label>
-        </div>
-
-        <div class="selected-options">
-            <ul class="collection">
-                {{#each collectionSelectedItems}}
-                    <li class="collection-item">{{optionValue}}</li>
-                {{/each}}
-            </ul>
-        </div>
-
-    </div>
-
-    {{cloneSearchResultInPopover}}
-
-</template>
 
 <template name="customSelectPopoverOption">
     <ul class="collection">

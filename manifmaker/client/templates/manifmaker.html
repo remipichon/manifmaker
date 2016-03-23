@@ -15,7 +15,6 @@
                 optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                 updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}
 
-            test default
         {{> MultipleSelectComponent
             optionCollection="Teams" optionCollectionIndex="TeamsIndex"
             updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}
@@ -24,7 +23,7 @@
             optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
             updateCollection="Users" updateItemId=user2Id updateItemPath="skills"}}
 
-        {{> SingleMandatorySelectComponent title="Update task2 team" filterPlaceHolder="Ceci est le search place holder"
+        {{> SingleSelectComponent title="Update task2 team" filterPlaceHolder="Ceci est le search place holder"
              optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
             updateCollection="Tasks" updateItemId=task2Id updateItemPath="teamId"}}
 

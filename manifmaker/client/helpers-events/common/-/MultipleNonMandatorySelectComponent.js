@@ -1,20 +1,13 @@
-
 class MultipleNonMandatorySelectComponent extends MultipleSelectComponent {
 
-
-    //TODO could'nt figure out how to use constructor with this.data
-    fakeConstructorWithDataArguments(){
+    fakeConstructorWithDataArguments() {
         super.fakeConstructorWithDataArguments();
-
-        this.clearMessage =  this.data().clearMessage || "Clear all";
+        this.clearMessage = this.data().clearMessage || "Clear all";
     }
-
-
 
     template() {
-        return 'multipleNonMandatorySelectComponent';
+        return 'nonMandatorySelectComponent';
     }
-
 
     events() {
         return super.events().concat({
@@ -22,13 +15,9 @@ class MultipleNonMandatorySelectComponent extends MultipleSelectComponent {
         });
     }
 
-
-    clear(){
+    clear() {
         this.updateOption([]);
     }
-
-
-
 }
 
 MultipleNonMandatorySelectComponent.register('MultipleNonMandatorySelectComponent');
