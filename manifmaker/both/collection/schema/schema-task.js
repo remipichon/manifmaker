@@ -342,6 +342,7 @@ Schemas.Tasks = new SimpleSchema({
         label: "Task power supply",
         type: SimpleSchema.RegEx.Id,
         optional: true,
+        defaultValue: null,
         autoform: {
             afFieldInput: {
                 options: Schemas.helpers.allPowerSuppliesOptions
@@ -352,6 +353,7 @@ Schemas.Tasks = new SimpleSchema({
         label: "Task equipment storage",
         type: SimpleSchema.RegEx.Id,
         optional: true,
+        defaultValue: null,
         autoform: {
             afFieldInput: {
                 options: Schemas.helpers.allEquipmentStoragesOptions

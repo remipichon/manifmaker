@@ -11,17 +11,29 @@
 
 
     <div class="form-group">
-        {{> MultipleSelectComponent title="Update user1 team" filterPlaceHolder="Ceci est le search place holder"
+        {{> MultipleSelectComponent selectLabel="'user1' teams" filterPlaceHolder="Filter by team name..." title="Update teams..."
                 optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                 updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}
 
-        {{> MultipleSelectComponent title="Update user2 skills" filterPlaceHolder="Ceci est le search place holder"
+            test default
+        {{> MultipleSelectComponent
+            optionCollection="Teams" optionCollectionIndex="TeamsIndex"
+            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}
+
+        {{> MultipleNonMandatorySelectComponent title="Update user2 skills" filterPlaceHolder="Ceci est le search place holder" clearMessage="clear all selected"
             optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
             updateCollection="Users" updateItemId=user2Id updateItemPath="skills"}}
 
-        {{> MultipleSelectComponent title="Update task2 team" filterPlaceHolder="Ceci est le search place holder"
-        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-        updateCollection="Tasks" updateItemId=task2Id updateItemPath="teamId"}}
+        {{> SingleMandatorySelectComponent title="Update task2 team" filterPlaceHolder="Ceci est le search place holder"
+             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="Tasks" updateItemId=task2Id updateItemPath="teamId"}}
+
+        {{> SingleNonMandatorySelectComponent title="Update task2 powersupply" filterPlaceHolder="Ceci est le search place holder" clearMessage="clear selected"
+            optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
+            updateCollection="Tasks" updateItemId=task2Id updateItemPath="powerSupplyId"}}
+
+
+
 
     </div>
 

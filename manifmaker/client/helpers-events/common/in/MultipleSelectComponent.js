@@ -1,22 +1,23 @@
-
+MultipleSelectComponent =
 class MultipleSelectComponent extends BlazeComponent {
 
     //TODO could'nt figure out how to use constructor with this.data
     fakeConstructorWithDataArguments(){
         //select popover init arguments
         if(! this.data().optionCollection || ! window[this.data().optionCollection])
-            throw new Meteor.Error("MultipleSelectComponent : optionCollection should be Collection instance in the window scope. Given :"+this.data().optionCollection);
+            throw new Meteor.Error(this.constructor.name+" : optionCollection should be Collection instance in the window scope. Given :"+this.data().optionCollection);
         this.optionCollection = window[this.data().optionCollection]; //should be in window scope
         if(! this.data().optionCollectionIndex || ! window[this.data().optionCollectionIndex])
-            throw new Meteor.Error("MultipleSelectComponent : optionCollectionIndex should be EasySearch.Index instance in the window scope. Given :"+this.data().optionCollectionIndex);
+            throw new Meteor.Error(this.constructor.name+" : optionCollectionIndex should be EasySearch.Index instance in the window scope. Given :"+this.data().optionCollectionIndex);
         this.optionCollectionIndex = window[this.data().optionCollectionIndex];
         this.optionValueName = this.data().optionValueName || "name";
-        this.title =  this.data().title || this.data().optionCollection;
-        this.filterPlaceHolder =  this.data().filterPlaceHolder || "Filter...";
+        this.title =  this.data().title || "Update " + this.data().optionCollection;
+        this.selectLabel = this.data().selectLabel || this.data().updateCollection + "' " + this.data().optionCollection;
+        this.filterPlaceHolder =  this.data().filterPlaceHolder || "Filter by "+this.optionValueName;
 
         //item update arguments
         if(! this.data().updateCollection || ! window[this.data().updateCollection])
-            throw new Meteor.Error("MultipleSelectComponent : updateCollection should be Collection instance in the window scope");
+            throw new Meteor.Error(this.constructor.name+" : updateCollection should be Collection instance in the window scope");
         this.updateCollection = this.data().updateCollection; //should be in window scope
         this.updateItemId = this.data().updateItemId; //mongoId
         this.updateItemPath = this.data().updateItemPath; //path to an array
@@ -29,10 +30,11 @@ class MultipleSelectComponent extends BlazeComponent {
 
         var item = window[this.updateCollection].findOne(this.updateItemId);
         if(!item)
-            throw new Meteor.Error(`MultipleSelectComponent : could not find ${this.updateItemId} in collection ${this.updateCollection}`);
+            throw new Meteor.Error(`${this.constructor.name} : could not find ${this.updateItemId} in collection ${this.updateCollection}`);
 
+        //TODO read Schema collection instead
         if(!Array.isArray(item[this.updateItemPath]))
-            throw new Meteor.Error(`MultipleSelectComponent : path ${this.updateItemPath} should refers to an array`);
+            throw new Meteor.Error(`${this.constructor.name} : path ${this.updateItemPath} should refers to an array`);
     }
 
     constructor(){
@@ -97,7 +99,6 @@ class MultipleSelectComponent extends BlazeComponent {
 
     optionsToUpdate() {
         var leaf = Leaf(window[this.updateCollection].findOne(this.updateItemId), this.updateItemPath);
-        if(!leaf) throw new Meteor.Error("404",`SimpleSelectComponent : bad combination of update collection ${this.updateCollection} updateItemId ${updateItemId} and updateItemPath ${updateItemPath} : nothing has been found`);
         return leaf;
     }
 
