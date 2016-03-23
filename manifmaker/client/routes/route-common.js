@@ -41,12 +41,14 @@ Router.onAfterAction(function () {
 var justForDoc = {};
 Router.route('/', function () {
         this.wait(Meteor.subscribe('users'));
+        this.wait(Meteor.subscribe('tasks'));
 
         if (this.ready()) {
             this.render('home', {to: 'mainContent',
             data:{
                 user1Id : Users.findOne({name:"user1"})._id,
-                user2Id : Users.findOne({name:"user2"})._id
+                user2Id : Users.findOne({name:"user2"})._id,
+                task2Id : Tasks.findOne({name:"task 2"})._id
             }});
         } else {
             console.log("Route / : waiting users_custom data"); //TODO add a spinner

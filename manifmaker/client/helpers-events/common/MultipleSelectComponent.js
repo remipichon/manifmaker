@@ -7,11 +7,9 @@ class MultipleSelectComponent extends BlazeComponent {
         if(! this.data().optionCollection || ! window[this.data().optionCollection])
             throw new Meteor.Error("MultipleSelectComponent : optionCollection should be Collection instance in the window scope. Given :"+this.data().optionCollection);
         this.optionCollection = window[this.data().optionCollection]; //should be in window scope
-
         if(! this.data().optionCollectionIndex || ! window[this.data().optionCollectionIndex])
             throw new Meteor.Error("MultipleSelectComponent : optionCollectionIndex should be EasySearch.Index instance in the window scope. Given :"+this.data().optionCollectionIndex);
         this.optionCollectionIndex = window[this.data().optionCollectionIndex];
-
         this.optionValueName = this.data().optionValueName || "name";
         this.title =  this.data().title || this.data().optionCollection;
         this.filterPlaceHolder =  this.data().filterPlaceHolder || "Filter...";
@@ -22,12 +20,25 @@ class MultipleSelectComponent extends BlazeComponent {
         this.updateCollection = this.data().updateCollection; //should be in window scope
         this.updateItemId = this.data().updateItemId; //mongoId
         this.updateItemPath = this.data().updateItemPath; //path to an array
+
+        this.checkItemPath();
+    }
+
+    checkItemPath(){
+        //in another method to have a context alone for reactivity
+
+        var item = window[this.updateCollection].findOne(this.updateItemId);
+        if(!item)
+            throw new Meteor.Error(`MultipleSelectComponent : could not find ${this.updateItemId} in collection ${this.updateCollection}`);
+
+        if(!Array.isArray(item[this.updateItemPath]))
+            throw new Meteor.Error(`MultipleSelectComponent : path ${this.updateItemPath} should refers to an array`);
     }
 
     constructor(){
         super();
         this.isRendered = false;
-        this.searchQuery = new ReactiveVar(null);
+        this.searchQuery = new ReactiveVar("");
     }
 
     onRendered(){
@@ -42,15 +53,21 @@ class MultipleSelectComponent extends BlazeComponent {
 
 
     template() {
-        return 'simpleSelect';
+        return 'multipleSelectComponent';
     }
 
     collectionItems(){
         return this.optionCollection.find();
     }
 
+    /**
+     * because popover, that's why
+     */
     cloneSearchResultInPopover(){
         var searchQuery = this.searchQuery.get();
+
+        if(searchQuery === this.previousSearchQuery) return; //this reactivity context has been fired but no needs to do anything if search query doesn't change
+        this.previousSearchQuery = searchQuery;
 
         var tmpl = Template.instance();
         if(tmpl.view.isRendered) {
@@ -60,10 +77,12 @@ class MultipleSelectComponent extends BlazeComponent {
             //a trick to find the dom of the popover, not very strong
             var parentNode = this.$(`.custom-select-label-wrapper[data-popover]`).parent().find(".popover .popover-content").find(".custom-select-options");
 
-            parentNode.html("");//saaaallle
-            //TODO should use blazeview to remove view
+            if(!this.blazeView) //popover has just been created (just been shown again), we clear the init list
+                parentNode.empty()
+            else //we remove previous blaze view list
+                Blaze.remove(this.blazeView)
 
-            var blazeView = Blaze.renderWithData(Template.customSelectPopoverOption, {collectionItemsPopover: data}, parentNode[0]);
+            this.blazeView = Blaze.renderWithData(Template.customSelectPopoverOption, {collectionItemsPopover: data}, parentNode[0]);
         }
     }
 
