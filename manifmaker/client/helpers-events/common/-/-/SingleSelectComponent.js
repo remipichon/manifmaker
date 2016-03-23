@@ -8,9 +8,13 @@ SingleSelectComponent =
             if (!item)
                 throw new Meteor.Error(`${this.constructor.name} : could not find ${this.updateItemId} in collection ${this.updateCollection}`);
 
-            //TODO read Schema collection instead
-            if (item[this.updateItemPath] && typeof item[this.updateItemPath] === "object")
+            //is it a MongoDB id type ?
+            try {
+                if (Schemas[this.updateCollection].pick([this.updateItemPath])._schema[this.updateItemPath].type !== SimpleSchema.RegEx.Id)
+                    throw new Meteor.Error(`${this.constructor.name}  : path ${this.updateItemPath} should not refers to an object (nor array)`);
+            } catch(Error){
                 throw new Meteor.Error(`${this.constructor.name}  : path ${this.updateItemPath} should not refers to an object (nor array)`);
+            }
         }
 
         template() {

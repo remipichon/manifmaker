@@ -8,9 +8,15 @@ MultipleSelectComponent =
             if (!item)
                 throw new Meteor.Error(`${this.constructor.name} : could not find ${this.updateItemId} in collection ${this.updateCollection}`);
 
-            //TODO read Schema collection instead
-            if (!Array.isArray(item[this.updateItemPath]))
+
+            //is it an array ?
+            try {
+                if (!Array.isArray(Schemas[this.updateCollection].pick([this.updateItemPath, this.updateItemPath+".$"])._schema[this.updateItemPath].type())) {
+                    throw new Meteor.Error(`${this.constructor.name} : path ${this.updateItemPath} should refers to an array`);
+                }
+            } catch(TypeError){
                 throw new Meteor.Error(`${this.constructor.name} : path ${this.updateItemPath} should refers to an array`);
+            }
         }
 
         template() {

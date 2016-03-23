@@ -22,7 +22,7 @@ SelectComponent =
         }
 
         onCheckboxOptionsChange(e) {
-            //to implemente and use updateOption
+            //to implement and use updateOption
         }
 
         //TODO could'nt figure out how to use constructor with this.data
@@ -117,5 +117,6 @@ SelectComponent =
         performSearch(e) {
             this.searchQuery.set($(e.target).val());
         }
+
     }
 
