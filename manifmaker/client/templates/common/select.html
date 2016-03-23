@@ -20,13 +20,20 @@
 
                 </div>
          '>
-            <span class="custom-select-label" data-required><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span> <span class="custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
+            {{#unless withoutLabel}}
+                <span class="custom-select-label" data-required><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span> <span class="custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
+            {{/unless}}
         </div>
 
         <div class="selected-options">
+            {{#if withoutLabel}}
+                <span class="col-md-1 custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
+            {{/if}}
             <ul class="collection">
                 {{#each collectionSelectedItems}}
                     <li class="collection-item">{{optionValue}}</li>
+                {{else}}
+                    <li class="collection-item">{{nothingSelectedLabel}}</li>
                 {{/each}}
             </ul>
         </div>
@@ -63,13 +70,20 @@
 
                 </div>
          '>
-            <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span> <span class="custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
+            {{#unless withoutLabel}}
+                <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span> <span class="custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
+            {{/unless}}
         </div>
 
         <div class="selected-options">
+            {{#if withoutLabel}}
+                <span class="col-md-1 custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
+            {{/if}}
             <ul class="collection">
                 {{#each collectionSelectedItems}}
                     <li class="collection-item">{{optionValue}}</li>
+                {{else}}
+                    <li class="collection-item">{{nothingSelectedLabel}}</li>
                 {{/each}}
             </ul>
         </div>

@@ -38,6 +38,8 @@ SelectComponent =
             this.title = this.data().title || "Update " + this.data().optionCollection;
             this.selectLabel = this.data().selectLabel || this.data().updateCollection + "' " + this.data().optionCollection;
             this.filterPlaceHolder = this.data().filterPlaceHolder || "Filter by " + this.optionValueName;
+            this.nothingSelectedLabel = this.data().nothingSelectedLabel || "Nothing yet selected";
+            this.withoutLabel = this.data().withoutLabel || false;
 
             //item update arguments
             if (!this.data().updateCollection || !window[this.data().updateCollection])
@@ -59,6 +61,11 @@ SelectComponent =
         onRendered() {
             //this.$(".custom-select-label-wrapper[data-popover]").on("show.bs.popover",this.onPopoverShow);
             this.$('.custom-select-label-wrapper[data-popover]').popover({html: true, trigger: 'click', placement: 'bottom', delay: {show: 50, hide: 400}});
+            if(this.withoutLabel)
+            this.$(".custom-select-icon").click("on",_.bind(function(e){
+                e.stopPropagation();
+                this.$('.custom-select-label-wrapper[data-popover]').popover("show");
+            },this));
             this.isRendered = true;
         }
 
