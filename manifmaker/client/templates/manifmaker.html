@@ -17,19 +17,25 @@
 
         {{> MultipleSelectComponent
             optionCollection="Teams" optionCollectionIndex="TeamsIndex"
-            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}
+            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+        }}
 
         {{> MultipleNonMandatorySelectComponent title="Update user2 skills" filterPlaceHolder="Ceci est le search place holder" clearMessage="clear all selected"
             optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
-            updateCollection="Users" updateItemId=user2Id updateItemPath="skills"}}
+            updateCollection="Users" updateItemId=user2Id updateItemPath="skills"
+            quickSelectLabel="Assign to skill1 and skill2" quickSelectIds=skill1Idskill2Id
+        }}
 
         {{> SingleSelectComponent title="Update task2 team" filterPlaceHolder="Ceci est le search place holder"
-             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-            updateCollection="Tasks" updateItemId=task2Id updateItemPath="teamId"}}
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="Tasks" updateItemId=task2Id updateItemPath="teamId"
+        }}
 
         {{> SingleNonMandatorySelectComponent title="Update task2 powersupply" filterPlaceHolder="Ceci est le search place holder" clearMessage="clear selected"
             optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
-            updateCollection="Tasks" updateItemId=task2Id updateItemPath="powerSupplyId"}}
+            updateCollection="Tasks" updateItemId=task2Id updateItemPath="powerSupplyId"
+            quickSelectLabel="Assign to powersupply1" quickSelectId=powersupply1
+        }}
 
         {{> SingleNonMandatorySelectComponent withoutLabel=true title="Update task2 powersupply" filterPlaceHolder="Ceci est le search place holder" clearMessage="clear selected"
             optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"

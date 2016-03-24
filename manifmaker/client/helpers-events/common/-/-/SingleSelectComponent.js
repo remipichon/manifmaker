@@ -15,6 +15,12 @@ SingleSelectComponent =
             } catch(Error){
                 throw new Meteor.Error(`${this.constructor.name}  : path ${this.updateItemPath} should not refers to an object (nor array)`);
             }
+
+            //is it an _id  ?
+            if(this.quickSelectId){
+                if(this.quickSelectId.match( SimpleSchema.RegEx.Id )[0] !== this.quickSelectId)
+                    throw new Meteor.Error(`${this.constructor.name}  : this.quickSelectId should be a MongoDB id (should match ${SimpleSchema.RegEx.Id}). Given : ${this.quickSelectId}`);
+            }
         }
 
         template() {
@@ -42,6 +48,9 @@ SingleSelectComponent =
             return (isChecked) ? "disabled checked" : "";
         }
 
+        quickSelect(){
+            this.updateOption(this.quickSelectId);
+        }
 
         updateOption(newOptions) {
             var previousOptions = this.optionsToUpdate();

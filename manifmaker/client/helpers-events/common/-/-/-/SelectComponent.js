@@ -17,6 +17,10 @@ SelectComponent =
             //to implement
         }
 
+        quickSelect(){
+            //to implement
+        }
+
         updateOption(newOptions) {
             //to implement
         }
@@ -47,6 +51,13 @@ SelectComponent =
             this.updateCollection = this.data().updateCollection; //should be in window scope
             this.updateItemId = this.data().updateItemId; //mongoId
             this.updateItemPath = this.data().updateItemPath; //path to an array
+
+            //quick select arguments
+            if (this.data().quickSelectLabel && (this.data().quickSelectIds || this.data().quickSelectId)) {
+                this.quickSelectId = this.data().quickSelectId || null;
+                this.quickSelectIds = this.data().quickSelectIds || null;
+                this.quickSelectLabel = this.data().quickSelectLabel;
+            }
 
             this.checkItemPath();
         }
@@ -114,11 +125,17 @@ SelectComponent =
 
         events() {
             //to concat if needed
-            return [{
+            var events = [{
                 'change .custom-select-options :checkbox': this.onCheckboxOptionsChange,
                 'input .search-input': this.performSearch,
                 "show.bs.popover .custom-select-label-wrapper[data-popover]": this.onPopoverShow
             }];
+            if(this.quickSelectLabel){
+                events.push({
+                    "click .quick-select": this.quickSelect
+                });
+            }
+            return events;
         }
 
         performSearch(e) {

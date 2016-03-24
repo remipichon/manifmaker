@@ -25,7 +25,7 @@
             {{/unless}}
         </div>
 
-        <div class="selected-options">
+        <span class="selected-options">
             {{#if withoutLabel}}
                 <span class="col-md-1 custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
             {{/if}}
@@ -33,10 +33,10 @@
                 {{#each collectionSelectedItems}}
                     <li class="collection-item">{{optionValue}}</li>
                 {{else}}
-                    <li class="collection-item">{{nothingSelectedLabel}}</li>
+                    <li class="collection-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
                 {{/each}}
             </ul>
-        </div>
+        </span>
 
     </div>
 
@@ -83,7 +83,7 @@
                 {{#each collectionSelectedItems}}
                     <li class="collection-item">{{optionValue}}</li>
                 {{else}}
-                    <li class="collection-item">{{nothingSelectedLabel}}</li>
+                    <li class="collection-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
                 {{/each}}
             </ul>
         </div>

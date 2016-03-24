@@ -17,6 +17,17 @@ MultipleSelectComponent =
             } catch(TypeError){
                 throw new Meteor.Error(`${this.constructor.name} : path ${this.updateItemPath} should refers to an array`);
             }
+
+            //is it an array  of Mongodb id ?
+            if(this.quickSelectIds){
+                if(!Array.isArray(this.quickSelectIds))
+                    throw new Meteor.Error(`${this.constructor.name}  : this.quickSelectIds should be an array Given : ${this.quickSelectIds}`);
+
+                _.each(this.quickSelectIds,_id => {
+                    if(_id.match( SimpleSchema.RegEx.Id )[0] !== _id)
+                        throw new Meteor.Error(`${this.constructor.name}  : this.quickSelectIds an array of MongoDB id (should match ${SimpleSchema.RegEx.Id}). Given : ${this.quickSelectIds}`);
+                });
+            }
         }
 
         template() {
@@ -41,6 +52,10 @@ MultipleSelectComponent =
             }
             //still need DOM data for re-creating popover each time it is displayed
             return (isChecked) ? "checked" : "";
+        }
+
+        quickSelect() {
+            this.updateOption(this.quickSelectIds);
         }
 
         updateOption(newOptions) {
