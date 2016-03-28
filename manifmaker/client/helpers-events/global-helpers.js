@@ -88,3 +88,10 @@ Template.registerHelper("displayValidationState",function(state){
 Template.registerHelper("RolesEnum",function(){
     return RolesEnum;
 });
+
+
+Template.registerHelper(
+    "currentUserId", function () {
+        return Meteor.userId();
+    }
+);

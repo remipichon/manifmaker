@@ -5,6 +5,12 @@ Template.updateTaskForm.rendered = function () {
 
 Template.updateTaskForm.helpers({
 
+    currentUserTeamId: function() {
+        return Users.findOne({loginUserId: Meteor.userId()}).teams[0]; //TODO which team to choose ?
+    },
+
+    ////old design
+
     displayTextArea: function (validationType, state) {
         if (!Roles.userIsInRole(Meteor.userId(), RolesEnum[validationType]) &&
             (state === "TOBEVALIDATED" || state === "READY"))
@@ -67,3 +73,4 @@ Template.updateTaskForm.helpers({
         return "equipments."+ index +".equipmentId";
     },
 });
+

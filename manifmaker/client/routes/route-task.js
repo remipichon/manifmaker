@@ -45,23 +45,35 @@ Router.route('/task', function () {
  * @name task.read  /task/:_id
  */
 Router.route('/task/:_id', function () {
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
-        console.info("routing", "/task/" + this.params._id);
+        this.wait(Meteor.subscribe('tasks'));
+        this.wait(Meteor.subscribe('teams'));
+        this.wait(Meteor.subscribe('places'));
+        this.wait(Meteor.subscribe('skills'));
+        this.wait(Meteor.subscribe('users'));
+        this.wait(Meteor.subscribe('power-supplies'));
+
+        if (this.ready()) {
+
+            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
+            console.info("routing", "/task/" + this.params._id);
 
 
-        /**
-         * Spacebar doesn't support @index nor Template.data nor Template.parent (all linked to the same things). This means
-         * that I can't access task data when creating equipments form
-         */
-        SelectedUpdatedOrReadedTask.set(this.params._id)
+            /**
+             * Spacebar doesn't support @index nor Template.data nor Template.parent (all linked to the same things). This means
+             * that I can't access task data when creating equipments form
+             */
+            SelectedUpdatedOrReadedTask.set(this.params._id)
 
 
-        this.render('updateTaskForm', {
-            data: function () {
-                var currentTask = this.params._id;
-                return Tasks.findOne({_id: currentTask});
-            }, to: 'mainContent'
-        });
+            this.render('updateTaskForm', {
+                data: function () {
+                    var currentTask = this.params._id;
+                    return Tasks.findOne({_id: currentTask});
+                }, to: 'mainContent'
+            });
+        } else {
+            console.log("waiting for data")
+        }
     },
     {name: 'task.update'}
 );

@@ -45,7 +45,8 @@ SingleSelectComponent =
             }
             //still need DOM data for re-creating popover each time it is displayed
             //a wonderfull trick, to prevent the user to click on a already selected option, we desactivate it
-            return (isChecked) ? "disabled checked" : "";
+            //return (isChecked) ? "disabled checked" : "";
+            return (isChecked) ? "checked" : "";
         }
 
         quickSelect(){

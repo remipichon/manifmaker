@@ -18,6 +18,72 @@
 
 <template name="updateTaskForm">
 
+    <div class="update-task-wrapper-form">
+
+    {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update" autosave=true}}
+
+        <div class="row">
+            <!--<div class="col-md-10">-->
+                <h3>{{this.name}} {{#if isInRole RolesEnum.TASKDELETE}}
+                    {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id}}Delete {{this.name}}{{/quickRemoveButton}}
+                {{/if}}</h3>
+        </div>
+
+
+        <div class="panel panel-info">
+            <div class="panel-heading">General information</div>
+
+            <div class="panel-body">
+                <div class="col-md-3">
+                    <div>
+                        <label>Linked activity</label>
+                        <div><a href="/activity/_id">Activity name</a></div>
+                        <div>
+                            <div>day1 : start to end</div>
+                            <div>day1 : start to end and start2 to end2</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        {{> SingleSelectComponent selectLabel="Team" title="Update team"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId"
+                        nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                        }}
+                    </div>
+
+                    <div>
+                        {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
+                        optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                        updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId"
+                        nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                        }}
+                    </div>
+
+                    <div>
+                        <div>
+                            {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                            updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId"
+                            nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                            }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div>
+                        <label>Description</label>
+                        {{> afQuickField name='description' rows=15}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    {{/autoForm}}
+
+
+
     {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update"}}
         <fieldset>
             <legend>Update Task {{this.name}}</legend>
@@ -190,6 +256,8 @@
                 <div class="chip">Closed</div>
             {{/if}}
         {{/if}}
+    </div>
+
     </div>
 </template>
 
