@@ -40,12 +40,8 @@ SingleSelectComponent =
                 //checkbox need to be updated by jQuery and not DOM. DOM can only be used to init checkbox state
                 //a trick to find the dom of the popover, not very strong
                 this.$(`.custom-select-label-wrapper[data-popover]`).parent().find(".popover .popover-content li input#" + this.currentData()._id).prop('checked', isChecked);
-                //a wonderfull trick, to prevent the user to click on a already selected option, we desactivate it
-                this.$(`.custom-select-label-wrapper[data-popover]`).parent().find(".popover .popover-content li input#" + this.currentData()._id).prop('disabled', isChecked);
             }
             //still need DOM data for re-creating popover each time it is displayed
-            //a wonderfull trick, to prevent the user to click on a already selected option, we desactivate it
-            //return (isChecked) ? "disabled checked" : "";
             return (isChecked) ? "checked" : "";
         }
 
@@ -69,10 +65,14 @@ SingleSelectComponent =
         }
 
         onCheckboxOptionsChange(e) {
+            this.$('.custom-select-label-wrapper[data-popover]').popover("hide");
             var cb = $(e.target);
             var _id = cb.attr("id");
 
-            this.updateOption(_id);
+            if (cb.is(":checked"))
+                this.updateOption(_id);
+            else if(this.constructor.name === "SingleNonMandatorySelectComponent") //hum, I miss compiled language...
+                this.updateOption(null);
         }
     }
 
