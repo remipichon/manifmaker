@@ -9,6 +9,18 @@ Template.updateTaskForm.helpers({
         return Users.findOne({loginUserId: Meteor.userId()}).teams[0]; //TODO which team to choose ?
     },
 
+    onDeleteSuccess: function(){
+       return function () {
+           //TODO message de deletion success
+        }
+    },
+
+    beforeRemove: function(){
+        return function () {
+            Router.go("/tasks");
+        }
+    },
+
     ////old design
 
     displayTextArea: function (validationType, state) {
