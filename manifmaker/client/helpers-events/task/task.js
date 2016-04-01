@@ -54,13 +54,21 @@ class CreateTaskComponent extends BlazeComponent {
 
     submitForm(){
         this.hasBeenSubmitted = true;
-        if(this.validateForm()){
+        var newVar = this.errorsArray.get();
+        this.errorsArray.set([]);
+        this.errorsArray.set(newVar)
+
+        if(this.isFormValid) {
             var temp = TempCollection.findOne({_id: this.tempItemId});
             var _id = Tasks.insert(temp);
-            Router.go("/task/"+_id);
-        } else {
-            //TODO il faut balancer les errors !!!
+            Router.go("/task/" + _id);
         }
+
+        //if(this.validateForm()){
+        //
+        //} else {
+          //  TODO il faut balancer les errors !!!
+        //}
     }
 
 
@@ -82,27 +90,31 @@ class CreateTaskComponent extends BlazeComponent {
             });
 
             this.errorsArray.set(ik);
-            this.errorsArray2 = ik ;
+            //this.errorsArray2 = ik ;
+            this.isFormValid = false;
+            return ik;
         } else {
             this.errorsArray.set([]);
-            this.errorsArray2 = [] ;
+            //this.errorsArray2 = [] ;
+            this.isFormValid = true;
+            return [];
         }
 
-        return isValid;
 
     }
 
     errors(){
 
         //this one is reactive
-        var temp = TempCollection.findOne({_id: this.tempItemId});
+        //var temp = TempCollection.findOne({_id: this.tempItemId});
 
         console.log("errors");
         //var err = this.errorsArray.get();
+        var err = this.errorsArray.get();//this.validateForm();
+
 
         if(this.hasBeenSubmitted) { //active reactivity
-            this.validateForm();
-            var err = this.errorsArray2;
+            //= this.errorsArray2;
             return err;
         }
         return [];
