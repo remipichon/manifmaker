@@ -1,262 +1,340 @@
 <template name="insertTaskForm">
 
-    {{# autoForm collection="Tasks" id="insertTaskForm" type="insert"}}
-        <fieldset>
-            <legend>Add a Task</legend>
-            {{> afQuickField name='name'}}
-            {{> afQuickField name='description'}}
-            {{> afQuickField name="teamId"}}
-            {{> afQuickField name="placeId"}}
-            {{> afQuickField name="liveEventMasterId"}}
-            {{> afQuickField name="masterId"}}
-        </fieldset>
 
-        <button type="submit" class="btn btn-primary">Insert</button>
-        <button type="reset" class="btn btn-default">Reset</button>
-    {{/autoForm}}
+    {{>CreateTaskComponent}}
+
+
+
+
+
+        <!--{{# autoForm collection="Tasks" id="insertTaskForm" type="insert"}}-->
+    <!--<fieldset>-->
+    <!--<legend>Add a Task</legend>-->
+    <!--{{> afQuickField name='name'}}-->
+    <!--{{> afQuickField name='description'}}-->
+    <!--{{> afQuickField name="teamId"}}-->
+    <!--{{> afQuickField name="placeId"}}-->
+    <!--{{> afQuickField name="liveEventMasterId"}}-->
+    <!--{{> afQuickField name="masterId"}}-->
+    <!--</fieldset>-->
+
+    <!--<button type="submit" class="btn btn-primary">Insert</button>-->
+    <!--<button type="reset" class="btn btn-default">Reset</button>-->
+        <!--{{/autoForm}}-->
+</template>
+
+
+<template name="createTaskComponent">
+    <div class="panel panel-info">
+        <div class="panel-heading">General information {{tempItemId}}</div>
+
+        <div class="panel-body">
+            <div class="col-md-3">
+
+                <div>
+                    <label for="first_name" data-required>Task name</label>
+                    <input placeholder="Task name" data-schema-key="name" type="text" class="validate">
+                </div>
+
+                <div>
+                    {{> SingleSelectComponent selectLabel="Team" title="Update team"
+                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                    updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teamId"
+                    nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                    }}
+                </div>
+
+
+                <div>
+                    {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
+                    optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                    updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="masterId"
+                    nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                    }}
+                </div>
+
+                <div>
+                    <div>
+                        {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                        optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="liveEventMasterId"
+                        nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                        }}
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        {{> SingleSelectComponent selectLabel="Rendez-vous point" title="Rendez-vous point"
+                        optionCollection="Places" optionValueName="name" optionCollectionIndex="PlacesIndex"
+                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="placeId"
+                        }}
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-9">
+                <div>
+                    <label>Description</label>
+                    <textarea name="description" rows="15" data-schema-key="description" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div>
+                {{#each errors}}
+                    -{{message}}
+                {{/each}}
+            </div>
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Insert</button>
 </template>
 
 <template name="updateTaskForm">
 
     <div class="update-task-wrapper-form">
 
-    {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update" autosave=true}}
+        {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update" autosave=true}}
 
-        <div class="row">
-            <!--<div class="col-md-10">-->
+            <div class="row">
+                <!--<div class="col-md-10">-->
                 <h3>{{this.name}} {{#if isInRole RolesEnum.TASKDELETE}}
-                    {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove}}Delete {{this.name}}{{/quickRemoveButton}}
+                    {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
                 {{/if}}</h3>
-        </div>
+            </div>
 
 
-        <div class="panel panel-info">
-            <div class="panel-heading">General information</div>
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
 
-            <div class="panel-body">
-                <div class="col-md-3">
-                    <div>
-                        <label>Linked activity</label>
-                        <div><a href="/activity/_id">Activity name</a></div>
+                <div class="panel-body">
+                    <div class="col-md-3">
                         <div>
-                            <div>day1 : start to end</div>
-                            <div>day1 : start to end and start2 to end2</div>
+                            <label>Linked activity</label>
+
+                            <div><a href="/activity/_id">Activity name</a></div>
+                            <div>
+                                <div>day1 : start to end</div>
+                                <div>day1 : start to end and start2 to end2</div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        {{> SingleSelectComponent selectLabel="Team" title="Update team"
-                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                        updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId"
-                        nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
-                        }}
-                    </div>
-
-                    <div>
-                        {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
-                        optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                        updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId"
-                        nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
-                        }}
-                    </div>
-
-                    <div>
                         <div>
-                            {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                            {{> SingleSelectComponent selectLabel="Team" title="Update team"
+                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                            updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId"
+                            nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                            }}
+                        </div>
+
+                        <div>
+                            {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
                             optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                            updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId"
+                            updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId"
                             nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
                             }}
                         </div>
+
+                        <div>
+                            <div>
+                                {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId"
+                                nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div>
+                            <label>Description</label>
+                            {{> afQuickField name='description' rows=15}}
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-9">
-                    <div>
-                        <label>Description</label>
-                        {{> afQuickField name='description' rows=15}}
-                    </div>
-                </div>
+
             </div>
 
+        {{/autoForm}}
+
+
+
+        {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update"}}
+            <fieldset>
+                <legend>Update Task {{this.name}}</legend>
+                {{> afQuickField name='name'}}
+                {{> afQuickField name='description'}}
+                {{> afQuickField name="teamId"}}
+                {{> afQuickField name="placeId"}}
+                {{> afQuickField name="liveEventMasterId"}}
+                {{> afQuickField name="masterId"}}
+                <h4>Equipments</h4>
+                {{> afQuickField readonly=isEquipmentReadOnly name="equipmentStorageId"}}
+                {{> afQuickField readonly=isEquipmentReadOnly name="powerSupplyId"}}
+                {{#each equipmentsCategories}}
+                    <h4>{{name}}</h4>
+                    {{#each equipments this}}
+                        {{name}}
+                        {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForQuantity}}
+                        {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForEquipmentId}}
+                    {{/each}}
+                {{/each}}
+
+                TODO : isAssignmentReadOnly : {{isAssignmentReadOnly}}
+                {{> afArrayField name="timeSlots"}}
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Update</button>
+            {{#if isInRole RolesEnum.TASKDELETE}}
+                {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id}}Delete {{this.name}}{{/quickRemoveButton}}
+            {{/if}}
+        {{/autoForm}}
+
+
+        <div class="row">
+
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">comment</i>Time slot validation comments</div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            {{#each timeSlotValidation.comments}}
+                                <li class="collection-item">{{author}} update time slot validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
+                            {{else}}
+                                <li class="collection-item">There are not comments right now but with luck there will be yours soon.</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            {{#if displayTextArea 'ASSIGNMENTVALIDATION' timeSlotValidation.currentState}}
+                <textarea id="time-slot-validation-new-comment" placeholder="You can type a new comment for time slot validation" class="new-comment-textarea materialize-textarea"></textarea>
+            {{/if}}
+
+            {{#if equals timeSlotValidation.currentState "OPEN"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
+            {{/if}}
+            {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
+                {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/ready"><i class="material-icons left">schedule</i>Time slots validation : set ready to assignment</a>
+                {{/if}}
+            {{else}}
+                {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
+                    <div class="chip">In validation</div>
+                {{/if}}
+            {{/if}}
+            {{#if equals timeSlotValidation.currentState "REFUSED"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
+            {{/if}}
+            {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
+                {{#if equals timeSlotValidation.currentState "READY"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
+                {{/if}}
+            {{else}}
+                {{#if equals timeSlotValidation.currentState "READY"}}
+                    <div class="chip">Ready for assignment</div>
+                {{/if}}
+            {{/if}}
         </div>
 
-    {{/autoForm}}
 
+        <div class="row">
 
-
-    {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update"}}
-        <fieldset>
-            <legend>Update Task {{this.name}}</legend>
-            {{> afQuickField name='name'}}
-            {{> afQuickField name='description'}}
-            {{> afQuickField name="teamId"}}
-            {{> afQuickField name="placeId"}}
-            {{> afQuickField name="liveEventMasterId"}}
-            {{> afQuickField name="masterId"}}
-            <h4>Equipments</h4>
-            {{> afQuickField readonly=isEquipmentReadOnly name="equipmentStorageId"}}
-            {{> afQuickField readonly=isEquipmentReadOnly name="powerSupplyId"}}
-            {{#each equipmentsCategories}}
-                <h4>{{name}}</h4>
-                {{#each equipments this}}
-                    {{name}}
-                    {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForQuantity}}
-                    {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForEquipmentId}}
-                {{/each}}
-            {{/each}}
-
-            TODO : isAssignmentReadOnly : {{isAssignmentReadOnly}}
-            {{> afArrayField name="timeSlots"}}
-        </fieldset>
-        <button type="submit" class="btn btn-primary">Update</button>
-        {{#if isInRole RolesEnum.TASKDELETE}}
-            {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id}}Delete {{this.name}}{{/quickRemoveButton}}
-        {{/if}}
-    {{/autoForm}}
-
-
-    <div class="row">
-
-        <ul class="collapsible popout" data-collapsible="accordion">
-            <li>
-                <div class="collapsible-header"><i class="material-icons">comment</i>Time slot validation comments</div>
-                <div class="collapsible-body">
-                    <ul class="collection">
-                        {{#each timeSlotValidation.comments}}
-                            <li class="collection-item">{{author}} update time slot validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
-                        {{else}}
-                            <li class="collection-item">There are not comments right now but with luck there will be yours soon.</li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </li>
-        </ul>
-        {{#if displayTextArea 'ASSIGNMENTVALIDATION' timeSlotValidation.currentState}}
-            <textarea id="time-slot-validation-new-comment" placeholder="You can type a new comment for time slot validation" class="new-comment-textarea materialize-textarea"></textarea>
-        {{/if}}
-
-        {{#if equals timeSlotValidation.currentState "OPEN"}}
-            <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
-        {{/if}}
-        {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
-            {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
-                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/ready"><i class="material-icons left">schedule</i>Time slots validation : set ready to assignment</a>
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">comment</i>Access pass validation comments</div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            {{#each accessPassValidation.comments}}
+                                <li class="collection-item">{{author}} update access pass validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
+                            {{else}}
+                                <li class="collection-item">There are not comments right now but with luck there will be yours soon.</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            {{#if displayTextArea 'ACCESSPASSVALIDATION' accessPassValidation.currentState}}
+                <textarea id="access-pass-validation-new-comment" placeholder="You can type a new comment for access pass validation" class="new-comment-textarea materialize-textarea"></textarea>
             {{/if}}
-        {{else}}
-            {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
-                <div class="chip">In validation</div>
+
+            {{#if equals accessPassValidation.currentState "OPEN"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/to-be-validated"><i class="material-icons left">cloud</i>Access pass validation : ask for validation</a>
             {{/if}}
-        {{/if}}
-        {{#if equals timeSlotValidation.currentState "REFUSED"}}
-            <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
-        {{/if}}
-        {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
-            {{#if equals timeSlotValidation.currentState "READY"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
+            {{#if isInRole RolesEnum.ACCESSPASSVALIDATION}}
+                {{#if equals accessPassValidation.currentState "TOBEVALIDATED"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/refuse"><i class="material-icons left">cloud</i>Access pass validation : refuse</a>
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/ready"><i class="material-icons left">cloud</i>Access pass validation : close</a>
+                {{/if}}
+            {{else}}
+                {{#if equals accessPassValidation.currentState "TOBEVALIDATED"}}
+                    <div class="chip">In validation</div>
+                {{/if}}
             {{/if}}
-        {{else}}
-            {{#if equals timeSlotValidation.currentState "READY"}}
-                <div class="chip">Ready for assignment</div>
+            {{#if equals accessPassValidation.currentState "REFUSED"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/to-be-validated"><i class="material-icons left">cloud</i>Access pass validation : ask for validation</a>
             {{/if}}
-        {{/if}}
-    </div>
+            {{#if isInRole RolesEnum.ACCESSPASSVALIDATION}}
+                {{#if equals accessPassValidation.currentState "READY"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/refuse"><i class="material-icons left">cloud</i>Access pass validation : refuse</a>
+                {{/if}}
+            {{else}}
+                {{#if equals accessPassValidation.currentState "READY"}}
+                    <div class="chip">Closed</div>
+                {{/if}}
+            {{/if}}
+        </div>
 
 
-    <div class="row">
+        <div class="row">
 
-        <ul class="collapsible popout" data-collapsible="accordion">
-            <li>
-                <div class="collapsible-header"><i class="material-icons">comment</i>Access pass validation comments</div>
-                <div class="collapsible-body">
-                    <ul class="collection">
-                        {{#each accessPassValidation.comments}}
-                            <li class="collection-item">{{author}} update access pass validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
-                        {{else}}
-                            <li class="collection-item">There are not comments right now but with luck there will be yours soon.</li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </li>
-        </ul>
-        {{#if displayTextArea 'ACCESSPASSVALIDATION' accessPassValidation.currentState}}
-            <textarea id="access-pass-validation-new-comment" placeholder="You can type a new comment for access pass validation" class="new-comment-textarea materialize-textarea"></textarea>
-        {{/if}}
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">comment</i>Equipment validation comments</div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            {{#each equipmentValidation.comments}}
+                                <li class="collection-item">{{author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
+                            {{else}}
+                                <li class="collection-item">There are not comments right now but with luck there will be yours soon.</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            {{#if displayTextArea 'EQUIPMENTVALIDATION' equipmentValidation.currentState}}
+                <textarea id="equipment-validation-new-comment" placeholder="You can type a new comment for equipment validation" class="new-comment-textarea materialize-textarea"></textarea>
+            {{/if}}
 
-        {{#if equals accessPassValidation.currentState "OPEN"}}
-            <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/to-be-validated"><i class="material-icons left">cloud</i>Access pass validation : ask for validation</a>
-        {{/if}}
-        {{#if isInRole RolesEnum.ACCESSPASSVALIDATION}}
-            {{#if equals accessPassValidation.currentState "TOBEVALIDATED"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/refuse"><i class="material-icons left">cloud</i>Access pass validation : refuse</a>
-                <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/ready"><i class="material-icons left">cloud</i>Access pass validation : close</a>
+            {{#if equals equipmentValidation.currentState "OPEN"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
             {{/if}}
-        {{else}}
-            {{#if equals accessPassValidation.currentState "TOBEVALIDATED"}}
-                <div class="chip">In validation</div>
+            {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
+                {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/ready"><i class="material-icons left">settings</i>Equipments validation : close</a>
+                {{/if}}
+            {{else}}
+                {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
+                    <div class="chip">In validation</div>
+                {{/if}}
             {{/if}}
-        {{/if}}
-        {{#if equals accessPassValidation.currentState "REFUSED"}}
-            <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/to-be-validated"><i class="material-icons left">cloud</i>Access pass validation : ask for validation</a>
-        {{/if}}
-        {{#if isInRole RolesEnum.ACCESSPASSVALIDATION}}
-            {{#if equals accessPassValidation.currentState "READY"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/refuse"><i class="material-icons left">cloud</i>Access pass validation : refuse</a>
+            {{#if equals equipmentValidation.currentState "REFUSED"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
             {{/if}}
-        {{else}}
-            {{#if equals accessPassValidation.currentState "READY"}}
-                <div class="chip">Closed</div>
+            {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
+                {{#if equals equipmentValidation.currentState "READY"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
+                {{/if}}
+            {{else}}
+                {{#if equals equipmentValidation.currentState "READY"}}
+                    <div class="chip">Closed</div>
+                {{/if}}
             {{/if}}
-        {{/if}}
-    </div>
-
-
-    <div class="row">
-
-        <ul class="collapsible popout" data-collapsible="accordion">
-            <li>
-                <div class="collapsible-header"><i class="material-icons">comment</i>Equipment validation comments</div>
-                <div class="collapsible-body">
-                    <ul class="collection">
-                        {{#each equipmentValidation.comments}}
-                            <li class="collection-item">{{author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
-                        {{else}}
-                            <li class="collection-item">There are not comments right now but with luck there will be yours soon.</li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </li>
-        </ul>
-        {{#if displayTextArea 'EQUIPMENTVALIDATION' equipmentValidation.currentState}}
-            <textarea id="equipment-validation-new-comment" placeholder="You can type a new comment for equipment validation" class="new-comment-textarea materialize-textarea"></textarea>
-        {{/if}}
-
-        {{#if equals equipmentValidation.currentState "OPEN"}}
-            <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
-        {{/if}}
-        {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
-            {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
-                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/ready"><i class="material-icons left">settings</i>Equipments validation : close</a>
-            {{/if}}
-        {{else}}
-            {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
-                <div class="chip">In validation</div>
-            {{/if}}
-        {{/if}}
-        {{#if equals equipmentValidation.currentState "REFUSED"}}
-            <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
-        {{/if}}
-        {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
-            {{#if equals equipmentValidation.currentState "READY"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
-            {{/if}}
-        {{else}}
-            {{#if equals equipmentValidation.currentState "READY"}}
-                <div class="chip">Closed</div>
-            {{/if}}
-        {{/if}}
-    </div>
+        </div>
 
     </div>
 </template>

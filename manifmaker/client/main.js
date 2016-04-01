@@ -85,6 +85,8 @@ Meteor.startup(function () {
         AssignmentServiceClient.setCalendarTerms();
     });
 
+    TempCollection = new Meteor.Collection(null)
+
 
     //preSelecterTaskByTaskName("task1");
     //preSelectedUserByUserName("user1");

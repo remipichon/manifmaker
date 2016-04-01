@@ -2,6 +2,7 @@ SingleSelectComponent =
     class SingleSelectComponent extends MultipleSelectComponent {
 
         checkItemPath() {
+            return true;
             //in another method to have a context alone for reactivity
 
             var item = window[this.updateCollection].findOne(this.updateItemId);

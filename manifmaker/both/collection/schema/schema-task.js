@@ -290,12 +290,14 @@ Schemas.Tasks = new SimpleSchema({
     timeSlots: {
         type: [Schemas.TimeSlot],
         label: "Task Time slots",
-        defaultValue: []
+        defaultValue: [],
+        optional: true
     },
     assignments: {
         type: [Schemas.TaskAssignment],
         label: "Task assignments",
         defaultValue: [],
+        optional: true,
         autoform: {
             type: "hidden",
         }

@@ -84,6 +84,18 @@ PowerSuppliesIndex = new EasySearch.Index({
     fields: ['name'],
     engine: new EasySearch.Minimongo()
 });
+/**
+* @memberOf Models
+* @summary EasySearch settings to perform search by label on Places
+* @locus Anywhere
+* @instancename object
+*/
+PlacesIndex = new EasySearch.Index({
+    collection: Places,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+
 
 
 //using schema
