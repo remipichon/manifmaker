@@ -11,8 +11,7 @@ class CreateTaskComponent extends BlazeComponent {
         });
         this.insertTaskContext = Tasks.simpleSchema().namedContext("insertTask");
         this.errorsArray = new ReactiveVar([]);
-        this.errorsArray2 = [];
-
+        this.hasBeenSubmitted = new ReactiveVar(false);
     }
 
 
@@ -53,73 +52,45 @@ class CreateTaskComponent extends BlazeComponent {
     }
 
     submitForm(){
-        this.hasBeenSubmitted = true;
-        var newVar = this.errorsArray.get();
-        this.errorsArray.set([]);
-        this.errorsArray.set(newVar)
+        this.hasBeenSubmitted.set(true);
 
         if(this.isFormValid) {
             var temp = TempCollection.findOne({_id: this.tempItemId});
             var _id = Tasks.insert(temp);
             Router.go("/task/" + _id);
         }
-
-        //if(this.validateForm()){
-        //
-        //} else {
-          //  TODO il faut balancer les errors !!!
-        //}
     }
 
-
     validateForm() {
-        console.log("validateForm");
         //validating
         var temp = TempCollection.findOne({_id: this.tempItemId});
         delete temp._id; //cleaning
-
         var isValid = Tasks.simpleSchema().namedContext("insertTask").validate(temp, {modifier: false});
+
+        //managing error
         if (!isValid) {
             var ik = this.insertTaskContext.invalidKeys(); //it's reactive ! whouhou
             ik = _.map(ik, _.bind(function (o) {
                 return _.extend({message: this.insertTaskContext.keyErrorMessage(o.name)}, o);
             },this));
 
-            _.each(ik,function(key){
-                console.error(key.message);
-            });
-
             this.errorsArray.set(ik);
-            //this.errorsArray2 = ik ;
             this.isFormValid = false;
-            return ik;
         } else {
             this.errorsArray.set([]);
-            //this.errorsArray2 = [] ;
             this.isFormValid = true;
-            return [];
         }
-
-
     }
 
     errors(){
+        this.validateForm(); //just to active reactivity on this method
+        var err = this.errorsArray.get();
 
-        //this one is reactive
-        //var temp = TempCollection.findOne({_id: this.tempItemId});
-
-        console.log("errors");
-        //var err = this.errorsArray.get();
-        var err = this.errorsArray.get();//this.validateForm();
-
-
-        if(this.hasBeenSubmitted) { //active reactivity
-            //= this.errorsArray2;
+        if(this.hasBeenSubmitted.get()) { //active reactivity
             return err;
         }
         return [];
     }
-
 
 }
 
