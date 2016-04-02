@@ -83,10 +83,12 @@
                 </div>
             </div>
 
-            <div>
-                {{#each errors}}
-                    -{{message}}
-                {{/each}}
+            <div class="col-md-9">
+                <div>
+                    {{#each errors}}
+                        <div class="chip">{{message}}</div>
+                    {{/each}}
+                </div>
             </div>
         </div>
 
