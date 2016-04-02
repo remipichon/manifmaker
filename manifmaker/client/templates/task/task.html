@@ -1,34 +1,14 @@
 <template name="insertTaskForm">
 
-
     {{>CreateTaskComponent}}
 
-
-
-
-
-        <!--{{# autoForm collection="Tasks" id="insertTaskForm" type="insert"}}-->
-    <!--<fieldset>-->
-    <!--<legend>Add a Task</legend>-->
-    <!--{{> afQuickField name='name'}}-->
-    <!--{{> afQuickField name='description'}}-->
-    <!--{{> afQuickField name="teamId"}}-->
-    <!--{{> afQuickField name="placeId"}}-->
-    <!--{{> afQuickField name="liveEventMasterId"}}-->
-    <!--{{> afQuickField name="masterId"}}-->
-    <!--</fieldset>-->
-
-    <!--<button type="submit" class="btn btn-primary">Insert</button>-->
-    <!--<button type="reset" class="btn btn-default">Reset</button>-->
-        <!--{{/autoForm}}-->
 </template>
 
 
 <template name="createTaskComponent">
 
-
     <div class="panel panel-info">
-        <div class="panel-heading">General information {{tempItemId}}</div>
+        <div class="panel-heading">General information</div>
 
         <div class="panel-body">
             <div class="col-md-3">
@@ -99,82 +79,20 @@
 
 <template name="updateTaskForm">
 
+    {{>UpdateTaskComponent}}
+
     <div class="update-task-wrapper-form">
-
-        {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update" autosave=true}}
-
-            <div class="row">
-                <!--<div class="col-md-10">-->
-                <h3>{{this.name}} {{#if isInRole RolesEnum.TASKDELETE}}
-                    {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
-                {{/if}}</h3>
-            </div>
-
-
-            <div class="panel panel-info">
-                <div class="panel-heading">General information</div>
-
-                <div class="panel-body">
-                    <div class="col-md-3">
-                        <div>
-                            <label>Linked activity</label>
-
-                            <div><a href="/activity/_id">Activity name</a></div>
-                            <div>
-                                <div>day1 : start to end</div>
-                                <div>day1 : start to end and start2 to end2</div>
-                            </div>
-                        </div>
-
-                        <div>
-                            {{> SingleSelectComponent selectLabel="Team" title="Update team"
-                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                            updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId"
-                            nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
-                            }}
-                        </div>
-
-                        <div>
-                            {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
-                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                            updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId"
-                            nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
-                            }}
-                        </div>
-
-                        <div>
-                            <div>
-                                {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
-                                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                                updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId"
-                                nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
-                                }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9">
-                        <div>
-                            <label>Description</label>
-                            {{> afQuickField name='description' rows=15}}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        {{/autoForm}}
-
 
 
         {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update"}}
             <fieldset>
                 <legend>Update Task {{this.name}}</legend>
-                {{> afQuickField name='name'}}
-                {{> afQuickField name='description'}}
-                {{> afQuickField name="teamId"}}
-                {{> afQuickField name="placeId"}}
-                {{> afQuickField name="liveEventMasterId"}}
-                {{> afQuickField name="masterId"}}
+                <!--{{> afQuickField name='name'}}-->
+                <!--{{> afQuickField name='description'}}-->
+                <!--{{> afQuickField name="teamId"}}-->
+                <!--{{> afQuickField name="placeId"}}-->
+                <!--{{> afQuickField name="liveEventMasterId"}}-->
+                <!--{{> afQuickField name="masterId"}}-->
                 <h4>Equipments</h4>
                 {{> afQuickField readonly=isEquipmentReadOnly name="equipmentStorageId"}}
                 {{> afQuickField readonly=isEquipmentReadOnly name="powerSupplyId"}}
@@ -341,6 +259,78 @@
         </div>
 
     </div>
+</template>
+
+
+<template name="updateTaskComponent">
+
+    <div class="update-task-wrapper-form">
+
+        {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update" autosave=true}}
+
+            <div class="row">
+                <!--<div class="col-md-10">-->
+                <h3 contenteditable="true" data-schema-key="name" class="header-limited-to-text">{{this.name}}</h3>{{#if nameIsEditing}}<i class="material-icons medium" id="done-name">done</i>{{else}}<i class="material-icons medium" id="edit-name">mode_edit</i>{{/if}}
+                {{#if isInRole RolesEnum.TASKDELETE}}
+                {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+            {{/if}}
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
+
+                <div class="panel-body">
+                    <div class="col-md-3">
+                        <div>
+                            <label>Linked activity</label>
+
+                            <div><a href="/activity/_id">Activity name</a></div>
+                            <div>
+                                <div>day1 : start to end</div>
+                                <div>day1 : start to end and start2 to end2</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            {{> SingleSelectComponent selectLabel="Team" title="Update team"
+                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                            updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId"
+                            nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                            }}
+                        </div>
+
+                        <div>
+                            {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
+                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                            updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId"
+                            nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                            }}
+                        </div>
+
+                        <div>
+                            <div>
+                                {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId"
+                                nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div>
+                            <label>Description</label>
+                            {{> afQuickField name='description' rows=15}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {{/autoForm}}
+
+    </div>
+
 </template>
 
 

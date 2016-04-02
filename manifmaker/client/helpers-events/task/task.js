@@ -1,118 +1,3 @@
-class CreateTaskComponent extends BlazeComponent {
-
-    constructor() {
-        super();
-        this.tempItemId = TempCollection.insert({
-            name: null,
-            teamId: null,
-            placeId: null,
-            liveEventMasterId: null,
-            masterId: null
-        });
-        this.insertTaskContext = Tasks.simpleSchema().namedContext("insertTask");
-        this.errorsArray = new ReactiveVar([]);
-        this.hasBeenSubmitted = new ReactiveVar(false);
-    }
-
-
-    rendered() {
-
-    }
-
-    template() {
-        return "createTaskComponent";
-    }
-
-    events() {
-        return [
-            {
-                "click [type=submit]": this.submitForm,
-                "change [data-schema-key=name]": this.updateName,
-                "change [data-schema-key=description]": this.updateDescription
-            }]
-    }
-
-    updateDescription(){
-        TempCollection.update({_id: this.tempItemId},
-            {
-                $set: {
-                    name: $("[data-schema-key=description]").val()
-                }
-            }
-        );
-    }
-    updateName(){
-        TempCollection.update({_id: this.tempItemId},
-            {
-                $set: {
-                    name: $("[data-schema-key=name]").val()
-                }
-            }
-        );
-    }
-
-    submitForm(){
-        this.hasBeenSubmitted.set(true);
-
-        if(this.isFormValid) {
-            var temp = TempCollection.findOne({_id: this.tempItemId});
-            var _id = Tasks.insert(temp);
-            Router.go("/task/" + _id);
-        }
-    }
-
-    validateForm() {
-        //validating
-        var temp = TempCollection.findOne({_id: this.tempItemId});
-        delete temp._id; //cleaning
-        var isValid = Tasks.simpleSchema().namedContext("insertTask").validate(temp, {modifier: false});
-
-        //managing error
-        if (!isValid) {
-            var ik = this.insertTaskContext.invalidKeys(); //it's reactive ! whouhou
-            ik = _.map(ik, _.bind(function (o) {
-                return _.extend({message: this.insertTaskContext.keyErrorMessage(o.name)}, o);
-            },this));
-
-            this.errorsArray.set(ik);
-            this.isFormValid = false;
-        } else {
-            this.errorsArray.set([]);
-            this.isFormValid = true;
-        }
-    }
-
-    errors(){
-        this.validateForm(); //just to active reactivity on this method
-        var err = this.errorsArray.get();
-
-        if(this.hasBeenSubmitted.get()) { //active reactivity
-            return err;
-        }
-        return [];
-    }
-
-}
-
-CreateTaskComponent.register('CreateTaskComponent');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -124,31 +9,6 @@ Template.updateTaskForm.rendered = function () {
 
 Template.updateTaskForm.helpers({
 
-    currentUserTeamId: function () {
-        return Users.findOne({loginUserId: Meteor.userId()}).teams[0]; //TODO which team to choose ?
-    },
-
-    onDeleteSuccess: function () {
-        return function () {
-            //TODO message de deletion success
-            console.log("TODO message de deletion success")
-        }
-    },
-
-    onDeleteError: function () {
-        return function () {
-            //TODO message de deletion success
-            console.log("TODO message de deletion error")
-        }
-    },
-
-    beforeRemove: function () {
-        return function () {
-            Router.go("/tasks");
-        }
-    },
-
-    ////old design
 
     displayTextArea: function (validationType, state) {
         if (!Roles.userIsInRole(Meteor.userId(), RolesEnum[validationType]) &&
@@ -190,6 +50,7 @@ Template.updateTaskForm.helpers({
         });
         return result;
     },
+    
     equipments: function (category) {
         return Equipments.find({EquipmentCategories_Id: this._id, targetUsage: {$in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.TASK]}});
     },
@@ -212,23 +73,4 @@ Template.updateTaskForm.helpers({
         return "equipments." + index + ".equipmentId";
     },
 });
-
-
-sandbox = function () {
-    var insertTaskContext = Tasks.simpleSchema().namedContext("insertTask");
-    Tasks.simpleSchema().namedContext("insertTask").validate({
-        name: "task 1",
-        teamId: Teams.findOne()._id,
-        placeId: Places.findOne()._id,
-        liveEventMasterId: Users.findOne()._id,
-        masterId: Users.findOne()._id,
-    }, {modifier: false});
-
-    var ik = insertTaskContext.invalidKeys(); //it's reactive ! whouhou
-    ik = _.map(ik, function (o) {
-        return _.extend({message: insertTaskContext.keyErrorMessage(o.name)}, o);
-    });
-
-
-}
 
