@@ -272,8 +272,8 @@
                 <!--<div class="col-md-10">-->
                 <h3 contenteditable="true" data-schema-key="name" class="header-limited-to-text">{{this.name}}</h3>{{#if nameIsEditing}}<i class="material-icons medium" id="done-name">done</i>{{else}}<i class="material-icons medium" id="edit-name">mode_edit</i>{{/if}}
                 {{#if isInRole RolesEnum.TASKDELETE}}
-                {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
-            {{/if}}
+                    {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                {{/if}}
             </div>
 
 
@@ -296,7 +296,6 @@
                             {{> SingleSelectComponent selectLabel="Team" title="Update team"
                             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                             updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId"
-                            nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
                             }}
                         </div>
 
@@ -304,7 +303,6 @@
                             {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
                             optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
                             updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId"
-                            nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
                             }}
                         </div>
 
@@ -313,7 +311,6 @@
                                 {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
                                 optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
                                 updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId"
-                                nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
                                 }}
                             </div>
                         </div>
@@ -325,6 +322,45 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Equipments</div>
+
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div>
+                                {{> SingleNonMandatorySelectComponent selectLabel="Equipment storage place" title="Equipment storage place"
+                                optionCollection="EquipmentStorages" optionValueName="name" optionCollectionIndex="EquipmentStoragesIndex"
+                                updateCollection="Tasks" updateItemId=this._id updateItemPath="equipmentStorageId"
+                                }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div>
+                                {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
+                                optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
+                                updateCollection="Tasks" updateItemId=this._id updateItemPath="powerSupplyId"
+                                }}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {{> afQuickField name="equipmentStorageId"}}
+                    {{> afQuickField name="powerSupplyId"}}
+                    {{#each equipmentsCategories}}
+                        <h4>{{name}}</h4>
+                        {{#each equipments this}}
+                            {{name}}
+                            {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForQuantity}}
+                            {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForEquipmentId}}
+                        {{/each}}
+                    {{/each}}
+                </div>
+
             </div>
 
         {{/autoForm}}

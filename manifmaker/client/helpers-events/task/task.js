@@ -50,7 +50,7 @@ Template.updateTaskForm.helpers({
         });
         return result;
     },
-    
+
     equipments: function (category) {
         return Equipments.find({EquipmentCategories_Id: this._id, targetUsage: {$in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.TASK]}});
     },

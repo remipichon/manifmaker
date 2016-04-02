@@ -95,6 +95,28 @@ PlacesIndex = new EasySearch.Index({
     fields: ['name'],
     engine: new EasySearch.Minimongo()
 });
+/**
+ * @memberOf Models
+ * @summary EasySearch settings to perform search by label on EquipmentStorages
+ * @locus Anywhere
+ * @instancename object
+ */
+EquipmentStoragesIndex = new EasySearch.Index({
+    collection: EquipmentStorages,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+/**
+ * @memberOf Models
+ * @summary EasySearch settings to perform search by label on PowerSupplies
+ * @locus Anywhere
+ * @instancename object
+ */
+PowerSuppliesIndex = new EasySearch.Index({
+    collection: PowerSupplies,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
 
 
 
