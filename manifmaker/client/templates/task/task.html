@@ -15,7 +15,7 @@
 
                 <div>
                     <label for="first_name" data-required>Task name</label>
-                    <input placeholder="Task name" data-schema-key="name" type="text" class="validate">
+                    <input placeholder="Task name" data-key="name" type="text" class="validate">
                 </div>
 
                 <div>
@@ -59,7 +59,7 @@
             <div class="col-md-9">
                 <div>
                     <label>Description</label>
-                    <textarea name="description" rows="15" data-schema-key="description" class="form-control"></textarea>
+                    <textarea name="description" rows="15" data-key="description" class="form-control"></textarea>
                 </div>
             </div>
 
@@ -100,25 +100,25 @@
                 <!--{{> afQuickField name="placeId"}}-->
                 <!--{{> afQuickField name="liveEventMasterId"}}-->
                 <!--{{> afQuickField name="masterId"}}-->
-                <h4>Equipments</h4>
-                {{> afQuickField readonly=isEquipmentReadOnly name="equipmentStorageId"}}
-                {{> afQuickField readonly=isEquipmentReadOnly name="powerSupplyId"}}
-                {{#each equipmentsCategories}}
-                    <h4>{{name}}</h4>
-                    {{#each equipments this}}
-                        {{name}}
-                        {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForQuantity}}
-                        {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForEquipmentId}}
-                    {{/each}}
-                {{/each}}
+                <!--<h4>Equipments</h4>-->
+                <!--{{> afQuickField readonly=isEquipmentReadOnly name="equipmentStorageId"}}-->
+                <!--{{> afQuickField readonly=isEquipmentReadOnly name="powerSupplyId"}}-->
+                <!--{{#each equipmentsCategories}}-->
+                    <!--<h4>{{name}}</h4>-->
+                    <!--{{#each equipments this}}-->
+                        <!--{{name}}-->
+                        <!--{{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForQuantity}}-->
+                        <!--{{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForEquipmentId}}-->
+                    <!--{{/each}}-->
+                <!--{{/each}}-->
 
                 TODO : isAssignmentReadOnly : {{isAssignmentReadOnly}}
                 {{> afArrayField name="timeSlots"}}
             </fieldset>
-            <button type="submit" class="btn btn-primary">Update</button>
-            {{#if isInRole RolesEnum.TASKDELETE}}
-                {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id}}Delete {{this.name}}{{/quickRemoveButton}}
-            {{/if}}
+            <!--<button type="submit" class="btn btn-primary">Update</button>-->
+            <!--{{#if isInRole RolesEnum.TASKDELETE}}-->
+                <!--{{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id}}Delete {{this.name}}{{/quickRemoveButton}}-->
+            <!--{{/if}}-->
         {{/autoForm}}
 
 
@@ -274,15 +274,14 @@
 
         {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update" autosave=true}}
 
-TODO ne pas utiliser  data-schema-key car ca perd autoform
-
-            <!--<div class="row">-->
-                <!--&lt;!&ndash;<div class="col-md-10">&ndash;&gt;-->
-                <!--<h3 contenteditable="true" data-schema-key="name" class="header-limited-to-text">{{this.name}}</h3>{{#if nameIsEditing}}<i class="material-icons medium" id="done-name">done</i>{{else}}<i class="material-icons medium" id="edit-name">mode_edit</i>{{/if}}-->
-                <!--{{#if isInRole RolesEnum.TASKDELETE}}-->
-                    <!--{{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}-->
-                <!--{{/if}}-->
-            <!--</div>-->
+            <div class="row">
+                <div class="col-md-10">
+                    <h3 contenteditable="true" data-key="name" class="header-limited-to-text">{{this.name}}</h3>{{#if nameIsEditing}}<i class="material-icons medium" id="done-name">done</i>{{else}}<i class="material-icons medium" id="edit-name">mode_edit</i>{{/if}}
+                    {{#if isInRole RolesEnum.TASKDELETE}}
+                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                    {{/if}}
+                </div>
+            </div>
 
 
             <div class="panel panel-info">
@@ -357,14 +356,28 @@ TODO ne pas utiliser  data-schema-key car ca perd autoform
                     </div>
 
 
-                    {{#each equipmentsCategories}}
-                        <h4>{{name}}</h4>
-                        {{#each equipments this}}
-                            {{name}}
-                            {{> afQuickField name=autoformNameForQuantity}}
-                            {{> afQuickField name=autoformNameForEquipmentId}}
+                    <div class="equipment-wrapper">
+                        {{#each equipmentsCategories}}
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label>{{name}}</label>
+                                </div>
+                                <div class="row">
+                                    {{#each equipments this}}
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                {{> afQuickField name=autoformNameForQuantity}}
+                                                {{> afQuickField name=autoformNameForEquipmentId}}
+                                            </div>
+                                            <div class="col-md-8">
+                                                {{name}}
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
                         {{/each}}
-                    {{/each}}
+                    </div>
                 </div>
 
             </div>

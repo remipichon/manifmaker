@@ -28,14 +28,14 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
     focusName() {
-        $("[data-schema-key=name]").focus();
+        $("[data-key=name]").focus();
         this.nameIsEditingReactive.set(true);
     }
 
     updateName(e) {
         this.nameIsEditingReactive.set(false);
 
-        var name = $("[data-schema-key=name]").html();
+        var name = $("[data-key=name]").html();
         if (Tasks.simpleSchema().namedContext("updateTask").validateOne({name: name}, "name")) {
             Tasks.update({_id: this.data()._id}, {
                 $set: {

@@ -159,6 +159,16 @@ populateData = function () {
     var equipment21 = Equipments.insert({name: "equipment21", quantity: 10, targetUsage: EquipementTargetUsage.ACTIVITY, EquipmentCategories_Id: equipmentCategory2});
     var equipment22 = Equipments.insert({name: "equipment22", quantity: 10, targetUsage: EquipementTargetUsage.TASK, EquipmentCategories_Id: equipmentCategory2});
     var equipment23 = Equipments.insert({name: "equipment23", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
+    var equipment24 = Equipments.insert({name: "equipment24", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
+    var equipment25 = Equipments.insert({name: "equipment25", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
+    var equipment26 = Equipments.insert({name: "equipment26", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
+
+    var equipment31 = Equipments.insert({name: "equipment31", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
+    var equipment32 = Equipments.insert({name: "equipment32", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
+    var equipment33 = Equipments.insert({name: "equipment33", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
+    var equipment34 = Equipments.insert({name: "equipment34", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
+    var equipment35 = Equipments.insert({name: "equipment35", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
+
 
     //storage
     var equipmentStorage1 = EquipmentStorages.insert({name: "equipmentStorage1"});

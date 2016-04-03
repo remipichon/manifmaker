@@ -27,8 +27,8 @@ class CreateTaskComponent extends BlazeComponent {
         return [
             {
                 "click [type=submit]": this.submitForm,
-                "change [data-schema-key=name]": this.updateName,
-                "change [data-schema-key=description]": this.updateDescription
+                "change [data-key=name]": this.updateName,
+                "change [data-key=description]": this.updateDescription
             }]
     }
 
@@ -36,7 +36,7 @@ class CreateTaskComponent extends BlazeComponent {
         TempCollection.update({_id: this.tempItemId},
             {
                 $set: {
-                    name: $("[data-schema-key=description]").val()
+                    name: $("[data-key=description]").val()
                 }
             }
         );
@@ -46,7 +46,7 @@ class CreateTaskComponent extends BlazeComponent {
         TempCollection.update({_id: this.tempItemId},
             {
                 $set: {
-                    name: $("[data-schema-key=name]").val()
+                    name: $("[data-key=name]").val()
                 }
             }
         );
