@@ -81,6 +81,13 @@
 
     {{>UpdateTaskComponent}}
 
+    <!--{{>oldUpdateTask}}-->
+
+
+</template>
+
+
+<template name="oldUpdateTask">
     <div class="update-task-wrapper-form">
 
 
@@ -261,20 +268,21 @@
     </div>
 </template>
 
-
 <template name="updateTaskComponent">
 
     <div class="update-task-wrapper-form">
 
         {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update" autosave=true}}
 
-            <div class="row">
-                <!--<div class="col-md-10">-->
-                <h3 contenteditable="true" data-schema-key="name" class="header-limited-to-text">{{this.name}}</h3>{{#if nameIsEditing}}<i class="material-icons medium" id="done-name">done</i>{{else}}<i class="material-icons medium" id="edit-name">mode_edit</i>{{/if}}
-                {{#if isInRole RolesEnum.TASKDELETE}}
-                    {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
-                {{/if}}
-            </div>
+TODO ne pas utiliser  data-schema-key car ca perd autoform
+
+            <!--<div class="row">-->
+                <!--&lt;!&ndash;<div class="col-md-10">&ndash;&gt;-->
+                <!--<h3 contenteditable="true" data-schema-key="name" class="header-limited-to-text">{{this.name}}</h3>{{#if nameIsEditing}}<i class="material-icons medium" id="done-name">done</i>{{else}}<i class="material-icons medium" id="edit-name">mode_edit</i>{{/if}}-->
+                <!--{{#if isInRole RolesEnum.TASKDELETE}}-->
+                    <!--{{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}-->
+                <!--{{/if}}-->
+            <!--</div>-->
 
 
             <div class="panel panel-info">
@@ -349,14 +357,12 @@
                     </div>
 
 
-                    {{> afQuickField name="equipmentStorageId"}}
-                    {{> afQuickField name="powerSupplyId"}}
                     {{#each equipmentsCategories}}
                         <h4>{{name}}</h4>
                         {{#each equipments this}}
                             {{name}}
-                            {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForQuantity}}
-                            {{> afQuickField readonly=isEquipmentReadOnly name=autoformNameForEquipmentId}}
+                            {{> afQuickField name=autoformNameForQuantity}}
+                            {{> afQuickField name=autoformNameForEquipmentId}}
                         {{/each}}
                     {{/each}}
                 </div>

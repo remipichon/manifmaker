@@ -2,12 +2,12 @@
 
 
 
-Template.updateTaskForm.rendered = function () {
+Template.oldUpdateTask.rendered = function () {
     $('.collapsible').collapsible({});
 };
 
 
-Template.updateTaskForm.helpers({
+Template.oldUpdateTask.helpers({
 
 
     displayTextArea: function (validationType, state) {
