@@ -1,8 +1,18 @@
 class UpdateTaskComponent extends BlazeComponent {
 
+    //TODO masquer le add people need form a l'init
+
     constructor() {
         super();
-        this.nameIsEditingReactive = new ReactiveVar(false)
+        this.nameIsEditingReactive = new ReactiveVar(false);
+        this.updateTaskContext = Tasks.simpleSchema().namedContext("updateTask");
+        this.tempPeopleNeedIdReactive = new ReactiveVar(TempCollection.insert({ //TODO not sure if reactive var is needed
+                userId: null,
+                teamId: null,
+                skills: []
+            })
+        );
+
     }
 
     template() {
@@ -14,9 +24,52 @@ class UpdateTaskComponent extends BlazeComponent {
             {
                 "input .header-limited-to-text": this.displayDoneButton,
                 "click #done-name": this.updateName,
-                "click #edit-name": this.focusName
+                "click #edit-name": this.focusName,
+                "click .add-people-need .add-button": this.addPeopleNeed,
+                "click .clear-button": this.clearAddPeopleNeedForm,
+                "click .done-button": this.submitPeopleNeed
             }
         ];
+    }
+
+    clearAddPeopleNeedForm() {
+        TempCollection.update(this.tempPeopleNeedIdReactive.get(),{
+            userId: null,
+            teamId: null,
+            skills: []
+        });
+
+        this.displayAddPeopleNeedForm(false);
+    }
+
+    displayAddPeopleNeedForm(toDisplay) {
+        if (toDisplay)
+            this.$("#add-people-need-form").fadeIn(600);
+        else
+            this.$("#add-people-need-form").fadeOut(600);
+
+    }
+
+    tempPeopleNeedId(){
+        return this.tempPeopleNeedIdReactive.get();
+    }
+
+    /**
+     * prepare form to add a people need, not submit
+     */
+    addPeopleNeed() {
+        this.displayAddPeopleNeedForm(true);
+    }
+
+    /**
+     * add people need to the task collection object
+     */
+    submitPeopleNeed() {
+        //TODO store in database dans le bon timeslot
+
+
+
+
     }
 
     nameIsEditing() {
