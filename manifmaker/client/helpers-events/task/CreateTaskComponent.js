@@ -93,6 +93,8 @@ class CreateTaskComponent extends BlazeComponent {
         return [];
     }
 
+
+
 }
 
 CreateTaskComponent.register('CreateTaskComponent');

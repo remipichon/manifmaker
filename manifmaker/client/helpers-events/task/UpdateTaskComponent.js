@@ -47,10 +47,6 @@ class UpdateTaskComponent extends BlazeComponent {
         }
     }
 
-    currentUserTeamId() {
-        return Users.findOne({loginUserId: Meteor.userId()}).teams[0]; //TODO which team to choose ?
-    }
-
     onDeleteSuccess() {
         return function () {
             //TODO message de deletion success
