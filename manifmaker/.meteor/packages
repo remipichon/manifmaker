@@ -38,3 +38,4 @@ alanning:roles
 accounts-password
 accounts-ui
 peerlibrary:blaze-components
+tsega:bootstrap3-datetimepicker

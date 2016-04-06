@@ -15,6 +15,28 @@ class UpdateTaskComponent extends BlazeComponent {
 
     }
 
+    updateTimeSlotStartDate(){
+        return _.bind(function(newDate){
+            console.log("updateTimeSlotStartDate ",newDate);
+            //TODO verify date on task on timeslot
+            //display error (overlap and before/after)
+            //TODO update date on task on timeslot
+
+        },this);
+    }
+
+    updateTimeSlotEndDate(){
+        return _.bind(function(newDate){
+            console.log("updateTimeSlotEndDate ",newDate);
+            //TODO verify date on task on timeslot
+            //display error (overlap and before/after)
+            //TODO update date on task on timeslot
+        },this);
+    }
+
+    onRendered(){
+    }
+
     template() {
         return "updateTaskComponent";
     }
@@ -70,6 +92,15 @@ class UpdateTaskComponent extends BlazeComponent {
 
 
 
+    }
+
+
+    //currentTimeSlotPeopleNeeds(){
+    //    return this.data().timeSlots[1].peopleNeeded; //TODO
+    //}
+
+    currentTimeSlot(){
+        return this.data().timeSlots[1]; //TODO
     }
 
     nameIsEditing() {
