@@ -13,28 +13,51 @@ class UpdateTaskComponent extends BlazeComponent {
             })
         );
 
+        this.updatedTimeSlotIndex = 1;
+
     }
 
-    updateTimeSlotStartDate(){
-        return _.bind(function(newDate){
-            console.log("updateTimeSlotStartDate ",newDate);
+    updateTimeSlotStartDate() {
+        return _.bind(function (dateTimePickerInstance, newDate) {
+            
+            if (Tasks.simpleSchema().namedContext("updateTask").validateOne(
+                    {
+                        ["timeSlots." + this.updatedTimeSlotIndex + ".start"]: newDate
+                    },
+                    "timeSlots.$" + this.updatedTimeSlotIndex + ".start")) {
+
+                Tasks.update({_id: this.data()._id}, {
+                    $set: {
+                        ["timeSlots." + this.updatedTimeSlotIndex + ".start"]: newDate.toDate()
+                    }
+                });
+
+            } else {
+                //TODO add error
+                var ik = this.updateTaskContext.invalidKeys(); //it's reactive ! whouhou
+                ik = _.map(ik, _.bind(function (o) {
+                    return _.extend({message: this.updateTaskContext.keyErrorMessage(o.name)}, o);
+                }, this));
+            }
+
+
             //TODO verify date on task on timeslot
             //display error (overlap and before/after)
             //TODO update date on task on timeslot
 
-        },this);
+        }, this);
     }
 
-    updateTimeSlotEndDate(){
-        return _.bind(function(newDate){
-            console.log("updateTimeSlotEndDate ",newDate);
+    updateTimeSlotEndDate() {
+        return _.bind(function (newDate) {
+            console.log("updateTimeSlotEndDate ", newDate);
             //TODO verify date on task on timeslot
             //display error (overlap and before/after)
             //TODO update date on task on timeslot
-        },this);
+        }, this);
     }
 
-    onRendered(){
+    onRendered() {
     }
 
     template() {
@@ -55,7 +78,7 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
     clearAddPeopleNeedForm() {
-        TempCollection.update(this.tempPeopleNeedIdReactive.get(),{
+        TempCollection.update(this.tempPeopleNeedIdReactive.get(), {
             userId: null,
             teamId: null,
             skills: []
@@ -72,7 +95,7 @@ class UpdateTaskComponent extends BlazeComponent {
 
     }
 
-    tempPeopleNeedId(){
+    tempPeopleNeedId() {
         return this.tempPeopleNeedIdReactive.get();
     }
 
@@ -90,8 +113,6 @@ class UpdateTaskComponent extends BlazeComponent {
         //TODO store in database dans le bon timeslot
 
 
-
-
     }
 
 
@@ -99,8 +120,8 @@ class UpdateTaskComponent extends BlazeComponent {
     //    return this.data().timeSlots[1].peopleNeeded; //TODO
     //}
 
-    currentTimeSlot(){
-        return this.data().timeSlots[1]; //TODO
+    currentTimeSlot() {
+        return this.data().timeSlots[this.updatedTimeSlotIndex];
     }
 
     nameIsEditing() {
