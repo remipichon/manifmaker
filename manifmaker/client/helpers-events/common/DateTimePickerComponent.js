@@ -1,10 +1,14 @@
 DateTimePickerComponent =
     class DateTimePickerComponent extends BlazeComponent {
 
+        constructor(){
+            super();
+            this.dateTimePickerFireOneEventWhenInit = true;
+        }
+
         fakeConstructorWithDataArguments() {
             this.date = this.data().date;
             this.updateDateCallback = this.data().updateDateCallback;
-            this.dateTimePickerFireOneEventWhenInit = true;
         }
 
         onRendered() {
@@ -17,13 +21,13 @@ DateTimePickerComponent =
         events() {
             return [
                 {
-                    "dp.change .datetimepicker": this.changeDate //TODO a change event is fired when init...
+                    "dp.change .datetimepicker": this.changeDate
                 }
             ];
         }
 
         changeDate(e) {
-            if(this.dateTimePickerFireOneEventWhenInit) {
+            if(this.dateTimePickerFireOneEventWhenInit) { //a change event is fired when init...
                 this.dateTimePickerFireOneEventWhenInit = false;
                 return;
             }

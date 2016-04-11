@@ -403,10 +403,11 @@
                             </div>
                             <div id="add-time-slot-form" class="row">
                                 <div class="row">
-                                    From *
-                                    {{>DateTimePickerComponent date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate}}
-                                    to*
-                                    {{>DateTimePickerComponent date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate}}
+                                    From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate}}
+                                    to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate}}
+                                </div>
+                                <div class="row error-holder">
+                                    {{updatetimeSlotDatesError}}
                                 </div>
                                 <div class="row">
                                     <label>People needs</label>

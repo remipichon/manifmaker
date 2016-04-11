@@ -16,6 +16,8 @@ class UpdateTaskComponent extends BlazeComponent {
         this.updatedTimeSlotIndex = 1;
 
         this.updatetimeSlotDatesErrorArray = new ReactiveVar([]);
+        this.currentSelectedStartDate = null;
+        this.currentSelectedEndDate = null;
 
 
     }
@@ -23,18 +25,13 @@ class UpdateTaskComponent extends BlazeComponent {
 
     updateTimeSlotStartDate() {
         return _.bind(function (newDate) {
-            Tasks.update({_id: this.data()._id}, {
-                $set: {
-                    ["timeSlots." + this.updatedTimeSlotIndex + ".start"]: newDate.toDate()
-                }
-            }, _.bind(function (error, docAffected) {
-                if (error) {
-                    this.updatetimeSlotDatesErrorArray.set([error.message]);
-                } else {
-                    this.updatetimeSlotDatesErrorArray.set([]);
-                }
+            this.currentSelectedStartDate = newDate;
 
-            }, this));
+            if (this.currentSelectedEndDate)
+                this.updateTimeSlotDates(this.currentSelectedStartDate, this.currentSelectedEndDate);
+            else
+                this.updateTimeSlotDates(this.currentSelectedStartDate, null);
+
         }, this);
     }
 
@@ -44,19 +41,34 @@ class UpdateTaskComponent extends BlazeComponent {
 
     updateTimeSlotEndDate() {
         return _.bind(function (newDate) {
-            Tasks.update({_id: this.data()._id}, {
-                $set: {
-                    ["timeSlots." + this.updatedTimeSlotIndex + ".end"]: newDate.toDate()
-                }
-            }, _.bind(function (error, docAffected) {
-                if (error) {
-                    this.updatetimeSlotDatesErrorArray.set([error.message]);
-                } else {
-                    this.updatetimeSlotDatesErrorArray.set([]);
-                }
+            this.currentSelectedEndDate = newDate;
 
-            }, this));
+            if (this.currentSelectedStartDate)
+                this.updateTimeSlotDates(this.currentSelectedStartDate, this.currentSelectedEndDate);
+            else
+                this.updateTimeSlotDates(null, this.currentSelectedEndDate);
         }, this);
+    }
+
+    updateTimeSlotDates(start, end) {
+        var $set = {};
+        if (start)
+            $set["timeSlots." + this.updatedTimeSlotIndex + ".start"] = start.toDate();
+        if (end)
+            $set["timeSlots." + this.updatedTimeSlotIndex + ".end"] = end.toDate();
+
+        Tasks.update({_id: this.data()._id}, {
+            $set: $set
+        }, _.bind(function (error, docAffected) {
+            if (error) {
+                this.updatetimeSlotDatesErrorArray.set([error.message]);
+            } else {
+                this.updatetimeSlotDatesErrorArray.set([]);
+                this.currentSelectedStartDate = null;
+                this.currentSelectedEndDate = null;
+            }
+
+        }, this));
     }
 
     onRendered() {

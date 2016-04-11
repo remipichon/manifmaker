@@ -150,20 +150,29 @@ Schemas.TimeSlot = new SimpleSchema({
         type: Date,
         label: "TimeSlot Start Date",
         custom: function () {
-            var start,end,currentId,timeSlots;
+            var start, end, currentId, timeSlots;
 
-            if(this.isUpdate && !this.field("end").isSet){//date updated alone, read data from DB
+            if (this.isUpdate) {
                 var task = Tasks.findOne(this.docId);
-                var timeSlotIndex = parseInt(this.key.replace("timeSlots.","").replace(".start",""));
-                timeSlots = task.timeSlots;
-                var timeSlot = timeSlots[timeSlotIndex];
-                end = new moment(timeSlot.end);
+                var timeSlotIndex = parseInt(this.key.replace("timeSlots.", "").replace(".start", ""));
+                var timeSlot = task.timeSlots[timeSlotIndex];
                 currentId = timeSlot._id;
-            } else {
-                timeSlots = this.field("timeSlots").value;
-                end = new moment(this.field(this.key.replace("start", "") + 'end').value);
-                currentId = this.field(this.key.replace("start", "") + '_id').value;
             }
+
+            if (!this.field("timeSlots").isSet) {
+                timeSlots = task.timeSlots;
+            } else
+                timeSlots = this.field("timeSlots").value;
+
+
+            if (!this.field(this.key.replace("start", "") + 'end').isSet) {
+                end = new moment(timeSlot.end);
+            } else
+                end = new moment(this.field(this.key.replace("start", "") + 'end').value);
+
+
+            if (!currentId)
+                currentId = this.field(this.key.replace("start", "") + '_id').value;
 
             start = new moment(this.value);
 
@@ -171,7 +180,7 @@ Schemas.TimeSlot = new SimpleSchema({
                 return "startAfterEnd";
             }
 
-            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(timeSlots,start,end,currentId))
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(timeSlots, start, end, currentId))
                 return "timeSlotConflictDate";
         },
         autoform: {
@@ -182,20 +191,29 @@ Schemas.TimeSlot = new SimpleSchema({
         type: Date,
         label: " TimeSlot End Date",
         custom: function () {
-            var start,end,currentId,timeSlots;
+            var start, end, currentId, timeSlots;
 
-            if(this.isUpdate && !this.field("start").isSet){//date updated alone, read data from DB
+            if (this.isUpdate) {
                 var task = Tasks.findOne(this.docId);
-                var timeSlotIndex = parseInt(this.key.replace("timeSlots.","").replace(".end",""));
-                timeSlots = task.timeSlots;
-                var timeSlot = timeSlots[timeSlotIndex];
-                start = new moment(timeSlot.start);
+                var timeSlotIndex = parseInt(this.key.replace("timeSlots.", "").replace(".end", ""));
+                var timeSlot = task.timeSlots[timeSlotIndex];
                 currentId = timeSlot._id;
-            } else {
-                timeSlots = this.field("timeSlots").value;
-                start = new moment(this.field(this.key.replace("end", "") + 'start').value);
-                currentId = this.field(this.key.replace("end", "") + '_id').value;
             }
+
+            if (!this.field("timeSlots").isSet) {
+                timeSlots = task.timeSlots;
+            } else
+                timeSlots = this.field("timeSlots").value;
+
+
+            if (!this.field(this.key.replace("end", "") + 'start').isSet) {
+                start = new moment(timeSlot.start);
+            } else
+                start = new moment(this.field(this.key.replace("end", "") + 'start').value);
+
+
+            if (!currentId)
+                currentId = this.field(this.key.replace("end", "") + '_id').value;
 
             end = new moment(this.value);
 
