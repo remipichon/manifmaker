@@ -15,45 +15,47 @@ class UpdateTaskComponent extends BlazeComponent {
 
         this.updatedTimeSlotIndex = 1;
 
+        this.updatetimeSlotDatesErrorArray = new ReactiveVar([]);
+
+
     }
 
+
     updateTimeSlotStartDate() {
-        return _.bind(function (dateTimePickerInstance, newDate) {
-            
-            if (Tasks.simpleSchema().namedContext("updateTask").validateOne(
-                    {
-                        ["timeSlots." + this.updatedTimeSlotIndex + ".start"]: newDate
-                    },
-                    "timeSlots.$" + this.updatedTimeSlotIndex + ".start")) {
+        return _.bind(function (newDate) {
+            Tasks.update({_id: this.data()._id}, {
+                $set: {
+                    ["timeSlots." + this.updatedTimeSlotIndex + ".start"]: newDate.toDate()
+                }
+            }, _.bind(function (error, docAffected) {
+                if (error) {
+                    this.updatetimeSlotDatesErrorArray.set([error.message]);
+                } else {
+                    this.updatetimeSlotDatesErrorArray.set([]);
+                }
 
-                Tasks.update({_id: this.data()._id}, {
-                    $set: {
-                        ["timeSlots." + this.updatedTimeSlotIndex + ".start"]: newDate.toDate()
-                    }
-                });
-
-            } else {
-                //TODO add error
-                var ik = this.updateTaskContext.invalidKeys(); //it's reactive ! whouhou
-                ik = _.map(ik, _.bind(function (o) {
-                    return _.extend({message: this.updateTaskContext.keyErrorMessage(o.name)}, o);
-                }, this));
-            }
-
-
-            //TODO verify date on task on timeslot
-            //display error (overlap and before/after)
-            //TODO update date on task on timeslot
-
+            }, this));
         }, this);
+    }
+
+    updatetimeSlotDatesError() {
+        return this.updatetimeSlotDatesErrorArray.get();
     }
 
     updateTimeSlotEndDate() {
         return _.bind(function (newDate) {
-            console.log("updateTimeSlotEndDate ", newDate);
-            //TODO verify date on task on timeslot
-            //display error (overlap and before/after)
-            //TODO update date on task on timeslot
+            Tasks.update({_id: this.data()._id}, {
+                $set: {
+                    ["timeSlots." + this.updatedTimeSlotIndex + ".end"]: newDate.toDate()
+                }
+            }, _.bind(function (error, docAffected) {
+                if (error) {
+                    this.updatetimeSlotDatesErrorArray.set([error.message]);
+                } else {
+                    this.updatetimeSlotDatesErrorArray.set([]);
+                }
+
+            }, this));
         }, this);
     }
 

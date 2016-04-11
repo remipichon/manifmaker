@@ -150,23 +150,6 @@ Schemas.TimeSlot = new SimpleSchema({
         type: Date,
         label: "TimeSlot Start Date",
         custom: function () {
-
-            if(this.isUpdate && !this.field("end").isSet){//date updated alone, read start date from DB
-                //var task = Tasks.findOne(this.docId);
-                //var timeSlotIndex = parseInt(this.key.replace("timeSlots.","").replace(".start",""));
-                //var timeSlot = task.timeSlots[timeSlotIndex];
-                //end = timeSlot.end;
-            } else {
-                end = new moment(this.field(this.key.replace("start", "") + 'end').value);
-            }
-
-
-
-            if (new moment(this.value).isAfter(end)) {
-                return "startAfterEnd";
-            }
-
-
             var start,end,currentId,timeSlots;
 
             if(this.isUpdate && !this.field("end").isSet){//date updated alone, read data from DB
