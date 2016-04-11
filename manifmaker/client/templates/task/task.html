@@ -411,17 +411,19 @@
                                 </div>
                                 <div class="row">
                                     <label>People needs</label>
-                                    {{#each currentTimeSlot.peopleNeeded}}
-                                        ===
-                                        {{#if userId}}
-                                            <div>user {{userId}}</div>{{/if}}
-                                        {{#if teamId}}
-                                            <div>team {{teamId}}</div>{{/if}}
-                                        {{#if skills}}
-                                            <div>skills {{#each skills}}{{this}}-{{/each}}</div>{{/if}}
-                                        ===
-                                    {{/each}}
 
+                                    <div class="row">
+                                        {{#each currentTimeSlot.peopleNeeded}}
+                                            <div class="row">
+                                                {{#if userId}}
+                                                    <div>user {{userId}}</div>{{/if}}
+                                                {{#if teamId}}
+                                                    <div>team {{teamId}}</div>{{/if}}
+                                                {{#if skills}}
+                                                    <div>skills {{#each skills}}{{this}}-{{/each}}</div>{{/if}}
+                                            </div>
+                                        {{/each}}
+                                    </div>
                                 </div>
                             </div>
                         </div>

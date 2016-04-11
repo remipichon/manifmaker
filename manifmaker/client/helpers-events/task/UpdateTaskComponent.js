@@ -6,22 +6,44 @@ class UpdateTaskComponent extends BlazeComponent {
         super();
         this.nameIsEditingReactive = new ReactiveVar(false);
         this.updateTaskContext = Tasks.simpleSchema().namedContext("updateTask");
+
+
+        //TIMESLOTS SECTION
         this.tempPeopleNeedIdReactive = new ReactiveVar(TempCollection.insert({ //TODO not sure if reactive var is needed
                 userId: null,
                 teamId: null,
                 skills: []
             })
         );
-
         this.updatedTimeSlotIndex = 1;
-
         this.updatetimeSlotDatesErrorArray = new ReactiveVar([]);
         this.currentSelectedStartDate = null;
         this.currentSelectedEndDate = null;
-
-
     }
 
+    onRendered() {
+    }
+
+    template() {
+        return "updateTaskComponent";
+    }
+
+    events() {
+        return [
+            {
+                "input .header-limited-to-text": this.displayDoneButton,
+                "click #done-name": this.updateName,
+                "click #edit-name": this.focusName,
+                "click .add-people-need .add-button": this.addPeopleNeed,
+                "click .clear-button": this.clearAddPeopleNeedForm,
+                "click .done-button": this.submitPeopleNeed
+            }
+        ];
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////    UPDATE TIMESLOTS SECTION
+    ////////////////////////////////////////////////////////////////////////
 
     updateTimeSlotStartDate() {
         return _.bind(function (newDate) {
@@ -71,25 +93,14 @@ class UpdateTaskComponent extends BlazeComponent {
         }, this));
     }
 
-    onRendered() {
+    currentTimeSlot() {
+        return this.data().timeSlots[this.updatedTimeSlotIndex];
     }
 
-    template() {
-        return "updateTaskComponent";
-    }
 
-    events() {
-        return [
-            {
-                "input .header-limited-to-text": this.displayDoneButton,
-                "click #done-name": this.updateName,
-                "click #edit-name": this.focusName,
-                "click .add-people-need .add-button": this.addPeopleNeed,
-                "click .clear-button": this.clearAddPeopleNeedForm,
-                "click .done-button": this.submitPeopleNeed
-            }
-        ];
-    }
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////    ADD TIMESLOTS SECTION
+    ////////////////////////////////////////////////////////////////////////
 
     clearAddPeopleNeedForm() {
         TempCollection.update(this.tempPeopleNeedIdReactive.get(), {
@@ -130,13 +141,9 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
 
-    //currentTimeSlotPeopleNeeds(){
-    //    return this.data().timeSlots[1].peopleNeeded; //TODO
-    //}
-
-    currentTimeSlot() {
-        return this.data().timeSlots[this.updatedTimeSlotIndex];
-    }
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////    GENERAL INFORMATION SECTION
+    ////////////////////////////////////////////////////////////////////////
 
     nameIsEditing() {
         return this.nameIsEditingReactive.get();
@@ -166,6 +173,10 @@ class UpdateTaskComponent extends BlazeComponent {
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////    OVERALL TASK SECTION
+    ////////////////////////////////////////////////////////////////////////
+
     onDeleteSuccess() {
         return function () {
             //TODO message de deletion success
@@ -185,6 +196,10 @@ class UpdateTaskComponent extends BlazeComponent {
             Router.go("/tasks");
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////    EQUIPMENT SECTION
+    ////////////////////////////////////////////////////////////////////////
 
     equipmentsCategories() {
         var categories = EquipmentCategories.find().fetch();
