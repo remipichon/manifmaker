@@ -172,4 +172,19 @@ TimeSlotService =
                 peopleNeed: peopleNeedFound
             };
         }
+
+        static areTimeSlotOverlappingWithQuery(timeSlots,start,end,queryTimeSlotId){
+            var okGod = true;
+            timeSlots.forEach(_.bind(function (timeSlot) {
+                if (!okGod || timeSlot._id === queryTimeSlotId)
+                    return;
+
+                if (new moment(start).isBetween(timeSlot.start, timeSlot.end) ||
+                    new moment(end).isBetween(timeSlot.start, timeSlot.end))
+                    okGod = false;
+
+            }, this));
+
+            return okGod
+        }
     }

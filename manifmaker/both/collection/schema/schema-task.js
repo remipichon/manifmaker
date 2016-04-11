@@ -150,9 +150,46 @@ Schemas.TimeSlot = new SimpleSchema({
         type: Date,
         label: "TimeSlot Start Date",
         custom: function () {
-            if (new moment(this.value).isAfter(new moment(this.key.replace("start", "") + this.field('end').value))) {
+
+            if(this.isUpdate && !this.field("end").isSet){//date updated alone, read start date from DB
+                //var task = Tasks.findOne(this.docId);
+                //var timeSlotIndex = parseInt(this.key.replace("timeSlots.","").replace(".start",""));
+                //var timeSlot = task.timeSlots[timeSlotIndex];
+                //end = timeSlot.end;
+            } else {
+                end = new moment(this.field(this.key.replace("start", "") + 'end').value);
+            }
+
+
+
+            if (new moment(this.value).isAfter(end)) {
                 return "startAfterEnd";
             }
+
+
+            var start,end,currentId,timeSlots;
+
+            if(this.isUpdate && !this.field("end").isSet){//date updated alone, read data from DB
+                var task = Tasks.findOne(this.docId);
+                var timeSlotIndex = parseInt(this.key.replace("timeSlots.","").replace(".start",""));
+                timeSlots = task.timeSlots;
+                var timeSlot = timeSlots[timeSlotIndex];
+                end = new moment(timeSlot.end);
+                currentId = timeSlot._id;
+            } else {
+                timeSlots = this.field("timeSlots").value;
+                end = new moment(this.field(this.key.replace("start", "") + 'end').value);
+                currentId = this.field(this.key.replace("start", "") + '_id').value;
+            }
+
+            start = new moment(this.value);
+
+            if (start.isAfter(end)) {
+                return "startAfterEnd";
+            }
+
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(timeSlots,start,end,currentId))
+                return "timeSlotConflictDate";
         },
         autoform: {
             type: "datetime-local",
@@ -162,30 +199,28 @@ Schemas.TimeSlot = new SimpleSchema({
         type: Date,
         label: " TimeSlot End Date",
         custom: function () {
-            if (new moment(this.value).isBefore(new moment(this.field(this.key.replace("end", "") + 'start').value))) {
+            var start,end,currentId,timeSlots;
+
+            if(this.isUpdate && !this.field("start").isSet){//date updated alone, read data from DB
+                var task = Tasks.findOne(this.docId);
+                var timeSlotIndex = parseInt(this.key.replace("timeSlots.","").replace(".end",""));
+                timeSlots = task.timeSlots;
+                var timeSlot = timeSlots[timeSlotIndex];
+                start = new moment(timeSlot.start);
+                currentId = timeSlot._id;
+            } else {
+                timeSlots = this.field("timeSlots").value;
+                start = new moment(this.field(this.key.replace("end", "") + 'start').value);
+                currentId = this.field(this.key.replace("end", "") + '_id').value;
+            }
+
+            end = new moment(this.value);
+
+            if (end.isBefore(start)) {
                 return "endBeforeStart";
             }
 
-            var start = this.field(this.key.replace("end", "") + 'start').value;
-
-            var currentStart = new moment(start);
-            var currentEnd = new moment(this.value);
-            var currentId = this.field(this.key.replace("end", "") + '_id').value;
-
-            //check if timeSlot don't lap
-            var timeSlots = this.field("timeSlots").value;
-            var okGod = true;
-            timeSlots.forEach(_.bind(function (timeSlot) {
-                if (!okGod || timeSlot._id === currentId)
-                    return;
-
-                if (new moment(currentStart).isBetween(timeSlot.start, timeSlot.end) ||
-                    new moment(currentEnd).isBetween(timeSlot.start, timeSlot.end))
-                    okGod = false;
-
-            }, this));
-
-            if (!okGod)
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(timeSlots,start,end,currentId))
                 return "timeSlotConflictDate";
         },
         autoform: {
