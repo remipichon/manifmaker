@@ -97,6 +97,26 @@ class UpdateTaskComponent extends BlazeComponent {
         return this.data().timeSlots[this.updatedTimeSlotIndex];
     }
 
+    updatePeopleNeedUserIdPath(){
+        var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
+        return "timeSlots."+this.updatedTimeSlotIndex+".peopleNeeded."+peopleNeedIndex+".userId";
+    }
+
+    updatePeopleNeedTeamIdPath(){
+        var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
+        return "timeSlots."+this.updatedTimeSlotIndex+".peopleNeeded."+peopleNeedIndex+".teamId";
+    }
+
+    updatePeopleNeedSkillsPath(){
+        var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
+        return "timeSlots."+this.updatedTimeSlotIndex+".peopleNeeded."+peopleNeedIndex+".skills";
+    }
+
+    _currentTimeSlotPeopleNeedIndex() {
+        return PeopleNeedService.getPeopleNeedIndex(this.currentTimeSlot(), this.currentData());
+    }
+
+
 
     ////////////////////////////////////////////////////////////////////////
     ////////////////////    ADD TIMESLOTS SECTION

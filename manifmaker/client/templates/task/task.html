@@ -415,12 +415,28 @@
                                     <div class="row">
                                         {{#each currentTimeSlot.peopleNeeded}}
                                             <div class="row">
-                                                {{#if userId}}
-                                                    <div>user {{userId}}</div>{{/if}}
-                                                {{#if teamId}}
-                                                    <div>team {{teamId}}</div>{{/if}}
-                                                {{#if skills}}
-                                                    <div>skills {{#each skills}}{{this}}-{{/each}}</div>{{/if}}
+                                                <div class="col-md-3">
+                                                    <span>1</span>
+                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    {{#if userId}}
+                                                        {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
+                                                        optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                                        updateCollection="Tasks" updateItemId=../_id updateItemPath=updatePeopleNeedUserIdPath}}
+                                                    {{/if}}
+                                                    {{#if teamId}}
+                                                        {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific a team need"
+                                                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                                        updateCollection="Tasks" updateItemId=../_id updateItemPath=updatePeopleNeedTeamIdPath}}
+                                                    {{/if}}
+                                                    {{#if skills}}
+                                                        {{> MultipleNonMandatorySelectComponent withoutLabel=true title="Specific some needed skills"
+                                                        optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
+                                                        updateCollection="Tasks" updateItemId=../_id updateItemPath=updatePeopleNeedSkillsPath}}
+                                                    {{/if}}
+                                                </div>
                                             </div>
                                         {{/each}}
                                     </div>
@@ -434,24 +450,24 @@
                             </div>
                             <div id="add-people-need-form" class="row">
                                 <div class="col-md-6">
-                                    {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
+                                    <!--{{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
                                     optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
                                     updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
                                     nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
-                                    }}
+                                    }}-->
                                 </div>
                                 <div class="col-md-6">
-                                    {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
+                                    <!-- {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
                                     optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
                                     updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
-                                    }}
+                                    }}-->
                                 </div>
                                 <div class="col-md-6">
-                                    {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
+                                    <!-- {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
                                     optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
                                     updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
                                     nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
-                                    }}
+                                    }}-->
                                 </div>
                             </div>
 
