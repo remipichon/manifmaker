@@ -49,12 +49,12 @@ class UpdateTaskComponent extends BlazeComponent {
 
     deletePeopleNeeded(e) {
         var peopleNeededId = $(e.target).data("peopleneededid");
-        console.log(peopleNeededId);
         PeopleNeedService.removePeopleNeed(this.data(), this.data().timeSlots[this.updatedTimeSlotIndex], {_id: peopleNeededId});
     }
 
     duplicatePeopleNeeded(e) {
         var peopleNeededId = $(e.target).data("peopleneededid");
+        console.log("TODO duplicatePeopleNeeded");//TODO
 
     }
 
@@ -110,24 +110,9 @@ class UpdateTaskComponent extends BlazeComponent {
         return this.data().timeSlots[this.updatedTimeSlotIndex];
     }
 
-    currentTimeSlotPeopleNeeded() {
-        return this.currentTimeSlot().peopleNeeded;
-    }
-
-    updatePeopleNeedUserIdPath() {
-        var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
-        return "timeSlots." + this.updatedTimeSlotIndex + ".peopleNeeded." + peopleNeedIndex + ".userId";
-    }
-
-    updatePeopleNeedTeamIdPath() {
-        var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
-        return "timeSlots." + this.updatedTimeSlotIndex + ".peopleNeeded." + peopleNeedIndex + ".teamId";
-    }
-
-    updatePeopleNeedSkillsPath() {
-        var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
-        return "timeSlots." + this.updatedTimeSlotIndex + ".peopleNeeded." + peopleNeedIndex + ".skills";
-    }
+    //currentTimeSlotPeopleNeeded() {
+    //    return this.currentTimeSlot().peopleNeeded;
+    //}
 
     pathWithArrayPeopleNeeded() {
         return [
@@ -141,11 +126,6 @@ class UpdateTaskComponent extends BlazeComponent {
             }
         ]
 
-    }
-
-
-    _currentTimeSlotPeopleNeedIndex() {
-        return PeopleNeedService.getPeopleNeedIndex(this.currentTimeSlot(), Template.currentData());
     }
 
 
@@ -269,22 +249,15 @@ class UpdateTaskComponent extends BlazeComponent {
         return Equipments.find({EquipmentCategories_Id: category._id, targetUsage: {$in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.TASK]}});
     }
 
-    //TODO remove SelectedUpdatedOrReadedTask ???
     autoformNameForQuantity() {
-        //tout ca parce que Spacebars ne supporte pas @index...
-        //var currentEditingTaskId = SelectedUpdatedOrReadedTask.get();
-        //var currentTask = Tasks.findOne(currentEditingTaskId);
-        var equipments = this.data().equipments;//Tasks.findOne(currentEditingTaskId).equipments;
-        var index = equipments.indexOf(_.findWhere(equipments, {equipmentId: this.currentData()._id}))
+        var equipments = this.data().equipments;
+        var index = equipments.indexOf(_.findWhere(equipments, {equipmentId: this.currentData()._id}));
         return "equipments." + index + ".quantity";
     }
 
     autoformNameForEquipmentId() {
-        //tout ca parce que Spacebars ne supporte pas @index....
-        //var currentEditingTaskId = SelectedUpdatedOrReadedTask.get();
-        //var currentTask = Tasks.findOne(currentEditingTaskId);
-        var equipments = this.data().equipments;//Tasks.findOne(currentEditingTaskId).equipments;
-        var index = equipments.indexOf(_.findWhere(equipments, {equipmentId: this.currentData()._id}))
+        var equipments = this.data().equipments;
+        var index = equipments.indexOf(_.findWhere(equipments, {equipmentId: this.currentData()._id}));
         return "equipments." + index + ".equipmentId";
     }
 
