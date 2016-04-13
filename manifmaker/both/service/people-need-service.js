@@ -115,8 +115,8 @@ PeopleNeedService =
          * @param {PeopleNeed} peopleNeed
          * @param {MongoId} userId
          */
-        static removePeopleNeed(task, timeSlot, peopleNeed, userId) {
-            console.info("PeopleNeedService.removePeopleNeed for task", task, "when", timeSlot, "and need", peopleNeed);
+        static assignedPeopleNeeded(task, timeSlot, peopleNeed, userId) {
+            console.info("PeopleNeedService.assignedPeopleNeeded for task", task, "when", timeSlot, "and need", peopleNeed);
             //we have the task
             var timeSlots = task.timeSlots; //all its timeslots
             //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
@@ -236,5 +236,27 @@ PeopleNeedService =
 
 
             Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
+        }
+
+        static removePeopleNeed(task, timeSlot, peopleNeed){
+            console.info("PeopleNeedService.removePeopleNeed for task", task, "when", timeSlot, "and need", peopleNeed);
+            //we have the task
+            var timeSlots = task.timeSlots; //all its timeslots
+            //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
+
+
+            //var updatedTimeslot = timeSlot;
+
+            //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
+
+
+            var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
+            var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
+            var peopleNeedToRemoveIndex = PeopleNeedService.getPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
+            //remove peopleNeed assigned
+            timeSlotToUpdate.peopleNeeded.splice(peopleNeedToRemoveIndex, 1);
+
+            Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
+
         }
     }

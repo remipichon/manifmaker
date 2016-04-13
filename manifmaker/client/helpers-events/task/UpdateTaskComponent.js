@@ -36,7 +36,9 @@ class UpdateTaskComponent extends BlazeComponent {
                 "click #edit-name": this.focusName,
                 "click .add-people-need .add-button": this.addPeopleNeed,
                 "click .clear-button": this.clearAddPeopleNeedForm,
-                "click .done-button": this.submitPeopleNeed
+                "click .done-button": this.submitPeopleNeed,
+                "click .people-need .delete": this.deletePeopleNeeded,
+                "click .people-need .duplicate": this.duplicatePeopleNeeded
             }
         ];
     }
@@ -44,6 +46,17 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////////////////////////////////////////////////////////
     ////////////////////    UPDATE TIMESLOTS SECTION
     ////////////////////////////////////////////////////////////////////////
+
+    deletePeopleNeeded(e){
+        var peopleNeededId = $(e.target).data("peopleneededid");
+        console.log(peopleNeededId);
+        PeopleNeedService.removePeopleNeed(this.data(),this.data().timeSlots[this.updatedTimeSlotIndex],{_id:peopleNeededId});
+    }
+
+    duplicatePeopleNeeded(e){
+        var peopleNeededId = $(e.target).data("peopleneededid");
+
+    }
 
     updateTimeSlotStartDate() {
         return _.bind(function (newDate) {
@@ -97,6 +110,10 @@ class UpdateTaskComponent extends BlazeComponent {
         return this.data().timeSlots[this.updatedTimeSlotIndex];
     }
 
+    currentTimeSlotPeopleNeeded(){
+        return this.currentTimeSlot().peopleNeeded;
+    }
+
     updatePeopleNeedUserIdPath(){
         var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
         return "timeSlots."+this.updatedTimeSlotIndex+".peopleNeeded."+peopleNeedIndex+".userId";
@@ -113,7 +130,7 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
     _currentTimeSlotPeopleNeedIndex() {
-        return PeopleNeedService.getPeopleNeedIndex(this.currentTimeSlot(), this.currentData());
+        return PeopleNeedService.getPeopleNeedIndex(this.currentTimeSlot(), Template.currentData());
     }
 
 
