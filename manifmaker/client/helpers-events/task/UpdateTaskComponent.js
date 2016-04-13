@@ -47,13 +47,13 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////    UPDATE TIMESLOTS SECTION
     ////////////////////////////////////////////////////////////////////////
 
-    deletePeopleNeeded(e){
+    deletePeopleNeeded(e) {
         var peopleNeededId = $(e.target).data("peopleneededid");
         console.log(peopleNeededId);
-        PeopleNeedService.removePeopleNeed(this.data(),this.data().timeSlots[this.updatedTimeSlotIndex],{_id:peopleNeededId});
+        PeopleNeedService.removePeopleNeed(this.data(), this.data().timeSlots[this.updatedTimeSlotIndex], {_id: peopleNeededId});
     }
 
-    duplicatePeopleNeeded(e){
+    duplicatePeopleNeeded(e) {
         var peopleNeededId = $(e.target).data("peopleneededid");
 
     }
@@ -110,29 +110,43 @@ class UpdateTaskComponent extends BlazeComponent {
         return this.data().timeSlots[this.updatedTimeSlotIndex];
     }
 
-    currentTimeSlotPeopleNeeded(){
+    currentTimeSlotPeopleNeeded() {
         return this.currentTimeSlot().peopleNeeded;
     }
 
-    updatePeopleNeedUserIdPath(){
+    updatePeopleNeedUserIdPath() {
         var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
-        return "timeSlots."+this.updatedTimeSlotIndex+".peopleNeeded."+peopleNeedIndex+".userId";
+        return "timeSlots." + this.updatedTimeSlotIndex + ".peopleNeeded." + peopleNeedIndex + ".userId";
     }
 
-    updatePeopleNeedTeamIdPath(){
+    updatePeopleNeedTeamIdPath() {
         var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
-        return "timeSlots."+this.updatedTimeSlotIndex+".peopleNeeded."+peopleNeedIndex+".teamId";
+        return "timeSlots." + this.updatedTimeSlotIndex + ".peopleNeeded." + peopleNeedIndex + ".teamId";
     }
 
-    updatePeopleNeedSkillsPath(){
+    updatePeopleNeedSkillsPath() {
         var peopleNeedIndex = this._currentTimeSlotPeopleNeedIndex();
-        return "timeSlots."+this.updatedTimeSlotIndex+".peopleNeeded."+peopleNeedIndex+".skills";
+        return "timeSlots." + this.updatedTimeSlotIndex + ".peopleNeeded." + peopleNeedIndex + ".skills";
     }
+
+    pathWithArrayPeopleNeeded() {
+        return [
+            {
+                path: "timeSlots",
+                _id: this.currentTimeSlot()._id
+            },
+            {
+                path: "peopleNeeded",
+                _id: this.currentData()._id
+            }
+        ]
+
+    }
+
 
     _currentTimeSlotPeopleNeedIndex() {
         return PeopleNeedService.getPeopleNeedIndex(this.currentTimeSlot(), Template.currentData());
     }
-
 
 
     ////////////////////////////////////////////////////////////////////////

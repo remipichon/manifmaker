@@ -51,6 +51,9 @@ SelectComponent =
             this.updateCollection = this.data().updateCollection; //should be in window scope
             this.updateItemId = this.data().updateItemId; //mongoId
             this.updateItemPath = this.data().updateItemPath; //path to an array
+            this.pathWithArray = this.data().pathWithArray || null;
+            console.info("updateItemPath",this.updateItemPath);
+            console.info("pathWithArray",this.pathWithArray);
 
             //quick select arguments
             if (this.data().quickSelectLabel && (this.data().quickSelectIds || this.data().quickSelectId)) {
@@ -67,6 +70,7 @@ SelectComponent =
             super();
             this.isRendered = false;
             this.searchQuery = new ReactiveVar("");
+            console.info("constructor");
         }
 
         onRendered() {
@@ -114,9 +118,62 @@ SelectComponent =
             }
         }
 
+        /**
+         * either extract from the updateItemPath or form pathWithArray and updateItemPath
+         *
+         * updateItemPath alone :
+         *
+         *      User object + pathToUpdate="userId" => extract the value stored in userId
+         *      Task object + pathToUpdate="timeSlots.0.peopleNeeded.1.skills" => extract skills array of second peopleNeeded from first timeSlots of the task
+         *
+         *  pathWithArray and updateItemPath :
+         *
+         *      Task object + pathWithArray = [
+         *            {
+         *                path: "timeSlots",
+         *                _id: "0f89d7491be7cc4977fe85e9"
+         *            },
+         *            {
+         *                path: "peopleNeeded",
+         *                _id:"4c1ed4cdf1c83e946ed9a38b"
+         *            }
+         *            ];
+         *          + pathToUpdate =  "userId"
+         *      => extract userId value from people needed identified by its _id from time slot identified by its _id
+         *
+         *
+         * @returns {nested}
+         */
         optionsToUpdate() {
-            var leaf = Leaf(window[this.updateCollection].findOne(this.updateItemId), this.updateItemPath);
-            return leaf;
+            if(this.pathWithArray){
+                //var pathWithArray = [
+                //    {
+                //        path: "timeSlots",
+                //        _id: "0f89d7491be7cc4977fe85e9"
+                //    },
+                //    {
+                //        path: "peopleNeeded",
+                //        _id:"4c1ed4cdf1c83e946ed9a38b"
+                //    }
+                //];
+
+                //var pathToUpdate = "userId";
+
+
+                var leaf = Tasks.findOne();//TODO user this.updateItemId
+                _.each(this.pathWithArray,function(pathObj){
+                    leaf = _.findWhere(Leaf(leaf,pathObj.path),{_id:pathObj._id});
+                });
+
+                console.info("leaf with pathWithArray",leaf[this.updateItemPath]);
+                return leaf[this.updateItemPath];
+
+            } else {
+                var leaf = Leaf(window[this.updateCollection].findOne(this.updateItemId), this.updateItemPath);
+                console.info("leaf without pathWithArray",leaf);
+                return leaf;
+            }
+
         }
 
         optionValue() {
