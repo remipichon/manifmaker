@@ -178,30 +178,35 @@
 
                         <div class="col-md-12 add-people-need">
                             <div class="row">
-                                <label>Add a people need {{tempPeopleNeedId}}</label> <i class="material-icons add-button">add</i><i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>
+                                <label>Add a people need {{tempPeopleNeedId}}</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}
                             </div>
-                            <div id="add-people-need-form" class="row">
-                                <div class="col-md-6">
-                                    {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
-                                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
-                                    updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
-                                    nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
-                                    }}
+                            {{#if displayAddPeopleNeedForm}}
+                                <div id="add-people-need-form" class="row">
+                                    <div class="col-md-6">
+                                        {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
+                                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
+                                        updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
+                                        nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                                        }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
+                                        optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
+                                        updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
+                                        }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
+                                        optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                        updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
+                                        nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                                        }}
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                     {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
-                                    optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
-                                    updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
-                                    }}
+                                <div class="row error-holder">
+                                    {{createPeopleNeededError}}
                                 </div>
-                                <div class="col-md-6">
-                                     {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
-                                    optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                                    updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
-                                    nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
-                                    }}
-                                </div>
-                            </div>
+                            {{/if}}
 
                         </div>
                     </div>

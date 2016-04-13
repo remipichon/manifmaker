@@ -15,10 +15,15 @@ class UpdateTaskComponent extends BlazeComponent {
                 skills: []
             })
         );
-        this.updatedTimeSlotIndex = 1;
+        this.updatedTimeSlotIndex = new ReactiveVar(1); //TODO cf workflow creation/update timeslot
         this.updatetimeSlotDatesErrorArray = new ReactiveVar([]);
         this.currentSelectedStartDate = null;
         this.currentSelectedEndDate = null;
+
+        ////ADD PEOPLENEED SECTION
+        this.displayAddPeopleNeedFormReactiveVar = new ReactiveVar(false);
+        this.createPeopleNeededErrorArray = new ReactiveVar([]);
+
     }
 
     onRendered() {
@@ -31,14 +36,16 @@ class UpdateTaskComponent extends BlazeComponent {
     events() {
         return [
             {
-                "input .header-limited-to-text": this.displayDoneButton,
-                "click #done-name": this.updateName,
-                "click #edit-name": this.focusName,
+                "input .header-limited-to-text": this.displayDoneButton,//TODO more precise selector
+                "click #done-name": this.updateName,//TODO more precise selector
+                "click #edit-name": this.focusName,//TODO more precise selector
+                "click .people-need .delete": this.deletePeopleNeeded, //TODO more precise selector
+                "click .people-need .duplicate": this.duplicatePeopleNeeded, //TODO more precise selector
+
+                //ADD PEOPLENEED SECTION
                 "click .add-people-need .add-button": this.addPeopleNeed,
-                "click .clear-button": this.clearAddPeopleNeedForm,
-                "click .done-button": this.submitPeopleNeed,
-                "click .people-need .delete": this.deletePeopleNeeded,
-                "click .people-need .duplicate": this.duplicatePeopleNeeded
+                "click .add-people-need .done-button": this.submitPeopleNeed,
+                "click .add-people-need .clear-button": this.clearAddPeopleNeedForm,
             }
         ];
     }
@@ -49,7 +56,7 @@ class UpdateTaskComponent extends BlazeComponent {
 
     deletePeopleNeeded(e) {
         var peopleNeededId = $(e.target).data("peopleneededid");
-        PeopleNeedService.removePeopleNeed(this.data(), this.data().timeSlots[this.updatedTimeSlotIndex], {_id: peopleNeededId});
+        PeopleNeedService.removePeopleNeed(this.data(), this.data().timeSlots[this.updatedTimeSlotIndex.get()], {_id: peopleNeededId});
     }
 
     duplicatePeopleNeeded(e) {
@@ -88,9 +95,9 @@ class UpdateTaskComponent extends BlazeComponent {
     updateTimeSlotDates(start, end) {
         var $set = {};
         if (start)
-            $set["timeSlots." + this.updatedTimeSlotIndex + ".start"] = start.toDate();
+            $set["timeSlots." + this.updatedTimeSlotIndex.get() + ".start"] = start.toDate();
         if (end)
-            $set["timeSlots." + this.updatedTimeSlotIndex + ".end"] = end.toDate();
+            $set["timeSlots." + this.updatedTimeSlotIndex.get() + ".end"] = end.toDate();
 
         Tasks.update({_id: this.data()._id}, {
             $set: $set
@@ -107,12 +114,8 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
     currentTimeSlot() {
-        return this.data().timeSlots[this.updatedTimeSlotIndex];
+        return this.data().timeSlots[this.updatedTimeSlotIndex.get()];
     }
-
-    //currentTimeSlotPeopleNeeded() {
-    //    return this.currentTimeSlot().peopleNeeded;
-    //}
 
     pathWithArrayPeopleNeeded() {
         return [
@@ -130,8 +133,12 @@ class UpdateTaskComponent extends BlazeComponent {
 
 
     ////////////////////////////////////////////////////////////////////////
-    ////////////////////    ADD TIMESLOTS SECTION
+    ////////////////////    ADD PEOPLENEED SECTION
     ////////////////////////////////////////////////////////////////////////
+
+    displayAddPeopleNeedForm(){
+        return this.displayAddPeopleNeedFormReactiveVar.get();
+    }
 
     clearAddPeopleNeedForm() {
         TempCollection.update(this.tempPeopleNeedIdReactive.get(), {
@@ -140,15 +147,7 @@ class UpdateTaskComponent extends BlazeComponent {
             skills: []
         });
 
-        this.displayAddPeopleNeedForm(false);
-    }
-
-    displayAddPeopleNeedForm(toDisplay) {
-        if (toDisplay)
-            this.$("#add-people-need-form").fadeIn(600);
-        else
-            this.$("#add-people-need-form").fadeOut(600);
-
+        this.displayAddPeopleNeedFormReactiveVar.set(false);
     }
 
     tempPeopleNeedId() {
@@ -159,16 +158,38 @@ class UpdateTaskComponent extends BlazeComponent {
      * prepare form to add a people need, not submit
      */
     addPeopleNeed() {
-        this.displayAddPeopleNeedForm(true);
+        this.displayAddPeopleNeedFormReactiveVar.set(true);
     }
 
     /**
      * add people need to the task collection object
      */
     submitPeopleNeed() {
-        //TODO store in database dans le bon timeslot
+        var data = TempCollection.findOne(this.tempPeopleNeedIdReactive.get());
+        var data = {
+            userId: data.userId,
+            teamId: data.teamId,
+            skills: data.skills
+        };
 
+        Tasks.update({_id: this.data()._id}, {
+            $push: {
+                ["timeSlots."+this.updatedTimeSlotIndex.get()+".peopleNeeded"] : data //TODO should not be reactive when updatedTimeSlotIndex change
+            }
+        }, _.bind(function (error, docAffected) {
+            if (error) {
+                this.createPeopleNeededErrorArray.set([error.message]);
+            } else {
+                this.createPeopleNeededErrorArray.set([]);
+                this.clearAddPeopleNeedForm();
+            }
 
+        }, this));
+
+    }
+
+    createPeopleNeededError() {
+        return this.createPeopleNeededErrorArray.get();
     }
 
 

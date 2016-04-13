@@ -80,6 +80,8 @@ Schemas.PeopleNeed = new SimpleSchema({
             if (this.value)
                 if (!Users.findOne(this.value))
                     return "unknownId";
+
+            //TODO verfier qu'il n'existe pas deja un people need de ce user pour ce timeslot
         },
         autoform: {
             afFieldInput: {
@@ -95,11 +97,11 @@ Schemas.PeopleNeed = new SimpleSchema({
             if (!this.value) return 1;//autoValue already dit its job
             if (!Teams.findOne(this.value))
                 return "unknownId";
+            if (this.value !== null && this.field(this.key.replace("teamId","userId")).value !== null) { //if userId is set
+                return "peopleNeedUserId";
+            }
         },
         autoValue: function () {
-            if (this.field('userId').isSet) { //if userId is set, teamId is not take into account
-                return null;
-            }
             if (!this.isSet)
                 return null;
         },
@@ -114,9 +116,6 @@ Schemas.PeopleNeed = new SimpleSchema({
         type: [SimpleSchema.RegEx.Id],
         optional: true,
         autoValue: function () { //if userId is set, skills is not take into account
-            if (this.field('userId').isSet) {
-                return [];
-            }
             if (!this.isSet)
                 return [];
         },
@@ -125,6 +124,9 @@ Schemas.PeopleNeed = new SimpleSchema({
                 if (!Skills.findOne(skill._id))
                     return "skillsNotFound"
             });
+            if (this.value.length !== 0 && this.field(this.key.replace("skills","userId")).value !== null) { //if userId is set
+                return "peopleNeedUserId";
+            }
         },
         autoform: {
             afFieldInput: {

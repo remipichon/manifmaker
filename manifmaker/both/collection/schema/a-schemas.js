@@ -8,7 +8,8 @@ SimpleSchema.messages({
     timeSlotConflictDate: `Time slot can't overlap. Check time slot start and end date conflicts with all others time slots`,
     skillsNotFound: 'Skills not found',
     taskAssignmentNotMatching: "Task assignment do not match real assignment",
-    userAssignmentNotMatching: "User assignment do not match real assignment"
+    userAssignmentNotMatching: "User assignment do not match real assignment",
+    peopleNeedUserId: "If a specific user is asked, team and skill are not relevant. Please either pick a user OR a team and/or some skills."
 });
 
 Schemas.helpers = {};
