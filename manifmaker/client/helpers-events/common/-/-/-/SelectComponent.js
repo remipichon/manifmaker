@@ -17,7 +17,7 @@ SelectComponent =
             //to implement
         }
 
-        quickSelect(){
+        quickSelect() {
             //to implement
         }
 
@@ -52,8 +52,6 @@ SelectComponent =
             this.updateItemId = this.data().updateItemId; //mongoId
             this.updateItemPath = this.data().updateItemPath; //path to an array
             this.pathWithArray = this.data().pathWithArray || null;
-            console.info("updateItemPath",this.updateItemPath);
-            console.info("pathWithArray",this.pathWithArray);
 
             //quick select arguments
             if (this.data().quickSelectLabel && (this.data().quickSelectIds || this.data().quickSelectId)) {
@@ -63,24 +61,23 @@ SelectComponent =
             }
 
             this.checkItemPath();
-        }
+        }  
 
 
         constructor() {
             super();
             this.isRendered = false;
             this.searchQuery = new ReactiveVar("");
-            console.info("constructor");
         }
 
         onRendered() {
             //this.$(".custom-select-label-wrapper[data-popover]").on("show.bs.popover",this.onPopoverShow);
             this.$('.custom-select-label-wrapper[data-popover]').popover({html: true, trigger: 'click', placement: 'bottom', delay: {show: 50, hide: 400}});
-            if(this.withoutLabel)
-            this.$(".custom-select-icon").click("on",_.bind(function(e){
-                e.stopPropagation();
-                this.$('.custom-select-label-wrapper[data-popover]').popover("show");
-            },this));
+            if (this.withoutLabel)
+                this.$(".custom-select-icon").click("on", _.bind(function (e) {
+                    e.stopPropagation();
+                    this.$('.custom-select-label-wrapper[data-popover]').popover("show");
+                }, this));
             this.isRendered = true;
         }
 
@@ -145,36 +142,75 @@ SelectComponent =
          * @returns {nested}
          */
         optionsToUpdate() {
-            if(this.pathWithArray){
-                //var pathWithArray = [
-                //    {
-                //        path: "timeSlots",
-                //        _id: "0f89d7491be7cc4977fe85e9"
-                //    },
-                //    {
-                //        path: "peopleNeeded",
-                //        _id:"4c1ed4cdf1c83e946ed9a38b"
-                //    }
-                //];
-
-                //var pathToUpdate = "userId";
-
-
-                var leaf = Tasks.findOne();//TODO user this.updateItemId
-                _.each(this.pathWithArray,function(pathObj){
-                    leaf = _.findWhere(Leaf(leaf,pathObj.path),{_id:pathObj._id});
+            if (this.pathWithArray) {
+                var leaf = Tasks.findOne(this.updateItemId);
+                _.each(this.pathWithArray, function (pathObj) {
+                    leaf = _.findWhere(Leaf(leaf, pathObj.path), {_id: pathObj._id});
                 });
-
-                console.info("leaf with pathWithArray",leaf[this.updateItemPath]);
                 return leaf[this.updateItemPath];
 
             } else {
                 var leaf = Leaf(window[this.updateCollection].findOne(this.updateItemId), this.updateItemPath);
-                console.info("leaf without pathWithArray",leaf);
                 return leaf;
             }
 
         }
+
+
+        /**
+         * if pathWithArray, generate a query object to update and a update key for $set.
+         *
+         *     ex : from pathWithArray = [
+         *            {
+         *                path: "timeSlots",
+         *                _id: "0f89d7491be7cc4977fe85e9"
+         *            },
+         *            {
+         *                path: "peopleNeeded",
+         *                _id:"4c1ed4cdf1c83e946ed9a38b"
+         *            }
+         *            ];
+         *          + pathToUpdate =  "userId"
+         *
+         *           generate  ==> "timeSlots.1.peopleNeeded.0.userId
+         *
+         *
+         * @param newOptions
+         */
+        updateOption(newOptions) {
+            var previousOptions = this.optionsToUpdate();
+            if (previousOptions === newOptions) {
+                console.info("single select, nothing to update");
+                return;
+            }
+
+            var pathOrPathWithIndex,index,array;
+
+            if (this.pathWithArray) {
+                //creation du 'path' avec des index...
+
+                pathOrPathWithIndex = "";
+                var leaf = Tasks.findOne(this.updateItemId);
+                _.each(this.pathWithArray, function (pathObj) {
+                    array = leaf;
+                    leaf = _.findWhere(Leaf(leaf, pathObj.path), {_id: pathObj._id});
+                    index = _.indexOf(array[pathObj.path],leaf);
+                    pathOrPathWithIndex += pathObj.path + "." + index + ".";
+                });
+
+                pathOrPathWithIndex += this.updateItemPath
+
+            } else
+                pathOrPathWithIndex = this.updateItemPath;
+
+            window[this.updateCollection].update(this.updateItemId, {
+                    $set: {
+                        [pathOrPathWithIndex]: newOptions
+                    }
+                }
+            );
+        }
+
 
         optionValue() {
             return this.currentData()[this.optionValueName];
@@ -187,7 +223,7 @@ SelectComponent =
                 'input .search-input': this.performSearch,
                 "show.bs.popover .custom-select-label-wrapper[data-popover]": this.onPopoverShow
             }];
-            if(this.quickSelectLabel){
+            if (this.quickSelectLabel) {
                 events.push({
                     "click .quick-select": this.quickSelect
                 });

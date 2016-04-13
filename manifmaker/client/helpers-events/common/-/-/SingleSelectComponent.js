@@ -2,7 +2,6 @@ SingleSelectComponent =
     class SingleSelectComponent extends MultipleSelectComponent {
 
         checkItemPath() {
-            return true;
             //in another method to have a context alone for reactivity
 
             var item = window[this.updateCollection].findOne(this.updateItemId);
@@ -10,16 +9,16 @@ SingleSelectComponent =
                 throw new Meteor.Error(`${this.constructor.name} : could not find ${this.updateItemId} in collection ${this.updateCollection}`);
 
             //is it a MongoDB id type ?
-            try {
-                if (Schemas[this.updateCollection].pick([this.updateItemPath])._schema[this.updateItemPath].type !== SimpleSchema.RegEx.Id)
-                    throw new Meteor.Error(`${this.constructor.name}  : path ${this.updateItemPath} should not refers to an object (nor array)`);
-            } catch(Error){
-                throw new Meteor.Error(`${this.constructor.name}  : path ${this.updateItemPath} should not refers to an object (nor array)`);
-            }
+            //try {
+            //    if (Schemas[this.updateCollection].pick([this.updateItemPath])._schema[this.updateItemPath].type !== SimpleSchema.RegEx.Id)
+            //        throw new Meteor.Error(`${this.constructor.name}  : path ${this.updateItemPath} should not refers to an object (nor array)`);
+            //} catch (Error) {
+            //    throw new Meteor.Error(`${this.constructor.name}  : path ${this.updateItemPath} should not refers to an object (nor array)`);
+            //}
 
             //is it an _id  ?
-            if(this.quickSelectId){
-                if(this.quickSelectId.match( SimpleSchema.RegEx.Id )[0] !== this.quickSelectId)
+            if (this.quickSelectId) {
+                if (this.quickSelectId.match(SimpleSchema.RegEx.Id)[0] !== this.quickSelectId)
                     throw new Meteor.Error(`${this.constructor.name}  : this.quickSelectId should be a MongoDB id (should match ${SimpleSchema.RegEx.Id}). Given : ${this.quickSelectId}`);
             }
         }
@@ -46,23 +45,8 @@ SingleSelectComponent =
             return (isChecked) ? "checked" : "";
         }
 
-        quickSelect(){
+        quickSelect() {
             this.updateOption(this.quickSelectId);
-        }
-
-        updateOption(newOptions) {
-            var previousOptions = this.optionsToUpdate();
-            if (previousOptions === newOptions) {
-                console.info("single select, nothing to update");
-                return;
-            }
-
-            window[this.updateCollection].update(this.updateItemId, {
-                    $set: {
-                        [this.updateItemPath]: newOptions
-                    }
-                }
-            );
         }
 
         onCheckboxOptionsChange(e) {
@@ -72,7 +56,7 @@ SingleSelectComponent =
 
             if (cb.is(":checked"))
                 this.updateOption(_id);
-            else if(this.constructor.name === "SingleNonMandatorySelectComponent") //hum, I miss compiled language...
+            else if (this.constructor.name === "SingleNonMandatorySelectComponent") //hum, I miss compiled language...
                 this.updateOption(null);
         }
     }

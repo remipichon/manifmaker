@@ -10,18 +10,18 @@ MultipleSelectComponent =
 
 
             //is it an array ?
-            try {
-                if (!Array.isArray(Schemas[this.updateCollection].pick([this.updateItemPath, this.updateItemPath+".$"])._schema[this.updateItemPath].type())) {
-                    throw new Meteor.Error(`${this.constructor.name} : path ${this.updateItemPath} should refers to an array`);
-                }
-            } catch(TypeError){
-                throw new Meteor.Error(`${this.constructor.name} : path ${this.updateItemPath} should refers to an array`);
-            }
+            //try {
+            //    if (!Array.isArray(Schemas[this.updateCollection].pick([this.updateItemPath, this.updateItemPath+".$"])._schema[this.updateItemPath].type())) {
+            //        throw new Meteor.Error(`${this.constructor.name} : path ${this.updateItemPath} should refers to an array`);
+            //    }
+            //} catch(TypeError){
+            //    throw new Meteor.Error(`${this.constructor.name} : path ${this.updateItemPath} should refers to an array`);
+            //}
 
             //is it an array  of Mongodb id ?
             if(this.quickSelectIds){
                 if(!Array.isArray(this.quickSelectIds))
-                    throw new Meteor.Error(`${this.constructor.name}  : this.quickSelectIds should be an array Given : ${this.quickSelectIds}`);
+                    throw new Meteor.Error(`${this.constructor.name}  : this.quickSelectIds should be an array. Given : ${this.quickSelectIds}`);
 
                 _.each(this.quickSelectIds,_id => {
                     if(_id.match( SimpleSchema.RegEx.Id )[0] !== _id)
@@ -56,15 +56,6 @@ MultipleSelectComponent =
 
         quickSelect() {
             this.updateOption(this.quickSelectIds);
-        }
-
-        updateOption(newOptions) {
-            window[this.updateCollection].update(this.updateItemId, {
-                    $set: {
-                        [this.updateItemPath]: newOptions
-                    }
-                }
-            );
         }
 
         onCheckboxOptionsChange(e) {

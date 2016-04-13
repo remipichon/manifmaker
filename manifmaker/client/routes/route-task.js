@@ -22,6 +22,8 @@ Router.route('/tasks', function () {
  * @name task.create  /task
  */
 Router.route('/task', function () {
+        this.wait(Meteor.subscribe('users'));
+
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
         console.info("routing", "/task");
 
