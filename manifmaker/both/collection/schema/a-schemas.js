@@ -9,7 +9,9 @@ SimpleSchema.messages({
     skillsNotFound: 'Skills not found',
     taskAssignmentNotMatching: "Task assignment do not match real assignment",
     userAssignmentNotMatching: "User assignment do not match real assignment",
-    peopleNeedUserId: "If a specific user is asked, team and skill are not relevant. Please either pick a user OR a team and/or some skills."
+    peopleNeedUserId: "If a specific user is asked, team and skill are not relevant. Please either pick a user OR a team and/or some skills.",
+    peopleNeedIsEmpty: "A people need requires either a user either a team and/or some skills.",
+    onePeopleNeedUserIdPerTimeSlot: "A time slot can not have more than once the same need for a user id",
 });
 
 Schemas.helpers = {};

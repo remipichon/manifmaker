@@ -1,3 +1,4 @@
+//TODO use something new from 1.3 instead of this ugly folder name trick
 SelectComponent =
     class SelectComponent extends BlazeComponent {
 
@@ -59,6 +60,8 @@ SelectComponent =
                 this.quickSelectIds = this.data().quickSelectIds || null;
                 this.quickSelectLabel = this.data().quickSelectLabel;
             }
+
+            this.updateCallback = this.data().updateCallback;
 
             this.checkItemPath();
         }  
@@ -207,10 +210,9 @@ SelectComponent =
                     $set: {
                         [pathOrPathWithIndex]: newOptions
                     }
-                }
+                },this.updateCallback
             );
         }
-
 
         optionValue() {
             return this.currentData()[this.optionValueName];

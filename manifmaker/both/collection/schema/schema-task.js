@@ -77,11 +77,29 @@ Schemas.PeopleNeed = new SimpleSchema({
         defaultValue: null,
         optional: true,
         custom: function () {
-            if (this.value)
+            if (this.value) {
                 if (!Users.findOne(this.value))
                     return "unknownId";
 
-            //TODO verfier qu'il n'existe pas deja un people need de ce user pour ce timeslot
+                if(this.isUpdate) {
+                    //TODO verfier qu'il n'existe pas deja un people need de ce user pour ce timeslot
+                    var task = Tasks.findOne(this.docId);
+                    var timeSlotIndex = this.key.split(".")[1];
+                    var timeSlot = task.timeSlots[timeSlotIndex];
+
+                    if (Tasks.find({
+                            "timeSlots._id": timeSlot._id,
+                            "timeSlots.$.peopleNeeded.userId": this.value
+                        }).fetch() !== 0) {
+                        return "onePeopleNeedUserIdPerTimeSlot"
+                    }
+                }
+            }
+
+            if(this.value === null &&
+                ( this.field(this.key.replace("userId","skills")).value.length === 0 || !this.field(this.key.replace("userId","skills")).isSet) &&
+                ( this.field(this.key.replace("userId","teamId")).value === null || !this.field(this.key.replace("userId","teamId")).isSet) )
+                return "peopleNeedIsEmpty"
         },
         autoform: {
             afFieldInput: {
@@ -100,6 +118,10 @@ Schemas.PeopleNeed = new SimpleSchema({
             if (this.value !== null &&  this.field(this.key.replace("teamId","userId")).isSet && this.field(this.key.replace("teamId","userId")).value !== null) { //if userId is set
                 return "peopleNeedUserId";
             }
+            if(this.value === null &&
+                ( this.field(this.key.replace("teamId","skills")).value.length === 0 || !this.field(this.key.replace("teamId","skills")).isSet) &&
+                ( this.field(this.key.replace("teamId","userId")).value === null || !this.field(this.key.replace("teamId","userId")).isSet) )
+                return "peopleNeedIsEmpty"
         },
         autoValue: function () {
             if (!this.isSet)
@@ -127,6 +149,10 @@ Schemas.PeopleNeed = new SimpleSchema({
             if (this.value.length !== 0 && this.field(this.key.replace("skills","userId")).isSet && this.field(this.key.replace("skills","userId")).value !== null) { //if userId is set
                 return "peopleNeedUserId";
             }
+            if(this.value.length === 0 &&
+                ( this.field(this.key.replace("skills","teamId")).value === null || !this.field(this.key.replace("skills","teamId")).isSet) &&
+                ( this.field(this.key.replace("skills","userId")).value === null || !this.field(this.key.replace("skills","userId")).isSet) )
+                return "peopleNeedIsEmpty"
         },
         autoform: {
             afFieldInput: {

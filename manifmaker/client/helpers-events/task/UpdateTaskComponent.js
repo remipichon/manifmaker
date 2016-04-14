@@ -20,6 +20,8 @@ class UpdateTaskComponent extends BlazeComponent {
         this.currentSelectedStartDate = null;
         this.currentSelectedEndDate = null;
         this.bulkIds = {};
+        this.updatePeopleNeededErrorArray = new ReactiveVar([]);
+
 
         ////ADD PEOPLENEED SECTION
         this.displayAddPeopleNeedFormReactiveVar = new ReactiveVar(false);
@@ -177,6 +179,20 @@ class UpdateTaskComponent extends BlazeComponent {
 
 
         return result;
+    }
+
+    updatePeopleNeedCallback(){
+        return _.bind(function(error,docAffected){
+            if (error) {
+                this.updatePeopleNeededErrorArray.set([error.message]);
+            } else {
+                this.updatePeopleNeededErrorArray.set([]);
+            }
+        },this);
+    }
+
+    updatePeopleNeededError() {
+        return this.updatePeopleNeededErrorArray.get();
     }
 
 

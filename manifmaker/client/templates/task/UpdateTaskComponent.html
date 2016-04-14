@@ -29,28 +29,28 @@
                             </div>
                         </div>
 
-                        <!--  <div>
+                        <div>
                             {{> SingleSelectComponent selectLabel="Team" title="Update team"
-                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                        updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId"
-                        }}
+                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                            updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId"
+                            }}
                         </div>
 
                         <div>
                             {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
-                        optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                        updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId"
-                        }}
+                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                            updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId"
+                            }}
                         </div>
 
                         <div>
                             <div>
                                 {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
-                        optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                        updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId"
-                        }}
+                                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId"
+                                }}
                             </div>
-                        </div>-->
+                        </div>
                     </div>
                     <div class="col-md-9">
                         <div>
@@ -69,18 +69,18 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div>
-                                <!--  {{> SingleNonMandatorySelectComponent selectLabel="Equipment storage place" title="Equipment storage place"
+                                {{> SingleNonMandatorySelectComponent selectLabel="Equipment storage place" title="Equipment storage place"
                                 optionCollection="EquipmentStorages" optionValueName="name" optionCollectionIndex="EquipmentStoragesIndex"
                                 updateCollection="Tasks" updateItemId=this._id updateItemPath="equipmentStorageId"
-                                }}-->
+                                }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div>
-                                <!--    {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
+                                {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
                                 optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
                                 updateCollection="Tasks" updateItemId=this._id updateItemPath="powerSupplyId"
-                                }}-->
+                                }}
                             </div>
                         </div>
                     </div>
@@ -144,32 +144,35 @@
                                                 </div>
                                                 <div class="col-md-9">
                                                     {{#if userId}}
-                                                        {{userId}}
                                                         {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
                                                         optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
                                                         updateCollection="Tasks" updateItemId=../_id
                                                         updateItemPath="userId"
-                                                        pathWithArray=pathWithArrayPeopleNeeded}}
+                                                        pathWithArray=pathWithArrayPeopleNeeded
+                                                        updateCallback=updatePeopleNeedCallback}}
                                                     {{/if}}
                                                     {{#if teamId}}
-                                                        {{teamId}}
                                                         {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
                                                         optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                                                         updateCollection="Tasks" updateItemId=../_id
                                                         updateItemPath="teamId"
-                                                        bulkPeopleNeededIds=bulkPeopleNeededIds}}
+                                                        bulkPeopleNeededIds=bulkPeopleNeededIds
+                                                        updateCallback=updatePeopleNeedCallback}}
                                                     {{/if}}
                                                     {{#if skills}}
-                                                        {{skills}}
                                                         {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
                                                         optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
                                                         updateCollection="Tasks" updateItemId=../_id
                                                         updateItemPath="skills"
-                                                        bulkPeopleNeededIds=bulkPeopleNeededIds}}
+                                                        bulkPeopleNeededIds=bulkPeopleNeededIds
+                                                        updateCallback=updatePeopleNeedCallback}}
                                                     {{/if}}
                                                 </div>
                                             </div>
                                         {{/each}}
+                                    </div>
+                                    <div class="row error-holder">
+                                        {{updatePeopleNeededError}}
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +180,7 @@
 
                         <div class="col-md-12 add-people-need">
                             <div class="row">
-                                <label>Add a people need {{tempPeopleNeedId}}</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}
+                                <label>Add a people need</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}
                             </div>
                             {{#if displayAddPeopleNeedForm}}
                                 <div id="add-people-need-form" class="row">
