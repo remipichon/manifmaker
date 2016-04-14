@@ -134,11 +134,11 @@
                                     <label>People needs</label>
 
                                     <div class="row">
-                                        {{#each currentTimeSlot.peopleNeeded}}
+                                        {{#each currentTimeSlotPeopleNeededMerged}}
 
                                             <div class="row">
                                                 <div class="col-md-3">
-                                                    <span>1</span>
+                                                    <span>{{count}}</span>
                                                     <span class="glyphicon glyphicon-trash delete" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
                                                     <span class="glyphicon glyphicon-file duplicate" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
                                                 </div>
@@ -153,13 +153,6 @@
                                                     {{/if}}
                                                     {{#if teamId}}
                                                         {{teamId}}
-                                                        {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific a team need"
-                                                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                                                        updateCollection="Tasks" updateItemId=../_id
-                                                        updateItemPath="teamId"
-                                                        pathWithArray=pathWithArrayPeopleNeeded}}
-
-                                                        BULK :
                                                         {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
                                                         optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                                                         updateCollection="Tasks" updateItemId=../_id
@@ -168,19 +161,11 @@
                                                     {{/if}}
                                                     {{#if skills}}
                                                         {{skills}}
-                                                        {{> MultipleNonMandatorySelectComponent withoutLabel=true title="Specific some needed skills"
-                                                        optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
-                                                        updateCollection="Tasks" updateItemId=../_id
-                                                        updateItemPath="skills"
-                                                        pathWithArray=pathWithArrayPeopleNeeded
-                                                        }}
-                                                        BULK :
                                                         {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
                                                         optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
                                                         updateCollection="Tasks" updateItemId=../_id
                                                         updateItemPath="skills"
                                                         bulkPeopleNeededIds=bulkPeopleNeededIds}}
-                                                        }}
                                                     {{/if}}
                                                 </div>
                                             </div>

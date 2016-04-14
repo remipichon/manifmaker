@@ -19,6 +19,7 @@ class UpdateTaskComponent extends BlazeComponent {
         this.updatetimeSlotDatesErrorArray = new ReactiveVar([]);
         this.currentSelectedStartDate = null;
         this.currentSelectedEndDate = null;
+        this.bulkIds = {};
 
         ////ADD PEOPLENEED SECTION
         this.displayAddPeopleNeedFormReactiveVar = new ReactiveVar(false);
@@ -117,6 +118,29 @@ class UpdateTaskComponent extends BlazeComponent {
         return this.data().timeSlots[this.updatedTimeSlotIndex.get()];
     }
 
+    currentTimeSlotPeopleNeededMerged(){
+        var peopleNeeded =  this.data().timeSlots[this.updatedTimeSlotIndex.get()].peopleNeeded;
+
+        //group by identical people need
+        var peopleNeededGroupBy = _.groupBy(peopleNeeded,function(peopleNeed){
+            return peopleNeed.userId + peopleNeed.skills + peopleNeed.teamId
+        });
+
+        var bulkIds = {};
+
+        //take only the first one, doesn't really matter as their are identical
+        var peopleNeededMerged = _.map(peopleNeededGroupBy,function(groupBy){
+            //use first one as a key for the bulk ids
+            bulkIds[groupBy[0]._id] = _.map(groupBy,function(peopleNeed){return peopleNeed._id})
+            return _.extend(groupBy[0],{count: groupBy.length});
+        });
+
+        this.bulkIds = bulkIds;
+
+        return peopleNeededMerged;
+
+    }
+
     pathWithArrayPeopleNeeded() {
         return [
             {
@@ -139,7 +163,7 @@ class UpdateTaskComponent extends BlazeComponent {
             },
             {
                 path: "peopleNeeded",
-                _ids: [this.currentData()._id]
+                _ids: this.bulkIds[this.currentData()._id]
             }
         ];
 

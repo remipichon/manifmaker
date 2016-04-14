@@ -329,7 +329,21 @@ populateData = function () {
                         skills: [skill1Id]
                     },
                     {
+                        teamId: team1Id,
                         skills: [skill1Id]
+                    },
+                    {
+                        teamId: team1Id,
+                        skills: [skill1Id]
+                    },
+                    {
+                        skills: [skill1Id]
+                    },
+                    {
+                        skills: [skill1Id,skill2Id]
+                    },
+                    {
+                        skills: [skill1Id,skill2Id]
                     },
                     {
                         skills: [skill1Id,skill2Id]
