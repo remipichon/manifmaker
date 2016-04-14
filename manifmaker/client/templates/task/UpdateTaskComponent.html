@@ -158,6 +158,13 @@
                                                         updateCollection="Tasks" updateItemId=../_id
                                                         updateItemPath="teamId"
                                                         pathWithArray=pathWithArrayPeopleNeeded}}
+
+                                                        BULK :
+                                                        {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
+                                                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                                        updateCollection="Tasks" updateItemId=../_id
+                                                        updateItemPath="teamId"
+                                                        bulkPeopleNeededIds=bulkPeopleNeededIds}}
                                                     {{/if}}
                                                     {{#if skills}}
                                                         {{skills}}
@@ -166,6 +173,13 @@
                                                         updateCollection="Tasks" updateItemId=../_id
                                                         updateItemPath="skills"
                                                         pathWithArray=pathWithArrayPeopleNeeded
+                                                        }}
+                                                        BULK :
+                                                        {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
+                                                        optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
+                                                        updateCollection="Tasks" updateItemId=../_id
+                                                        updateItemPath="skills"
+                                                        bulkPeopleNeededIds=bulkPeopleNeededIds}}
                                                         }}
                                                     {{/if}}
                                                 </div>

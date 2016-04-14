@@ -1,4 +1,4 @@
-class SingleNonMandatorySelectComponent extends SingleSelectComponent {
+SingleNonMandatorySelectComponent = class SingleNonMandatorySelectComponent extends SingleSelectComponent {
 
     fakeConstructorWithDataArguments() {
         super.fakeConstructorWithDataArguments();

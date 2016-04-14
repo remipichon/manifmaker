@@ -97,7 +97,7 @@ Schemas.PeopleNeed = new SimpleSchema({
             if (!this.value) return 1;//autoValue already dit its job
             if (!Teams.findOne(this.value))
                 return "unknownId";
-            if (this.value !== null && this.field(this.key.replace("teamId","userId")).value !== null) { //if userId is set
+            if (this.value !== null &&  this.field(this.key.replace("teamId","userId")).isSet && this.field(this.key.replace("teamId","userId")).value !== null) { //if userId is set
                 return "peopleNeedUserId";
             }
         },
@@ -124,7 +124,7 @@ Schemas.PeopleNeed = new SimpleSchema({
                 if (!Skills.findOne(skill._id))
                     return "skillsNotFound"
             });
-            if (this.value.length !== 0 && this.field(this.key.replace("skills","userId")).value !== null) { //if userId is set
+            if (this.value.length !== 0 && this.field(this.key.replace("skills","userId")).isSet && this.field(this.key.replace("skills","userId")).value !== null) { //if userId is set
                 return "peopleNeedUserId";
             }
         },

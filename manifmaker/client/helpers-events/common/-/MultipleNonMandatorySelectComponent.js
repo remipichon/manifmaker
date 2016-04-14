@@ -1,4 +1,4 @@
-class MultipleNonMandatorySelectComponent extends MultipleSelectComponent {
+MultipleNonMandatorySelectComponent = class MultipleNonMandatorySelectComponent extends MultipleSelectComponent {
 
     fakeConstructorWithDataArguments() {
         super.fakeConstructorWithDataArguments();

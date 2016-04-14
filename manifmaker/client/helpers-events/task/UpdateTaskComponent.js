@@ -131,6 +131,22 @@ class UpdateTaskComponent extends BlazeComponent {
 
     }
 
+    bulkPeopleNeededIds(){
+        var result =  [
+            {
+                path: "timeSlots",
+                _id: this.currentTimeSlot()._id
+            },
+            {
+                path: "peopleNeeded",
+                _ids: [this.currentData()._id]
+            }
+        ];
+
+
+        return result;
+    }
+
 
     ////////////////////////////////////////////////////////////////////////
     ////////////////////    ADD PEOPLENEED SECTION
