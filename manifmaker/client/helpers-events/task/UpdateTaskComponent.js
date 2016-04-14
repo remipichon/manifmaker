@@ -62,7 +62,13 @@ class UpdateTaskComponent extends BlazeComponent {
 
     duplicatePeopleNeeded(e) {
         var peopleNeededId = $(e.target).data("peopleneededid");
-        console.log("TODO duplicatePeopleNeeded");//TODO
+        var peopleNeed = PeopleNeedService.getPeopleNeedByIndex(this.data().timeSlots[this.updatedTimeSlotIndex.get()], peopleNeededId);
+
+        this.submitPeopleNeedWithData({
+            userId: peopleNeed.userId,
+            teamId: peopleNeed.teamId,
+            skills: peopleNeed.skills
+        })
 
     }
 
@@ -118,21 +124,23 @@ class UpdateTaskComponent extends BlazeComponent {
         return this.data().timeSlots[this.updatedTimeSlotIndex.get()];
     }
 
-    currentTimeSlotPeopleNeededMerged(){
-        var peopleNeeded =  this.data().timeSlots[this.updatedTimeSlotIndex.get()].peopleNeeded;
+    currentTimeSlotPeopleNeededMerged() {
+        var peopleNeeded = this.data().timeSlots[this.updatedTimeSlotIndex.get()].peopleNeeded;
 
         //group by identical people need
-        var peopleNeededGroupBy = _.groupBy(peopleNeeded,function(peopleNeed){
+        var peopleNeededGroupBy = _.groupBy(peopleNeeded, function (peopleNeed) {
             return peopleNeed.userId + peopleNeed.skills + peopleNeed.teamId
         });
 
         var bulkIds = {};
 
         //take only the first one, doesn't really matter as their are identical
-        var peopleNeededMerged = _.map(peopleNeededGroupBy,function(groupBy){
+        var peopleNeededMerged = _.map(peopleNeededGroupBy, function (groupBy) {
             //use first one as a key for the bulk ids
-            bulkIds[groupBy[0]._id] = _.map(groupBy,function(peopleNeed){return peopleNeed._id})
-            return _.extend(groupBy[0],{count: groupBy.length});
+            bulkIds[groupBy[0]._id] = _.map(groupBy, function (peopleNeed) {
+                return peopleNeed._id
+            })
+            return _.extend(groupBy[0], {count: groupBy.length});
         });
 
         this.bulkIds = bulkIds;
@@ -155,8 +163,8 @@ class UpdateTaskComponent extends BlazeComponent {
 
     }
 
-    bulkPeopleNeededIds(){
-        var result =  [
+    bulkPeopleNeededIds() {
+        var result = [
             {
                 path: "timeSlots",
                 _id: this.currentTimeSlot()._id
@@ -176,7 +184,7 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////    ADD PEOPLENEED SECTION
     ////////////////////////////////////////////////////////////////////////
 
-    displayAddPeopleNeedForm(){
+    displayAddPeopleNeedForm() {
         return this.displayAddPeopleNeedFormReactiveVar.get();
     }
 
@@ -201,20 +209,25 @@ class UpdateTaskComponent extends BlazeComponent {
         this.displayAddPeopleNeedFormReactiveVar.set(true);
     }
 
-    /**
-     * add people need to the task collection object
-     */
-    submitPeopleNeed() {
+
+    submitPeopleNeed(event) {
         var data = TempCollection.findOne(this.tempPeopleNeedIdReactive.get());
-        var data = {
+        data = {
             userId: data.userId,
             teamId: data.teamId,
             skills: data.skills
         };
+        this.submitPeopleNeedWithData(data);
+    }
+
+    /**
+     * add people need to the task collection object
+     */
+    submitPeopleNeedWithData(data) {
 
         Tasks.update({_id: this.data()._id}, {
             $push: {
-                ["timeSlots."+this.updatedTimeSlotIndex.get()+".peopleNeeded"] : data //TODO should not be reactive when updatedTimeSlotIndex change
+                ["timeSlots." + this.updatedTimeSlotIndex.get() + ".peopleNeeded"]: data //TODO should not be reactive when updatedTimeSlotIndex change
             }
         }, _.bind(function (error, docAffected) {
             if (error) {

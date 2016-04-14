@@ -21,6 +21,18 @@ PeopleNeedService =
 
         }
 
+        static getPeopleNeedByIndex(timeSlot, peopleNeedId) {
+            var found;
+            timeSlot.peopleNeeded.forEach(function (peopleNeed, index) {
+                if (peopleNeed._id === peopleNeedId) {
+                    found = peopleNeed;
+                }
+            });
+            return found;
+
+
+        }
+
         /**
          * @memberOf PeopleNeedService
          * @summary Find people need and time slot id for a given task by people need id.
@@ -242,13 +254,6 @@ PeopleNeedService =
             console.info("PeopleNeedService.removePeopleNeed for task", task, "when", timeSlot, "and need", peopleNeed);
             //we have the task
             var timeSlots = task.timeSlots; //all its timeslots
-            //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
-
-
-            //var updatedTimeslot = timeSlot;
-
-            //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
-
 
             var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
             var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
