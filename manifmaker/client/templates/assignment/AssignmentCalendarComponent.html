@@ -1,0 +1,100 @@
+<template name="assignmentCalendar">
+    {{> AssignmentCalendarComponent timeSlotTemplate="assignmentTimeSlotCalendar"}}
+</template>
+
+
+<template name="assignmentTimeSlotCalendar">
+    <div class="creneau usedByTask {{state}} hasPopover" data-popover="true"
+         style="height: {{height}};"
+         data-toggle="popover" title="{{displayHoursMinute start}} to {{displayHoursMinute end}}"
+         data-content='
+                                                <div>
+                                                    <div class="collection">
+                                                        {{#each peopleNeeded}}
+                                                            <div class="peopleNeed collection-item" data-_id="{{_id}}">
+                                                                {{#if userId }}
+                                                                    <div class="user">{{userName}}</div>
+                                                                {{/if}}
+             {{#if teamId}}
+                                                                    <div class="team">{{teamName}}</div>
+                                                                {{/if}}
+                                                                <div>
+                                                                    {{#each skills}}
+                                                                        <div class="skill">{{labelSkills}}</div>
+                                                                    {{/each}}
+                                                                </div>
+                                                            </div>
+                                                        {{/each}}
+                                                    </div>
+
+                                                    Already Assigned
+                                                    <div class="collection">
+                                                        {{#each peopleNeededAssigned}}
+                                                            <div class="peopleNeed assigned  collection-item" data-_id="{{_id}}">
+                                                                Assigned to {{displayUser}}
+                                                                <i>
+                                                                {{#if userId }}
+                                                                    <div class="user">{{userName}}</div>
+                                                                {{/if}}
+             {{#if teamId}}
+                                                                    <div class="team">{{teamName}}</div>
+                                                                {{/if}}
+                                                                <div>
+                                                                    {{#each skills}}
+                                                                        <div class="skill">{{labelSkills}}</div>
+                                                                    {{/each}}
+                                                                </div>
+                                                                </i>
+                                                            </div>
+                                                        {{/each}}
+                                                    </div>
+                                             <div>
+                                             '>
+
+
+        <div class="wrapper on-calendar">
+
+            {{#if taskName}}
+                <span>Assigned to task {{taskName}}</span>
+            {{/if}}
+
+
+            {{#each peopleNeeded}}
+                <!--<div class="peopleNeed" style="height: {{../height}};">-->
+                <div class="peopleNeed">
+                    {{#if userId }}
+                        <div class="user">{{userName}}</div>{{/if}}
+                    {{#if teamId}}
+                        <div class="team">{{teamName}}</div>{{/if}}
+                        <!--{{#ifNotEmpty skills}}-->
+                    <div>
+                        {{#each skills}}
+                            <div class="skill">{{labelSkills}}</div>
+                        {{/each}}
+                    </div>
+                        <!--{{/ifNotEmpty}}-->
+                </div>
+            {{/each}}
+            {{#each peopleNeededAssigned}}
+                <!--<div class="peopleNeed assigned" style="height: {{../height}};">-->
+                <div class="peopleNeed assigned">
+                    <span>Assigned to {{displayUser}}</span>
+                    <i>
+                        {{#if userId }}
+                            <div class="user">{{userName}}</div>{{/if}}
+                        {{#if teamId}}
+                            <div class="team">{{teamName}}</div>{{/if}}
+                            <!--{{#ifNotEmpty skills}}-->
+                        <div>
+                            {{#each skills}}
+                                <div class="skill">{{labelSkills}}</div>
+                            {{/each}}
+                        </div>
+                            <!--{{/ifNotEmpty}}-->
+                    </i>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</template>
+

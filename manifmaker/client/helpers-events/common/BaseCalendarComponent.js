@@ -23,6 +23,9 @@ export class BaseCalendarComponent extends BlazeComponent{
         super();
     }
 
+    template() {
+        return "baseCalendarComponent";
+    }
 
     events() {
         return [

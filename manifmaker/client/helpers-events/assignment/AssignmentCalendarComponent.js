@@ -6,9 +6,6 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         this.peopleNeedAssignedClick = 0; //to double click purpose..
     }
 
-    template() {
-        return "assignmentCalendarComponent"
-    }
 
     labelSkills() {
         return Skills.findOne({_id: this.currentData().toString()}).label;

@@ -1,0 +1,33 @@
+<template name="baseCalendarComponent">
+    <div class="calendar {{assignmentType}}" id="calendar">
+        <div id="titres" class="titres">
+            {{#each days}}
+                <div class="titre_date" date="date">{{displayCalendarTitleDate date}}</div>
+            {{/each}}
+        </div>
+
+        <div class="jours" id="jours">
+            <div class="hours" id="hours">
+                {{#each hours}}
+                    <div class="hour {{sideHoursHeight}}">{{date}}h</div>
+                {{/each}}
+            </div>
+            {{#each days}}
+                <div class="jour" day="{{date}}">
+                    {{#each hours}}
+                        <div class="heure {{isSelected ../date date}}" hours="{{hoursDate ../date}}">
+                            {{#each quarter}}
+                                <div class="quart_heure {{quarterHeight}}"
+                                     quarter="{{quarterDate ../../date ../date}}">
+                                    {{#each timeSlot  ../../date ../date this}}
+                                        {{>Template.dynamic template=../../../../timeSlotTemplate}}
+                                    {{/each}}
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{/each}}
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</template>
