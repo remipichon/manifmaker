@@ -9,43 +9,64 @@ function getCalendarDateTime(date, timeHours, timeMinutes) {
     date.minutes(timeMinutes);
     return date;
 }
-Template.assignmentCalendar.helpers({
-    assignmentType: function () {
+
+export class AssignmentCalendarComponent extends BlazeComponent{
+    constructor(){
+        super();
+        this.peopleNeedAssignedClick = 0; //to double click purpose..
+
+    }
+
+    template(){
+        return "assignmentCalendarComponent"
+    }
+
+    events(){
+        return [
+            {
+                "click .on-calendar .peopleNeed" : this.selectPeopleNeed,
+                "click .heure, .quart_heure" : this.quartHeureOnClick,
+                "click .on-calendar .peopleNeed.assigned" : this.peopleNeedAssignedOnClick,
+                "click .creneau": this.creanOnClick
+            }
+        ]
+    }
+
+    assignmentType () {
         return CurrentAssignmentType.get();
-    },
-    days: function () {
+    }
+    days() {
         return AssignmentCalendarDisplayedDays.find({});
-    },
-    hours: function () {
+    }
+    hours() {
         return AssignmentCalendarDisplayedHours.find({});
-    },
-    quarter: function () {
+    }
+    quarter() {
         return AssignmentCalendarDisplayedQuarter.find({});
-    },
-    displayCalendarTitleDate: function (date) {
+    }
+    displayCalendarTitleDate(date) {
         return new moment(date).format("dddd DD/MM");
-    },
-    hoursDate: function (date) {
-        return getCalendarDateHours(date, this.date);
-    },
-    quarterDate: function (date, timeHours) {
+    }
+    hoursDate(date) {
+        return getCalendarDateHours(date, this.currentData().date);
+    }
+    quarterDate(date, timeHours) {
         return getCalendarDateTime(date, timeHours, this.quarter);
-    },
+    }
 
-    labelSkills: function () {
-        return Skills.findOne({_id: this.toString()}).label;
-    },
+    labelSkills() {
+        return Skills.findOne({_id: this.currentData().toString()}).label;
+    }
 
-    userName: function () {
-        return Users.findOne({_id: this.userId}).name;
-    },
+    userName() {
+        return Users.findOne({_id: this.currentData().userId}).name;
+    }
 
-    teamName: function () {
-        return Teams.findOne({_id: this.teamId}).name;
-    },
+    teamName() {
+        return Teams.findOne({_id: this.currentData().teamId}).name;
+    }
 
-
-    timeSlot: function (date, timeHours, idTask) {
+    timeSlot(date, timeHours, idTask) {
         var startCalendarTimeSlot = getCalendarDateTime(date, timeHours);
         var currentAssignmentType = CurrentAssignmentType.get();
 
@@ -148,8 +169,9 @@ Template.assignmentCalendar.helpers({
 
 
         return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
-    },
-    sideHoursHeight: function () {
+    }
+
+    sideHoursHeight() {
         switch (AssignmentCalendarDisplayedAccuracy.findOne({}).accuracy) {
             case 0.25 :
                 return "oneHour";
@@ -162,8 +184,9 @@ Template.assignmentCalendar.helpers({
             case 4:
                 return "fourHour"
         }
-    },
-    quarterHeight: function () {
+    }
+
+    quarterHeight() {
         switch (AssignmentCalendarDisplayedAccuracy.findOne({}).accuracy) {
             case 0.25 :
                 return "quarterHour";
@@ -176,46 +199,41 @@ Template.assignmentCalendar.helpers({
             case 4:
                 return "fourHour"
         }
-    },
+    }
     //works for .heure et .quart d'heure
-    isSelected: function (date, timeHours) {
+    isSelected(date, timeHours) {
         if(getCalendarDateTime(date, timeHours, 0).isSame(SelectedDate.get())){
             return "selected"
         }
         return ""
     }
 
-});
 
 
-var peopleNeedAssignedClick = 0; //to double click purpose..
-
-Template.assignmentCalendar.events({
-    "click .on-calendar .peopleNeed": function () {
-        SelectedPeopleNeed.set(this);
-
+    selectPeopleNeed() {
+        SelectedPeopleNeed.set(this.currentData());
         //event should bubbles to .creneau
-    },
+    }
 
-    "click .on-calendar .peopleNeed.assigned": function (event) {
+    peopleNeedAssignedOnClick(event) {
         event.stopPropagation();
-        peopleNeedAssignedClick++;
-        if (peopleNeedAssignedClick == 1) {
+        this.peopleNeedAssignedClick++;
+        if (this.peopleNeedAssignedClick == 1) {
             setTimeout(_.bind(function () {
-                if (peopleNeedAssignedClick == 1) {
+                if (this.peopleNeedAssignedClick == 1) {
                     //TODO DISPLAY NOTIF
                     console.debug("TODO DISPLAY NOTIF click on peopleNeed.assigned : double click to perform remove assignment");
                 } else {
                     AssignmentService.taskToUserPerformUserFilterRemoveAssignment();
                 }
-                peopleNeedAssignedClick = 0;
-            },this), 300);
+                this.peopleNeedAssignedClick = 0;
+            },this.currentData()), 300);
         }
 
-    },
+    }
 
     //taskToUser (we click on a complete task time slot)
-    "click .creneau": function () {
+    creanOnClick() {
 
         var currentAssignmentType = CurrentAssignmentType.get();
 
@@ -225,15 +243,15 @@ Template.assignmentCalendar.events({
                 return;
                 break;
             case AssignmentType.TASKTOUSER: //only display users that have at least one availability matching the selected time slot
-                SelectedTimeSlot.set(this);
+                SelectedTimeSlot.set(this.currentData());
 
                 AssignmentService.taskToUserPerformUserFilter();
                 break;
         }
-    },
+    }
 
     //userToTask (we click on a creneau, not on the entire availability)
-    "click .heure, .quart_heure": function (event) {
+    quartHeureOnClick(event) {
         //TODO gerer le double click pour la desaffectation
 
         var currentAssignmentType = CurrentAssignmentType.get();
@@ -355,7 +373,9 @@ Template.assignmentCalendar.events({
                 return [];
         }
     }
-});
+
+}
+AssignmentCalendarComponent.register("AssignmentCalendarComponent");
 
 
 
