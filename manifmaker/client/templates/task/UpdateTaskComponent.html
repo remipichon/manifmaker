@@ -117,6 +117,10 @@
 
                 <div class="panel-body timeslots">
 
+                    <div class="col-md-8">
+                        {{> EditTimeSlotCalendarComponent timeSlotTemplate="updateTimeSlotCalendar"}}
+                    </div>
+
                     <div class="col-md-4">
                         <div class="col-md-12 add-time-slot">
                             <div class="row">
@@ -220,3 +224,33 @@
     </div>
 
 </template>
+
+
+
+<template name="updateTimeSlotCalendar">
+    <div class="creneau {{state}}" style="height: {{height}};">
+
+
+        <div class="wrapper on-calendar">
+
+            {{#each peopleNeeded}}
+                <!--<div class="peopleNeed" style="height: {{../height}};">-->
+                <div class="peopleNeed">
+                    {{#if userId }}
+                        <div class="user">userIcon</div>{{/if}}
+                    {{#if teamId}}
+                        <div class="team">teamIcon</div>{{/if}}
+                        <!--{{#ifNotEmpty skills}}-->
+                    <div>
+                        {{#each skills}}
+                            <div class="skill">skillIcon</div>
+                        {{/each}}
+                    </div>
+                        <!--{{/ifNotEmpty}}-->
+                </div>
+            {{/each}}
+
+        </div>
+    </div>
+</template>
+
