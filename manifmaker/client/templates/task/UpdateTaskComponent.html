@@ -234,12 +234,14 @@
 <template name="updateTimeSlotCalendar">
     <div class="creneau {{state}}" style="height: {{height}};">
 
+        {{getPeopleNeededMerged}}
 
         <div class="wrapper on-calendar">
 
-            {{#each peopleNeeded}}
+            {{#each getPeopleNeededMerged _id}}
                 <!--<div class="peopleNeed" style="height: {{../height}};">-->
                 <div class="peopleNeed">
+                    {{#unless userId}}{{count}}{{/unless}}
                     {{#if userId }}
                         <div class="user">userIcon</div>{{/if}}
                     {{#if teamId}}

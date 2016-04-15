@@ -52,16 +52,6 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
         }
 
-        //if (assignmentsFound.length !== 0) { //at least one assignment TODO code couleur d'avancement en fonction des peoples needed
-        //    data.name = assignmentsFound[0].taskName; //idem, la meme task
-        //    data.state = "in-progress";
-        //    data.taskId = task._id;
-        //
-        //
-        //    founded = assignmentsFound[0]; //normalement ils ont tous les memes date, TODO controler ca
-        //}
-
-
         _.extend(data, founded);
         var end = new moment(founded.end);
         var start = new moment(founded.start);
@@ -72,6 +62,10 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
 
         return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
+    }
+
+    getPeopleNeededMerged(timeSlotId){
+        return this.data().parentInstance.getPeopleNeededMerged(timeSlotId);
     }
 }
 

@@ -130,8 +130,14 @@ class UpdateTaskComponent extends BlazeComponent {
         return this.data().timeSlots[this.updatedTimeSlotIndex.get()];
     }
 
-    currentTimeSlotPeopleNeededMerged() {
-        var peopleNeeded = this.data().timeSlots[this.updatedTimeSlotIndex.get()].peopleNeeded;
+    currentTimeSlotPeopleNeededMerged(){
+        return this.getPeopleNeededMerged(this.currentTimeSlot()._id);
+    }
+
+    getPeopleNeededMerged(timeSlotId) {
+        var peopleNeeded = _.findWhere(this.data().timeSlots,{
+            _id:timeSlotId
+        }).peopleNeeded;
 
         //group by identical people need
         var peopleNeededGroupBy = _.groupBy(peopleNeeded, function (peopleNeed) {
@@ -145,7 +151,7 @@ class UpdateTaskComponent extends BlazeComponent {
             //use first one as a key for the bulk ids
             bulkIds[groupBy[0]._id] = _.map(groupBy, function (peopleNeed) {
                 return peopleNeed._id
-            })
+            });
             return _.extend(groupBy[0], {count: groupBy.length});
         });
 
