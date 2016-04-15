@@ -67,7 +67,7 @@ export class SelectComponent extends BlazeComponent {
 
         constructor() {
             super();
-            this.isRendered = false;
+            this.isRenderedBoolean = false;
             this.searchQuery = new ReactiveVar("");
         }
 
@@ -79,7 +79,7 @@ export class SelectComponent extends BlazeComponent {
                     e.stopPropagation();
                     this.$('.custom-select-label-wrapper[data-popover]').popover("show");
                 }, this));
-            this.isRendered = true;
+            this.isRenderedBoolean = true;
         }
 
         onPopoverShow() {
@@ -100,7 +100,7 @@ export class SelectComponent extends BlazeComponent {
             this.previousSearchQuery = searchQuery;
 
             var tmpl = Template.instance();
-            if (tmpl.view.isRendered) {
+            if (tmpl.view.isRenderedBoolean) {
 
                 var data = this.optionCollectionIndex.search(searchQuery).fetch();
 
