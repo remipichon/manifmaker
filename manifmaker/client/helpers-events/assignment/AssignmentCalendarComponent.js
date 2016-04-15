@@ -70,7 +70,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 break;
             case AssignmentType.TASKTOUSER:
                 var task = SelectedTask.get() == null ? null : Tasks.findOne(SelectedTask.get());
-                if (task === null) return [];
+                if (!task) return [];
 
                 var timeSlotFound = TimeSlotService.getTimeSlotByStart(task.timeSlots, startCalendarTimeSlot);
                 var assignmentsFound = AssignmentService.getAssignmentByStart(task.assignments, startCalendarTimeSlot, true);
