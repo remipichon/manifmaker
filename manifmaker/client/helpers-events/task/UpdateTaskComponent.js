@@ -29,6 +29,10 @@ class UpdateTaskComponent extends BlazeComponent {
 
     }
 
+    self(){
+        return this;
+    }
+
     onRendered() {
     }
 
