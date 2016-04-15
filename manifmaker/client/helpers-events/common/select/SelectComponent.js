@@ -1,6 +1,4 @@
-//TODO use something new from 1.3 instead of this ugly folder name trick
-SelectComponent =
-    class SelectComponent extends BlazeComponent {
+export class SelectComponent extends BlazeComponent {
 
         checkItemPath() {
             //to implement

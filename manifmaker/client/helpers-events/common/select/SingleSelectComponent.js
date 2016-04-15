@@ -1,5 +1,6 @@
-SingleSelectComponent =
-    class SingleSelectComponent extends MultipleSelectComponent {
+import {MultipleSelectComponent} from "./MultipleSelectComponent"
+
+export class SingleSelectComponent extends MultipleSelectComponent {
 
         checkItemPath() {
             //in another method to have a context alone for reactivity

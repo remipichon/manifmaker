@@ -1,5 +1,7 @@
+import {MultipleNonMandatorySelectComponent} from "./MultipleNonMandatorySelectComponent"
+
 //TODO use mixin instead of copy paste code
-class SingleNonMandatoryBulkSelectComponent extends SingleNonMandatorySelectComponent {
+class MultipleNonMandatoryBulkSelectComponent extends MultipleNonMandatorySelectComponent {
     fakeConstructorWithDataArguments() {
         super.fakeConstructorWithDataArguments();
         this.bulkPeopleNeededIds = this.data().bulkPeopleNeededIds;
@@ -27,4 +29,4 @@ class SingleNonMandatoryBulkSelectComponent extends SingleNonMandatorySelectComp
 
 }
 
-SingleNonMandatoryBulkSelectComponent.register("SingleNonMandatoryBulkSelectComponent");
+MultipleNonMandatoryBulkSelectComponent.register("MultipleNonMandatoryBulkSelectComponent");
