@@ -1,57 +1,13 @@
-function getCalendarDateHours(date, timeHours) {
-    var date = new moment(date);
-    date.hours(timeHours);
-    return date;
-}
-function getCalendarDateTime(date, timeHours, timeMinutes) {
-    var dateWithHours = getCalendarDateHours(date, timeHours);
-    var date = new moment(dateWithHours);
-    date.minutes(timeMinutes);
-    return date;
-}
+import {BaseCalendarComponent} from "../common/BaseCalendarComponent"
 
-export class AssignmentCalendarComponent extends BlazeComponent{
-    constructor(){
+class AssignmentCalendarComponent extends BaseCalendarComponent {
+    constructor() {
         super();
         this.peopleNeedAssignedClick = 0; //to double click purpose..
-
     }
 
-    template(){
+    template() {
         return "assignmentCalendarComponent"
-    }
-
-    events(){
-        return [
-            {
-                "click .on-calendar .peopleNeed" : this.selectPeopleNeed,
-                "click .heure, .quart_heure" : this.quartHeureOnClick,
-                "click .on-calendar .peopleNeed.assigned" : this.peopleNeedAssignedOnClick,
-                "click .creneau": this.creanOnClick
-            }
-        ]
-    }
-
-    assignmentType () {
-        return CurrentAssignmentType.get();
-    }
-    days() {
-        return AssignmentCalendarDisplayedDays.find({});
-    }
-    hours() {
-        return AssignmentCalendarDisplayedHours.find({});
-    }
-    quarter() {
-        return AssignmentCalendarDisplayedQuarter.find({});
-    }
-    displayCalendarTitleDate(date) {
-        return new moment(date).format("dddd DD/MM");
-    }
-    hoursDate(date) {
-        return getCalendarDateHours(date, this.currentData().date);
-    }
-    quarterDate(date, timeHours) {
-        return getCalendarDateTime(date, timeHours, this.quarter);
     }
 
     labelSkills() {
@@ -67,7 +23,7 @@ export class AssignmentCalendarComponent extends BlazeComponent{
     }
 
     timeSlot(date, timeHours, idTask) {
-        var startCalendarTimeSlot = getCalendarDateTime(date, timeHours);
+        var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
         var currentAssignmentType = CurrentAssignmentType.get();
 
         var data = {};
@@ -171,45 +127,6 @@ export class AssignmentCalendarComponent extends BlazeComponent{
         return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
     }
 
-    sideHoursHeight() {
-        switch (AssignmentCalendarDisplayedAccuracy.findOne({}).accuracy) {
-            case 0.25 :
-                return "oneHour";
-            case  0.5 :
-                return "oneHour";
-            case 1:
-                return "oneHour";
-            case  2:
-                return "twoHour"
-            case 4:
-                return "fourHour"
-        }
-    }
-
-    quarterHeight() {
-        switch (AssignmentCalendarDisplayedAccuracy.findOne({}).accuracy) {
-            case 0.25 :
-                return "quarterHour";
-            case  0.5 :
-                return "halfHour";
-            case 1:
-                return "oneHour";
-            case  2:
-                return "twoHour"
-            case 4:
-                return "fourHour"
-        }
-    }
-    //works for .heure et .quart d'heure
-    isSelected(date, timeHours) {
-        if(getCalendarDateTime(date, timeHours, 0).isSame(SelectedDate.get())){
-            return "selected"
-        }
-        return ""
-    }
-
-
-
     selectPeopleNeed() {
         SelectedPeopleNeed.set(this.currentData());
         //event should bubbles to .creneau
@@ -227,7 +144,7 @@ export class AssignmentCalendarComponent extends BlazeComponent{
                     AssignmentService.taskToUserPerformUserFilterRemoveAssignment();
                 }
                 this.peopleNeedAssignedClick = 0;
-            },this.currentData()), 300);
+            }, this.currentData()), 300);
         }
 
     }
@@ -373,6 +290,7 @@ export class AssignmentCalendarComponent extends BlazeComponent{
                 return [];
         }
     }
+
 
 }
 AssignmentCalendarComponent.register("AssignmentCalendarComponent");
