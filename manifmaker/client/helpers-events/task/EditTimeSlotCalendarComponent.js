@@ -18,6 +18,7 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
         //to implement
         var _id = $(e.currentTarget).data("timeslotdid");
         this.data().parentInstance.updatedTimeSlotId.set(_id);
+        this.data().parentInstance.isTimeSlotUpdated.set(true);
     }
 
     quartHeureOnClick(event) {

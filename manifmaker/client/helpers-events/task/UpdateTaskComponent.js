@@ -21,6 +21,9 @@ class UpdateTaskComponent extends BlazeComponent {
         this.currentSelectedEndDate = null;
         this.bulkIds = {};
         this.updatePeopleNeededErrorArray = new ReactiveVar([]);
+        this.isTimeSlotCreated = new ReactiveVar(false);
+        this.isTimeSlotUpdated = new ReactiveVar(false);
+        this.newTimeSlotSubmitedOnce = false;
 
 
         ////ADD PEOPLENEED SECTION
@@ -49,6 +52,10 @@ class UpdateTaskComponent extends BlazeComponent {
                 "click .people-need .delete": this.deletePeopleNeeded, //TODO more precise selector
                 "click .people-need .duplicate": this.duplicatePeopleNeeded, //TODO more precise selector
 
+                "click #timeslots .add-time-slot .add-button": this.addTimeSlot,
+                "click #timeslots .add-time-slot .clear-button": this.clearTimeSlot,
+                "click #timeslots .add-time-slot .done-button": this.submitNewTimeSlot,
+
                 //ADD PEOPLENEED SECTION
                 "click .add-people-need .add-button": this.addPeopleNeed,
                 "click .add-people-need .done-button": this.submitPeopleNeed,
@@ -57,9 +64,68 @@ class UpdateTaskComponent extends BlazeComponent {
         ];
     }
 
+
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////    ADD TIMESLOTS SECTION
+    ////////////////////////////////////////////////////////////////////////
+
+    createTimeSlotDefaultStartDate(){
+        return AssignmentCalendarDisplayedDays.find().fetch()[0].date;
+    }
+
+    createTimeSlotDefaultEndDate(){
+        return AssignmentCalendarDisplayedDays.find().fetch()[0].date;
+    }
+
+    addTimeSlot(){
+        this.isTimeSlotCreated.set(true);
+        this.isTimeSlotUpdated.set(false);
+    }
+
+    clearTimeSlot(){
+        this.isTimeSlotCreated.set(false);
+        this.isTimeSlotUpdated.set(false);
+    }
+
+    submitNewTimeSlot(){
+        this.addTimeSlotToTask(this.currentSelectedStartDate, this.currentSelectedEndDate);
+    }
+
+    addTimeSlotToTask(start,end){
+       //TODO try to insert into Tasks, display errors is not possible
+        var data = {
+            start: start ? start.toDate() : null,
+            end: end ? end.toDate() : null,
+            peopleNeeded: []
+        };
+        Tasks.update({_id: this.data()._id}, {
+            $push: {
+                "timeSlots": data
+            }
+        }, _.bind(function (error, docAffected) {
+            if (error) {
+                this.updatetimeSlotDatesErrorArray.set([error.message]);
+            } else {
+                this.updatetimeSlotDatesErrorArray.set([]);
+                this.currentSelectedStartDate = null;
+                this.currentSelectedEndDate = null;
+
+                //select newly created timeslot to update
+                this.isTimeSlotCreated.set(false);
+                this.isTimeSlotUpdated.set(true);
+                this.updatedTimeSlotId = this.currentData().timeSlots[this.currentData().timeSlots.length - 1]._id;
+                console.info("newly created timeslot ",this.updatedTimeSlotId.get());
+            }
+
+        }, this));
+    }
+
+
+
     ////////////////////////////////////////////////////////////////////////
     ////////////////////    UPDATE TIMESLOTS SECTION
     ////////////////////////////////////////////////////////////////////////
+
 
     getUpdateTimeSlotIndex() {
         var timeSlotId = this.updatedTimeSlotId.get();
@@ -111,24 +177,30 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
     updateTimeSlotDates(start, end) {
-        var $set = {};
-        if (start)
-            $set["timeSlots." + this.getUpdateTimeSlotIndex() + ".start"] = start.toDate();
-        if (end)
-            $set["timeSlots." + this.getUpdateTimeSlotIndex() + ".end"] = end.toDate();
 
-        Tasks.update({_id: this.data()._id}, {
-            $set: $set
-        }, _.bind(function (error, docAffected) {
-            if (error) {
-                this.updatetimeSlotDatesErrorArray.set([error.message]);
-            } else {
-                this.updatetimeSlotDatesErrorArray.set([]);
-                this.currentSelectedStartDate = null;
-                this.currentSelectedEndDate = null;
-            }
+        if(this.isTimeSlotUpdated.get()) {
+            var $set = {};
+            if (start)
+                $set["timeSlots." + this.getUpdateTimeSlotIndex() + ".start"] = start.toDate();
+            if (end)
+                $set["timeSlots." + this.getUpdateTimeSlotIndex() + ".end"] = end.toDate();
 
-        }, this));
+            Tasks.update({_id: this.data()._id}, {
+                $set: $set
+            }, _.bind(function (error, docAffected) {
+                if (error) {
+                    this.updatetimeSlotDatesErrorArray.set([error.message]);
+                } else {
+                    this.updatetimeSlotDatesErrorArray.set([]);
+                    this.currentSelectedStartDate = null;
+                    this.currentSelectedEndDate = null;
+                }
+
+            }, this));
+        } else if(this.isTimeSlotCreated.get()){
+            if(this.newTimeSlotSubmitedOnce) //display error only after hitting submit button once
+                this.addTimeSlotToTask(start,end)
+        }
     }
 
     currentTimeSlot() {

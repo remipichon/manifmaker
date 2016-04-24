@@ -115,7 +115,7 @@
             <div class="panel panel-info">
                 <div class="panel-heading">Time slots</div>
 
-                <div class="panel-body timeslots">
+                <div class="panel-body timeslots" id="timeslots">
 
                     <div class="row">
                         {{>AssignmentTermSelectComponent}}
@@ -128,9 +128,20 @@
                     <div class="col-md-4">
                         <div class="col-md-12 add-time-slot">
                             <div class="row">
-                                <label>Update time slot</label> <i class="material-icons add-button">add</i><i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i><i class="material-icons delete-button">delete</i>
+                                {{#if isTimeSlotUpdated.get}}
+                                    <label>Update time slot</label><i class="material-icons add-button">add</i><i class="duplicate-button">copy</i><i class="material-icons delete-button">delete</i>
+                                {{/if}}
+
+                                {{#if isTimeSlotCreated.get}}
+                                    <label>Create time slot</label><i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>
+                                {{/if}}
+
+                                {{#unless isTimeSlotCreated.get isTimeSlotCreated.get}}
+                                    <label>Select or create a time slot</label>  <i class="material-icons add-button">add</i>
+                                {{/unless}}
+
                             </div>
-                            {{#if updatedTimeSlotId.get}}
+                            {{#if isTimeSlotUpdated.get}}
                                 <div id="add-time-slot-form" class="row">
                                     <div class="row">
                                         From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate}}
@@ -185,12 +196,22 @@
                                         </div>
                                     </div>
                                 </div>
-                            {{else}}
-                                <span>Start by selecting a time slot on the left panel</span>
+                            {{/if}}
+
+                            {{#if isTimeSlotCreated.get}}
+                                <div id="create-time-slot-form" class="row">
+                                    <div class="row">
+                                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=createTimeSlotDefaultStartDate updateDateCallback=updateTimeSlotStartDate}}
+                                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=createTimeSlotDefaultEndDate updateDateCallback=updateTimeSlotEndDate}}
+                                    </div>
+                                    <div class="row error-holder">
+                                        {{updatetimeSlotDatesError}}
+                                    </div>
+                                </div>
                             {{/if}}
                         </div>
 
-                        {{#if updatedTimeSlotId.get}}
+                        {{#if isTimeSlotUpdated.get}}
                             <div class="col-md-12 add-people-need">
                                 <div class="row">
                                     <label>Add a people need</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}

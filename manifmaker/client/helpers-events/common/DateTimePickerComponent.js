@@ -34,7 +34,7 @@ DateTimePickerComponent =
                 this.dateTimePickerFireOneEventWhenInit = false;
                 return;
             }
-            this.updateDateCallback(e.date);
+            if(this.updateDateCallback) this.updateDateCallback(e.date);
         }
 
 
