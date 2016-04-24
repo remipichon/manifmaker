@@ -1,6 +1,11 @@
 import {BaseCalendarComponent} from "../common/BaseCalendarComponent"
 
 class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
+    /* available in data
+     this.data().parentInstance
+
+     */
+
     peopleNeedOnClick() {
         //to implement
     }
@@ -9,9 +14,10 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
         //to implement
     }
 
-    creanOnClick() {
+    creanOnClick(e) {
         //to implement
-        this.updatedTimeSlotIndex.set(0);
+        var _id = $(e.currentTarget).data("timeslotdid");
+        this.data().parentInstance.updatedTimeSlotId.set(_id);
     }
 
     quartHeureOnClick(event) {

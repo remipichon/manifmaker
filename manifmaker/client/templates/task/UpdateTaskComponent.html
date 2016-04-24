@@ -118,7 +118,7 @@
                 <div class="panel-body timeslots">
 
                     <div class="row">
-                       {{>AssignmentTermSelectComponent}}
+                        {{>AssignmentTermSelectComponent}}
                     </div>
 
                     <div class="col-md-8">
@@ -130,95 +130,101 @@
                             <div class="row">
                                 <label>Update time slot</label> <i class="material-icons add-button">add</i><i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i><i class="material-icons delete-button">delete</i>
                             </div>
-                            <div id="add-time-slot-form" class="row">
-                                <div class="row">
-                                    From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate}}
-                                    to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate}}
-                                </div>
-                                <div class="row error-holder">
-                                    {{updatetimeSlotDatesError}}
-                                </div>
-                                <div class="row people-need">
-                                    <label>People needs</label>
-
+                            {{#if updatedTimeSlotId.get}}
+                                <div id="add-time-slot-form" class="row">
                                     <div class="row">
-                                        {{#each currentTimeSlotPeopleNeededMerged}}
-
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <span>{{count}}</span>
-                                                    <span class="glyphicon glyphicon-trash delete" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
-                                                    <span class="glyphicon glyphicon-file duplicate" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
-                                                </div>
-                                                <div class="col-md-9">
-                                                    {{#if userId}}
-                                                        {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
-                                                        optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                                                        updateCollection="Tasks" updateItemId=../_id
-                                                        updateItemPath="userId"
-                                                        pathWithArray=pathWithArrayPeopleNeeded
-                                                        updateCallback=updatePeopleNeedCallback}}
-                                                    {{/if}}
-                                                    {{#if teamId}}
-                                                        {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
-                                                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                                                        updateCollection="Tasks" updateItemId=../_id
-                                                        updateItemPath="teamId"
-                                                        bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                        updateCallback=updatePeopleNeedCallback}}
-                                                    {{/if}}
-                                                    {{#if skills}}
-                                                        {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
-                                                        optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
-                                                        updateCollection="Tasks" updateItemId=../_id
-                                                        updateItemPath="skills"
-                                                        bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                        updateCallback=updatePeopleNeedCallback}}
-                                                    {{/if}}
-                                                </div>
-                                            </div>
-                                        {{/each}}
+                                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate}}
+                                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate}}
                                     </div>
                                     <div class="row error-holder">
-                                        {{updatePeopleNeededError}}
+                                        {{updatetimeSlotDatesError}}
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="row people-need">
+                                        <label>People needs</label>
 
-                        <div class="col-md-12 add-people-need">
-                            <div class="row">
-                                <label>Add a people need</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}
-                            </div>
-                            {{#if displayAddPeopleNeedForm}}
-                                <div id="add-people-need-form" class="row">
-                                    <div class="col-md-6">
-                                        {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
-                                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
-                                        updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
-                                        nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
-                                        }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
-                                        optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
-                                        updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
-                                        }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
-                                        optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                                        updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
-                                        nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
-                                        }}
+                                        <div class="row">
+                                            {{#each currentTimeSlotPeopleNeededMerged}}
+
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <span>{{count}}</span>
+                                                        <span class="glyphicon glyphicon-trash delete" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
+                                                        <span class="glyphicon glyphicon-file duplicate" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        {{#if userId}}
+                                                            {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
+                                                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                                            updateCollection="Tasks" updateItemId=../_id
+                                                            updateItemPath="userId"
+                                                            pathWithArray=pathWithArrayPeopleNeeded
+                                                            updateCallback=updatePeopleNeedCallback}}
+                                                        {{/if}}
+                                                        {{#if teamId}}
+                                                            {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
+                                                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                                            updateCollection="Tasks" updateItemId=../_id
+                                                            updateItemPath="teamId"
+                                                            bulkPeopleNeededIds=bulkPeopleNeededIds
+                                                            updateCallback=updatePeopleNeedCallback}}
+                                                        {{/if}}
+                                                        {{#if skills}}
+                                                            {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
+                                                            optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
+                                                            updateCollection="Tasks" updateItemId=../_id
+                                                            updateItemPath="skills"
+                                                            bulkPeopleNeededIds=bulkPeopleNeededIds
+                                                            updateCallback=updatePeopleNeedCallback}}
+                                                        {{/if}}
+                                                    </div>
+                                                </div>
+                                            {{/each}}
+                                        </div>
+                                        <div class="row error-holder">
+                                            {{updatePeopleNeededError}}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row error-holder">
-                                    {{createPeopleNeededError}}
-                                </div>
+                            {{else}}
+                                <span>Start by selecting a time slot on the right panel</span>
                             {{/if}}
-
                         </div>
+
+                        {{#if updatedTimeSlotId.get}}
+                            <div class="col-md-12 add-people-need">
+                                <div class="row">
+                                    <label>Add a people need</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}
+                                </div>
+                                {{#if displayAddPeopleNeedForm}}
+                                    <div id="add-people-need-form" class="row">
+                                        <div class="col-md-6">
+                                            {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
+                                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
+                                            updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
+                                            nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                                            }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
+                                            optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
+                                            updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
+                                            }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
+                                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                            updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
+                                            nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                                            }}
+                                        </div>
+                                    </div>
+                                    <div class="row error-holder">
+                                        {{createPeopleNeededError}}
+                                    </div>
+                                {{/if}}
+
+                            </div>
+                        {{/if}}
                     </div>
                 </div>
             </div>
@@ -230,9 +236,8 @@
 </template>
 
 
-
 <template name="updateTimeSlotCalendar">
-    <div class="creneau {{state}}" style="height: {{height}};">
+    <div class="creneau {{state}}" data-timeslotdid="{{this._id}}" style="height: {{height}};">
 
         {{getPeopleNeededMerged}}
 
@@ -240,20 +245,29 @@
 
             {{#each getPeopleNeededMerged _id}}
                 <!--<div class="peopleNeed" style="height: {{../height}};">-->
-                <div class="peopleNeed">
+                <!--<div class="">-->
+
+                <div class="col-md-1 people-need">
                     {{#unless userId}}{{count}}{{/unless}}
                     {{#if userId }}
-                        <div class="user">userIcon</div>{{/if}}
+                        <div class="user">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </div>{{/if}}
                     {{#if teamId}}
-                        <div class="team">teamIcon</div>{{/if}}
+                        <div class="team">
+                            <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+                        </div>{{/if}}
                         <!--{{#ifNotEmpty skills}}-->
                     <div>
                         {{#each skills}}
-                            <div class="skill">skillIcon</div>
+                            <div class="skill">
+                                <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+                            </div>
                         {{/each}}
                     </div>
                         <!--{{/ifNotEmpty}}-->
                 </div>
+                <!--</div>-->
             {{/each}}
 
         </div>

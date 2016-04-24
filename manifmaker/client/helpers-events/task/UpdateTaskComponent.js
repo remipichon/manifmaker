@@ -15,7 +15,7 @@ class UpdateTaskComponent extends BlazeComponent {
                 skills: []
             })
         );
-        this.updatedTimeSlotIndex = new ReactiveVar(1); //TODO cf workflow creation/update timeslot
+        this.updatedTimeSlotId = new ReactiveVar(null); 
         this.updatetimeSlotDatesErrorArray = new ReactiveVar([]);
         this.currentSelectedStartDate = null;
         this.currentSelectedEndDate = null;
@@ -29,7 +29,7 @@ class UpdateTaskComponent extends BlazeComponent {
 
     }
 
-    self(){
+    self() {
         return this;
     }
 
@@ -61,14 +61,24 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////    UPDATE TIMESLOTS SECTION
     ////////////////////////////////////////////////////////////////////////
 
+    getUpdateTimeSlotIndex() {
+        var timeSlotId = this.updatedTimeSlotId.get();
+        if(timeSlotId == null){
+            console.log("info : select a time slot");
+            return;
+        }
+        console.log("getUpdateTimeSlotIndex",TimeSlotService.getTimeSlotIndex(this.data(), timeSlotId))
+        return TimeSlotService.getTimeSlotIndex(this.data(), timeSlotId);
+    }
+
     deletePeopleNeeded(e) {
         var peopleNeededId = $(e.target).data("peopleneededid");
-        PeopleNeedService.removePeopleNeed(this.data(), this.data().timeSlots[this.updatedTimeSlotIndex.get()], {_id: peopleNeededId});
+        PeopleNeedService.removePeopleNeed(this.data(), this.data().timeSlots[this.getUpdateTimeSlotIndex()], {_id: peopleNeededId});
     }
 
     duplicatePeopleNeeded(e) {
         var peopleNeededId = $(e.target).data("peopleneededid");
-        var peopleNeed = PeopleNeedService.getPeopleNeedByIndex(this.data().timeSlots[this.updatedTimeSlotIndex.get()], peopleNeededId);
+        var peopleNeed = PeopleNeedService.getPeopleNeedByIndex(this.data().timeSlots[this.getUpdateTimeSlotIndex()], peopleNeededId);
 
         this.submitPeopleNeedWithData({
             userId: peopleNeed.userId,
@@ -108,9 +118,9 @@ class UpdateTaskComponent extends BlazeComponent {
     updateTimeSlotDates(start, end) {
         var $set = {};
         if (start)
-            $set["timeSlots." + this.updatedTimeSlotIndex.get() + ".start"] = start.toDate();
+            $set["timeSlots." + this.getUpdateTimeSlotIndex() + ".start"] = start.toDate();
         if (end)
-            $set["timeSlots." + this.updatedTimeSlotIndex.get() + ".end"] = end.toDate();
+            $set["timeSlots." + this.getUpdateTimeSlotIndex() + ".end"] = end.toDate();
 
         Tasks.update({_id: this.data()._id}, {
             $set: $set
@@ -127,16 +137,16 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
     currentTimeSlot() {
-        return this.data().timeSlots[this.updatedTimeSlotIndex.get()];
+        return this.data().timeSlots[this.getUpdateTimeSlotIndex()];
     }
 
-    currentTimeSlotPeopleNeededMerged(){
+    currentTimeSlotPeopleNeededMerged() {
         return this.getPeopleNeededMerged(this.currentTimeSlot()._id);
     }
 
     getPeopleNeededMerged(timeSlotId) {
-        var peopleNeeded = _.findWhere(this.data().timeSlots,{
-            _id:timeSlotId
+        var peopleNeeded = _.findWhere(this.data().timeSlots, {
+            _id: timeSlotId
         }).peopleNeeded;
 
         //group by identical people need
@@ -191,14 +201,14 @@ class UpdateTaskComponent extends BlazeComponent {
         return result;
     }
 
-    updatePeopleNeedCallback(){
-        return _.bind(function(error,docAffected){
+    updatePeopleNeedCallback() {
+        return _.bind(function (error, docAffected) {
             if (error) {
                 this.updatePeopleNeededErrorArray.set([error.message]);
             } else {
                 this.updatePeopleNeededErrorArray.set([]);
             }
-        },this);
+        }, this);
     }
 
     updatePeopleNeededError() {
@@ -253,7 +263,7 @@ class UpdateTaskComponent extends BlazeComponent {
 
         Tasks.update({_id: this.data()._id}, {
             $push: {
-                ["timeSlots." + this.updatedTimeSlotIndex.get() + ".peopleNeeded"]: data //TODO should not be reactive when updatedTimeSlotIndex change
+                ["timeSlots." + this.getUpdateTimeSlotIndex() + ".peopleNeeded"]: data //TODO should not be reactive when updatedTimeSlotIndex change
             }
         }, _.bind(function (error, docAffected) {
             if (error) {
