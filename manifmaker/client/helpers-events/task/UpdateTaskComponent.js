@@ -15,7 +15,7 @@ class UpdateTaskComponent extends BlazeComponent {
                 skills: []
             })
         );
-        this.updatedTimeSlotId = new ReactiveVar(null); 
+        this.updatedTimeSlotId = new ReactiveVar(null);
         this.updatetimeSlotDatesErrorArray = new ReactiveVar([]);
         this.currentSelectedStartDate = null;
         this.currentSelectedEndDate = null;
@@ -63,11 +63,6 @@ class UpdateTaskComponent extends BlazeComponent {
 
     getUpdateTimeSlotIndex() {
         var timeSlotId = this.updatedTimeSlotId.get();
-        if(timeSlotId == null){
-            console.log("info : select a time slot");
-            return;
-        }
-        console.log("getUpdateTimeSlotIndex",TimeSlotService.getTimeSlotIndex(this.data(), timeSlotId))
         return TimeSlotService.getTimeSlotIndex(this.data(), timeSlotId);
     }
 

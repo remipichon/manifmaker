@@ -9,6 +9,9 @@ DateTimePickerComponent =
         fakeConstructorWithDataArguments() {
             this.date = this.data().date;
             this.updateDateCallback = this.data().updateDateCallback;
+            if(this.isRendered()){
+                    this.$(".datetimepicker").data("DateTimePicker").date(this.date);
+            }
         }
 
         onRendered() {
