@@ -24,6 +24,9 @@ class UpdateTaskComponent extends BlazeComponent {
         this.isTimeSlotCreated = new ReactiveVar(false);
         this.isTimeSlotUpdated = new ReactiveVar(false);
         this.newTimeSlotSubmitedOnce = false;
+        this.createTimeSlotDefaultStartDate = new ReactiveVar(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
+        this.createTimeSlotDefaultEndDate = new ReactiveVar(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
+        this.isTimeSlotDuplicated = false;
 
 
         ////ADD PEOPLENEED SECTION
@@ -56,6 +59,7 @@ class UpdateTaskComponent extends BlazeComponent {
                 "click #timeslots .add-time-slot .clear-button": this.clearTimeSlot,
                 "click #timeslots .add-time-slot .done-button": this.submitNewTimeSlot,
                 "click #timeslots .add-time-slot .delete-button": this.deleteTimeSlot,
+                "click #timeslots .add-time-slot .duplicate-button": this.duplicateTimeSlot,
 
                 //ADD PEOPLENEED SECTION
                 "click .add-people-need .add-button": this.addPeopleNeed,
@@ -70,34 +74,31 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////    ADD TIMESLOTS SECTION
     ////////////////////////////////////////////////////////////////////////
 
-    createTimeSlotDefaultStartDate(){
-        return AssignmentCalendarDisplayedDays.find().fetch()[0].date;
-    }
-
-    createTimeSlotDefaultEndDate(){
-        return AssignmentCalendarDisplayedDays.find().fetch()[0].date;
-    }
-
-    addTimeSlot(){
+    addTimeSlot() {
         this.isTimeSlotCreated.set(true);
         this.isTimeSlotUpdated.set(false);
     }
 
-    clearTimeSlot(){
+    clearTimeSlot() {
         this.isTimeSlotCreated.set(false);
         this.isTimeSlotUpdated.set(false);
+        this.resetTimeSlotForm();
     }
 
-    submitNewTimeSlot(){
+    submitNewTimeSlot() {
         this.addTimeSlotToTask(this.currentSelectedStartDate, this.currentSelectedEndDate);
     }
 
-    addTimeSlotToTask(start,end){
-       //TODO try to insert into Tasks, display errors is not possible
+    addTimeSlotToTask(start, end) {
+        var peopleNeeded = [];
+        if (this.isTimeSlotDuplicated) {
+            peopleNeeded = this.currentTimeSlot().peopleNeeded
+        }
+
         var data = {
             start: start ? start.toDate() : null,
             end: end ? end.toDate() : null,
-            peopleNeeded: []
+            peopleNeeded: peopleNeeded
         };
         Tasks.update({_id: this.data()._id}, {
             $push: {
@@ -107,38 +108,59 @@ class UpdateTaskComponent extends BlazeComponent {
             if (error) {
                 this.updatetimeSlotDatesErrorArray.set([error.message]);
             } else {
-                this.updatetimeSlotDatesErrorArray.set([]);
-                this.currentSelectedStartDate = null;
-                this.currentSelectedEndDate = null;
+                this.resetTimeSlotForm();
 
                 //select newly created timeslot to update
                 this.isTimeSlotCreated.set(false);
                 this.isTimeSlotUpdated.set(true);
                 this.updatedTimeSlotId.set(this.data().timeSlots[this.data().timeSlots.length - 1]._id);
+
+
             }
 
         }, this));
     }
 
+    resetTimeSlotForm() {
+        this.updatetimeSlotDatesErrorArray.set([]);
+        this.currentSelectedStartDate = null;
+        this.currentSelectedEndDate = null;
+        this.isTimeSlotDuplicated = false;
+        this.createTimeSlotDefaultStartDate.set(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
+        this.createTimeSlotDefaultEndDate.set(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
+    }
 
 
     ////////////////////////////////////////////////////////////////////////
     ////////////////////    UPDATE TIMESLOTS SECTION
     ////////////////////////////////////////////////////////////////////////
 
-    deleteTimeSlot(){
-        Tasks.update(this.currentData()._id,{
-            $pull : {
+    deleteTimeSlot() {
+        Tasks.update(this.currentData()._id, {
+            $pull: {
                 timeSlots: {_id: this.updatedTimeSlotId.get()}
             }
-        }, _.bind(function(error,docAffected){
-           if(error){
-               console.error(error.message);
-           } else {
-               this.isTimeSlotCreated.set(false);
-               this.isTimeSlotUpdated.set(false);
-           }
-        },this));
+        }, _.bind(function (error, docAffected) {
+            if (error) {
+                console.error(error.message);
+            } else {
+                this.isTimeSlotCreated.set(false);
+                this.isTimeSlotUpdated.set(false);
+            }
+        }, this));
+    }
+
+    duplicateTimeSlot() {
+        this.addTimeSlot();
+        var end = new moment(this.currentTimeSlot().end);
+        var start = this.currentTimeSlot().start;
+        this.createTimeSlotDefaultStartDate.set(end);
+        var newEnd = new moment(end);
+        this.createTimeSlotDefaultEndDate.set(newEnd.add(end.diff(start), "ms"));
+        this.currentSelectedStartDate = end;
+        this.currentSelectedEndDate = newEnd;
+        this.isTimeSlotDuplicated = true;
+
     }
 
 
@@ -193,7 +215,7 @@ class UpdateTaskComponent extends BlazeComponent {
 
     updateTimeSlotDates(start, end) {
 
-        if(this.isTimeSlotUpdated.get()) {
+        if (this.isTimeSlotUpdated.get()) {
             var $set = {};
             if (start)
                 $set["timeSlots." + this.getUpdateTimeSlotIndex() + ".start"] = start.toDate();
@@ -212,9 +234,9 @@ class UpdateTaskComponent extends BlazeComponent {
                 }
 
             }, this));
-        } else if(this.isTimeSlotCreated.get()){
-            if(this.newTimeSlotSubmitedOnce) //display error only after hitting submit button once
-                this.addTimeSlotToTask(start,end)
+        } else if (this.isTimeSlotCreated.get()) {
+            if (this.newTimeSlotSubmitedOnce) //display error only after hitting submit button once
+                this.addTimeSlotToTask(start, end)
         }
     }
 
@@ -223,7 +245,7 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
     currentTimeSlotPeopleNeededMerged() {
-        if(!this.currentTimeSlot()) return [];
+        if (!this.currentTimeSlot()) return [];
         return this.getPeopleNeededMerged(this.currentTimeSlot()._id);
     }
 

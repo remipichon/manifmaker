@@ -203,8 +203,8 @@
                             {{#if isTimeSlotCreated.get}}
                                 <div id="create-time-slot-form" class="row">
                                     <div class="row">
-                                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=createTimeSlotDefaultStartDate updateDateCallback=updateTimeSlotStartDate}}
-                                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=createTimeSlotDefaultEndDate updateDateCallback=updateTimeSlotEndDate}}
+                                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=createTimeSlotDefaultStartDate.get updateDateCallback=updateTimeSlotStartDate}}
+                                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=createTimeSlotDefaultEndDate.get updateDateCallback=updateTimeSlotEndDate}}
                                     </div>
                                     <div class="row error-holder">
                                         {{updatetimeSlotDatesError}}
