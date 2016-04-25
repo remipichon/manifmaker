@@ -55,6 +55,7 @@ class UpdateTaskComponent extends BlazeComponent {
                 "click #timeslots .add-time-slot .add-button": this.addTimeSlot,
                 "click #timeslots .add-time-slot .clear-button": this.clearTimeSlot,
                 "click #timeslots .add-time-slot .done-button": this.submitNewTimeSlot,
+                "click #timeslots .add-time-slot .delete-button": this.deleteTimeSlot,
 
                 //ADD PEOPLENEED SECTION
                 "click .add-people-need .add-button": this.addPeopleNeed,
@@ -125,6 +126,21 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////////////////////////////////////////////////////////
     ////////////////////    UPDATE TIMESLOTS SECTION
     ////////////////////////////////////////////////////////////////////////
+
+    deleteTimeSlot(){
+        Tasks.update(this.currentData()._id,{
+            $pull : {
+                timeSlots: {_id: this.updatedTimeSlotId.get()}
+            }
+        }, _.bind(function(error,docAffected){
+           if(error){
+               console.error(error.message);
+           } else {
+               this.isTimeSlotCreated.set(false);
+               this.isTimeSlotUpdated.set(false);
+           }
+        },this));
+    }
 
 
     getUpdateTimeSlotIndex() {

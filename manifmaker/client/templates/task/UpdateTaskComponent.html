@@ -129,15 +129,17 @@
                         <div class="col-md-12 add-time-slot">
                             <div class="row">
                                 {{#if isTimeSlotUpdated.get}}
-                                    <label>Update time slot</label><i class="material-icons add-button">add</i><i class="duplicate-button">copy</i><i class="material-icons delete-button">delete</i>
+                                    <label>Update time slot</label><i class="duplicate-button">copy</i><i class="material-icons delete-button">delete</i> | <i class="material-icons add-button">add</i>
                                 {{/if}}
 
                                 {{#if isTimeSlotCreated.get}}
                                     <label>Create time slot</label><i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>
                                 {{/if}}
 
-                                {{#unless isTimeSlotCreated.get isTimeSlotCreated.get}}
-                                    <label>Select or create a time slot</label>  <i class="material-icons add-button">add</i>
+                                {{#unless isTimeSlotCreated.get}}
+                                    {{#unless isTimeSlotUpdated.get}}
+                                        <label>Select or create a time slot</label> <i class="material-icons add-button">add</i>
+                                    {{/unless}}
                                 {{/unless}}
 
                             </div>
