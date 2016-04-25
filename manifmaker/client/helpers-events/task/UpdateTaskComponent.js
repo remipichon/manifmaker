@@ -114,8 +114,7 @@ class UpdateTaskComponent extends BlazeComponent {
                 //select newly created timeslot to update
                 this.isTimeSlotCreated.set(false);
                 this.isTimeSlotUpdated.set(true);
-                this.updatedTimeSlotId = this.currentData().timeSlots[this.currentData().timeSlots.length - 1]._id;
-                console.info("newly created timeslot ",this.updatedTimeSlotId.get());
+                this.updatedTimeSlotId.set(this.data().timeSlots[this.data().timeSlots.length - 1]._id);
             }
 
         }, this));
@@ -224,6 +223,7 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
     currentTimeSlotPeopleNeededMerged() {
+        if(!this.currentTimeSlot()) return [];
         return this.getPeopleNeededMerged(this.currentTimeSlot()._id);
     }
 
