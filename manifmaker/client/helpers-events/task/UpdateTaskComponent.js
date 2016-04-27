@@ -1,6 +1,9 @@
 class UpdateTaskComponent extends BlazeComponent {
 
-    //TODO masquer le add people need form a l'init
+    reactiveConstructor(){
+        this.createTimeSlotDefaultStartDate.set(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
+        this.createTimeSlotDefaultEndDate.set(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
+    }
 
     constructor() {
         super();
@@ -24,8 +27,8 @@ class UpdateTaskComponent extends BlazeComponent {
         this.isTimeSlotCreated = new ReactiveVar(false);
         this.isTimeSlotUpdated = new ReactiveVar(false);
         this.newTimeSlotSubmitedOnce = false;
-        this.createTimeSlotDefaultStartDate = new ReactiveVar(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
-        this.createTimeSlotDefaultEndDate = new ReactiveVar(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
+        this.createTimeSlotDefaultStartDate = new ReactiveVar(null);
+        this.createTimeSlotDefaultEndDate = new ReactiveVar(null);
         this.isTimeSlotDuplicated = false;
 
 
