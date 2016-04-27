@@ -51,52 +51,7 @@
         {{/autoForm}}
 
 
-        <div class="row">
 
-            <ul class="collapsible popout" data-collapsible="accordion">
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">comment</i>Time slot validation comments</div>
-                    <div class="collapsible-body">
-                        <ul class="collection">
-                            {{#each timeSlotValidation.comments}}
-                                <li class="collection-item">{{author}} update time slot validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
-                            {{else}}
-                                <li class="collection-item">There are not comments right now but with luck there will be yours soon.</li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-            {{#if displayTextArea 'ASSIGNMENTVALIDATION' timeSlotValidation.currentState}}
-                <textarea id="time-slot-validation-new-comment" placeholder="You can type a new comment for time slot validation" class="new-comment-textarea materialize-textarea"></textarea>
-            {{/if}}
-
-            {{#if equals timeSlotValidation.currentState "OPEN"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
-            {{/if}}
-            {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
-                {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
-                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
-                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/ready"><i class="material-icons left">schedule</i>Time slots validation : set ready to assignment</a>
-                {{/if}}
-            {{else}}
-                {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
-                    <div class="chip">In validation</div>
-                {{/if}}
-            {{/if}}
-            {{#if equals timeSlotValidation.currentState "REFUSED"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
-            {{/if}}
-            {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
-                {{#if equals timeSlotValidation.currentState "READY"}}
-                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
-                {{/if}}
-            {{else}}
-                {{#if equals timeSlotValidation.currentState "READY"}}
-                    <div class="chip">Ready for assignment</div>
-                {{/if}}
-            {{/if}}
-        </div>
 
 
         <div class="row">
@@ -147,52 +102,7 @@
         </div>
 
 
-        <div class="row">
 
-            <ul class="collapsible popout" data-collapsible="accordion">
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">comment</i>Equipment validation comments</div>
-                    <div class="collapsible-body">
-                        <ul class="collection">
-                            {{#each equipmentValidation.comments}}
-                                <li class="collection-item">{{author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
-                            {{else}}
-                                <li class="collection-item">There are not comments right now but with luck there will be yours soon.</li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-            {{#if displayTextArea 'EQUIPMENTVALIDATION' equipmentValidation.currentState}}
-                <textarea id="equipment-validation-new-comment" placeholder="You can type a new comment for equipment validation" class="new-comment-textarea materialize-textarea"></textarea>
-            {{/if}}
-
-            {{#if equals equipmentValidation.currentState "OPEN"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
-            {{/if}}
-            {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
-                {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
-                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
-                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/ready"><i class="material-icons left">settings</i>Equipments validation : close</a>
-                {{/if}}
-            {{else}}
-                {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
-                    <div class="chip">In validation</div>
-                {{/if}}
-            {{/if}}
-            {{#if equals equipmentValidation.currentState "REFUSED"}}
-                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
-            {{/if}}
-            {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
-                {{#if equals equipmentValidation.currentState "READY"}}
-                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
-                {{/if}}
-            {{else}}
-                {{#if equals equipmentValidation.currentState "READY"}}
-                    <div class="chip">Closed</div>
-                {{/if}}
-            {{/if}}
-        </div>
 
     </div>
 </template>

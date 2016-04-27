@@ -1,6 +1,6 @@
 class UpdateTaskComponent extends BlazeComponent {
 
-    reactiveConstructor(){
+    reactiveConstructor() {
         this.createTimeSlotDefaultStartDate.set(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
         this.createTimeSlotDefaultEndDate.set(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
     }
@@ -43,6 +43,18 @@ class UpdateTaskComponent extends BlazeComponent {
     }
 
     onRendered() {
+        this.$('.collapse').collapse({toggle: false});
+
+        this.$('.collapse').on('shown.bs.collapse	', _.bind(function () {
+            var glyphicon = this.$("[data-target=#" + $(arguments[0].target).attr("id") + "] span.glyphicon");
+            glyphicon.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
+        }, this));
+
+        this.$('.collapse').on('hidden.bs.collapse', _.bind(function () {
+            var glyphicon = this.$("[data-target=#" + $(arguments[0].target).attr("id") + "] span.glyphicon");
+            glyphicon.removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
+        }, this));
+
     }
 
     template() {
@@ -477,6 +489,19 @@ class UpdateTaskComponent extends BlazeComponent {
         var equipments = this.data().equipments;
         var index = equipments.indexOf(_.findWhere(equipments, {equipmentId: this.currentData()._id}));
         return "equipments." + index + ".equipmentId";
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////    VALIDATION SECTION
+    ////////////////////////////////////////////////////////////////////////
+
+
+    displayTextArea(validationType, state) {
+        if (!Roles.userIsInRole(Meteor.userId(), RolesEnum[validationType]) &&
+            (state === "TOBEVALIDATED" || state === "READY"))
+            return false;
+        return true;
     }
 
 
