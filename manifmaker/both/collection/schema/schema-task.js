@@ -77,6 +77,9 @@ Schemas.PeopleNeed = new SimpleSchema({
         defaultValue: null,
         optional: true,
         custom: function () {
+            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            if(cantUpdate) return cantUpdate;
+
             if (this.value) {
                 if (!Users.findOne(this.value))
                     return "unknownId";
@@ -112,6 +115,9 @@ Schemas.PeopleNeed = new SimpleSchema({
         label: "People Need Team",
         optional: true,
         custom: function () {
+            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            if(cantUpdate) return cantUpdate;
+
             if (!this.value) return 1;//autoValue already dit its job
             if (!Teams.findOne(this.value))
                 return "unknownId";
@@ -142,6 +148,9 @@ Schemas.PeopleNeed = new SimpleSchema({
                 return [];
         },
         custom: function () {
+            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            if(cantUpdate) return cantUpdate;
+
             _.each(this.value, function (skill) {
                 if (!Skills.findOne(skill._id))
                     return "skillsNotFound"
@@ -178,16 +187,21 @@ Schemas.TimeSlot = new SimpleSchema({
         type: Date,
         label: "TimeSlot Start Date",
         custom: function () {
+            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            if(cantUpdate) return cantUpdate;
+
             var start, end, currentId, timeSlots;
 
             if (this.isUpdate) {
                 var task = Tasks.findOne(this.docId);
-                var timeSlotIndex = parseInt(this.key.replace("timeSlots.", "").replace(".start", ""));
-                var timeSlot = task.timeSlots[timeSlotIndex];
-                currentId = timeSlot._id;
+                if(this.operator !== "$push") {
+                    var timeSlotIndex = parseInt(this.key.replace("timeSlots.", "").replace(".start", ""));
+                    var timeSlot = task.timeSlots[timeSlotIndex];
+                    currentId = timeSlot._id;
+                }
             }
 
-            if (!this.field("timeSlots").isSet) {
+            if (!this.field("timeSlots").isSet || this.field("timeSlots").operator === "$push") {
                 timeSlots = task.timeSlots;
             } else
                 timeSlots = this.field("timeSlots").value;
@@ -219,16 +233,21 @@ Schemas.TimeSlot = new SimpleSchema({
         type: Date,
         label: " TimeSlot End Date",
         custom: function () {
+            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            if(cantUpdate) return cantUpdate;
+
             var start, end, currentId, timeSlots;
 
             if (this.isUpdate) {
                 var task = Tasks.findOne(this.docId);
-                var timeSlotIndex = parseInt(this.key.replace("timeSlots.", "").replace(".end", ""));
-                var timeSlot = task.timeSlots[timeSlotIndex];
-                currentId = timeSlot._id;
+                if(this.operator !== "$push") {
+                    var timeSlotIndex = parseInt(this.key.replace("timeSlots.", "").replace(".end", ""));
+                    var timeSlot = task.timeSlots[timeSlotIndex];
+                    currentId = timeSlot._id;
+                }
             }
 
-            if (!this.field("timeSlots").isSet) {
+            if (!this.field("timeSlots").isSet || this.field("timeSlots").operator === "$push") {
                 timeSlots = task.timeSlots;
             } else
                 timeSlots = this.field("timeSlots").value;
@@ -260,6 +279,9 @@ Schemas.TimeSlot = new SimpleSchema({
         type: [Schemas.PeopleNeed],
         label: "TimeSlot People needs",
         defaultValue: [],
+        custom(){
+            return TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+        }
 
     },
     peopleNeededAssigned: {
@@ -355,7 +377,10 @@ Schemas.Tasks = new SimpleSchema({
         type: [Schemas.TimeSlot],
         label: "Task Time slots",
         defaultValue: [],
-        optional: true
+        optional: true,
+        custom(){
+           return TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+        }
     },
     assignments: {
         type: [Schemas.TaskAssignment],
@@ -396,6 +421,14 @@ Schemas.Tasks = new SimpleSchema({
     equipments: {
         label: "Task equipments",
         type: [Schemas.EquipmentAsked],
+        custom(){
+            if (this.isUpdate) {
+                var task = Tasks.findOne(this.docId);
+                if(!ValidationService.isUpdateAllowed(task.equipmentValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+        },
         optional: true,
         autoValue: function () {
             if(this.isInsert){
@@ -409,6 +442,14 @@ Schemas.Tasks = new SimpleSchema({
         type: SimpleSchema.RegEx.Id,
         optional: true,
         defaultValue: null,
+        custom(){
+            if (this.isUpdate) {
+                var task = Tasks.findOne(this.docId);
+                if(!ValidationService.isUpdateAllowed(task.equipmentValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+        },
         autoform: {
             afFieldInput: {
                 options: Schemas.helpers.allPowerSuppliesOptions
@@ -420,6 +461,14 @@ Schemas.Tasks = new SimpleSchema({
         type: SimpleSchema.RegEx.Id,
         optional: true,
         defaultValue: null,
+        custom(){
+            if (this.isUpdate) {
+                var task = Tasks.findOne(this.docId);
+                if(!ValidationService.isUpdateAllowed(task.equipmentValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+        },
         autoform: {
             afFieldInput: {
                 options: Schemas.helpers.allEquipmentStoragesOptions

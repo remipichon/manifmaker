@@ -41,4 +41,10 @@ ValidationService =
 
         }
 
+        static isUpdateAllowed(state) {
+            if (state === ValidationState.OPEN || state === ValidationState.REFUSED)
+                return true;
+            return false
+        }
+
     }

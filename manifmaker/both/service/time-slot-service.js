@@ -187,4 +187,14 @@ TimeSlotService =
 
             return okGod
         }
+
+        static schemaCustomTimeSlotPeopleNeed(schemaContext){
+            if (schemaContext.isUpdate) {
+                var task = Tasks.findOne(schemaContext.docId);
+                if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+
+        }
     }

@@ -151,6 +151,10 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////////////////////////////////////////////////////////
 
     deleteTimeSlot() {
+        if(!ValidationService.isUpdateAllowed(this.currentData().timeSlotValidation.currentState)){
+            console.error("can't update timeslot as validaiton state doesnt allow it")
+            return;
+        }
         Tasks.update(this.currentData()._id, {
             $pull: {
                 timeSlots: {_id: this.updatedTimeSlotId.get()}
