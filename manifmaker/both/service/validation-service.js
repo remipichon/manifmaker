@@ -16,7 +16,7 @@ ValidationService =
             var validationState = task[validationType];
 
             var now = new Date();
-            validationState.comments.push({
+            validationState.comments.unshift({
                 author: Users.findOne(Meteor.userId).name,
                 content: comment,
                 creationDate: now,
