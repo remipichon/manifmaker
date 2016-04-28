@@ -128,7 +128,7 @@ Router.route('/task/validation/:validationType/:_id/:state', function () {
         var comment = $("#" + this.params.validationType + "-validation-new-comment").val();
         $("#" + this.params.validationType + "-validation-new-comment").val("");
 
-        ValidationService.updateValidation(this.params._id, this.params.state, ValidationTypeUrl[this.params.validationType], comment);
+        ValidationService.updateValidation(this.params._id, ValidationStateUrl[this.params.state], ValidationTypeUrl[this.params.validationType], comment);
 
         this.redirect("/task/" + this.params._id);
 

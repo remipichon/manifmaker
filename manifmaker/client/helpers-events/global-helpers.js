@@ -10,7 +10,7 @@ Template.registerHelper(
 );
 Template.registerHelper(
     "displayDateTime", function (date) {
-        return new moment(date).format("ddd DD MMM HH[h]");
+        return new moment(date).format("ddd DD MMM HH[h]mm");
     }
 );
 Template.registerHelper(

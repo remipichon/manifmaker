@@ -23,7 +23,7 @@ ValidationService =
                 stateBefore: validationState.currentState,
                 stateAfter: validationStateAsked
             });
-            validationState.currentState = ValidationStateUrl[validationStateAsked];
+            validationState.currentState = validationStateAsked;
             validationState.lastUpdateDate = now;
 
 

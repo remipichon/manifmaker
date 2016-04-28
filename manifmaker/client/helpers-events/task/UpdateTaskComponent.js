@@ -152,7 +152,9 @@ class UpdateTaskComponent extends BlazeComponent {
 
     deleteTimeSlot() {
         if(!ValidationService.isUpdateAllowed(this.currentData().timeSlotValidation.currentState)){
-            console.error("can't update timeslot as validaiton state doesnt allow it")
+            console.log("can't update timeslot as validation state doesn't allow it");
+            //TODO ca devrait etre fait par le schema mais j'ai pas trouvé comment faire prendre en compte le $pull dans le custom
+            //meme probleme pour delete people need mais actuellement le delete passe par un update uggly de tous les timeslot donc l'erreur est quand meme jetée par schema
             return;
         }
         Tasks.update(this.currentData()._id, {
