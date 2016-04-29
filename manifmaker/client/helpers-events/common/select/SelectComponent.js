@@ -51,6 +51,7 @@ export class SelectComponent extends BlazeComponent {
             this.updateItemId = this.data().updateItemId; //mongoId
             this.updateItemPath = this.data().updateItemPath; //path to an array
             this.pathWithArray = this.data().pathWithArray || null;
+            this.readOnly = this.data().readOnly;
 
             //quick select arguments
             if (this.data().quickSelectLabel && (this.data().quickSelectIds || this.data().quickSelectId)) {

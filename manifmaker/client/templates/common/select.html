@@ -3,27 +3,35 @@
     {{fakeConstructorWithDataArguments}}
 
     <div>
-        <div class="custom-select-label-wrapper hasPopover" data-popover="true"
-             data-toggle="popover" title="{{title}}"
-             data-content='
-                 <div class="row">
-                    <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
-                </div>
-                <div class="row">
-                    <div class="custom-select-options">
-                        <ul class="collection">
-                            {{#each collectionItems}}
-                                <li class="collection-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
-                            {{/each}}
-                        </ul>
+        {{#if readOnly}}
+            <div class="custom-select-label-wrapper">
+                {{#unless withoutLabel}}
+                    <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>
+                {{/unless}}
+            </div>
+        {{else}}
+            <div class="custom-select-label-wrapper hasPopover" data-popover="true"
+                 data-toggle="popover" title="{{title}}"
+                 data-content='
+                     <div class="row">
+                        <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
                     </div>
+                    <div class="row">
+                        <div class="custom-select-options">
+                            <ul class="collection">
+                                {{#each collectionItems}}
+                                    <li class="collection-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
+                                {{/each}}
+                            </ul>
+                        </div>
 
-                </div>
-         '>
-            {{#unless withoutLabel}}
-                <span class="custom-select-label" data-required><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span> <span class="custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
-            {{/unless}}
-        </div>
+                    </div>
+             '>
+                {{#unless withoutLabel}}
+                    <span class="custom-select-label" data-required><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span> <span class="custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
+                {{/unless}}
+            </div>
+        {{/if}}
 
         <span class="selected-options">
             {{#if withoutLabel}}
@@ -50,9 +58,16 @@
     {{fakeConstructorWithDataArguments}}
 
     <div>
-        <div class="custom-select-label-wrapper hasPopover" data-popover="true"
-             data-toggle="popover" title="{{title}}"
-             data-content='
+        {{#if readOnly}}
+            <div class="custom-select-label-wrapper">
+                {{#unless withoutLabel}}
+                    <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>
+                {{/unless}}
+            </div>
+        {{else}}
+            <div class="custom-select-label-wrapper hasPopover" data-popover="true"
+                 data-toggle="popover" title="{{title}}"
+                 data-content='
                  <div class="row">
                     <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
                 </div>
@@ -70,10 +85,11 @@
 
                 </div>
          '>
-            {{#unless withoutLabel}}
-                <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span> <span class="custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
-            {{/unless}}
-        </div>
+                {{#unless withoutLabel}}
+                    <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span> <span class="custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
+                {{/unless}}
+            </div>
+        {{/if}}
 
         <div class="selected-options">
             {{#if withoutLabel}}
