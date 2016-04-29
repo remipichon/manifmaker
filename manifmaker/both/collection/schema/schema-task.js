@@ -18,7 +18,6 @@ Schemas.EquipmentAsked = new SimpleSchema({
         type: Number,
         label: "Task equipment needed quantity",
         min: 0,
-        optional: true,
         autoform: {
             afFormGroup: {
                 label: false,
@@ -432,8 +431,8 @@ Schemas.Tasks = new SimpleSchema({
         optional: true,
         autoValue: function () {
             if(this.isInsert){
-                //initialize all equipment to null quantity
-                return _.map(Equipments.find({targetUsage:{$in:[EquipementTargetUsage.BOTH,EquipementTargetUsage.TASK]}}).fetch(),function(item){return {equipmentId: item._id, quantity: null};})
+                //initialize all equipment to 0 quantity
+                return _.map(Equipments.find({targetUsage:{$in:[EquipementTargetUsage.BOTH,EquipementTargetUsage.TASK]}}).fetch(),function(item){return {equipmentId: item._id, quantity: 0};})
             }
         }
     },

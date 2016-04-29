@@ -150,8 +150,15 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////    UPDATE TIMESLOTS SECTION
     ////////////////////////////////////////////////////////////////////////
 
+
+    isTimeSlotsUpdateAllowed() {
+        if (Roles.userIsInRole(Meteor.userId(), RolesEnum.ASSIGNMENTVALIDATION))
+            return true;
+        return ValidationService.isUpdateAllowed(this.data().timeSlotValidation.currentState);
+    }
+
     deleteTimeSlot() {
-        if(!ValidationService.isUpdateAllowed(this.currentData().timeSlotValidation.currentState)){
+        if (!ValidationService.isUpdateAllowed(this.currentData().timeSlotValidation.currentState)) {
             console.log("can't update timeslot as validation state doesn't allow it");
             //TODO ca devrait etre fait par le schema mais j'ai pas trouvé comment faire prendre en compte le $pull dans le custom
             //meme probleme pour delete people need mais actuellement le delete passe par un update uggly de tous les timeslot donc l'erreur est quand meme jetée par schema
@@ -468,21 +475,73 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////    EQUIPMENT SECTION
     ////////////////////////////////////////////////////////////////////////
 
+    isEquipmentsUpdateAllowed() {
+        return ValidationService.isUpdateAllowed(this.data().equipmentValidation.currentState);
+    }
+
+    isEquipmentsReadOnly() {
+        return !this.isEquipmentsUpdateAllowed();
+    }
+
     equipmentsCategories() {
         var categories = EquipmentCategories.find().fetch();
-        //remove categories which have nothing to display for this target
-        var result = [];
-        _.each(categories, function (category) {
-            if (Equipments.find({EquipmentCategories_Id: category._id, targetUsage: {$in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.TASK]}})
-                    .fetch().length !== 0) {
-                result.push(category);
-            }
+
+        if(this.isEquipmentsReadOnly()){
+            //remove categories which have nothing to display for this target + that don't have any quantity
+            var equipmentIdsWithAQuantity = this.equipmentIdsWithAQuantity();
+
+            var result = [];
+            _.each(categories, function (category) {
+                var equipmentsForACategory = Equipments.find({EquipmentCategories_Id: category._id, targetUsage: {$in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.TASK]}})
+                    .fetch();
+
+                equipmentsForACategory = _.filter(equipmentsForACategory,function(equipment){
+                    return _.contains(equipmentIdsWithAQuantity,equipment._id)
+                });
+
+                if (equipmentsForACategory.length !== 0) {
+                    result.push(category);
+                }
+            });
+            return result;
+        } else {
+            //remove categories which have nothing to display for this target
+            var result = [];
+            _.each(categories, function (category) {
+                if (Equipments.find({EquipmentCategories_Id: category._id, targetUsage: {$in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.TASK]}})
+                        .fetch().length !== 0) {
+                    result.push(category);
+                }
+            });
+            return result;
+        }
+    }
+
+    equipmentWithAQuantity() {
+        return _.reject(this.data().equipments, function (equipment) {
+            return equipment.quantity === 0
         });
-        return result;
+    }
+
+    equipmentIdsWithAQuantity() {
+        return _.map(this.equipmentWithAQuantity(), function (equipment) {
+            return equipment.equipmentId
+        });
     }
 
     equipments(category) {
-        return Equipments.find({EquipmentCategories_Id: category._id, targetUsage: {$in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.TASK]}});
+        var equipmentCategory = Equipments.find({EquipmentCategories_Id: category._id, targetUsage: {$in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.TASK]}});
+        if(this.isEquipmentsReadOnly()){
+            var result;
+            var equipmentIdWithQuantity = this.equipmentIdsWithAQuantity();
+            result = _.filter(equipmentCategory.fetch(), function (equipment) {
+                return _.contains(equipmentIdWithQuantity, equipment._id);
+            });
+            return result;
+        } else {
+            return equipmentCategory;
+        }
+
     }
 
     autoformNameForQuantity() {
