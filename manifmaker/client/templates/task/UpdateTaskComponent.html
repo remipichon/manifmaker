@@ -117,7 +117,6 @@
 
             <div class="panel panel-info">
                 <div class="panel-heading">Time slots</div>
-
                 <div class="panel-body timeslots" id="timeslots">
 
                     <div class="row">
@@ -131,6 +130,7 @@
                     <div class="col-md-4">
                         <div class="col-md-12 add-time-slot">
                             <div class="row">
+                                {{#if isTimeSlotsUpdateAllowed}}
                                 {{#if isTimeSlotUpdated.get}}
                                     <label>Update time slot</label><i class="duplicate-button">copy</i><i class="material-icons delete-button">delete</i> | <i class="material-icons add-button">add</i>
                                 {{/if}}
@@ -144,13 +144,16 @@
                                         <label>Select or create a time slot</label> <i class="material-icons add-button">add</i>
                                     {{/unless}}
                                 {{/unless}}
+                                {{else}}
+                                    <label>Select a time slot</label>
+                                {{/if}}
 
                             </div>
                             {{#if isTimeSlotUpdated.get}}
                                 <div id="add-time-slot-form" class="row">
                                     <div class="row">
-                                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate}}
-                                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate}}
+                                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate readOnly=isTimeSlotsReadOnly}}
+                                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate readOnly=isTimeSlotsReadOnly}}
                                     </div>
                                     <div class="row error-holder">
                                         {{updatetimeSlotDatesError}}
@@ -164,8 +167,10 @@
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         <span>{{count}}</span>
-                                                        <span class="glyphicon glyphicon-trash delete" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
-                                                        <span class="glyphicon glyphicon-file duplicate" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
+                                                        {{#unless isTimeSlotsReadOnly}}
+                                                            <span class="glyphicon glyphicon-trash delete" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
+                                                            <span class="glyphicon glyphicon-file duplicate" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
+                                                        {{/unless}}
                                                     </div>
                                                     <div class="col-md-9">
                                                         {{#if userId}}
@@ -174,7 +179,8 @@
                                                             updateCollection="Tasks" updateItemId=../_id
                                                             updateItemPath="userId"
                                                             pathWithArray=pathWithArrayPeopleNeeded
-                                                            updateCallback=updatePeopleNeedCallback}}
+                                                            updateCallback=updatePeopleNeedCallback
+                                                            readOnly=isTimeSlotsReadOnly}}
                                                         {{/if}}
                                                         {{#if teamId}}
                                                             {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
@@ -182,7 +188,8 @@
                                                             updateCollection="Tasks" updateItemId=../_id
                                                             updateItemPath="teamId"
                                                             bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                            updateCallback=updatePeopleNeedCallback}}
+                                                            updateCallback=updatePeopleNeedCallback
+                                                            readOnly=isTimeSlotsReadOnly}}
                                                         {{/if}}
                                                         {{#if skills}}
                                                             {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
@@ -190,7 +197,8 @@
                                                             updateCollection="Tasks" updateItemId=../_id
                                                             updateItemPath="skills"
                                                             bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                            updateCallback=updatePeopleNeedCallback}}
+                                                            updateCallback=updatePeopleNeedCallback
+                                                            readOnly=isTimeSlotsReadOnly}}
                                                         {{/if}}
                                                     </div>
                                                 </div>
@@ -216,40 +224,41 @@
                             {{/if}}
                         </div>
 
-                        {{#if isTimeSlotUpdated.get}}
-                            <div class="col-md-12 add-people-need">
-                                <div class="row">
-                                    <label>Add a people need</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}
+                        {{#if isTimeSlotsUpdateAllowed}}
+                            {{#if isTimeSlotUpdated.get}}
+                                <div class="col-md-12 add-people-need">
+                                    <div class="row">
+                                        <label>Add a people need</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}
+                                    </div>
+                                    {{#if displayAddPeopleNeedForm}}
+                                        <div id="add-people-need-form" class="row">
+                                            <div class="col-md-6">
+                                                {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
+                                                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
+                                                updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
+                                                nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                                                }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
+                                                optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
+                                                updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
+                                                }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
+                                                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                                updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
+                                                nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                                                }}
+                                            </div>
+                                        </div>
+                                        <div class="row error-holder">
+                                            {{createPeopleNeededError}}
+                                        </div>
+                                    {{/if}}
                                 </div>
-                                {{#if displayAddPeopleNeedForm}}
-                                    <div id="add-people-need-form" class="row">
-                                        <div class="col-md-6">
-                                            {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
-                                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
-                                            updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
-                                            nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
-                                            }}
-                                        </div>
-                                        <div class="col-md-6">
-                                            {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
-                                            optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
-                                            updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
-                                            }}
-                                        </div>
-                                        <div class="col-md-6">
-                                            {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
-                                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                                            updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
-                                            nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
-                                            }}
-                                        </div>
-                                    </div>
-                                    <div class="row error-holder">
-                                        {{createPeopleNeededError}}
-                                    </div>
-                                {{/if}}
-
-                            </div>
+                            {{/if}}
                         {{/if}}
                     </div>
                 </div>

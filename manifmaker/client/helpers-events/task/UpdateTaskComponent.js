@@ -150,11 +150,12 @@ class UpdateTaskComponent extends BlazeComponent {
     ////////////////////    UPDATE TIMESLOTS SECTION
     ////////////////////////////////////////////////////////////////////////
 
-
     isTimeSlotsUpdateAllowed() {
-        if (Roles.userIsInRole(Meteor.userId(), RolesEnum.ASSIGNMENTVALIDATION))
-            return true;
         return ValidationService.isUpdateAllowed(this.data().timeSlotValidation.currentState);
+    }
+
+    isTimeSlotsReadOnly() {
+        return !this.isTimeSlotsUpdateAllowed();
     }
 
     deleteTimeSlot() {

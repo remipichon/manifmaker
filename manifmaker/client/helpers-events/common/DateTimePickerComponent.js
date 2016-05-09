@@ -30,6 +30,8 @@ DateTimePickerComponent =
         }
 
         changeDate(e) {
+            if(this.data().readOnly) return;
+
             if(this.dateTimePickerFireOneEventWhenInit) { //a change event is fired when init...
                 this.dateTimePickerFireOneEventWhenInit = false;
                 return;
