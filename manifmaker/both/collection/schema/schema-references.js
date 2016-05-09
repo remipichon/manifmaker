@@ -35,15 +35,21 @@ Schemas.references.Teams = new SimpleSchema({
         label: "Team Name",
         max: 100
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {
         type: String,
         label: "Teams type",
-        defaultValue: "Teams"
+        defaultValue: "Teams",
+        autoValue: function(){
+            return "Teams"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {
         type: String,
         label: "Team base URL",
-        defaultValue: "team"
+        defaultValue: "team",
+        autoValue: function(){
+            return "team"
+        }
     }
 });
 /**
@@ -68,15 +74,21 @@ Schemas.references.Places = new SimpleSchema({
         label: "Place Name",
         max: 100
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "Places type",
         defaultValue: "Places",
+        autoValue: function(){
+            return "Places"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "Places base URL",
         defaultValue: "place",
+        autoValue: function(){
+            return "place"
+        }
     }
 });
 /**
@@ -108,15 +120,21 @@ Schemas.references.Skills = new SimpleSchema({
         label: "Skill Name",
         max: 100
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "Skills type",
-        defaultValue: "Skills"
+        defaultValue: "Skills",
+        autoValue: function(){
+            return "Skills"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "Skills base URL",
-        defaultValue: "skill"
+        defaultValue: "skill",
+        autoValue: function(){
+            return "skill"
+        }
     }
 });
 /**
@@ -166,15 +184,21 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
             }
         }
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "Assignment terms type",
-        defaultValue: "AssignmentTerms"
+        defaultValue: "AssignmentTerms",
+        autoValue: function(){
+            return "AssignmentTerms"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "Assignment terms base URL",
-        defaultValue: "assignment-term"
+        defaultValue: "assignment-term",
+        autoValue: function(){
+            return "assignment-term";
+        }
     }
 });
 /**
@@ -219,15 +243,21 @@ Schemas.references.GroupRoles = new SimpleSchema({
             }
         }
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "Roles type",
-        defaultValue: "Roles"
+        defaultValue: "Roles",
+        autoValue: function(){
+            return "Roles"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "Group roles base URL",
-        defaultValue: "group-role"
+        defaultValue: "group-role",
+        autoValue: function(){
+            return "group-role"
+        }
     }
 });
 /**
@@ -253,15 +283,21 @@ Schemas.references.EquipmentCategories = new SimpleSchema({
         label: "Equipment Category Name",
         max: 100
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "Equipment categories type",
-        defaultValue: "EquipmentCategories"
+        defaultValue: "EquipmentCategories",
+        autoValue: function(){
+            return "EquipmentCategories"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "Equipment Category base URL",
-        defaultValue: "equipment-category"
+        defaultValue: "equipment-category",
+        autoValue: function(){
+            return "equipment-category"
+        }
     }
 });
 /**
@@ -328,15 +364,21 @@ Schemas.references.Equipments = new SimpleSchema({
             }
         },
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "Equipments type",
-        defaultValue: "Equipments"
+        defaultValue: "Equipments",
+        autoValue: function(){
+            return "Equipments"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "Equipments base URL",
-        defaultValue: "equipment"
+        defaultValue: "equipment",
+        autoValue: function(){
+            return "equipment"
+        }
     }
 });
 /**
@@ -361,15 +403,21 @@ Schemas.references.WaterSupplies = new SimpleSchema({
         label: "WaterSupply Name",
         max: 100
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "WaterSupply type",
-        defaultValue: "WaterSupplies"
+        defaultValue: "WaterSupplies",
+        autoValue: function(){
+            return "WaterSupplies"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "WaterSupply base URL",
-        defaultValue: "water-supply"
+        defaultValue: "water-supply",
+        autoValue: function(){
+            return "water-supply"
+        }
     }
 });
 /**
@@ -395,15 +443,21 @@ Schemas.references.WaterDisposals = new SimpleSchema({
         label: "WaterDisposal Name",
         max: 100
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "WaterDisposal type",
-        defaultValue: "WaterDisposals"
+        defaultValue: "WaterDisposals",
+        autoValue: function(){
+            return "WaterDisposals"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "WaterDisposal base URL",
-        defaultValue: "water-disposal"
+        defaultValue: "water-disposal",
+        autoValue: function(){
+            return "water-disposal"
+        }
     }
 });
 /**
@@ -429,15 +483,21 @@ Schemas.references.PowerSupplies = new SimpleSchema({
         label: "PowerSupply Name",
         max: 100
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "PowerSupply type",
-        defaultValue: "PowerSupplies"
+        defaultValue: "PowerSupplies",
+        autoValue: function(){
+            return "PowerSupplies"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "PowerSupply base URL",
-        defaultValue: "power-supply"
+        defaultValue: "power-supply",
+        autoValue: function(){
+            return "power-supply"
+        }
     }
 });
 /**
@@ -463,15 +523,21 @@ Schemas.references.EquipmentStorages = new SimpleSchema({
         label: "EquipmentStorage Name",
         max: 100
     },
-    type: {  //TODO pas possible d'etre saisie par le user
+    type: {   
         type: String,
         label: "EquipmentStorage type",
-        defaultValue: "EquipmentStorages"
+        defaultValue: "EquipmentStorages",
+        autoValue: function(){
+            return "EquipmentStorages"
+        }
     },
-    baseUrl: { //TODO pas possible d'etre saisie par le user
+    baseUrl: {  
         type: String,
         label: "EquipmentStorage base URL",
-        defaultValue: "equipment-storage"
+        defaultValue: "equipment-storage",
+        autoValue: function(){
+            return "equipment-storage"
+        }
     }
 });
 /**

@@ -92,7 +92,6 @@ Schemas.helpers.allEquipmentStoragesOptions  = function () {
 Schemas.helpers.allUsersOptions = function () {
     var users = Users.find({}).fetch();
     var result = [];
-    //TODO mettre le current user en premier
     _.each(users, function (user) {
         result.push({
             label: user.name,
