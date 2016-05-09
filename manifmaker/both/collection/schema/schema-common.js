@@ -27,14 +27,17 @@ Schemas.ValidationComment = new SimpleSchema({
 Schemas.Validation = new SimpleSchema({
     currentState: {
         type: ValidationState,
-        label: "Current Validation State"
+        label: "Current Validation State",
+        defaultValue: ValidationState.OPEN
     },
     lastUpdateDate: {
         type: Date,
-        label :"Validation last update date"
+        label :"Validation last update date",
+        defaultValue: function(){return new Date();}()
     },
     comments: {
         type: [Schemas.ValidationComment],
         label: "Validation comment",
+        defaultValue: []
     }
 });

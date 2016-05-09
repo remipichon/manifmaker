@@ -1,4 +1,4 @@
-import {BaseCalendarComponent} from "../common/BaseCalendarComponent"
+import {BaseCalendarComponent} from "../../common/BaseCalendarComponent"
 
 class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
     /* available in data
