@@ -263,7 +263,6 @@ Schemas.references.options.EquipmentCategory = {
     PLURAL_REFERENCE_URL: "equipment-categories",
     REFERENCE_URL: "equipment-category",
     REFERENCE_COLLECTION_NAME: "EquipmentCategories",
-    REFERENCE_MONGO_COLLECTION_NAME: "equipment_categories", //TODO remove for all references
     REFERENCE_LABEL: "Equipment Category",
 };
 Schemas.references.EquipmentCategories = new SimpleSchema({
@@ -303,7 +302,6 @@ Schemas.references.options.Equipments = {
     PLURAL_REFERENCE_URL: "equipments",
     REFERENCE_URL: "equipment",
     REFERENCE_COLLECTION_NAME: "Equipments",
-    REFERENCE_MONGO_COLLECTION_NAME: "equipments", //TODO remove for all references
     REFERENCE_LABEL: "Equipment",
 };
 Schemas.references.Equipments = new SimpleSchema({
@@ -383,7 +381,6 @@ Schemas.references.options.WaterSupply = {
     PLURAL_REFERENCE_URL: "water-supplies",
     REFERENCE_URL: "water-supply",
     REFERENCE_COLLECTION_NAME: "WaterSupplies",
-    REFERENCE_MONGO_COLLECTION_NAME: "water_supplies", //TODO remove for all references
     REFERENCE_LABEL: "Water supply",
 };
 Schemas.references.WaterSupplies = new SimpleSchema({
@@ -423,7 +420,6 @@ Schemas.references.options.WaterDisposal = {
     PLURAL_REFERENCE_URL: "water-disposals",
     REFERENCE_URL: "water-disposal",
     REFERENCE_COLLECTION_NAME: "WaterDisposals",
-    REFERENCE_MONGO_COLLECTION_NAME: "water_disposals", //TODO remove for all references
     REFERENCE_LABEL: "Water disposal",
 };
 Schemas.references.WaterDisposals = new SimpleSchema({
@@ -463,7 +459,6 @@ Schemas.references.options.PowerSupplies = {
     PLURAL_REFERENCE_URL: "power-supplies",
     REFERENCE_URL: "power-supply",
     REFERENCE_COLLECTION_NAME: "PowerSupplies",
-    REFERENCE_MONGO_COLLECTION_NAME: "power_supplies", //TODO remove for all references
     REFERENCE_LABEL: "Power Supply",
 };
 Schemas.references.PowerSupplies = new SimpleSchema({
@@ -503,7 +498,6 @@ Schemas.references.options.EquipmentStorage = {
     PLURAL_REFERENCE_URL: "equipment-storages",
     REFERENCE_URL: "equipment-storage",
     REFERENCE_COLLECTION_NAME: "EquipmentStorages",
-    REFERENCE_MONGO_COLLECTION_NAME: "equipment_storages", //TODO remove for all references
     REFERENCE_LABEL: "Equipment Storage",
 };
 Schemas.references.EquipmentStorages = new SimpleSchema({
