@@ -88,12 +88,15 @@
 </template>
 
 <template name="taskTimeSlots">
+
+    {{reactiveConstructor}}
+
     <div class="row">
         {{>AssignmentTermSelectComponent}}
     </div>
 
     <div class="col-md-8">
-        {{> EditTimeSlotCalendarComponent data=this parentInstance=self timeSlotTemplate="updateTimeSlotCalendar"}}
+        {{> EditTimeSlotCalendarComponent task=taskData parentInstance=self timeSlotTemplate="updateTimeSlotCalendar"}}
     </div>
 
     <div class="col-md-4">
@@ -145,7 +148,7 @@
                                         {{#if userId}}
                                             {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
                                             optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                                            updateCollection="Tasks" updateItemId=../_id
+                                            updateCollection="Tasks" updateItemId=taskData._id
                                             updateItemPath="userId"
                                             pathWithArray=pathWithArrayPeopleNeeded
                                             updateCallback=updatePeopleNeedCallback
@@ -154,7 +157,7 @@
                                         {{#if teamId}}
                                             {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
                                             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                                            updateCollection="Tasks" updateItemId=../_id
+                                            updateCollection="Tasks" updateItemId=taskData._id
                                             updateItemPath="teamId"
                                             bulkPeopleNeededIds=bulkPeopleNeededIds
                                             updateCallback=updatePeopleNeedCallback
@@ -163,7 +166,7 @@
                                         {{#if skills}}
                                             {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
                                             optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
-                                            updateCollection="Tasks" updateItemId=../_id
+                                            updateCollection="Tasks" updateItemId=taskData._id
                                             updateItemPath="skills"
                                             bulkPeopleNeededIds=bulkPeopleNeededIds
                                             updateCallback=updatePeopleNeedCallback
@@ -366,7 +369,7 @@
                 <div class="panel-heading">General information</div>
 
                 <div class="panel-body">
-                    {{>taskGeneralInformation}}
+                    {{>TaskGeneralInformationComponent}}
                 </div>
             </div>
 
@@ -374,7 +377,7 @@
                 <div class="panel-heading">Equipments</div>
 
                 <div class="panel-body">
-                    {{>taskEquipments}}
+                    {{>TaskEquipmentsComponent}}
                 </div>
 
             </div>
@@ -383,7 +386,7 @@
                 <div class="panel-heading">Time slots</div>
 
                 <div class="panel-body timeslots" id="timeslots">
-                   {{>taskTimeSlots}}
+                   {{>TaskTimeSlotsComponent  parentInstance=self}}
                 </div>
             </div>
 
@@ -391,7 +394,7 @@
                 <div class="panel-heading">Validation</div>
 
                 <div class="panel-body equipments" id="equipments">
-                    {{>taskValidation}}
+                    {{>TaskValidationComponent}}
                 </div>
 
             </div>
@@ -421,7 +424,7 @@
                 <div class="panel-heading">General information</div>
 
                 <div class="panel-body">
-                    {{>taskGeneralInformation}}
+                    {{>TaskGeneralInformationComponent}}
                 </div>
             </div>
 
@@ -429,7 +432,7 @@
                 <div class="panel-heading">Equipments</div>
 
                 <div class="panel-body">
-                    {{>taskEquipments}}
+                    {{>TaskEquipmentsComponent}}
                 </div>
 
             </div>

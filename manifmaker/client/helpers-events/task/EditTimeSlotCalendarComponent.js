@@ -31,7 +31,7 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
         var data = {};
 
-        var task = this.data().data;
+        var task = this.data().task;
         if (!task) return [];
 
         var timeSlotFound = TimeSlotService.getTimeSlotByStart(task.timeSlots, startCalendarTimeSlot);
