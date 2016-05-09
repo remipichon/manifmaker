@@ -146,7 +146,6 @@ Schemas.references.Skills = new SimpleSchema({
 Skills = new Mongo.Collection("skills");
 Skills.attachSchema(Schemas.references.Skills);
 
-//TODO les assignments terms ne peuvent pas se chevaucher
 Schemas.references.options.AssignmentTerms = {
     PLURAL_REFERENCE_URL: "assignment-terms",
     REFERENCE_URL: "assignment-term",
@@ -163,11 +162,6 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     start: {
         type: Date,
         label: "Assignment terms Start",
-        custom: function () {
-            if (new moment(this.value).isAfter(new moment(this.key.replace("start", "") + this.field('end').value))) {
-                return "startAfterEnd";
-            }
-        },
         autoform: {
             type: "datetime-local"
         }
@@ -178,11 +172,6 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
         autoform: {
             type: "datetime-local"
         },
-        custom: function () {
-            if (new moment(this.value).isBefore(new moment(this.field(this.key.replace("end", "") + 'start').value))) {
-                return "endBeforeStart";
-            }
-        }
     },
     type: {   
         type: String,
