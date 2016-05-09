@@ -3,12 +3,21 @@ class TaskEquipmentsComponent extends BlazeComponent{
         return "taskEquipments";
     }
 
+    constructor(isReadOnly){
+        super();
+        this.isReadOnly = isReadOnly;
+    }
+
+    taskData(){
+        return this.data();
+    }
+
     isEquipmentsUpdateAllowed() {
         return ValidationService.isUpdateAllowed(this.data().equipmentValidation.currentState);
     }
 
     isEquipmentsReadOnly() {
-        return !this.isEquipmentsUpdateAllowed();
+        return this.isReadOnly || !this.isEquipmentsUpdateAllowed();
     }
 
     equipmentsCategories() {
@@ -46,7 +55,7 @@ class TaskEquipmentsComponent extends BlazeComponent{
     }
 
     equipmentWithAQuantity() {
-        return _.reject(this.data().equipments, function (equipment) {
+        return _.reject(this.taskData().equipments, function (equipment) {
             return equipment.quantity === 0
         });
     }
@@ -73,13 +82,13 @@ class TaskEquipmentsComponent extends BlazeComponent{
     }
 
     autoformNameForQuantity() {
-        var equipments = this.data().equipments;
+        var equipments = this.taskData().equipments;
         var index = equipments.indexOf(_.findWhere(equipments, {equipmentId: this.currentData()._id}));
         return "equipments." + index + ".quantity";
     }
 
     autoformNameForEquipmentId() {
-        var equipments = this.data().equipments;
+        var equipments = this.taskData().equipments;
         var index = equipments.indexOf(_.findWhere(equipments, {equipmentId: this.currentData()._id}));
         return "equipments." + index + ".equipmentId";
     }

@@ -1,3 +1,62 @@
 <template name="ActivitiesList">
     <h1>Here is the activities list</h1>
 </template>
+
+
+<template name="oldUpdateTask">
+    <div class="update-task-wrapper-form">
+
+
+
+        <div class="row">
+
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">comment</i>Access pass validation comments</div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            {{#each accessPassValidation.comments}}
+                                <li class="collection-item">{{author}} update access pass validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
+                            {{else}}
+                                <li class="collection-item">There are not comments right now but with luck there will be yours soon.</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            {{#if displayTextArea 'ACCESSPASSVALIDATION' accessPassValidation.currentState}}
+                <textarea id="access-pass-validation-new-comment" placeholder="You can type a new comment for access pass validation" class="new-comment-textarea materialize-textarea"></textarea>
+            {{/if}}
+
+            {{#if equals accessPassValidation.currentState "OPEN"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/to-be-validated"><i class="material-icons left">cloud</i>Access pass validation : ask for validation</a>
+            {{/if}}
+            {{#if isInRole RolesEnum.ACCESSPASSVALIDATION}}
+                {{#if equals accessPassValidation.currentState "TOBEVALIDATED"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/refuse"><i class="material-icons left">cloud</i>Access pass validation : refuse</a>
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/ready"><i class="material-icons left">cloud</i>Access pass validation : close</a>
+                {{/if}}
+            {{else}}
+                {{#if equals accessPassValidation.currentState "TOBEVALIDATED"}}
+                    <div class="chip">In validation</div>
+                {{/if}}
+            {{/if}}
+            {{#if equals accessPassValidation.currentState "REFUSED"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/to-be-validated"><i class="material-icons left">cloud</i>Access pass validation : ask for validation</a>
+            {{/if}}
+            {{#if isInRole RolesEnum.ACCESSPASSVALIDATION}}
+                {{#if equals accessPassValidation.currentState "READY"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/access-pass/{{this._id}}/refuse"><i class="material-icons left">cloud</i>Access pass validation : refuse</a>
+                {{/if}}
+            {{else}}
+                {{#if equals accessPassValidation.currentState "READY"}}
+                    <div class="chip">Closed</div>
+                {{/if}}
+            {{/if}}
+        </div>
+
+
+
+
+    </div>
+</template>

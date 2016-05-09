@@ -1,0 +1,45 @@
+<template name="taskEquipments">
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+                {{> SingleNonMandatorySelectComponent selectLabel="Equipment storage place" title="Equipment storage place"
+                optionCollection="EquipmentStorages" optionValueName="name" optionCollectionIndex="EquipmentStoragesIndex"
+                updateCollection="Tasks" updateItemId=taskData._id updateItemPath="equipmentStorageId"
+                readOnly=isEquipmentsReadOnly
+                }}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div>
+                {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
+                optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
+                updateCollection="Tasks" updateItemId=taskData._id updateItemPath="powerSupplyId"
+                readOnly=isEquipmentsReadOnly
+                }}
+            </div>
+        </div>
+    </div>
+
+    <div class="equipment-wrapper">
+        {{#each equipmentsCategories}}
+            <div class="col-md-6">
+                <div class="row">
+                    <label>{{name}}</label>
+                </div>
+                <div class="row">
+                    {{#each equipments this}}
+                        <div class="col-md-6">
+                            <div class="col-md-4">
+                                {{> afQuickField name=autoformNameForQuantity readonly=isEquipmentsReadOnly}}
+                                {{> afQuickField name=autoformNameForEquipmentId}}
+                            </div>
+                            <div class="col-md-8">
+                                {{name}}
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</template>
