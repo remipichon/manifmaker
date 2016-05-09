@@ -59,12 +59,17 @@ Router.route('/task/:_id', function () {
             SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
             console.info("routing", "/task/" + this.params._id);
 
+            if(!Tasks.findOne(this.params._id)){
+                console.info("routing", "task not found, rerouting to /tasks");
+                Router.go("/tasks");
+            }
+
 
             /**
              * Spacebar doesn't support @index nor Template.data nor Template.parent (all linked to the same things). This means
              * that I can't access task data when creating equipments form
              */
-            SelectedUpdatedOrReadedTask.set(this.params._id)
+            SelectedUpdatedOrReadedTask.set(this.params._id) //TODO remove this no ?
 
 
             this.render('updateTaskForm', {

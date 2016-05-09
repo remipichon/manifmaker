@@ -20,7 +20,7 @@
         {{/if}}
     {{/if}}
     {{#if isInRole RolesEnum.TASKDELETE}}
-        {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id}}Delete{{/quickRemoveButton}}
+        {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete{{/quickRemoveButton}}
     {{/if}}
 </template>
 
