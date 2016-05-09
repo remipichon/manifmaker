@@ -12,6 +12,8 @@ class CreateTaskComponent extends BlazeComponent {
         this.insertTaskContext = Tasks.simpleSchema().namedContext("insertTask");
         this.errorsArray = new ReactiveVar([]);
         this.hasBeenSubmitted = new ReactiveVar(false);
+
+        window.truc = this;
     }
 
 
@@ -55,7 +57,7 @@ class CreateTaskComponent extends BlazeComponent {
     submitForm() {
         this.hasBeenSubmitted.set(true);
 
-        if (this.isFormValid) {
+        if (this.validateForm()) {
             var temp = TempCollection.findOne({_id: this.tempItemId});
             var _id = Tasks.insert(temp);
             Router.go("/task/" + _id);
@@ -81,10 +83,13 @@ class CreateTaskComponent extends BlazeComponent {
             this.errorsArray.set([]);
             this.isFormValid = true;
         }
+
+        return this.isFormValid;
+
     }
 
     errors() {
-        this.validateForm(); //just to active reactivity on this method
+        //this.validateForm(); //just to active reactivity on this method
         var err = this.errorsArray.get();
 
         if (this.hasBeenSubmitted.get()) { //active reactivity
