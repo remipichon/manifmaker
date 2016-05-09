@@ -394,7 +394,7 @@ Schemas.Tasks = new SimpleSchema({
         type: Schemas.Validation,
         label: "Task Time slots validation",
         defaultValue: function(){Schemas.Validation.clean({})}(),
-        optional: true,//TODO je ne sais pas si c'est une bonne idée de faire ca
+        optional: true,
         autoform: {
             type: "hidden",
         }
@@ -403,7 +403,7 @@ Schemas.Tasks = new SimpleSchema({
         type: Schemas.Validation,
         label: "Task access pass validation",
         defaultValue: function(){Schemas.Validation.clean({})}(),
-        optional: true,//TODO je ne sais pas si c'est une bonne idée de faire ca
+        optional: true,
         autoform: {
             type: "hidden",
         }
@@ -412,7 +412,7 @@ Schemas.Tasks = new SimpleSchema({
         type: Schemas.Validation,
         label: "Task equipments validation",
         defaultValue: function(){Schemas.Validation.clean({})}(),
-        optional: true,//TODO je ne sais pas si c'est une bonne idée de faire ca
+        optional: true,
         autoform: {
             type: "hidden",
         }
