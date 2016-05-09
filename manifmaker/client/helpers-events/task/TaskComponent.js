@@ -1,4 +1,4 @@
-class UpdateTaskComponent extends BlazeComponent {
+class TaskComponent extends BlazeComponent {
 
     reactiveConstructor() {
         this.createTimeSlotDefaultStartDate.set(AssignmentCalendarDisplayedDays.find().fetch()[0].date);
@@ -476,10 +476,6 @@ class UpdateTaskComponent extends BlazeComponent {
         }
     }
 
-    isGeneralInformationReadOnly(){
-        return false;
-    }
-
     ////////////////////////////////////////////////////////////////////////
     ////////////////////    EQUIPMENT SECTION
     ////////////////////////////////////////////////////////////////////////
@@ -581,5 +577,4 @@ class UpdateTaskComponent extends BlazeComponent {
 
 }
 
-UpdateTaskComponent.register('UpdateTaskComponent');
 

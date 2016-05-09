@@ -1,3 +1,349 @@
+<template name="taskGeneralInformation">
+    <div class="col-md-3">
+        <div>
+            <label>Linked activity</label>
+
+            <div><a href="/activity/_id">Activity name</a></div>
+            <div>
+                <div>day1 : start to end</div>
+                <div>day1 : start to end and start2 to end2</div>
+            </div>
+        </div>
+
+        <div>
+            {{> SingleSelectComponent selectLabel="Team" title="Update team"
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId" readOnly=isGeneralInformationReadOnly
+            }}
+        </div>
+
+        <div>
+            {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
+            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+            updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId" readOnly=isGeneralInformationReadOnly
+            }}
+        </div>
+
+        <div>
+            <div>
+                {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId" readOnly=isGeneralInformationReadOnly
+                }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div>
+            <label>Description</label>
+            {{> afQuickField name='description' rows=15}}
+        </div>
+    </div>
+</template>
+
+<template name="taskEquipments">
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+                {{> SingleNonMandatorySelectComponent selectLabel="Equipment storage place" title="Equipment storage place"
+                optionCollection="EquipmentStorages" optionValueName="name" optionCollectionIndex="EquipmentStoragesIndex"
+                updateCollection="Tasks" updateItemId=this._id updateItemPath="equipmentStorageId"
+                readOnly=isEquipmentsReadOnly
+                }}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div>
+                {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
+                optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
+                updateCollection="Tasks" updateItemId=this._id updateItemPath="powerSupplyId"
+                readOnly=isEquipmentsReadOnly
+                }}
+            </div>
+        </div>
+    </div>
+
+    <div class="equipment-wrapper">
+        {{#each equipmentsCategories}}
+            <div class="col-md-6">
+                <div class="row">
+                    <label>{{name}}</label>
+                </div>
+                <div class="row">
+                    {{#each equipments this}}
+                        <div class="col-md-6">
+                            <div class="col-md-4">
+                                {{> afQuickField name=autoformNameForQuantity readonly=isEquipmentsReadOnly}}
+                                {{> afQuickField name=autoformNameForEquipmentId}}
+                            </div>
+                            <div class="col-md-8">
+                                {{name}}
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</template>
+
+<template name="taskTimeSlots">
+    <div class="row">
+        {{>AssignmentTermSelectComponent}}
+    </div>
+
+    <div class="col-md-8">
+        {{> EditTimeSlotCalendarComponent data=this parentInstance=self timeSlotTemplate="updateTimeSlotCalendar"}}
+    </div>
+
+    <div class="col-md-4">
+        <div class="col-md-12 add-time-slot">
+            <div class="row">
+                {{#if isTimeSlotsUpdateAllowed}}
+                    {{#if isTimeSlotUpdated.get}}
+                        <label>Update time slot</label><i class="duplicate-button">copy</i><i class="material-icons delete-button">delete</i> | <i class="material-icons add-button">add</i>
+                    {{/if}}
+
+                    {{#if isTimeSlotCreated.get}}
+                        <label>Create time slot</label><i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>
+                    {{/if}}
+
+                    {{#unless isTimeSlotCreated.get}}
+                        {{#unless isTimeSlotUpdated.get}}
+                            <label>Select or create a time slot</label> <i class="material-icons add-button">add</i>
+                        {{/unless}}
+                    {{/unless}}
+                {{else}}
+                    <label>Select a time slot</label>
+                {{/if}}
+
+            </div>
+            {{#if isTimeSlotUpdated.get}}
+                <div id="add-time-slot-form" class="row">
+                    <div class="row">
+                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate readOnly=isTimeSlotsReadOnly}}
+                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate readOnly=isTimeSlotsReadOnly}}
+                    </div>
+                    <div class="row error-holder">
+                        {{updatetimeSlotDatesError}}
+                    </div>
+                    <div class="row people-need">
+                        <label>People needs</label>
+
+                        <div class="row">
+                            {{#each currentTimeSlotPeopleNeededMerged}}
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <span>{{count}}</span>
+                                        {{#unless isTimeSlotsReadOnly}}
+                                            <span class="glyphicon glyphicon-trash delete" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
+                                            <span class="glyphicon glyphicon-file duplicate" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
+                                        {{/unless}}
+                                    </div>
+                                    <div class="col-md-9">
+                                        {{#if userId}}
+                                            {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
+                                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                            updateCollection="Tasks" updateItemId=../_id
+                                            updateItemPath="userId"
+                                            pathWithArray=pathWithArrayPeopleNeeded
+                                            updateCallback=updatePeopleNeedCallback
+                                            readOnly=isTimeSlotsReadOnly}}
+                                        {{/if}}
+                                        {{#if teamId}}
+                                            {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
+                                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                            updateCollection="Tasks" updateItemId=../_id
+                                            updateItemPath="teamId"
+                                            bulkPeopleNeededIds=bulkPeopleNeededIds
+                                            updateCallback=updatePeopleNeedCallback
+                                            readOnly=isTimeSlotsReadOnly}}
+                                        {{/if}}
+                                        {{#if skills}}
+                                            {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
+                                            optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
+                                            updateCollection="Tasks" updateItemId=../_id
+                                            updateItemPath="skills"
+                                            bulkPeopleNeededIds=bulkPeopleNeededIds
+                                            updateCallback=updatePeopleNeedCallback
+                                            readOnly=isTimeSlotsReadOnly}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                        <div class="row error-holder">
+                            {{updatePeopleNeededError}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if isTimeSlotCreated.get}}
+                <div id="create-time-slot-form" class="row">
+                    <div class="row">
+                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=createTimeSlotDefaultStartDate.get updateDateCallback=updateTimeSlotStartDate}}
+                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=createTimeSlotDefaultEndDate.get updateDateCallback=updateTimeSlotEndDate}}
+                    </div>
+                    <div class="row error-holder">
+                        {{updatetimeSlotDatesError}}
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+        {{#if isTimeSlotsUpdateAllowed}}
+            {{#if isTimeSlotUpdated.get}}
+                <div class="col-md-12 add-people-need">
+                    <div class="row">
+                        <label>Add a people need</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}
+                    </div>
+                    {{#if displayAddPeopleNeedForm}}
+                        <div id="add-people-need-form" class="row">
+                            <div class="col-md-6">
+                                {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
+                                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
+                                updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
+                                nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                                }}
+                            </div>
+                            <div class="col-md-6">
+                                {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
+                                optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
+                                updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
+                                }}
+                            </div>
+                            <div class="col-md-6">
+                                {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
+                                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
+                                nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                                }}
+                            </div>
+                        </div>
+                        <div class="row error-holder">
+                            {{createPeopleNeededError}}
+                        </div>
+                    {{/if}}
+                </div>
+            {{/if}}
+        {{/if}}
+    </div>
+</template>
+
+<template name="taskValidation">
+    <div class="row">
+
+        <div class="row">
+            <label>Equipment validation</label>
+
+            <ul class="collection">
+                <li class="collection-item" data-toggle="collapse" data-target="#collaspeEquipmentValidation" aria-expanded="false" aria-controls="collapseExample">
+                    <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                    {{#if equipmentValidation.comments}}
+                        {{equipmentValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{equipmentValidation.comments.[0].content}}"
+                    {{else}}
+                        There are not comments right now but with luck there will be yours soon.
+                    {{/if}}
+                </li>
+
+                <div class="collapse" id="collaspeEquipmentValidation">
+                    {{#each equipmentValidation.comments}}
+                        {{#unless equals @index 0}}
+                            <li class="collection-item">{{author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
+                        {{/unless}}
+                    {{/each}}
+                </div>
+            </ul>
+
+            {{#if displayTextArea 'EQUIPMENTVALIDATION' equipmentValidation.currentState}}
+                <textarea id="equipment-validation-new-comment" placeholder="You can type a new comment for equipment validation" class="new-comment-textarea materialize-textarea"></textarea>
+            {{/if}}
+
+            {{#if equals equipmentValidation.currentState "OPEN"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
+            {{/if}}
+            {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
+                {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/ready"><i class="material-icons left">settings</i>Equipments validation : close</a>
+                {{/if}}
+            {{else}}
+                {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
+                    <div class="chip">In validation</div>
+                {{/if}}
+            {{/if}}
+            {{#if equals equipmentValidation.currentState "REFUSED"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
+            {{/if}}
+            {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
+                {{#if equals equipmentValidation.currentState "READY"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
+                {{/if}}
+            {{else}}
+                {{#if equals equipmentValidation.currentState "READY"}}
+                    <div class="chip">Closed</div>
+                {{/if}}
+            {{/if}}
+        </div>
+
+
+        <div class="row">
+            <label>Time slots validation</label>
+
+            <ul class="collection">
+                <li class="collection-item" data-toggle="collapse" data-target="#collaspeTimeSlotValidation" aria-expanded="false" aria-controls="collapseExample">
+                    <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                    {{#if timeSlotValidation.comments}}
+                        {{timeSlotValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState timeSlotValidation.comments.[0].stateBefore}}</b> to <b>{{displayValidationState timeSlotValidation.comments.[0].stateAfter}}</b> on {{displayDateTime timeSlotValidation.comments.[0].creationDate}} with "{{timeSlotValidation.comments.[0].content}}"
+                    {{else}}
+                        There are not comments right now but with luck there will be yours soon.
+                    {{/if}}
+                </li>
+
+                <div class="collapse" id="collaspeTimeSlotValidation">
+                    {{#each timeSlotValidation.comments}}
+                        {{#unless equals @index 0}}
+                            <li class="collection-item">{{author}} update time slot validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
+                        {{/unless}}
+                    {{/each}}
+                </div>
+            </ul>
+
+            {{#if displayTextArea 'ASSIGNMENTVALIDATION' timeSlotValidation.currentState}}
+                <textarea id="time-slot-validation-new-comment" placeholder="You can type a new comment for time slot validation" class="new-comment-textarea materialize-textarea"></textarea>
+            {{/if}}
+
+            {{#if equals timeSlotValidation.currentState "OPEN"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
+            {{/if}}
+            {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
+                {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/ready"><i class="material-icons left">schedule</i>Time slots validation : set ready to assignment</a>
+                {{/if}}
+            {{else}}
+                {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
+                    <div class="chip">In validation</div>
+                {{/if}}
+            {{/if}}
+            {{#if equals timeSlotValidation.currentState "REFUSED"}}
+                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
+            {{/if}}
+            {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
+                {{#if equals timeSlotValidation.currentState "READY"}}
+                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
+                {{/if}}
+            {{else}}
+                {{#if equals timeSlotValidation.currentState "READY"}}
+                    <div class="chip">Ready for assignment</div>
+                {{/if}}
+            {{/if}}
+        </div>
+    </div>
+</template>
+
 <template name="updateTaskComponent">
 
     <div class="update-task-wrapper-form">
@@ -20,46 +366,7 @@
                 <div class="panel-heading">General information</div>
 
                 <div class="panel-body">
-                    <div class="col-md-3">
-                        <div>
-                            <label>Linked activity</label>
-
-                            <div><a href="/activity/_id">Activity name</a></div>
-                            <div>
-                                <div>day1 : start to end</div>
-                                <div>day1 : start to end and start2 to end2</div>
-                            </div>
-                        </div>
-
-                        <div>
-                            {{> SingleSelectComponent selectLabel="Team" title="Update team"
-                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                            updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId"
-                            }}
-                        </div>
-
-                        <div>
-                            {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
-                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                            updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId"
-                            }}
-                        </div>
-
-                        <div>
-                            <div>
-                                {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
-                                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                                updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId"
-                                }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9">
-                        <div>
-                            <label>Description</label>
-                            {{> afQuickField name='description' rows=15}}
-                        </div>
-                    </div>
+                    {{>taskGeneralInformation}}
                 </div>
             </div>
 
@@ -67,200 +374,16 @@
                 <div class="panel-heading">Equipments</div>
 
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div>
-                                {{> SingleNonMandatorySelectComponent selectLabel="Equipment storage place" title="Equipment storage place"
-                                optionCollection="EquipmentStorages" optionValueName="name" optionCollectionIndex="EquipmentStoragesIndex"
-                                updateCollection="Tasks" updateItemId=this._id updateItemPath="equipmentStorageId"
-                                readOnly=isEquipmentsReadOnly
-                                }}
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div>
-                                {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
-                                optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
-                                updateCollection="Tasks" updateItemId=this._id updateItemPath="powerSupplyId"
-                                readOnly=isEquipmentsReadOnly
-                                }}
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="equipment-wrapper">
-                        {{#each equipmentsCategories}}
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <label>{{name}}</label>
-                                </div>
-                                <div class="row">
-                                    {{#each equipments this}}
-                                        <div class="col-md-6">
-                                            <div class="col-md-4">
-                                                {{> afQuickField name=autoformNameForQuantity readonly=isEquipmentsReadOnly}}
-                                                {{> afQuickField name=autoformNameForEquipmentId}}
-                                            </div>
-                                            <div class="col-md-8">
-                                                {{name}}
-                                            </div>
-                                        </div>
-                                    {{/each}}
-                                </div>
-                            </div>
-                        {{/each}}
-                    </div>
+                    {{>taskEquipments}}
                 </div>
 
             </div>
 
             <div class="panel panel-info">
                 <div class="panel-heading">Time slots</div>
+
                 <div class="panel-body timeslots" id="timeslots">
-
-                    <div class="row">
-                        {{>AssignmentTermSelectComponent}}
-                    </div>
-
-                    <div class="col-md-8">
-                        {{> EditTimeSlotCalendarComponent data=this parentInstance=self timeSlotTemplate="updateTimeSlotCalendar"}}
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="col-md-12 add-time-slot">
-                            <div class="row">
-                                {{#if isTimeSlotsUpdateAllowed}}
-                                {{#if isTimeSlotUpdated.get}}
-                                    <label>Update time slot</label><i class="duplicate-button">copy</i><i class="material-icons delete-button">delete</i> | <i class="material-icons add-button">add</i>
-                                {{/if}}
-
-                                {{#if isTimeSlotCreated.get}}
-                                    <label>Create time slot</label><i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>
-                                {{/if}}
-
-                                {{#unless isTimeSlotCreated.get}}
-                                    {{#unless isTimeSlotUpdated.get}}
-                                        <label>Select or create a time slot</label> <i class="material-icons add-button">add</i>
-                                    {{/unless}}
-                                {{/unless}}
-                                {{else}}
-                                    <label>Select a time slot</label>
-                                {{/if}}
-
-                            </div>
-                            {{#if isTimeSlotUpdated.get}}
-                                <div id="add-time-slot-form" class="row">
-                                    <div class="row">
-                                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate readOnly=isTimeSlotsReadOnly}}
-                                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate readOnly=isTimeSlotsReadOnly}}
-                                    </div>
-                                    <div class="row error-holder">
-                                        {{updatetimeSlotDatesError}}
-                                    </div>
-                                    <div class="row people-need">
-                                        <label>People needs</label>
-
-                                        <div class="row">
-                                            {{#each currentTimeSlotPeopleNeededMerged}}
-
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <span>{{count}}</span>
-                                                        {{#unless isTimeSlotsReadOnly}}
-                                                            <span class="glyphicon glyphicon-trash delete" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
-                                                            <span class="glyphicon glyphicon-file duplicate" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
-                                                        {{/unless}}
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        {{#if userId}}
-                                                            {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
-                                                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                                                            updateCollection="Tasks" updateItemId=../_id
-                                                            updateItemPath="userId"
-                                                            pathWithArray=pathWithArrayPeopleNeeded
-                                                            updateCallback=updatePeopleNeedCallback
-                                                            readOnly=isTimeSlotsReadOnly}}
-                                                        {{/if}}
-                                                        {{#if teamId}}
-                                                            {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
-                                                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                                                            updateCollection="Tasks" updateItemId=../_id
-                                                            updateItemPath="teamId"
-                                                            bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                            updateCallback=updatePeopleNeedCallback
-                                                            readOnly=isTimeSlotsReadOnly}}
-                                                        {{/if}}
-                                                        {{#if skills}}
-                                                            {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
-                                                            optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
-                                                            updateCollection="Tasks" updateItemId=../_id
-                                                            updateItemPath="skills"
-                                                            bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                            updateCallback=updatePeopleNeedCallback
-                                                            readOnly=isTimeSlotsReadOnly}}
-                                                        {{/if}}
-                                                    </div>
-                                                </div>
-                                            {{/each}}
-                                        </div>
-                                        <div class="row error-holder">
-                                            {{updatePeopleNeededError}}
-                                        </div>
-                                    </div>
-                                </div>
-                            {{/if}}
-
-                            {{#if isTimeSlotCreated.get}}
-                                <div id="create-time-slot-form" class="row">
-                                    <div class="row">
-                                        From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=createTimeSlotDefaultStartDate.get updateDateCallback=updateTimeSlotStartDate}}
-                                        to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=createTimeSlotDefaultEndDate.get updateDateCallback=updateTimeSlotEndDate}}
-                                    </div>
-                                    <div class="row error-holder">
-                                        {{updatetimeSlotDatesError}}
-                                    </div>
-                                </div>
-                            {{/if}}
-                        </div>
-
-                        {{#if isTimeSlotsUpdateAllowed}}
-                            {{#if isTimeSlotUpdated.get}}
-                                <div class="col-md-12 add-people-need">
-                                    <div class="row">
-                                        <label>Add a people need</label>{{#if displayAddPeopleNeedForm}}<i class="material-icons done-button">done</i><i class="material-icons clear-button">clear_all</i>{{else}}<i class="material-icons add-button">add</i>{{/if}}
-                                    </div>
-                                    {{#if displayAddPeopleNeedForm}}
-                                        <div id="add-people-need-form" class="row">
-                                            <div class="col-md-6">
-                                                {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
-                                                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
-                                                updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
-                                                nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
-                                                }}
-                                            </div>
-                                            <div class="col-md-6">
-                                                {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
-                                                optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
-                                                updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
-                                                }}
-                                            </div>
-                                            <div class="col-md-6">
-                                                {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
-                                                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                                                updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
-                                                nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="row error-holder">
-                                            {{createPeopleNeededError}}
-                                        </div>
-                                    {{/if}}
-                                </div>
-                            {{/if}}
-                        {{/if}}
-                    </div>
+                   {{>taskTimeSlots}}
                 </div>
             </div>
 
@@ -268,115 +391,7 @@
                 <div class="panel-heading">Validation</div>
 
                 <div class="panel-body equipments" id="equipments">
-                    <div class="row">
-
-                        <div class="row">
-                            <label>Equipment validation</label>
-
-                            <ul class="collection">
-                                <li class="collection-item" data-toggle="collapse" data-target="#collaspeEquipmentValidation" aria-expanded="false" aria-controls="collapseExample">
-                                    <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                                    {{#if equipmentValidation.comments}}
-                                        {{equipmentValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{equipmentValidation.comments.[0].content}}"
-                                    {{else}}
-                                        There are not comments right now but with luck there will be yours soon.
-                                    {{/if}}
-                                </li>
-
-                                <div class="collapse" id="collaspeEquipmentValidation">
-                                    {{#each equipmentValidation.comments}}
-                                        {{#unless equals @index 0}}
-                                            <li class="collection-item">{{author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
-                                        {{/unless}}
-                                    {{/each}}
-                                </div>
-                            </ul>
-
-                            {{#if displayTextArea 'EQUIPMENTVALIDATION' equipmentValidation.currentState}}
-                                <textarea id="equipment-validation-new-comment" placeholder="You can type a new comment for equipment validation" class="new-comment-textarea materialize-textarea"></textarea>
-                            {{/if}}
-
-                            {{#if equals equipmentValidation.currentState "OPEN"}}
-                                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
-                            {{/if}}
-                            {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
-                                {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
-                                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
-                                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/ready"><i class="material-icons left">settings</i>Equipments validation : close</a>
-                                {{/if}}
-                            {{else}}
-                                {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
-                                    <div class="chip">In validation</div>
-                                {{/if}}
-                            {{/if}}
-                            {{#if equals equipmentValidation.currentState "REFUSED"}}
-                                <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/to-be-validated"><i class="material-icons left">settings</i>Equipments validation : ask for validation</a>
-                            {{/if}}
-                            {{#if isInRole RolesEnum.EQUIPMENTVALIDATION}}
-                                {{#if equals equipmentValidation.currentState "READY"}}
-                                    <a class="waves-effect waves-light btn-large" href="/task/validation/equipment/{{this._id}}/refuse"><i class="material-icons left">settings</i>Equipments validation : refuse</a>
-                                {{/if}}
-                            {{else}}
-                                {{#if equals equipmentValidation.currentState "READY"}}
-                                    <div class="chip">Closed</div>
-                                {{/if}}
-                            {{/if}}
-                        </div>
-
-
-                        <div class="row">
-                            <label>Time slots validation</label>
-
-                            <ul class="collection">
-                                <li class="collection-item" data-toggle="collapse" data-target="#collaspeTimeSlotValidation" aria-expanded="false" aria-controls="collapseExample">
-                                    <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                                    {{#if timeSlotValidation.comments}}
-                                        {{timeSlotValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState timeSlotValidation.comments.[0].stateBefore}}</b> to <b>{{displayValidationState timeSlotValidation.comments.[0].stateAfter}}</b> on {{displayDateTime timeSlotValidation.comments.[0].creationDate}} with "{{timeSlotValidation.comments.[0].content}}"
-                                    {{else}}
-                                        There are not comments right now but with luck there will be yours soon.
-                                    {{/if}}
-                                </li>
-
-                                <div class="collapse" id="collaspeTimeSlotValidation">
-                                    {{#each timeSlotValidation.comments}}
-                                        {{#unless equals @index 0}}
-                                            <li class="collection-item">{{author}} update time slot validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
-                                        {{/unless}}
-                                    {{/each}}
-                                </div>
-                            </ul>
-
-                            {{#if displayTextArea 'ASSIGNMENTVALIDATION' timeSlotValidation.currentState}}
-                                <textarea id="time-slot-validation-new-comment" placeholder="You can type a new comment for time slot validation" class="new-comment-textarea materialize-textarea"></textarea>
-                            {{/if}}
-
-                            {{#if equals timeSlotValidation.currentState "OPEN"}}
-                                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
-                            {{/if}}
-                            {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
-                                {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
-                                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
-                                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/ready"><i class="material-icons left">schedule</i>Time slots validation : set ready to assignment</a>
-                                {{/if}}
-                            {{else}}
-                                {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
-                                    <div class="chip">In validation</div>
-                                {{/if}}
-                            {{/if}}
-                            {{#if equals timeSlotValidation.currentState "REFUSED"}}
-                                <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/to-be-validated"><i class="material-icons left">schedule</i>Time slots validation : ask for validation</a>
-                            {{/if}}
-                            {{#if isInRole RolesEnum.ASSIGNMENTVALIDATION}}
-                                {{#if equals timeSlotValidation.currentState "READY"}}
-                                    <a class="waves-effect waves-light btn-large" href="/task/validation/time-slot/{{this._id}}/refuse"><i class="material-icons left">schedule</i>Time slots validation : refuse</a>
-                                {{/if}}
-                            {{else}}
-                                {{#if equals timeSlotValidation.currentState "READY"}}
-                                    <div class="chip">Ready for assignment</div>
-                                {{/if}}
-                            {{/if}}
-                        </div>
-                    </div>
+                    {{>taskValidation}}
                 </div>
 
             </div>
@@ -388,6 +403,50 @@
 
 </template>
 
+
+<template name="readTaskComponent">
+
+    <div class="read-task-wrapper-form">
+
+        {{# autoForm collection="Tasks" doc=this id="readTaskForm" type="readonly"}}
+
+            <div class="row">
+                <div class="col-md-10">
+                    <h3 data-key="name" class="header-limited-to-text">{{this.name}}</h3>
+                </div>
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
+
+                <div class="panel-body">
+                    {{>taskGeneralInformation}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Equipments</div>
+
+                <div class="panel-body">
+                    {{>taskEquipments}}
+                </div>
+
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Time slots</div>
+
+                <div class="panel-body timeslots" id="timeslots">
+                    {{>taskTimeSlots}}
+                </div>
+            </div>
+
+        {{/autoForm}}
+
+    </div>
+
+</template>
 
 <template name="updateTimeSlotCalendar">
     <div class="creneau {{state}}" data-timeslotdid="{{this._id}}" style="height: {{height}};">

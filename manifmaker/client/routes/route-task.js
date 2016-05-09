@@ -94,15 +94,33 @@ Router.route('/task/:_id', function () {
  * @name task.read  /task/:_id
  */
 Router.route('/task/:_id/read', function () {
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKREAD);
-        console.info("routing", "/task/" + this.params._id);
+        this.wait(Meteor.subscribe('tasks'));
+        this.wait(Meteor.subscribe('teams'));
+        this.wait(Meteor.subscribe('places'));
+        this.wait(Meteor.subscribe('skills'));
+        this.wait(Meteor.subscribe('users'));
+        this.wait(Meteor.subscribe('power-supplies'));
 
-        this.render('readTaskForm', {
-            data: function () {
-                var currentTask = this.params._id;
-                return Tasks.findOne({_id: currentTask});
-            }, to: 'mainContent'
-        });
+        if (this.ready()) {
+
+            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKREAD);
+            console.info("routing", "/task/" + this.params._id);
+
+            if(!Tasks.findOne(this.params._id)){
+                console.info("routing", "task not found, rerouting to /tasks");
+                Router.go("/tasks");
+            }
+
+            this.render('readTaskForm', {
+                data: function () {
+                    var currentTask = this.params._id;
+                    return Tasks.findOne({_id: currentTask});
+                }, to: 'mainContent'
+            });
+
+        } else {
+            console.log("waiting for data")
+        }
     },
     {name: 'task.read'}
 );
