@@ -93,14 +93,11 @@ Meteor.startup(function () {
      * @locus server
      * @summary AssignmentTerms publication. No query, publish all AssignmentTerms data.
      *
-     * Role required : assignment
+     * Role required : none
      * @returns {Collection}
      */
     Meteor.publish("assignment-terms", function () {
-        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"AssignmentTerms"))
-            return AssignmentTerms.find({});
-        else
-            return [];
+        return AssignmentTerms.find({});
     });
 
     /**

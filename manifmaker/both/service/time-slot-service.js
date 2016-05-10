@@ -179,6 +179,7 @@ TimeSlotService =
                 if (!okGod || timeSlot._id === queryTimeSlotId)
                     return;
 
+                //TODO ce n'est pas un overlapp !
                 if (new moment(start).isBetween(timeSlot.start, timeSlot.end) ||
                     new moment(end).isBetween(timeSlot.start, timeSlot.end))
                     okGod = false;
@@ -189,6 +190,7 @@ TimeSlotService =
         }
 
         static schemaCustomTimeSlotPeopleNeed(schemaContext){
+            //TODO $pull request doesn't use schema.custom...
             if (schemaContext.isUpdate) {
                 var task = Tasks.findOne(schemaContext.docId);
                 if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState)){
