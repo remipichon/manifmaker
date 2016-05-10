@@ -32,6 +32,7 @@ Router.onAfterAction(function () {
     }
 );
 
+
 /**
  * @memberOf Route
  * @summary Homepage
@@ -40,6 +41,22 @@ Router.onAfterAction(function () {
  */
 var justForDoc = {};
 Router.route('/', function () {
+
+        this.render('home', {to: 'mainContent'});
+
+    },
+    {name: 'home'}
+);
+
+
+/**
+ * @memberOf Route
+ * @summary Homepage
+ * @locus client
+ * @name home  /
+ */
+var justForDoc = {};
+Router.route('/demo-select', function () {
         this.wait(Meteor.subscribe('users'));
         this.wait(Meteor.subscribe('tasks'));
         this.wait(Meteor.subscribe('teams'));
@@ -47,7 +64,7 @@ Router.route('/', function () {
         this.wait(Meteor.subscribe('power-supplies'));
 
         if (this.ready()) {
-            this.render('home', {to: 'mainContent',
+            this.render('demo-select', {to: 'mainContent',
             data:{
                 user1Id : Users.findOne({name:"user1"})._id,
                 user2Id : Users.findOne({name:"user2"})._id,
@@ -63,5 +80,5 @@ Router.route('/', function () {
 
 
     },
-    {name: 'home'}
+    {name: 'demo-select'}
 );

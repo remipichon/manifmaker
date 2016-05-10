@@ -8,58 +8,6 @@
 
 <template name="home">
 
-
-    <div class="form-group">
-        <div class="col-md-3">
-            {{> MultipleSelectComponent selectLabel="'user1' teams" filterPlaceHolder="Filter by team name..." title="Update teams..."
-            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}
-        </div>
-        <div class="col-md-3">
-            {{> MultipleSelectComponent
-            optionCollection="Teams" optionCollectionIndex="TeamsIndex"
-            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
-            }}
-        </div>
-        <div class="col-md-3">
-            {{> MultipleNonMandatorySelectComponent title="Update user2 skills" filterPlaceHolder="Ceci est le search place holder" clearMessage="clear all selected"
-            optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
-            updateCollection="Users" updateItemId=user2Id updateItemPath="skills"
-            quickSelectLabel="Assign to skill1 and skill2" quickSelectIds=skill1Idskill2Id
-            }}
-        </div>
-        <div class="col-md-3">
-            {{> SingleSelectComponent title="Update task2 team" filterPlaceHolder="Ceci est le search place holder"
-            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-            updateCollection="Tasks" updateItemId=task2Id updateItemPath="teamId"
-            }}
-        </div>
-        <div class="col-md-3">
-            {{> SingleNonMandatorySelectComponent title="Update task2 powersupply" filterPlaceHolder="Ceci est le search place holder" clearMessage="clear selected"
-            optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
-            updateCollection="Tasks" updateItemId=task2Id updateItemPath="powerSupplyId"
-            quickSelectLabel="Assign to powersupply1" quickSelectId=powersupply1
-            }}
-        </div>
-        <div class="col-md-3">
-            {{> SingleNonMandatorySelectComponent withoutLabel=true title="Update task2 powersupply" filterPlaceHolder="Ceci est le search place holder" clearMessage="clear selected"
-            optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
-            updateCollection="Tasks" updateItemId=task2Id updateItemPath="powerSupplyId"}}
-        </div>
-        <div class="col-md-3">
-            {{> MultipleSelectComponent withoutLabel=true
-            optionCollection="Teams" optionCollectionIndex="TeamsIndex"
-            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}
-
-        </div>
-    </div>
-
-
-    <br>
-    <br>
-    <br>
-
-
     <h1>Welcome</h1>
 
     <h3>at the demo of ManifMaker : a project for organizing huge events</h3>
