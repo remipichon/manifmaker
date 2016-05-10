@@ -15,6 +15,10 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         return Users.findOne({_id: this.currentData().userId}).name;
     }
 
+    displayAssignedUser() {
+        return Users.findOne({_id: this.currentData().assignedUserId}).name;
+    }
+
     teamName() {
         return Teams.findOne({_id: this.currentData().teamId}).name;
     }

@@ -84,15 +84,15 @@ Schemas.PeopleNeed = new SimpleSchema({
                     return "unknownId";
 
                 if(this.isUpdate) {
-                    //TODO verfier qu'il n'existe pas deja un people need de ce user pour ce timeslot
                     var task = Tasks.findOne(this.docId);
                     var timeSlotIndex = this.key.split(".")[1];
                     var timeSlot = task.timeSlots[timeSlotIndex];
 
                     if (Tasks.find({
+                            "_id": task._id,
                             "timeSlots._id": timeSlot._id,
                             "timeSlots.$.peopleNeeded.userId": this.value
-                        }).fetch() !== 0) {
+                        }).fetch().length !== 0) {
                         return "onePeopleNeedUserIdPerTimeSlot"
                     }
                 }

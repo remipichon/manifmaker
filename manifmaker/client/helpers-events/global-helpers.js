@@ -19,14 +19,7 @@ Template.registerHelper(
     }
 );
 
-Template.registerHelper(
-    "displayUser", function () {
-        var assignment = Assignments.findOne({
-            peopleNeedId: this._id
-        }); //TODO normalement je stocke un assignedUserId...
-        return Users.findOne({_id: assignment.userId}).name;
-    }
-);
+
 
 Template.registerHelper(
     "allTeams", function () {

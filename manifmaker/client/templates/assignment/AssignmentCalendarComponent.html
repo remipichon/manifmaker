@@ -31,7 +31,7 @@
                                                     <div class="collection">
                                                         {{#each peopleNeededAssigned}}
                                                             <div class="peopleNeed assigned  collection-item" data-_id="{{_id}}">
-                                                                Assigned to {{displayUser}}
+                                                                Assigned to {{displayAssignedUser}}
                                                                 <i>
                                                                 {{#if userId }}
                                                                     <div class="user">{{userName}}</div>
@@ -78,7 +78,7 @@
             {{#each peopleNeededAssigned}}
                 <!--<div class="peopleNeed assigned" style="height: {{../height}};">-->
                 <div class="peopleNeed assigned">
-                    <span>Assigned to {{displayUser}}</span>
+                    <span>Assigned to {{displayAssignedUser}}</span>
                     <i>
                         {{#if userId }}
                             <div class="user">{{userName}}</div>{{/if}}

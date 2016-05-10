@@ -4,7 +4,7 @@
  * @locus Anywhere
  * @instancename collection
  */
-Users = new Mongo.Collection("users_custom"); //TODO utiliser la meme collection que le package accounts ?
+Users = new Mongo.Collection("users_custom");
 
 /**
  * @memberOf Models
