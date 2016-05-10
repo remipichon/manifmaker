@@ -133,11 +133,9 @@ PeopleNeedService =
             var timeSlots = task.timeSlots; //all its timeslots
             //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
 
-
             var updatedTimeslot = timeSlot;
 
             //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
-
 
             var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
             var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
@@ -234,32 +232,25 @@ PeopleNeedService =
             var timeSlots = task.timeSlots; //all its timeslots
             //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
 
-
             var updatedTimeslot = timeSlot;
 
             //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
 
-
             var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
             var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
-
 
             //remove peopleNeed assigned
             var assignedPeopleNeedToRemoveIndex = PeopleNeedService.getAssignedPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
             timeSlotToUpdate.peopleNeededAssigned.splice(assignedPeopleNeedToRemoveIndex, 1);
 
-
             //restore peopleNeed
             delete peopleNeed.assignedUserId;
             timeSlotToUpdate.peopleNeeded.push(peopleNeed);
 
-            //TODO ne pas mettre a jour TOUS les timeslots... (cf remove peopleNeed)
-            //Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
-
             Tasks.update({_id: task._id},
                 {
                     $set: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : timeSlotToUpdate.peopleNeededAssigned //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : timeSlotToUpdate.peopleNeededAssigned //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"])
                     },
                     $push: {
                         ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : peopleNeed
