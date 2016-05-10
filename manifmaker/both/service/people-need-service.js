@@ -149,9 +149,15 @@ PeopleNeedService =
             peopleNeed.assignedUserId = userId;
             timeSlotToUpdate.peopleNeededAssigned.push(peopleNeed);
 
-
-            //TODO ne pas mettre a jour TOUS les timeslots... (cf remove peopleNeed)
-            Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
+            Tasks.update({_id: task._id},
+                {
+                    $set: {
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
+                    },
+                    $push: {
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : peopleNeed
+                    }
+                });
 
         }
 
@@ -247,8 +253,18 @@ PeopleNeedService =
             delete peopleNeed.assignedUserId;
             timeSlotToUpdate.peopleNeeded.push(peopleNeed);
 
+            //TODO ne pas mettre a jour TOUS les timeslots... (cf remove peopleNeed)
+            //Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
 
-            Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
+            Tasks.update({_id: task._id},
+                {
+                    $set: {
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : timeSlotToUpdate.peopleNeededAssigned //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
+                    },
+                    $push: {
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : peopleNeed
+                    }
+                });
         }
 
         static removePeopleNeed(task, timeSlot, peopleNeed){

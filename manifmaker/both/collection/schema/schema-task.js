@@ -181,6 +181,19 @@ Schemas.PeopleNeed = new SimpleSchema({
     }
 });
 
+
+Schemas.PeopleNeedAssigned = new SimpleSchema([Schemas.PeopleNeed, {
+        assignedUserId: {
+            type: SimpleSchema.RegEx.Id,
+            label: "People Need assigned user id",
+            optional: true,
+            autoform: {
+                type: "hidden",
+            }
+        }
+    }
+]);
+
 Schemas.TimeSlot = new SimpleSchema({
     start: {
         type: Date,
@@ -284,7 +297,7 @@ Schemas.TimeSlot = new SimpleSchema({
 
     },
     peopleNeededAssigned: {
-        type: [Schemas.PeopleNeed],
+        type: [Schemas.PeopleNeedAssigned],
         label: "TimeSlot People needs assigned",
         defaultValue: [],
         optional: true,
