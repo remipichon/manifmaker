@@ -150,6 +150,7 @@ PeopleNeedService =
             timeSlotToUpdate.peopleNeededAssigned.push(peopleNeed);
 
 
+            //TODO ne pas mettre a jour TOUS les timeslots... (cf remove peopleNeed)
             Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
 
         }
@@ -261,7 +262,11 @@ PeopleNeedService =
             //remove peopleNeed assigned
             timeSlotToUpdate.peopleNeeded.splice(peopleNeedToRemoveIndex, 1);
 
-            Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
-
+            Tasks.update({_id: task._id},
+                {
+                   $set: {
+                       ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
+                   }
+                });
         }
     }
