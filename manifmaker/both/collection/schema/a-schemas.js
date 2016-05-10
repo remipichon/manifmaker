@@ -8,7 +8,11 @@ SimpleSchema.messages({
     timeSlotConflictDate: `Time slot can't overlap. Check time slot start and end date conflicts with all others time slots`,
     skillsNotFound: 'Skills not found',
     taskAssignmentNotMatching: "Task assignment do not match real assignment",
-    userAssignmentNotMatching: "User assignment do not match real assignment"
+    userAssignmentNotMatching: "User assignment do not match real assignment",
+    peopleNeedUserId: "If a specific user is asked, team and skill are not relevant. Please either pick a user OR a team and/or some skills.",
+    peopleNeedIsEmpty: "A people need requires either a user either a team and/or some skills.",
+    onePeopleNeedUserIdPerTimeSlot: "A time slot can not have more than once the same need for a user id",
+    updateNotAllowed: "[label] can not be update as it has is being validated or has already been validated"
 });
 
 Schemas.helpers = {};
@@ -88,7 +92,6 @@ Schemas.helpers.allEquipmentStoragesOptions  = function () {
 Schemas.helpers.allUsersOptions = function () {
     var users = Users.find({}).fetch();
     var result = [];
-    //TODO mettre le current user en premier
     _.each(users, function (user) {
         result.push({
             label: user.name,

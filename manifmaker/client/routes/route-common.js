@@ -40,7 +40,28 @@ Router.onAfterAction(function () {
  */
 var justForDoc = {};
 Router.route('/', function () {
-        this.render('home', {to: 'mainContent'});
+        this.wait(Meteor.subscribe('users'));
+        this.wait(Meteor.subscribe('tasks'));
+        this.wait(Meteor.subscribe('teams'));
+        this.wait(Meteor.subscribe('skills'));
+        this.wait(Meteor.subscribe('power-supplies'));
+
+        if (this.ready()) {
+            this.render('home', {to: 'mainContent',
+            data:{
+                user1Id : Users.findOne({name:"user1"})._id,
+                user2Id : Users.findOne({name:"user2"})._id,
+                task2Id : Tasks.findOne({name:"task 2"})._id,
+                team1Id : Teams.findOne({name:"team1"})._id,
+                team1Idteam2Id: [Teams.findOne({name:"team1"})._id, Teams.findOne({name:"team2"})._id],
+                skill1Idskill2Id: [Skills.findOne({"label" : "Responsable tache 1"})._id, Skills.findOne({"label" : "Responsable tache 2"})._id],
+                powersupply1 : PowerSupplies.findOne({name:"powerSupply1"})._id
+            }});
+        } else {
+            console.log("Route / : waiting users_custom data"); //TODO add a spinner
+        }
+
+
     },
     {name: 'home'}
 );

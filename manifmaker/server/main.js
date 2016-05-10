@@ -25,6 +25,7 @@ deleteAll = function() {
 Meteor.startup(function () {
 
     // code to run on server at startup
+    deleteAll();
 
     //AssignmentCalendarDisplayedDays.remove({});
     //AssignmentCalendarDisplayedHours.remove({});
@@ -45,7 +46,6 @@ Meteor.startup(function () {
 
 
     //init data
-    deleteAll();
     initAccessRightData();
     populateData();
     console.info("**** Data init success ****");

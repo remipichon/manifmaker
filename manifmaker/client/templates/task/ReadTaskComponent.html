@@ -1,0 +1,47 @@
+<template name="readTaskForm">
+    {{>ReadTaskComponent}}
+</template>
+
+<template name="readTaskComponent">
+
+    <div class="read-task-wrapper-form">
+
+        {{# autoForm collection="Tasks" doc=this id="readTaskForm" type="readonly"}}
+
+            <div class="row">
+                <div class="col-md-10">
+                    <h3 data-key="name" class="header-limited-to-text">{{this.name}}</h3>
+                </div>
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
+
+                <div class="panel-body">
+                    {{>TaskGeneralInformationComponent readOnly=true}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Equipments</div>
+
+                <div class="panel-body">
+                    {{>TaskEquipmentsComponent args true}}
+                </div>
+
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Time slots</div>
+
+                <div class="panel-body timeslots" id="timeslots">
+                    {{>TaskTimeSlotsComponent readOnly=true parentInstance=self}}
+                </div>
+            </div>
+
+        {{/autoForm}}
+
+    </div>
+
+</template>

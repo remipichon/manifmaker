@@ -172,4 +172,31 @@ TimeSlotService =
                 peopleNeed: peopleNeedFound
             };
         }
+
+        static areTimeSlotOverlappingWithQuery(timeSlots,start,end,queryTimeSlotId){
+            var okGod = true;
+            timeSlots.forEach(_.bind(function (timeSlot) {
+                if (!okGod || timeSlot._id === queryTimeSlotId)
+                    return;
+
+                //TODO ce n'est pas un overlapp !
+                if (new moment(start).isBetween(timeSlot.start, timeSlot.end) ||
+                    new moment(end).isBetween(timeSlot.start, timeSlot.end))
+                    okGod = false;
+
+            }, this));
+
+            return okGod
+        }
+
+        static schemaCustomTimeSlotPeopleNeed(schemaContext){
+            //TODO $pull request doesn't use schema.custom...
+            if (schemaContext.isUpdate) {
+                var task = Tasks.findOne(schemaContext.docId);
+                if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+
+        }
     }

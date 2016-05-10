@@ -10,7 +10,7 @@ Template.registerHelper(
 );
 Template.registerHelper(
     "displayDateTime", function (date) {
-        return new moment(date).format("ddd DD MMM HH[h]");
+        return new moment(date).format("ddd DD MMM HH[h]mm");
     }
 );
 Template.registerHelper(
@@ -19,14 +19,7 @@ Template.registerHelper(
     }
 );
 
-Template.registerHelper(
-    "displayUser", function () {
-        var assignment = Assignments.findOne({
-            peopleNeedId: this._id
-        }); //TODO normalement je stocke un assignedUserId...
-        return Users.findOne({_id: assignment.userId}).name;
-    }
-);
+
 
 Template.registerHelper(
     "allTeams", function () {
@@ -88,3 +81,16 @@ Template.registerHelper("displayValidationState",function(state){
 Template.registerHelper("RolesEnum",function(){
     return RolesEnum;
 });
+
+
+Template.registerHelper(
+    "currentUserId", function () {
+        return Users.findOne({loginUserId: Meteor.userId()})._id;
+    }
+);
+
+Template.registerHelper(
+    "currentUserTeamId", function () {
+        return Users.findOne({loginUserId: Meteor.userId()}).teams[0]; //TODO which team to choose ?
+    }
+);

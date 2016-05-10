@@ -1,52 +1,30 @@
-function getCalendarDateHours(date, timeHours) {
-    var date = new moment(date);
-    date.hours(timeHours);
-    return date;
-}
-function getCalendarDateTime(date, timeHours, timeMinutes) {
-    var dateWithHours = getCalendarDateHours(date, timeHours);
-    var date = new moment(dateWithHours);
-    date.minutes(timeMinutes);
-    return date;
-}
-Template.assignmentCalendar.helpers({
-    assignmentType: function () {
-        return CurrentAssignmentType.get();
-    },
-    days: function () {
-        return AssignmentCalendarDisplayedDays.find({});
-    },
-    hours: function () {
-        return AssignmentCalendarDisplayedHours.find({});
-    },
-    quarter: function () {
-        return AssignmentCalendarDisplayedQuarter.find({});
-    },
-    displayCalendarTitleDate: function (date) {
-        return new moment(date).format("dddd DD/MM");
-    },
-    hoursDate: function (date) {
-        return getCalendarDateHours(date, this.date);
-    },
-    quarterDate: function (date, timeHours) {
-        return getCalendarDateTime(date, timeHours, this.quarter);
-    },
+import {BaseCalendarComponent} from "../common/BaseCalendarComponent"
 
-    labelSkills: function () {
-        return Skills.findOne({_id: this.toString()}).label;
-    },
-
-    userName: function () {
-        return Users.findOne({_id: this.userId}).name;
-    },
-
-    teamName: function () {
-        return Teams.findOne({_id: this.teamId}).name;
-    },
+class AssignmentCalendarComponent extends BaseCalendarComponent {
+    constructor() {
+        super();
+        this.peopleNeedAssignedClick = 0; //to double click purpose..
+    }
 
 
-    timeSlot: function (date, timeHours, idTask) {
-        var startCalendarTimeSlot = getCalendarDateTime(date, timeHours);
+    labelSkills() {
+        return Skills.findOne({_id: this.currentData().toString()}).label;
+    }
+
+    userName() {
+        return Users.findOne({_id: this.currentData().userId}).name;
+    }
+
+    displayAssignedUser() {
+        return Users.findOne({_id: this.currentData().assignedUserId}).name;
+    }
+
+    teamName() {
+        return Teams.findOne({_id: this.currentData().teamId}).name;
+    }
+
+    timeSlot(date, timeHours, idTask) {
+        var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
         var currentAssignmentType = CurrentAssignmentType.get();
 
         var data = {};
@@ -96,7 +74,7 @@ Template.assignmentCalendar.helpers({
                 break;
             case AssignmentType.TASKTOUSER:
                 var task = SelectedTask.get() == null ? null : Tasks.findOne(SelectedTask.get());
-                if (task === null) return [];
+                if (!task) return [];
 
                 var timeSlotFound = TimeSlotService.getTimeSlotByStart(task.timeSlots, startCalendarTimeSlot);
                 var assignmentsFound = AssignmentService.getAssignmentByStart(task.assignments, startCalendarTimeSlot, true);
@@ -148,74 +126,32 @@ Template.assignmentCalendar.helpers({
 
 
         return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
-    },
-    sideHoursHeight: function () {
-        switch (AssignmentCalendarDisplayedAccuracy.findOne({}).accuracy) {
-            case 0.25 :
-                return "oneHour";
-            case  0.5 :
-                return "oneHour";
-            case 1:
-                return "oneHour";
-            case  2:
-                return "twoHour"
-            case 4:
-                return "fourHour"
-        }
-    },
-    quarterHeight: function () {
-        switch (AssignmentCalendarDisplayedAccuracy.findOne({}).accuracy) {
-            case 0.25 :
-                return "quarterHour";
-            case  0.5 :
-                return "halfHour";
-            case 1:
-                return "oneHour";
-            case  2:
-                return "twoHour"
-            case 4:
-                return "fourHour"
-        }
-    },
-    //works for .heure et .quart d'heure
-    isSelected: function (date, timeHours) {
-        if(getCalendarDateTime(date, timeHours, 0).isSame(SelectedDate.get())){
-            return "selected"
-        }
-        return ""
     }
 
-});
-
-
-var peopleNeedAssignedClick = 0; //to double click purpose..
-
-Template.assignmentCalendar.events({
-    "click .on-calendar .peopleNeed": function () {
-        SelectedPeopleNeed.set(this);
-
+    selectPeopleNeed() {
+        SelectedPeopleNeed.set(this.currentData());
         //event should bubbles to .creneau
-    },
+    }
 
-    "click .on-calendar .peopleNeed.assigned": function (event) {
+    peopleNeedAssignedOnClick(event) {
         event.stopPropagation();
-        peopleNeedAssignedClick++;
-        if (peopleNeedAssignedClick == 1) {
+        this.peopleNeedAssignedClick++;
+        if (this.peopleNeedAssignedClick == 1) {
             setTimeout(_.bind(function () {
-                if (peopleNeedAssignedClick == 1) {
+                if (this.peopleNeedAssignedClick == 1) {
                     //TODO DISPLAY NOTIF
                     console.debug("TODO DISPLAY NOTIF click on peopleNeed.assigned : double click to perform remove assignment");
                 } else {
                     AssignmentService.taskToUserPerformUserFilterRemoveAssignment();
                 }
-                peopleNeedAssignedClick = 0;
-            },this), 300);
+                this.peopleNeedAssignedClick = 0;
+            }, this.currentData()), 300);
         }
 
-    },
+    }
 
     //taskToUser (we click on a complete task time slot)
-    "click .creneau": function () {
+    creanOnClick() {
 
         var currentAssignmentType = CurrentAssignmentType.get();
 
@@ -225,15 +161,15 @@ Template.assignmentCalendar.events({
                 return;
                 break;
             case AssignmentType.TASKTOUSER: //only display users that have at least one availability matching the selected time slot
-                SelectedTimeSlot.set(this);
+                SelectedTimeSlot.set(this.currentData());
 
                 AssignmentService.taskToUserPerformUserFilter();
                 break;
         }
-    },
+    }
 
     //userToTask (we click on a creneau, not on the entire availability)
-    "click .heure, .quart_heure": function (event) {
+    quartHeureOnClick(event) {
         //TODO gerer le double click pour la desaffectation
 
         var currentAssignmentType = CurrentAssignmentType.get();
@@ -355,7 +291,10 @@ Template.assignmentCalendar.events({
                 return [];
         }
     }
-});
+
+
+}
+AssignmentCalendarComponent.register("AssignmentCalendarComponent");
 
 
 

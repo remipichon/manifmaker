@@ -16,14 +16,14 @@ ValidationService =
             var validationState = task[validationType];
 
             var now = new Date();
-            validationState.comments.push({
+            validationState.comments.unshift({
                 author: Users.findOne(Meteor.userId).name,
                 content: comment,
                 creationDate: now,
                 stateBefore: validationState.currentState,
                 stateAfter: validationStateAsked
             });
-            validationState.currentState = ValidationStateUrl[validationStateAsked];
+            validationState.currentState = validationStateAsked;
             validationState.lastUpdateDate = now;
 
 
@@ -39,6 +39,12 @@ ValidationService =
                     break;
             }
 
+        }
+
+        static isUpdateAllowed(state) {
+            if (state === ValidationState.OPEN || state === ValidationState.REFUSED)
+                return true;
+            return false
         }
 
     }

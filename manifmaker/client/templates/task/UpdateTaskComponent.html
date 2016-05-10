@@ -1,0 +1,62 @@
+<template name="updateTaskForm">
+    {{>UpdateTaskComponent}}
+</template>
+
+<template name="updateTaskComponent">
+
+    <div class="update-task-wrapper-form">
+
+        {{reactiveConstructor}}
+
+        {{# autoForm collection="Tasks" doc=this id="updateTaskForm" type="update" autosave=true}}
+
+            <div class="row">
+                <div class="col-md-10">
+                    {{>TaskNameComponent}}
+                    {{#if isInRole RolesEnum.TASKDELETE}}
+                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                    {{/if}}
+                </div>
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
+
+                <div class="panel-body">
+                    {{>TaskGeneralInformationComponent}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Equipments</div>
+
+                <div class="panel-body">
+                    {{>TaskEquipmentsComponent}}
+                </div>
+
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Time slots</div>
+
+                <div class="panel-body timeslots" id="timeslots">
+                    {{>TaskTimeSlotsComponent  parentInstance=self}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Validation</div>
+
+                <div class="panel-body equipments" id="equipments">
+                    {{>TaskValidationComponent}}
+                </div>
+
+            </div>
+
+
+        {{/autoForm}}
+
+    </div>
+
+</template>

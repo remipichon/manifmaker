@@ -36,10 +36,6 @@ Template.assignmentMenu.events({
     },
     "click #populate": function (event) {
         Meteor.call("populate");
-    },
-    "change #assignments-terms-select": function (event) {
-        var _id = $(event.target).val();
-        AssignmentServiceClient.setCalendarTerms(_id);
     }
 });
 

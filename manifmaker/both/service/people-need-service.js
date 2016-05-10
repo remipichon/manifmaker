@@ -21,6 +21,18 @@ PeopleNeedService =
 
         }
 
+        static getPeopleNeedByIndex(timeSlot, peopleNeedId) {
+            var found;
+            timeSlot.peopleNeeded.forEach(function (peopleNeed, index) {
+                if (peopleNeed._id === peopleNeedId) {
+                    found = peopleNeed;
+                }
+            });
+            return found;
+
+
+        }
+
         /**
          * @memberOf PeopleNeedService
          * @summary Find people need and time slot id for a given task by people need id.
@@ -115,17 +127,15 @@ PeopleNeedService =
          * @param {PeopleNeed} peopleNeed
          * @param {MongoId} userId
          */
-        static removePeopleNeed(task, timeSlot, peopleNeed, userId) {
-            console.info("PeopleNeedService.removePeopleNeed for task", task, "when", timeSlot, "and need", peopleNeed);
+        static assignedPeopleNeeded(task, timeSlot, peopleNeed, userId) {
+            console.info("PeopleNeedService.assignedPeopleNeeded for task", task, "when", timeSlot, "and need", peopleNeed);
             //we have the task
             var timeSlots = task.timeSlots; //all its timeslots
             //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
 
-
             var updatedTimeslot = timeSlot;
 
             //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
-
 
             var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
             var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
@@ -137,8 +147,15 @@ PeopleNeedService =
             peopleNeed.assignedUserId = userId;
             timeSlotToUpdate.peopleNeededAssigned.push(peopleNeed);
 
-
-            Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
+            Tasks.update({_id: task._id},
+                {
+                    $set: {
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
+                    },
+                    $push: {
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : peopleNeed
+                    }
+                });
 
         }
 
@@ -215,26 +232,48 @@ PeopleNeedService =
             var timeSlots = task.timeSlots; //all its timeslots
             //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
 
-
             var updatedTimeslot = timeSlot;
 
             //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
 
-
             var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
             var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
-
 
             //remove peopleNeed assigned
             var assignedPeopleNeedToRemoveIndex = PeopleNeedService.getAssignedPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
             timeSlotToUpdate.peopleNeededAssigned.splice(assignedPeopleNeedToRemoveIndex, 1);
 
-
             //restore peopleNeed
             delete peopleNeed.assignedUserId;
             timeSlotToUpdate.peopleNeeded.push(peopleNeed);
 
+            Tasks.update({_id: task._id},
+                {
+                    $set: {
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : timeSlotToUpdate.peopleNeededAssigned //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"])
+                    },
+                    $push: {
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : peopleNeed
+                    }
+                });
+        }
 
-            Tasks.update({_id: task._id}, {$set: {timeSlots: timeSlots}});
+        static removePeopleNeed(task, timeSlot, peopleNeed){
+            console.info("PeopleNeedService.removePeopleNeed for task", task, "when", timeSlot, "and need", peopleNeed);
+            //we have the task
+            var timeSlots = task.timeSlots; //all its timeslots
+
+            var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
+            var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
+            var peopleNeedToRemoveIndex = PeopleNeedService.getPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
+            //remove peopleNeed assigned
+            timeSlotToUpdate.peopleNeeded.splice(peopleNeedToRemoveIndex, 1);
+
+            Tasks.update({_id: task._id},
+                {
+                   $set: {
+                       ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
+                   }
+                });
         }
     }

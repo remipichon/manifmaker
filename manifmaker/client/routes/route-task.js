@@ -22,6 +22,8 @@ Router.route('/tasks', function () {
  * @name task.create  /task
  */
 Router.route('/task', function () {
+        this.wait(Meteor.subscribe('users'));
+
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
         console.info("routing", "/task");
 
@@ -45,23 +47,40 @@ Router.route('/task', function () {
  * @name task.read  /task/:_id
  */
 Router.route('/task/:_id', function () {
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
-        console.info("routing", "/task/" + this.params._id);
+        this.wait(Meteor.subscribe('tasks'));
+        this.wait(Meteor.subscribe('teams'));
+        this.wait(Meteor.subscribe('places'));
+        this.wait(Meteor.subscribe('skills'));
+        this.wait(Meteor.subscribe('users'));
+        this.wait(Meteor.subscribe('power-supplies'));
+
+        if (this.ready()) {
+
+            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
+            console.info("routing", "/task/" + this.params._id);
+
+            if(!Tasks.findOne(this.params._id)){
+                console.info("routing", "task not found, rerouting to /tasks");
+                Router.go("/tasks");
+            }
 
 
-        /**
-         * Spacebar doesn't support @index nor Template.data nor Template.parent (all linked to the same things). This means
-         * that I can't access task data when creating equipments form
-         */
-        SelectedUpdatedOrReadedTask.set(this.params._id)
+            /**
+             * Spacebar doesn't support @index nor Template.data nor Template.parent (all linked to the same things). This means
+             * that I can't access task data when creating equipments form
+             */
+            SelectedUpdatedOrReadedTask.set(this.params._id) //TODO remove this no ?
 
 
-        this.render('updateTaskForm', {
-            data: function () {
-                var currentTask = this.params._id;
-                return Tasks.findOne({_id: currentTask});
-            }, to: 'mainContent'
-        });
+            this.render('updateTaskForm', {
+                data: function () {
+                    var currentTask = this.params._id;
+                    return Tasks.findOne({_id: currentTask});
+                }, to: 'mainContent'
+            });
+        } else {
+            console.log("waiting for data")
+        }
     },
     {name: 'task.update'}
 );
@@ -75,15 +94,33 @@ Router.route('/task/:_id', function () {
  * @name task.read  /task/:_id
  */
 Router.route('/task/:_id/read', function () {
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKREAD);
-        console.info("routing", "/task/" + this.params._id);
+        this.wait(Meteor.subscribe('tasks'));
+        this.wait(Meteor.subscribe('teams'));
+        this.wait(Meteor.subscribe('places'));
+        this.wait(Meteor.subscribe('skills'));
+        this.wait(Meteor.subscribe('users'));
+        this.wait(Meteor.subscribe('power-supplies'));
 
-        this.render('readTaskForm', {
-            data: function () {
-                var currentTask = this.params._id;
-                return Tasks.findOne({_id: currentTask});
-            }, to: 'mainContent'
-        });
+        if (this.ready()) {
+
+            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKREAD);
+            console.info("routing", "/task/" + this.params._id);
+
+            if(!Tasks.findOne(this.params._id)){
+                console.info("routing", "task not found, rerouting to /tasks");
+                Router.go("/tasks");
+            }
+
+            this.render('readTaskForm', {
+                data: function () {
+                    var currentTask = this.params._id;
+                    return Tasks.findOne({_id: currentTask});
+                }, to: 'mainContent'
+            });
+
+        } else {
+            console.log("waiting for data")
+        }
     },
     {name: 'task.read'}
 );
@@ -114,7 +151,7 @@ Router.route('/task/validation/:validationType/:_id/:state', function () {
         var comment = $("#" + this.params.validationType + "-validation-new-comment").val();
         $("#" + this.params.validationType + "-validation-new-comment").val("");
 
-        ValidationService.updateValidation(this.params._id, this.params.state, ValidationTypeUrl[this.params.validationType], comment);
+        ValidationService.updateValidation(this.params._id, ValidationStateUrl[this.params.state], ValidationTypeUrl[this.params.validationType], comment);
 
         this.redirect("/task/" + this.params._id);
 

@@ -1,3 +1,29 @@
+Template.taskButtons.helpers({
+    onDeleteSuccess: function() {
+        return function () {
+            //TODO message de deletion success
+            console.log("TODO message de deletion success")
+        }
+    },
+
+    onDeleteError: function() {
+        return function () {
+            //TODO message de deletion success
+            console.log("TODO message de deletion error")
+        }
+    },
+
+    beforeRemove: function() {
+        return function () {
+            //TODO add a better dialog box to confirm deletion
+            if(window.confirm("About to delete the task")){
+                Router.go("/tasks");
+                this.remove();
+            }
+        }
+    }
+});
+
 Template.tasksList.helpers({
     tasksList: function () {
         var fields = [
@@ -62,7 +88,7 @@ Template.validationStateForList.helpers({
             }
         });
         return lastComment[attribute];
-    }
+    },
 });
 
 

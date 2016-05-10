@@ -4,7 +4,7 @@
  * @locus Anywhere
  * @instancename collection
  */
-Users = new Mongo.Collection("users_custom"); //TODO utiliser la meme collection que le package accounts ?
+Users = new Mongo.Collection("users_custom");
 
 /**
  * @memberOf Models
@@ -51,6 +51,73 @@ UsersIndex = new EasySearch.Index({
     fields: ['name'],
     engine: new EasySearch.Minimongo()
 });
+/**
+ * @memberOf Models
+ * @summary EasySearch settings to perform search by name on Teams
+ * @locus Anywhere
+ * @instancename object
+ */
+TeamsIndex = new EasySearch.Index({
+    collection: Teams,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+/**
+ * @memberOf Models
+ * @summary EasySearch settings to perform search by label on Skills
+ * @locus Anywhere
+ * @instancename object
+ */
+SkillsIndex = new EasySearch.Index({
+    collection: Skills,
+    fields: ['label'],
+    engine: new EasySearch.Minimongo()
+});
+/**
+ * @memberOf Models
+ * @summary EasySearch settings to perform search by label on PowerSupplies
+ * @locus Anywhere
+ * @instancename object
+ */
+PowerSuppliesIndex = new EasySearch.Index({
+    collection: PowerSupplies,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+/**
+* @memberOf Models
+* @summary EasySearch settings to perform search by label on Places
+* @locus Anywhere
+* @instancename object
+*/
+PlacesIndex = new EasySearch.Index({
+    collection: Places,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+/**
+ * @memberOf Models
+ * @summary EasySearch settings to perform search by label on EquipmentStorages
+ * @locus Anywhere
+ * @instancename object
+ */
+EquipmentStoragesIndex = new EasySearch.Index({
+    collection: EquipmentStorages,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+/**
+ * @memberOf Models
+ * @summary EasySearch settings to perform search by label on PowerSupplies
+ * @locus Anywhere
+ * @instancename object
+ */
+PowerSuppliesIndex = new EasySearch.Index({
+    collection: PowerSupplies,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+
 
 
 //using schema
