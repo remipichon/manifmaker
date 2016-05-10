@@ -38,7 +38,6 @@ Schemas.references.Teams = new SimpleSchema({
     type: {
         type: String,
         label: "Teams type",
-        defaultValue: "Teams",
         autoValue: function(){
             return "Teams"
         }
@@ -46,7 +45,6 @@ Schemas.references.Teams = new SimpleSchema({
     baseUrl: {
         type: String,
         label: "Team base URL",
-        defaultValue: "team",
         autoValue: function(){
             return "team"
         }
@@ -77,7 +75,6 @@ Schemas.references.Places = new SimpleSchema({
     type: {   
         type: String,
         label: "Places type",
-        defaultValue: "Places",
         autoValue: function(){
             return "Places"
         }
@@ -85,7 +82,6 @@ Schemas.references.Places = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "Places base URL",
-        defaultValue: "place",
         autoValue: function(){
             return "place"
         }
@@ -123,7 +119,6 @@ Schemas.references.Skills = new SimpleSchema({
     type: {   
         type: String,
         label: "Skills type",
-        defaultValue: "Skills",
         autoValue: function(){
             return "Skills"
         }
@@ -131,7 +126,6 @@ Schemas.references.Skills = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "Skills base URL",
-        defaultValue: "skill",
         autoValue: function(){
             return "skill"
         }
@@ -176,7 +170,6 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     type: {   
         type: String,
         label: "Assignment terms type",
-        defaultValue: "AssignmentTerms",
         autoValue: function(){
             return "AssignmentTerms"
         }
@@ -184,7 +177,6 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "Assignment terms base URL",
-        defaultValue: "assignment-term",
         autoValue: function(){
             return "assignment-term";
         }
@@ -235,7 +227,6 @@ Schemas.references.GroupRoles = new SimpleSchema({
     type: {   
         type: String,
         label: "Roles type",
-        defaultValue: "Roles",
         autoValue: function(){
             return "Roles"
         }
@@ -243,7 +234,6 @@ Schemas.references.GroupRoles = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "Group roles base URL",
-        defaultValue: "group-role",
         autoValue: function(){
             return "group-role"
         }
@@ -274,7 +264,6 @@ Schemas.references.EquipmentCategories = new SimpleSchema({
     type: {   
         type: String,
         label: "Equipment categories type",
-        defaultValue: "EquipmentCategories",
         autoValue: function(){
             return "EquipmentCategories"
         }
@@ -282,7 +271,6 @@ Schemas.references.EquipmentCategories = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "Equipment Category base URL",
-        defaultValue: "equipment-category",
         autoValue: function(){
             return "equipment-category"
         }
@@ -354,7 +342,6 @@ Schemas.references.Equipments = new SimpleSchema({
     type: {   
         type: String,
         label: "Equipments type",
-        defaultValue: "Equipments",
         autoValue: function(){
             return "Equipments"
         }
@@ -362,7 +349,6 @@ Schemas.references.Equipments = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "Equipments base URL",
-        defaultValue: "equipment",
         autoValue: function(){
             return "equipment"
         }
@@ -392,7 +378,6 @@ Schemas.references.WaterSupplies = new SimpleSchema({
     type: {   
         type: String,
         label: "WaterSupply type",
-        defaultValue: "WaterSupplies",
         autoValue: function(){
             return "WaterSupplies"
         }
@@ -400,7 +385,6 @@ Schemas.references.WaterSupplies = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "WaterSupply base URL",
-        defaultValue: "water-supply",
         autoValue: function(){
             return "water-supply"
         }
@@ -431,7 +415,6 @@ Schemas.references.WaterDisposals = new SimpleSchema({
     type: {   
         type: String,
         label: "WaterDisposal type",
-        defaultValue: "WaterDisposals",
         autoValue: function(){
             return "WaterDisposals"
         }
@@ -439,7 +422,6 @@ Schemas.references.WaterDisposals = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "WaterDisposal base URL",
-        defaultValue: "water-disposal",
         autoValue: function(){
             return "water-disposal"
         }
@@ -470,7 +452,6 @@ Schemas.references.PowerSupplies = new SimpleSchema({
     type: {   
         type: String,
         label: "PowerSupply type",
-        defaultValue: "PowerSupplies",
         autoValue: function(){
             return "PowerSupplies"
         }
@@ -478,7 +459,6 @@ Schemas.references.PowerSupplies = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "PowerSupply base URL",
-        defaultValue: "power-supply",
         autoValue: function(){
             return "power-supply"
         }
@@ -509,7 +489,6 @@ Schemas.references.EquipmentStorages = new SimpleSchema({
     type: {   
         type: String,
         label: "EquipmentStorage type",
-        defaultValue: "EquipmentStorages",
         autoValue: function(){
             return "EquipmentStorages"
         }
@@ -517,7 +496,6 @@ Schemas.references.EquipmentStorages = new SimpleSchema({
     baseUrl: {  
         type: String,
         label: "EquipmentStorage base URL",
-        defaultValue: "equipment-storage",
         autoValue: function(){
             return "equipment-storage"
         }
