@@ -1,5 +1,5 @@
+import {Schemas} from './SchemasHelpers'
 //order matters !
-
 Schemas.Assignments = new SimpleSchema({
     userId: {
         type: String,

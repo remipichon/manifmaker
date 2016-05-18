@@ -1,5 +1,6 @@
-//order matters !
+import {Schemas} from './SchemasHelpers'
 
+//order matters !
 Schemas.EquipmentAsked = new SimpleSchema({
     equipmentId : {
         type: SimpleSchema.RegEx.Id,
@@ -406,7 +407,8 @@ Schemas.Tasks = new SimpleSchema({
     timeSlotValidation: {
         type: Schemas.Validation,
         label: "Task Time slots validation",
-        defaultValue: function(){Schemas.Validation.clean({})}(),
+        defaultValue: function(){
+            Schemas.Validation.clean({})}(),
         optional: true,
         autoform: {
             type: "hidden",

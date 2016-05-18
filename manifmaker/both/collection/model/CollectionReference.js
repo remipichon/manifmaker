@@ -1,3 +1,5 @@
+import {Schemas} from './SchemasHelpers'
+
 /**
  * @memberOf Route
  * @summary References collections URL
@@ -58,6 +60,8 @@ Schemas.references.Teams = new SimpleSchema({
  */
 Teams = new Mongo.Collection("teams");
 Teams.attachSchema(Schemas.references.Teams);
+
+ASSIGNMENTREADYTEAM = "assignmentReadyTeam"; //team de tous les users et toutes les taches prets pour affectation
 
 Schemas.references.options.Places = {
     PLURAL_REFERENCE_URL: "places",

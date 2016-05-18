@@ -1,4 +1,4 @@
-Schemas = {};
+export var Schemas = {};
 SimpleSchema.messages({
     unknownId: `[label] could not be find in database`,
     unknownIdOrDuplicateId: `[label] could not be find in database or is duplicated`,

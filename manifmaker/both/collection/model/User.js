@@ -1,5 +1,6 @@
-//order matters !
+import {Schemas} from './SchemasHelpers'
 
+//order matters !
 Schemas.UserAvailabilities = new SimpleSchema({
     start: {
         type: Date,

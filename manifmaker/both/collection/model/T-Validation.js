@@ -1,3 +1,5 @@
+import {Schemas} from './SchemasHelpers'
+
 Schemas.ValidationComment = new SimpleSchema({
     author: {
         type: String,

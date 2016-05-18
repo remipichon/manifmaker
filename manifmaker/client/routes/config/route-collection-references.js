@@ -1,3 +1,4 @@
+import {Schemas} from '../../../both/collection/model/SchemasHelpers'
 
 /**
  * @memberOf Models

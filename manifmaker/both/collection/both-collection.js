@@ -1,3 +1,5 @@
+import {Schemas} from './model/SchemasHelpers'
+
 /**
  * @memberOf Models
  * @summary Users collection
