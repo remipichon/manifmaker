@@ -6,7 +6,7 @@ DateTimePickerComponent =
             this.dateTimePickerFireOneEventWhenInit = true;
         }
 
-        fakeConstructorWithDataArguments() {
+        initializeData() {
             this.date = this.data().date;
             this.updateDateCallback = this.data().updateDateCallback;
             if(this.isRendered()){

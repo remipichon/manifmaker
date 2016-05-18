@@ -68,13 +68,6 @@ Router.route('/task/:_id', function () {
             }
 
 
-            /**
-             * Spacebar doesn't support @index nor Template.data nor Template.parent (all linked to the same things). This means
-             * that I can't access task data when creating equipments form
-             */
-            SelectedUpdatedOrReadedTask.set(this.params._id) //TODO remove this no ?
-
-
             this.render('updateTaskForm', {
                 data: function () {
                     var currentTask = this.params._id;

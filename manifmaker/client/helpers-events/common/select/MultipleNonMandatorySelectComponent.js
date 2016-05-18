@@ -2,8 +2,8 @@ import {MultipleSelectComponent} from "./MultipleSelectComponent"
 
 export class MultipleNonMandatorySelectComponent extends MultipleSelectComponent {
 
-    fakeConstructorWithDataArguments() {
-        super.fakeConstructorWithDataArguments();
+    initializeData() {
+        super.initializeData();
         this.clearMessage = this.data().clearMessage || "Clear all";
     }
 

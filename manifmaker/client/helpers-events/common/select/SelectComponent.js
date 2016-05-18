@@ -29,7 +29,7 @@ export class SelectComponent extends BlazeComponent {
         }
 
         //TODO could'nt figure out how to use constructor with this.data
-        fakeConstructorWithDataArguments() {
+        initializeData() {
             //select popover init arguments
             if (!this.data().optionCollection || !window[this.data().optionCollection])
                 throw new Meteor.Error(this.constructor.name + " : optionCollection should be Collection instance in the window scope. Given :" + this.data().optionCollection);

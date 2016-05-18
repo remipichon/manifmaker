@@ -2,8 +2,8 @@ import {SingleSelectComponent} from "./SingleSelectComponent"
 
 export class SingleNonMandatorySelectComponent extends SingleSelectComponent {
 
-    fakeConstructorWithDataArguments() {
-        super.fakeConstructorWithDataArguments();
+    initializeData() {
+        super.initializeData();
         this.clearMessage = this.data().clearMessage || "Clear";
     }
 

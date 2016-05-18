@@ -2,8 +2,8 @@ import {SingleNonMandatorySelectComponent} from "./SingleNonMandatorySelectCompo
 
 //TODO use mixin instead of copy paste code
 class SingleNonMandatoryBulkSelectComponent extends SingleNonMandatorySelectComponent {
-    fakeConstructorWithDataArguments() {
-        super.fakeConstructorWithDataArguments();
+    initializeData() {
+        super.initializeData();
         this.bulkPeopleNeededIds = this.data().bulkPeopleNeededIds;
 
         //reconstructing pathWithArray with only _id on the LAST path from bulk
