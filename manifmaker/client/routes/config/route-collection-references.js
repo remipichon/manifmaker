@@ -1,4 +1,5 @@
 import {Schemas} from '../../../both/collection/model/SchemasHelpers'
+import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
 
 /**
  * @memberOf Models

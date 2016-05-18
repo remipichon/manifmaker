@@ -1,3 +1,5 @@
+import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
+
 defaultFilter = {};
 noSearchFilter = "";
 noneFilter = {none: "none"};

@@ -1,7 +1,6 @@
 import {AssignmentService} from "../../both/service/AssignmentService"
 
-AssignmentServiceClient =
-    class AssignmentServiceClient {
+export class AssignmentServiceClient {
 
         /**
          * @memberOf AssignmentServiceClient

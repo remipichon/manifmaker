@@ -1,4 +1,5 @@
 import {ValidationService} from "../../both/service/ValidationService"
+import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
 
 /**
  * @memberOf Route

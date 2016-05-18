@@ -1,3 +1,6 @@
+import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
+import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
+
 assignmentCalendarIsRendered = false;
 
 AssignmentController = RouteController.extend({

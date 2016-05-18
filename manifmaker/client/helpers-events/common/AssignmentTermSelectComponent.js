@@ -1,3 +1,5 @@
+import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
+
 class AssignmentTermSelectComponent extends BlazeComponent{
     template(){
         return "assignmentTermSelectComponent";

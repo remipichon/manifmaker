@@ -1,3 +1,5 @@
+import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
+
 /**
  * @memberOf Route
  * @summary Display the user list with filter and search

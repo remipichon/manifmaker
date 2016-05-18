@@ -1,6 +1,4 @@
-SecurityServiceClient =
-    class SecurityServiceClient {
-
+export class SecurityServiceClient {
 
         static grantAccessToPage(userId, neededRole,page) {
             if (!Roles.userIsInRole(userId, neededRole))
