@@ -1,4 +1,6 @@
 import {Schemas} from './SchemasHelpers'
+import {TimeSlotService} from "../../../both/service/TimeSlotService"
+import {ValidationService} from "../../../both/service/ValidationService"
 
 //order matters !
 Schemas.EquipmentAsked = new SimpleSchema({

@@ -1,3 +1,5 @@
+import {TimeSlotService} from "../../both/service/TimeSlotService"
+
 ServerAssignmentService =
     class ServerAssignmentService {
 

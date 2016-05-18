@@ -1,5 +1,6 @@
-PeopleNeedService =
-    class PeopleNeedService {
+import {TimeSlotService} from "./TimeSlotService"
+
+export class PeopleNeedService {
 
         /**
          * @memberOf PeopleNeedService

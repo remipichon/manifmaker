@@ -1,3 +1,5 @@
+import {AvailabilityService} from "../../../both/service/AvailabilityService"
+
 Router.route('/assignment/userToTask', function () {
         console.info("routing", '/assignment/userToTask');
 

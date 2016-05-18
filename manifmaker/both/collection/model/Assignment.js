@@ -1,4 +1,6 @@
 import {Schemas} from './SchemasHelpers'
+import {TimeSlotService} from "../../../both/service/TimeSlotService"
+
 //order matters !
 Schemas.Assignments = new SimpleSchema({
     userId: {

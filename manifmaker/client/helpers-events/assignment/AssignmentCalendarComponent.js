@@ -1,4 +1,7 @@
 import {BaseCalendarComponent} from "../common/BaseCalendarComponent"
+import {AssignmentService} from "../../../both/service/AssignmentService"
+import {AvailabilityService} from "../../../both/service/AvailabilityService"
+import {TimeSlotService} from "../../../both/service/TimeSlotService"
 
 class AssignmentCalendarComponent extends BaseCalendarComponent {
     constructor() {

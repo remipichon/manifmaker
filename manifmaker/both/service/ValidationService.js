@@ -1,5 +1,4 @@
-ValidationService =
-    class ValidationService {
+export class ValidationService {
 
 
         /**

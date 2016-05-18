@@ -1,5 +1,6 @@
-AssignmentService =
-    class AssignmentService {
+import {TimeSlotService} from "./TimeSlotService"
+
+export class AssignmentService {
 
         /**
          * @memberOf AssignmentService

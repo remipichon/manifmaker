@@ -1,4 +1,6 @@
 import {BaseCalendarComponent} from "../../common/BaseCalendarComponent"
+import {AssignmentService} from "../../../../both/service/AssignmentService"
+import {TimeSlotService} from "../../../../both/service/TimeSlotService"
 
 class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
     /* available in data

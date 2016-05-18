@@ -1,3 +1,5 @@
+import {AssignmentService} from "../../both/service/AssignmentService"
+
 AssignmentServiceClient =
     class AssignmentServiceClient {
 

@@ -1,3 +1,5 @@
+import {TimeSlotService} from "../../../both/service/TimeSlotService"
+
 Template.assignmentMenu.events({
     "click #userToTask": function (event) {
         TaskFilter.set(noneFilter);

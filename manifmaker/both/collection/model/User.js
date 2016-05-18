@@ -1,4 +1,5 @@
 import {Schemas} from './SchemasHelpers'
+import {TimeSlotService} from "../../../both/service/TimeSlotService"
 
 //order matters !
 Schemas.UserAvailabilities = new SimpleSchema({

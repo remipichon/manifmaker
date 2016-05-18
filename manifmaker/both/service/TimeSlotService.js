@@ -1,5 +1,6 @@
-TimeSlotService =
-    class TimeSlotService {
+import {ValidationService} from "./ValidationService"
+
+export class TimeSlotService {
 
 
         /**

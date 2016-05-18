@@ -1,3 +1,5 @@
+import {ValidationService} from "../../../../both/service/ValidationService"
+
 class TaskEquipmentsComponent extends BlazeComponent{
     template() {
         return "taskEquipments";

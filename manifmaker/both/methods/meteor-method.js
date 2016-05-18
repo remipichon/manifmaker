@@ -1,3 +1,7 @@
+import {PeopleNeedService} from "../../both/service/PeopleNeedService"
+import {AvailabilityService} from "../../both/service/AvailabilityService"
+import {TimeSlotService} from "../../both/service/TimeSlotService"
+
 Meteor.methods({
     /**
      * @memberOf Meteor.call

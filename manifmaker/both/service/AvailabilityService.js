@@ -1,5 +1,6 @@
-AvailabilityService =
-    class AvailabilityService {
+import {TimeSlotService} from "./TimeSlotService"
+
+export class AvailabilityService {
         /**
          * @memberOf AvailabilityService
          * @summary For a giver user get availability which start at least before param start and end at most after end param.

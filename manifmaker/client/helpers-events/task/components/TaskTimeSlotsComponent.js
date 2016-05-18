@@ -1,3 +1,7 @@
+import {PeopleNeedService} from "../../../../both/service/PeopleNeedService"
+import {TimeSlotService} from "../../../../both/service/TimeSlotService"
+import {ValidationService} from "../../../../both/service/ValidationService"
+
 class TaskTimeSlotsComponent extends BlazeComponent{
 
     reactiveConstructor() {

@@ -1,3 +1,5 @@
+import {TimeSlotService} from "../../../both/service/TimeSlotService"
+
 Router.route('/assignment/taskToUser', function () {
         console.info("routing", '/assignment/taskToUser');
 
