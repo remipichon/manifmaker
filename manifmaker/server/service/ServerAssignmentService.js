@@ -1,7 +1,7 @@
 import {TimeSlotService} from "../../both/service/TimeSlotService"
+import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
 
-ServerAssignmentService =
-    class ServerAssignmentService {
+export class ServerAssignmentService {
 
         /**
          * @memberOf ServerAssignmentService

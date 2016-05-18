@@ -1,7 +1,6 @@
+import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
 
-
-ServerTaskService =
-    class ServerTaskService {
+export class ServerTaskService {
 
         static allowInsert(userId, doc){
             SecurityServiceServer.grantAccessToItem(userId,RolesEnum.TASKWRITE, doc,'task');

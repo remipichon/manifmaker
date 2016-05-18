@@ -1,4 +1,5 @@
 import {TimeSlotService} from "./TimeSlotService"
+import {PeopleNeedService} from "./PeopleNeedService"
 
 export class AssignmentService {
 

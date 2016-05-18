@@ -1,5 +1,6 @@
-ServerReferenceCollectionsService =
-    class ServerReferenceCollectionsService {
+import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
+
+export class ServerReferenceCollectionsService {
 
         static allowInsert(userId, doc){
             SecurityServiceServer.grantAccessToItem(userId,RolesEnum.CONFMAKER, doc,'ReferenceCollection');

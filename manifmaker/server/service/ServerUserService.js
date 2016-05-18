@@ -1,5 +1,7 @@
-ServerUserService =
-    class ServerUserService {
+import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
+import {ServerTaskService} from "../../server/service/ServerTaskService"
+
+export class ServerUserService {
 
         /*
          * @memberOf ServerUserService

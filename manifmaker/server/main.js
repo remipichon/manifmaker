@@ -1,3 +1,8 @@
+import {ServerAssignmentService} from "../server/service/ServerAssignmentService"
+import {ServerReferenceCollectionsService} from "../server/service/ServerReferenceCollectionsService"
+import {ServerUserService} from "../server/service/ServerUserService"
+import {ServerTaskService} from "../server/service/ServerTaskService"
+
 deleteAll = function() {
     Meteor.roles.remove({});
     GroupRoles.remove({});

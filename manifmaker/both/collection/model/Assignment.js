@@ -1,5 +1,6 @@
 import {Schemas} from './SchemasHelpers'
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
+import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
 
 //order matters !
 Schemas.Assignments = new SimpleSchema({

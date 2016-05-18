@@ -1,3 +1,5 @@
+import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
+
 Meteor.startup(function () {
 
     /**

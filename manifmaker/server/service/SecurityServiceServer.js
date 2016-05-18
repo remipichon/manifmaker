@@ -1,5 +1,4 @@
-SecurityServiceServer =
-    class SecurityServiceServer {
+export class SecurityServiceServer {
 
         static grantAccessToItem(userId, neededRole, doc, type) {
             if (Roles.userIsInRole(userId, neededRole))
