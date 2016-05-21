@@ -2,10 +2,6 @@ class AssignmentUserList extends BlazeComponent {
 
     constructor(parent){
         super();
-        this.UserFilter = parent.UserFilter;
-        this.UserIndexFilter = parent.UserIndexFilter;
-        this.UserTeamFilter = parent.UserTeamFilter;
-        this.UserSkillsFilter = parent.UserSkillsFilter;
     }
 
     events() {
@@ -15,7 +11,6 @@ class AssignmentUserList extends BlazeComponent {
             "keyup #search_user_name": this.performSearch,
             "change .filter_team": this.performFilterTeam,
             "change #filter_skills_user": this.performFilterSkills,
-
         }]
     }
 
