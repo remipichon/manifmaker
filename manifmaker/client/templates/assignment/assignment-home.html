@@ -1,9 +1,13 @@
-<template name="AssignmentHome">
+<template name="AssignmentHomeWrapper">
+    {{>AssignmentHome}}
+</template>
+
+<template name="assignmentHome">
 
     <div class="row">
 
         <div id="assignment-user-list" class="clo-xs-12 col-md-4 no-padding">
-            {{> AssignmentUserList}}
+            {{> AssignmentUserList args self}}
         </div>
 
         <div class="clo-xs-12 col-md-4 no-padding">

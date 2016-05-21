@@ -1,5 +1,13 @@
 class AssignmentUserList extends BlazeComponent {
 
+    constructor(parent){
+        super();
+        this.UserFilter = parent.UserFilter;
+        this.UserIndexFilter = parent.UserIndexFilter;
+        this.UserTeamFilter = parent.UserTeamFilter;
+        this.UserSkillsFilter = parent.UserSkillsFilter;
+    }
+
     events() {
         return [{
             "click .href-assignment-user": this.onClickUserName,
