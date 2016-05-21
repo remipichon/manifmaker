@@ -9,17 +9,18 @@ UserFilter = new ReactiveVar(defaultFilter);
 UserIndexFilter = new ReactiveVar(noSearchFilter);
 UserTeamFilter = new ReactiveVar(defaultFilter);
 UserSkillsFilter = new ReactiveVar(defaultFilter);
+TaskFilter = new ReactiveVar(defaultFilter);
+TaskIndexFilter = new ReactiveVar(noSearchFilter);
+TaskTeamFilter = new ReactiveVar(defaultFilter);
+DisplayAssignedTask = new ReactiveVar(false);
+CurrentAssignmentType = new ReactiveVar(AssignmentType.ALL);
+TaskSkillsFilter = new ReactiveVar(null);
+TaskNeededTeamFilter = new ReactiveVar(null);
 
 
 //
 
 SelectedUser = new ReactiveVar(null);
-TaskFilter = new ReactiveVar(defaultFilter);
-TaskIndexFilter = new ReactiveVar(noSearchFilter);
-TaskTeamFilter = new ReactiveVar(defaultFilter);
-DisplayAssignedTask = new ReactiveVar(false);
-TaskNeededTeamFilter = new ReactiveVar(null);
-TaskSkillsFilter = new ReactiveVar(null);
 SelectedTask = new ReactiveVar(null);
 SelectedTaskBreadCrumb = new ReactiveVar(null); //TODO voir si on peut la merger avec SelectedTask
 SelectedTimeSlot = new ReactiveVar(null);
@@ -29,43 +30,9 @@ SelectedAvailability = new ReactiveVar(null);
 SelectedPeopleNeed = new ReactiveVar(null);
 
 AssignmentFilter = new ReactiveVar(defaultFilter);
-CurrentAssignmentType = new ReactiveVar(AssignmentType.ALL);
 IsUnassignment = new ReactiveVar(false);
 
 TaskListTeamFilter = new ReactiveVar(defaultFilter);
-
-
-function preSelecterTaskByTaskName(name) {
-    UserFilter.set(noneFilter);
-    TaskFilter.set(defaultFilter);
-    CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
-
-    var query = Tasks.find({name: name});
-    var handle = query.observeChanges({
-        added: function (_id, task) {
-            SelectedTask.set({_id: _id});
-            UserFilter.set(noneFilter);
-        }
-    });
-
-}
-
-
-function preSelectedUserByUserName(name) {
-    UserFilter.set(defaultFilter);
-    TaskFilter.set(noneFilter);
-    CurrentAssignmentType.set(AssignmentType.USERTOTASK);
-
-    var query = Users.find({name: name});
-    var handle = query.observeChanges({
-        added: function (_id, task) {
-            SelectedUser.set({_id: _id});
-            SelectedAvailability.set(null);
-            TaskFilter.set(noneFilter);
-        }
-    });
-
-}
 
 
 Meteor.startup(function () {
@@ -94,9 +61,6 @@ Meteor.startup(function () {
 
     TempCollection = new Meteor.Collection(null)
 
-
-    //preSelecterTaskByTaskName("task1");
-    //preSelectedUserByUserName("user1");
 
     SimpleSchema.debug = true;
     AutoForm.addHooks(null, {
