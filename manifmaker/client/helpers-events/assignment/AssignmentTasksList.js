@@ -20,10 +20,6 @@ class AssignmentTasksList extends BlazeComponent {
         $('#assignment-task-list-collapsible').collapsible({});
     }
 
-    template() {
-        return "assignmentTaskList";
-    }
-
     onClickTaskName(event) {
         console.info("routing", "/assignment/task/" + this.currentData()._id);
         Router.go("/assignment/task/" + this.currentData()._id);

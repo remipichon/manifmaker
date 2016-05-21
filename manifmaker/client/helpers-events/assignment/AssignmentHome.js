@@ -8,10 +8,6 @@ class AssignmentHome extends BlazeComponent{
         return this;
     }
 
-    template(){
-        return "assignmentHome"
-    }
-
 }
 
 

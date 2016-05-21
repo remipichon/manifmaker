@@ -18,10 +18,6 @@ class AssignmentUserList extends BlazeComponent {
         this.$('#assignment-user-list-collapsible').collapsible({});
     }
 
-    template(){
-        return "assignmentUserList";
-    }
-
     onClickUserName(event) {
         event.stopPropagation();
         event.preventDefault();

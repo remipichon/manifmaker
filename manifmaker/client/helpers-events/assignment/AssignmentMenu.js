@@ -1,57 +1,37 @@
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 
-Template.assignmentMenu.events({
-    "click #userToTask": function (event) {
+class AssignmentMenu extends BlazeComponent {
+    events() {
+        return [{
+            "click #userToTask": this.onClickUserToTask,
+            "click #taskToUser": this.onClickTaskToUser
+        }];
+    }
+
+    onClickUserToTask(event) {
         TaskFilter.set(noneFilter);
         UserFilter.set(defaultFilter);
         CurrentAssignmentType.set(AssignmentType.USERTOTASK);
-    },
-    "click #taskToUser": function (event) {
+    }
+
+    onClickTaskToUser(event) {
         UserFilter.set(noneFilter);
         TaskFilter.set(defaultFilter);
         CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
-    },
-    "click #all": function (event) {
-        TaskFilter.set(defaultFilter);
-        UserFilter.set(defaultFilter);
-        CurrentAssignmentType.set(AssignmentType.ALL);
-    },
-    "click #quarterHour": function (event) {
-        var accuracy = CalendarAccuracyEnum["0.25"];
-        AssignmentServiceClient.setCalendarAccuracy(accuracy);
-    },
-    "click #halfHour": function (event) {
-        var accuracy = CalendarAccuracyEnum["0.5"];
-        AssignmentServiceClient.setCalendarAccuracy(accuracy);
-    },
-    "click #oneHour": function (event) {
-        var accuracy = CalendarAccuracyEnum["1"];
-        AssignmentServiceClient.setCalendarAccuracy(accuracy);
-    },
-    "click #twoHour": function (event) {
-        var accuracy = CalendarAccuracyEnum["2"];
-        AssignmentServiceClient.setCalendarAccuracy(accuracy);
-    },
-    "click #fourHour": function (event) {
-        var accuracy = CalendarAccuracyEnum["4"];
-        AssignmentServiceClient.setCalendarAccuracy(accuracy);
-    },
-    "click #populate": function (event) {
-        Meteor.call("populate");
     }
-});
 
-Template.assignmentMenu.helpers({
-    assignmentTerms: function () {
+    assignmentTerms() {
         return AssignmentTerms.find({});
-    },
-    isSelected: function (mode) {
+    }
+
+    isSelected(mode) {
         if (mode === CurrentAssignmentType.get()) {
             return "active";
         }
         return "";
-    },
-    breadCrumbAssignment: function () {
+    }
+
+    breadCrumbAssignment() {
         var userFilter = UserFilter.get(),
             taskFilter = TaskFilter.get(),
             currentAssignmentType = CurrentAssignmentType.get(),
@@ -63,7 +43,7 @@ Template.assignmentMenu.helpers({
             isUnassignment = IsUnassignment.get(),
             result = [];
 
-        if(isUnassignment){
+        if (isUnassignment) {
             result.push({
                 label: "! Remove assignment !",
                 url: ""
@@ -98,7 +78,7 @@ Template.assignmentMenu.helpers({
                         url: "/assignment/userToTask/" + selectedUser._id + "/" + selectedDate.format('x')
                     });
 
-                    if(!selectedTaskBreadCrumb) {
+                    if (!selectedTaskBreadCrumb) {
                         result.push({
                             label: "Select one of the available task",
                             url: ""
@@ -146,7 +126,7 @@ Template.assignmentMenu.helpers({
                         url: "/assignment/taskToUser/" + selectedTask._id + "/" + selectedTimeSlot._id
                     });
 
-                    if(isUnassignment)
+                    if (isUnassignment)
                         result.push({
                             label: "Select one of the assigned user",
                             url: ""
@@ -171,4 +151,8 @@ Template.assignmentMenu.helpers({
         }
 
     }
-});
+
+}
+
+AssignmentMenu.register("AssignmentMenu");
+
