@@ -3,17 +3,23 @@ import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient
 defaultFilter = {};
 noSearchFilter = "";
 noneFilter = {none: "none"};
+
+//TODO don't user global var
 UserFilter = new ReactiveVar(defaultFilter);
+UserIndexFilter = new ReactiveVar(noSearchFilter);
+UserTeamFilter = new ReactiveVar(defaultFilter);
+UserSkillsFilter = new ReactiveVar(defaultFilter);
+
+
+//
+
 SelectedUser = new ReactiveVar(null);
 TaskFilter = new ReactiveVar(defaultFilter);
 TaskIndexFilter = new ReactiveVar(noSearchFilter);
-UserIndexFilter = new ReactiveVar(noSearchFilter);
-UserTeamFilter = new ReactiveVar(defaultFilter);
 TaskTeamFilter = new ReactiveVar(defaultFilter);
 DisplayAssignedTask = new ReactiveVar(false);
 TaskNeededTeamFilter = new ReactiveVar(null);
 TaskSkillsFilter = new ReactiveVar(null);
-UserSkillsFilter = new ReactiveVar(defaultFilter);
 SelectedTask = new ReactiveVar(null);
 SelectedTaskBreadCrumb = new ReactiveVar(null); //TODO voir si on peut la merger avec SelectedTask
 SelectedTimeSlot = new ReactiveVar(null);

@@ -1,54 +1,34 @@
-Template.assignmentUsersList.helpers({
-    users: function () {
-        var filter = UserFilter.get();
-        var filterIndex = UserIndexFilter.get();
-        var teamFilter = UserTeamFilter.get();
-        var skillsFilter = UserSkillsFilter.get();
+class AssignmentUserList extends BlazeComponent {
 
-        var searchResult;
-        var filterResult;
+    events() {
+        return [{
+            "click .href-assignment-user": this.onClickUserName,
+            "click li": this.onClickUser,
+            "keyup #search_user_name": this.performSearch,
+            "change .filter_team": this.performFilterTeam,
+            "change #filter_skills_user": this.performFilterSkills,
 
-        filterResult = Users.find({
-            $and: [
-                filter,
-                teamFilter,
-                skillsFilter
-            ]
-        }, {limit: 20}).fetch();
-        //console.error("user filter result n'est pas utilisé !!!")
-        searchResult = UsersIndex.search(filterIndex, {limit: 20}).fetch();
-        return _.intersectionObjects(searchResult, filterResult);
-        //return filterResult;
-    },
-
-    team: function () {
-        return Teams.findOne({_id: this.toString()}).name;
-    },
-    userTeamsWithoutGlobalTeam: function () {
-        var teams = this.teams;
-        var result = [];
-        var assignmentReadyTeam = Teams.findOne({name: ASSIGNMENTREADYTEAM});
-        teams.forEach(teamId => {
-            if (teamId !== assignmentReadyTeam._id)
-                result.push(teamId)
-        });
-        return result;
+        }]
     }
 
-});
+    onRendered(){
+        this.$('#assignment-user-list-collapsible').collapsible({});
+    }
 
+    template(){
+        return "assignmentUserList";
+    }
 
-Template.assignmentUsersList.events({
-    "click .href-assignment-user": function (event) {
+    onClickUserName(event) {
         event.stopPropagation();
         event.preventDefault();
         //TODO can't event to bubble to the collapsible event
 
-        console.info("routing", "/assignment/user/" + this._id);
-        Router.go("/assignment/user/" + this._id);
-    },
+        console.info("routing", "/assignment/user/" + this.currentData()._id);
+        Router.go("/assignment/user/" + this.currentData()._id);
+    }
 
-    "click li": function (event) {
+    onClickUser(event) {
         event.stopPropagation();
 
         //Template.parentData() ne fonctionne pas, alors j'utilise un trick de poney pour stocker dans le dom les _id
@@ -70,13 +50,13 @@ Template.assignmentUsersList.events({
                     IsUnassignment.set(false)
                 } else
                     Meteor.call("assignUserToTaskTimeSlot", SelectedPeopleNeed.get()._id, _id);
-                    SelectedTimeSlot.set(null);
+                SelectedTimeSlot.set(null);
                 break;
         }
 
-    },
+    }
 
-    "keyup #search_user_name": function (event) {
+    performSearch(event) {
         var searchInput = $("#search_user_name").val();
 
         //desactivation de la recherche par URL
@@ -88,9 +68,9 @@ Template.assignmentUsersList.events({
         } else {
             UserIndexFilter.set(searchInput);
         }
-    },
+    }
 
-    "change .filter_team": function (event) {
+    performFilterTeam(event) {
         var _id = $(event.target).val();
         if (_id === "") {
             UserTeamFilter.set(defaultFilter);
@@ -99,9 +79,9 @@ Template.assignmentUsersList.events({
                 teams: _id
             });
         }
-    },
+    }
 
-    "change #filter_skills_user": function (event) {
+    performFilterSkills(event) {
         var _ids = $(event.target).val();
         if (!_ids) {
             UserSkillsFilter.set(defaultFilter);
@@ -113,12 +93,43 @@ Template.assignmentUsersList.events({
             });
         }
     }
-});
 
 
-Template.assignmentUsersList.rendered = function(){
-    $('#assignment-user-list-collapsible').collapsible({});
-};
+    users() {
+        var filter = UserFilter.get();
+        var filterIndex = UserIndexFilter.get();
+        var teamFilter = UserTeamFilter.get();
+        var skillsFilter = UserSkillsFilter.get();
+
+        var searchResult;
+        var filterResult;
+
+        filterResult = Users.find({
+            $and: [
+                filter,
+                teamFilter,
+                skillsFilter
+            ]
+        }, {limit: 20}).fetch();
+        searchResult = UsersIndex.search(filterIndex, {limit: 20}).fetch();
+        return _.intersectionObjects(searchResult, filterResult);
+    }
+
+    team() {
+        return Teams.findOne({_id: this.currentData().toString()}).name;
+    }
+
+    userTeamsWithoutGlobalTeam() {
+        var teams = this.currentData().teams;
+        var result = [];
+        var assignmentReadyTeam = Teams.findOne({name: ASSIGNMENTREADYTEAM});
+        teams.forEach(teamId => {
+            if (teamId !== assignmentReadyTeam._id)
+                result.push(teamId)
+        });
+        return result;
+    }
+}
 
 
-
+AssignmentUserList.register("AssignmentUserList");

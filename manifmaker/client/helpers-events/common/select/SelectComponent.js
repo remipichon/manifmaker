@@ -28,7 +28,6 @@ export class SelectComponent extends BlazeComponent {
             //to implement and use updateOption
         }
 
-        //TODO could'nt figure out how to use constructor with this.data
         initializeData() {
             //select popover init arguments
             if (!this.data().optionCollection || !window[this.data().optionCollection])
