@@ -112,9 +112,6 @@ export class BaseCalendarComponent extends BlazeComponent{
 
     //works for .heure et .quart d'heure
     isSelected(date, timeHours) {
-        if (this.getCalendarDateTime(date, timeHours, 0).isSame(SelectedDate.get())) {
-            return "selected"
-        }
         return ""
     }
 

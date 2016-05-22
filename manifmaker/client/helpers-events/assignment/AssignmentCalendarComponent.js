@@ -26,6 +26,15 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         return Teams.findOne({_id: this.currentData().teamId}).name;
     }
 
+    //works for .heure et .quart d'heure
+    isSelected(date, timeHours) {
+        if (this.getCalendarDateTime(date, timeHours, 0).isSame(SelectedDate.get())) {
+            return "selected"
+        }
+        return ""
+    }
+
+
     timeSlot(date, timeHours, idTask) {
         var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
         var currentAssignmentType = CurrentAssignmentType.get();

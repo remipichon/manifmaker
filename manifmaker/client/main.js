@@ -31,7 +31,7 @@ SelectedPeopleNeed = new ReactiveVar(null); //service and cmponentn
 
 IsUnassignment = new ReactiveVar(false); //menu and service
 
-TaskListTeamFilter = new ReactiveVar(defaultFilter); //what is it used for ?
+//TaskListTeamFilter = new ReactiveVar(defaultFilter); //what is it used for ?
 
 
 Meteor.startup(function () {
