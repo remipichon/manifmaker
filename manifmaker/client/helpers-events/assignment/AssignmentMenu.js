@@ -10,14 +10,14 @@ class AssignmentMenu extends BlazeComponent {
     }
 
     onClickUserToTask(event) {
-        AssignmentReactiveVars.TaskFilter.set(noneFilter);
-        AssignmentReactiveVars.UserFilter.set(defaultFilter);
+        AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
+        AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
     }
 
     onClickTaskToUser(event) {
-        AssignmentReactiveVars.UserFilter.set(noneFilter);
-        AssignmentReactiveVars.TaskFilter.set(defaultFilter);
+        AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.noneFilter);
+        AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.defaultFilter);
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
     }
 

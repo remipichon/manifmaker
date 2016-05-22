@@ -4,10 +4,10 @@ import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/
 Router.route('/assignment/taskToUser', function () {
         console.info("routing", '/assignment/taskToUser');
 
-        AssignmentReactiveVars.TaskFilter.set(defaultFilter);
-        AssignmentReactiveVars.TaskIndexFilter.set(noSearchFilter);
+        AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.defaultFilter);
+        AssignmentReactiveVars.TaskIndexFilter.set(AssignmentReactiveVars.noSearchFilter);
         $("#search_task_name").val("");
-        AssignmentReactiveVars.UserFilter.set(noneFilter);
+        AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.noneFilter);
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
         AssignmentReactiveVars.SelectedUser.set(null);
         AssignmentReactiveVars.SelectedTask.set(null);
@@ -52,7 +52,7 @@ Router.route('/assignment/taskToUser/:taskId', function () {
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
         AssignmentReactiveVars.SelectedTask.set({_id: this.params.taskId});
         AssignmentReactiveVars.SelectedTimeSlot.set(null);
-        AssignmentReactiveVars.UserFilter.set(noneFilter);
+        AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.noneFilter);
 
 
     }, {

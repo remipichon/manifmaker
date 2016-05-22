@@ -1,6 +1,6 @@
-defaultFilter = {};
-noSearchFilter = "";
-noneFilter = {none: "none"};
+const defaultFilter = {};
+const noSearchFilter = "";
+const noneFilter = {none: "none"};
 
 export var AssignmentReactiveVars = {
     UserFilter: new ReactiveVar(defaultFilter), //route and service
@@ -15,5 +15,8 @@ export var AssignmentReactiveVars = {
     SelectedDate: new ReactiveVar(null),//rpute and menu
     SelectedAvailability: new ReactiveVar(null), //rpute and menu
     SelectedPeopleNeed: new ReactiveVar(null), //service and cmponentn
-    IsUnassignment: new ReactiveVar(false) //menu and service
+    IsUnassignment: new ReactiveVar(false), //menu and service,
+    defaultFilter: defaultFilter,
+    noSearchFilter: noSearchFilter,
+    noneFilter: noneFilter
 };

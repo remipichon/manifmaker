@@ -4,8 +4,8 @@ class AssignmentUserList extends BlazeComponent {
 
     constructor(parent){
         super();
-        this.userTeamFilter = new ReactiveVar(defaultFilter); 
-        this.userSkillsFilter = new ReactiveVar(defaultFilter); 
+        this.userTeamFilter = new ReactiveVar(AssignmentReactiveVars.defaultFilter);
+        this.userSkillsFilter = new ReactiveVar(AssignmentReactiveVars.defaultFilter);
     }
 
     events() {
@@ -67,7 +67,7 @@ class AssignmentUserList extends BlazeComponent {
         //Router.go("/assignment/user/search/"+query);
 
         if (searchInput === "") {
-            AssignmentReactiveVars.UserIndexFilter.set(noSearchFilter);
+            AssignmentReactiveVars.UserIndexFilter.set(AssignmentReactiveVars.noSearchFilter);
         } else {
             AssignmentReactiveVars.UserIndexFilter.set(searchInput);
         }
@@ -76,7 +76,7 @@ class AssignmentUserList extends BlazeComponent {
     performFilterTeam(event) {
         var _id = $(event.target).val();
         if (_id === "") {
-            this.userTeamFilter.set(defaultFilter);
+            this.userTeamFilter.set(AssignmentReactiveVars.defaultFilter);
         } else {
             this.userTeamFilter.set({
                 teams: _id
@@ -87,7 +87,7 @@ class AssignmentUserList extends BlazeComponent {
     performFilterSkills(event) {
         var _ids = $(event.target).val();
         if (!_ids) {
-            this.userSkillsFilter.set(defaultFilter);
+            this.userSkillsFilter.set(AssignmentReactiveVars.defaultFilter);
         } else {
             this.userSkillsFilter.set({
                 skills: {

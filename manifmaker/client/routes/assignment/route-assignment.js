@@ -101,7 +101,7 @@ Router.route('/assignment/task/:taskId', function () {
 //    var searchInput = this.params.searchInput;
 //
 //    if (searchInput === "") {
-//        AssignmentReactiveVars.TaskFilter.set(defaultFilter);
+//        AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.defaultFilter);
 //        this.redirect("/assignment");
 //    } else {
 //
@@ -134,7 +134,7 @@ Router.route('/assignment/task/:taskId', function () {
 //    var searchInput = this.params.searchInput;
 //
 //    if (searchInput === "") {
-//        AssignmentReactiveVars.UserFilter.set(defaultFilter);
+//        AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);
 //        this.redirect("/assignment");
 //    } else {
 //

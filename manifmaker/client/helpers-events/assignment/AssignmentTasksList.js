@@ -3,7 +3,7 @@ import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
 class AssignmentTasksList extends BlazeComponent {
     constructor(parent) {
         super();
-        this.taskTeamFilter = new ReactiveVar(defaultFilter);
+        this.taskTeamFilter = new ReactiveVar(AssignmentReactiveVars.defaultFilter);
         this.isplayAssignedTask = new ReactiveVar(false);
         this.taskSkillsFilter = new ReactiveVar(null);
         this.taskNeededTeamFilter = new ReactiveVar(null); //ok
@@ -69,7 +69,7 @@ class AssignmentTasksList extends BlazeComponent {
                             //no longer available but the task can still be theoretically assigned to him because we didn't recompute the AssignmentReactiveVars.TaskFilter job done
                             //by the event on the calendar.
                             //we don't need to do that for the mode TASKTOUSER as the user naturally disappears from the list once assigned
-                            AssignmentReactiveVars.TaskFilter.set(noneFilter);
+                            AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
 
                             //reset workflow
                             AssignmentReactiveVars.SelectedAvailability.set(null);
@@ -92,7 +92,7 @@ class AssignmentTasksList extends BlazeComponent {
         //Router.go("/assignment/task/search/"+query);
 
         if (searchInput === "") {
-            AssignmentReactiveVars.TaskIndexFilter.set(noSearchFilter);
+            AssignmentReactiveVars.TaskIndexFilter.set(AssignmentReactiveVars.noSearchFilter);
         } else {
             AssignmentReactiveVars.TaskIndexFilter.set(searchInput);
         }
@@ -101,7 +101,7 @@ class AssignmentTasksList extends BlazeComponent {
     performFilterTeam(event) {
         var _id = $(event.target).val();
         if (_id === "") {
-            this.taskTeamFilter.set(defaultFilter);
+            this.taskTeamFilter.set(AssignmentReactiveVars.defaultFilter);
         } else {
             this.taskTeamFilter.set({
                 teamId: _id

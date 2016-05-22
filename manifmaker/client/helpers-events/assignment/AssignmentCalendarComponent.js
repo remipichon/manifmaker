@@ -5,7 +5,6 @@ import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
 
-
 class AssignmentCalendarComponent extends BaseCalendarComponent {
     constructor() {
         super();

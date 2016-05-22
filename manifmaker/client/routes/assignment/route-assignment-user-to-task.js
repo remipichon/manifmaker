@@ -4,10 +4,10 @@ import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/
 Router.route('/assignment/userToTask', function () {
         console.info("routing", '/assignment/userToTask');
 
-        AssignmentReactiveVars.TaskFilter.set(noneFilter);
-        AssignmentReactiveVars.UserIndexFilter.set(noSearchFilter);
+        AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
+        AssignmentReactiveVars.UserIndexFilter.set(AssignmentReactiveVars.noSearchFilter);
         $("#search_user_name").val("");
-        AssignmentReactiveVars.UserFilter.set(defaultFilter);
+        AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
         AssignmentReactiveVars.SelectedUser.set(null);
         AssignmentReactiveVars.SelectedDate.set(null);
@@ -64,10 +64,10 @@ Router.route('/assignment/userToTask/:userId', function () {
 
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
         AssignmentReactiveVars.SelectedUser.set({_id: this.params.userId});
-        AssignmentReactiveVars.TaskFilter.set(noneFilter);
+        AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
 
         AssignmentReactiveVars.SelectedAvailability.set(null);
-        AssignmentReactiveVars.UserFilter.set(defaultFilter);
+        AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);
         //TODO reduire la liste à ses amis
 
     }, {
