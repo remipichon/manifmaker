@@ -1,7 +1,6 @@
 import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
 
 
-
 Meteor.startup(function () {
     Accounts.ui.config({
         passwordSignupFields: "USERNAME_ONLY"

@@ -29,7 +29,7 @@ Assignments = new Mongo.Collection("assignment");
  * @locus Anywhere
  * @instancename collection
  */
-Groups = new Mongo.Collection("groups"); //TODO group task
+Groups = new Mongo.Collection("groups"); //TODO group activity
 
 
 
