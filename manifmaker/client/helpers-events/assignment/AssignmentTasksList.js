@@ -1,6 +1,11 @@
 class AssignmentTasksList extends BlazeComponent {
     constructor(parent) {
         super();
+        this.taskTeamFilter = new ReactiveVar(defaultFilter);
+        this.isplayAssignedTask = new ReactiveVar(false);
+        this.taskSkillsFilter = new ReactiveVar(null);
+        this.taskNeededTeamFilter = new ReactiveVar(null); //ok
+
     }
 
     events() {
@@ -94,9 +99,9 @@ class AssignmentTasksList extends BlazeComponent {
     performFilterTeam(event) {
         var _id = $(event.target).val();
         if (_id === "") {
-            TaskTeamFilter.set(defaultFilter);
+            this.taskTeamFilter.set(defaultFilter);
         } else {
-            TaskTeamFilter.set({
+            this.taskTeamFilter.set({
                 teamId: _id
             });
         }
@@ -105,40 +110,40 @@ class AssignmentTasksList extends BlazeComponent {
     performFilterNeededTeam(event) {
         var _id = $(event.target).val();
         if (_id === "") {
-            TaskNeededTeamFilter.set(null);
+            this.taskNeededTeamFilter.set(null);
         } else if (_id === "noNeededTeam") {
-            TaskNeededTeamFilter.set("noNeededTeam");
+            this.taskNeededTeamFilter.set("noNeededTeam");
         }
         else {
-            TaskNeededTeamFilter.set(_id);
+            this.taskNeededTeamFilter.set(_id);
         }
     }
 
     performFilterSkills(event) {
         var _ids = $(event.target).val();
         if (!_ids) {
-            TaskSkillsFilter.set(null);
+            this.taskSkillsFilter.set(null);
         } else if (_ids[0] === "noSkills") {
-            TaskSkillsFilter.set([]);
+            this.taskSkillsFilter.set([]);
         } else {
-            TaskSkillsFilter.set(_ids);
+            this.taskSkillsFilter.set(_ids);
         }
     }
 
     switchDisplayAssignedTask(event) {
-        DisplayAssignedTask.set($($(event.target)[0]).is(':checked'));
+        this.isplayAssignedTask.set($($(event.target)[0]).is(':checked'));
     }
 
 
     tasks() {
         var filter = TaskFilter.get();
         var filterIndex = TaskIndexFilter.get();
-        var teamFilter = TaskTeamFilter.get();
-        var displayAssignedTask = DisplayAssignedTask.get();
+        var teamFilter = this.taskTeamFilter.get();
+        var displayAssignedTask = this.isplayAssignedTask.get();
         var assignmentType = CurrentAssignmentType.get();
 
-        var skillsFilter = TaskSkillsFilter.get();
-        var neededTeamFilter = TaskNeededTeamFilter.get();
+        var skillsFilter = this.taskSkillsFilter.get();
+        var neededTeamFilter = this.taskNeededTeamFilter.get();
         var skillsAndNeededTeamFilterForAssigned = {};
 
         if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {

@@ -7,15 +7,15 @@ noneFilter = {none: "none"};
 //TODO don't user global var
 UserFilter = new ReactiveVar(defaultFilter); //route and service
 UserIndexFilter = new ReactiveVar(noSearchFilter); //route and service
-UserTeamFilter = new ReactiveVar(defaultFilter); //ok
-UserSkillsFilter = new ReactiveVar(defaultFilter); //ok
+//UserTeamFilter = new ReactiveVar(defaultFilter); //ok
+//UserSkillsFilter = new ReactiveVar(defaultFilter); //ok
 TaskFilter = new ReactiveVar(defaultFilter); //route and calendar component
 TaskIndexFilter = new ReactiveVar(noSearchFilter); //route
-TaskTeamFilter = new ReactiveVar(defaultFilter); //ok
-DisplayAssignedTask = new ReactiveVar(false); //ok
+//TaskTeamFilter = new ReactiveVar(defaultFilter); //ok
+//DisplayAssignedTask = new ReactiveVar(false); //ok
 CurrentAssignmentType = new ReactiveVar(AssignmentType.ALL); //service and route
-TaskSkillsFilter = new ReactiveVar(null); //ok
-TaskNeededTeamFilter = new ReactiveVar(null); //ok
+//TaskSkillsFilter = new ReactiveVar(null); //ok
+//TaskNeededTeamFilter = new ReactiveVar(null); //ok
 
 
 //
@@ -23,16 +23,15 @@ TaskNeededTeamFilter = new ReactiveVar(null); //ok
 SelectedUser = new ReactiveVar(null); //route and menu
 SelectedTask = new ReactiveVar(null);//route and menu
 SelectedTaskBreadCrumb = new ReactiveVar(null); //TODO voir si on peut la merger avec SelectedTask
-SelectedTimeSlot = new ReactiveVar(null);
-SelectedDate = new ReactiveVar(null);
+SelectedTimeSlot = new ReactiveVar(null); //route and menu
+SelectedDate = new ReactiveVar(null);//rpute and menu
 
-SelectedAvailability = new ReactiveVar(null);
-SelectedPeopleNeed = new ReactiveVar(null);
+SelectedAvailability = new ReactiveVar(null); //rpute and menu
+SelectedPeopleNeed = new ReactiveVar(null); //service and cmponentn
 
-AssignmentFilter = new ReactiveVar(defaultFilter);
-IsUnassignment = new ReactiveVar(false);
+IsUnassignment = new ReactiveVar(false); //menu and service
 
-TaskListTeamFilter = new ReactiveVar(defaultFilter);
+TaskListTeamFilter = new ReactiveVar(defaultFilter); //what is it used for ?
 
 
 Meteor.startup(function () {
