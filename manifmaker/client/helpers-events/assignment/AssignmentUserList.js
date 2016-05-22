@@ -1,3 +1,5 @@
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+
 class AssignmentUserList extends BlazeComponent {
 
     constructor(parent){
@@ -33,8 +35,8 @@ class AssignmentUserList extends BlazeComponent {
         event.stopPropagation();
 
         //Template.parentData() ne fonctionne pas, alors j'utilise un trick de poney pour stocker dans le dom les _id
-        var currentAssignmentType = CurrentAssignmentType.get();
-        var isUnassignment = IsUnassignment.get();
+        var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
+        var isUnassignment = AssignmentReactiveVars.IsUnassignment.get();
         var target = $(event.target);
         var _id;
         if (target.hasClass("user"))
@@ -47,11 +49,11 @@ class AssignmentUserList extends BlazeComponent {
                 break;
             case AssignmentType.TASKTOUSER:
                 if (isUnassignment) {
-                    Meteor.call("removeAssignUserToTaskTimeSlot", SelectedPeopleNeed.get()._id, _id);
-                    IsUnassignment.set(false)
+                    Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, _id);
+                    AssignmentReactiveVars.IsUnassignment.set(false)
                 } else
-                    Meteor.call("assignUserToTaskTimeSlot", SelectedPeopleNeed.get()._id, _id);
-                SelectedTimeSlot.set(null);
+                    Meteor.call("assignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, _id);
+                AssignmentReactiveVars.SelectedTimeSlot.set(null);
                 break;
         }
 
@@ -65,9 +67,9 @@ class AssignmentUserList extends BlazeComponent {
         //Router.go("/assignment/user/search/"+query);
 
         if (searchInput === "") {
-            UserIndexFilter.set(noSearchFilter);
+            AssignmentReactiveVars.UserIndexFilter.set(noSearchFilter);
         } else {
-            UserIndexFilter.set(searchInput);
+            AssignmentReactiveVars.UserIndexFilter.set(searchInput);
         }
     }
 
@@ -97,8 +99,8 @@ class AssignmentUserList extends BlazeComponent {
 
 
     users() {
-        var filter = UserFilter.get();
-        var filterIndex = UserIndexFilter.get();
+        var filter = AssignmentReactiveVars.UserFilter.get();
+        var filterIndex = AssignmentReactiveVars.UserIndexFilter.get();
         var teamFilter = this.userTeamFilter.get();
         var skillsFilter = this.userSkillsFilter.get();
 

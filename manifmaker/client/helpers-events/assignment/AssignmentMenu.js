@@ -1,4 +1,5 @@
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
 class AssignmentMenu extends BlazeComponent {
     events() {
@@ -9,15 +10,15 @@ class AssignmentMenu extends BlazeComponent {
     }
 
     onClickUserToTask(event) {
-        TaskFilter.set(noneFilter);
-        UserFilter.set(defaultFilter);
-        CurrentAssignmentType.set(AssignmentType.USERTOTASK);
+        AssignmentReactiveVars.TaskFilter.set(noneFilter);
+        AssignmentReactiveVars.UserFilter.set(defaultFilter);
+        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
     }
 
     onClickTaskToUser(event) {
-        UserFilter.set(noneFilter);
-        TaskFilter.set(defaultFilter);
-        CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
+        AssignmentReactiveVars.UserFilter.set(noneFilter);
+        AssignmentReactiveVars.TaskFilter.set(defaultFilter);
+        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
     }
 
     assignmentTerms() {
@@ -25,22 +26,20 @@ class AssignmentMenu extends BlazeComponent {
     }
 
     isSelected(mode) {
-        if (mode === CurrentAssignmentType.get()) {
+        if (mode === AssignmentReactiveVars.CurrentAssignmentType.get()) {
             return "active";
         }
         return "";
     }
 
     breadCrumbAssignment() {
-        var userFilter = UserFilter.get(),
-            taskFilter = TaskFilter.get(),
-            currentAssignmentType = CurrentAssignmentType.get(),
-            selectedUser = SelectedUser.get(),
-            selectedTask = SelectedTask.get(),
-            selectedTaskBreadCrumb = SelectedTaskBreadCrumb.get(),
-            selectedDate = SelectedDate.get(),
-            selectedTimeSlot = SelectedTimeSlot.get(),
-            isUnassignment = IsUnassignment.get(),
+        var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get(),
+            selectedUser = AssignmentReactiveVars.SelectedUser.get(),
+            selectedTask = AssignmentReactiveVars.SelectedTask.get(),
+            selectedTaskBreadCrumb = AssignmentReactiveVars.SelectedTaskBreadCrumb.get(),
+            selectedDate = AssignmentReactiveVars.SelectedDate.get(),
+            selectedTimeSlot = AssignmentReactiveVars.SelectedTimeSlot.get(),
+            isUnassignment = AssignmentReactiveVars.IsUnassignment.get(),
             result = [];
 
         if (isUnassignment) {
@@ -63,12 +62,12 @@ class AssignmentMenu extends BlazeComponent {
                     url: "/assignment/userToTask/" + selectedUser._id
                 });
 
-                if (SelectedAvailability.get() === null) {//TODO pas top
+                if (AssignmentReactiveVars.SelectedAvailability.get() === null) {//TODO pas top
                     result.push({
                         label: "Select one of the availability",
                         url: ""
                     });
-                    SelectedTaskBreadCrumb.set(null);
+                    AssignmentReactiveVars.SelectedTaskBreadCrumb.set(null);
                     //apres de amples reflexion, disons que je vois pas ou reinit ce SelectedTaskBreadcrum
                     //ca risque d'avoir des effets de bords pénibles, mais l'avantage c'est que ca ne fait
                     //que planter le breadcrumb, d'ou le pertinence de ce code ici

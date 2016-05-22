@@ -1,3 +1,5 @@
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+
 export class BaseCalendarComponent extends BlazeComponent{
     peopleNeedOnClick() {
         //to implement
@@ -39,7 +41,7 @@ export class BaseCalendarComponent extends BlazeComponent{
     }
 
     assignmentType() {
-        return CurrentAssignmentType.get();
+        return AssignmentReactiveVars.CurrentAssignmentType.get();
     }
 
     days() {

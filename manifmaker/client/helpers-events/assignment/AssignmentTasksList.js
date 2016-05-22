@@ -1,3 +1,5 @@
+import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
+
 class AssignmentTasksList extends BlazeComponent {
     constructor(parent) {
         super();
@@ -31,13 +33,13 @@ class AssignmentTasksList extends BlazeComponent {
     }
 
     onClickTask(event) {
-        SelectedTaskBreadCrumb.set(this.currentData());
+        AssignmentReactiveVars.SelectedTaskBreadCrumb.set(this.currentData());
     }
 
     onClickPeopleNeed(event) {
         event.stopPropagation();
-        var currentAssignmentType = CurrentAssignmentType.get();
-        var isUnassignment = IsUnassignment.get();
+        var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
+        var isUnassignment = AssignmentReactiveVars.IsUnassignment.get();
         var target = $(event.target);
         var _idTask, _idTimeSlot;
         if (target.hasClass("task"))
@@ -45,9 +47,9 @@ class AssignmentTasksList extends BlazeComponent {
         else
             _idTask = target.parents(".task").data("_id");
 
-        SelectedPeopleNeed.set(this.currentData());
+        AssignmentReactiveVars.SelectedPeopleNeed.set(this.currentData());
 
-        var userId = SelectedUser.get()._id;
+        var userId = AssignmentReactiveVars.SelectedUser.get()._id;
 
 
         if (target.hasClass("time-slot"))
@@ -58,19 +60,19 @@ class AssignmentTasksList extends BlazeComponent {
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK:
                 if (isUnassignment) {
-                    Meteor.call("removeAssignUserToTaskTimeSlot", SelectedPeopleNeed.get()._id, userId);
-                    IsUnassignment.set(false);
+                    Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, userId);
+                    AssignmentReactiveVars.IsUnassignment.set(false);
                 } else
-                    Meteor.call("assignUserToTaskTimeSlot", SelectedPeopleNeed.get()._id, userId, function (error, result) {
+                    Meteor.call("assignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, userId, function (error, result) {
                         if (!error) {
                             //we have to reset the task list this way because once assigned, the task can't propose any peopleNeed for the user as he is
-                            //no longer available but the task can still be theoretically assigned to him because we didn't recompute the TaskFilter job done
+                            //no longer available but the task can still be theoretically assigned to him because we didn't recompute the AssignmentReactiveVars.TaskFilter job done
                             //by the event on the calendar.
                             //we don't need to do that for the mode TASKTOUSER as the user naturally disappears from the list once assigned
-                            TaskFilter.set(noneFilter);
+                            AssignmentReactiveVars.TaskFilter.set(noneFilter);
 
                             //reset workflow
-                            SelectedAvailability.set(null);
+                            AssignmentReactiveVars.SelectedAvailability.set(null);
                         }
                     });
                 break;
@@ -90,9 +92,9 @@ class AssignmentTasksList extends BlazeComponent {
         //Router.go("/assignment/task/search/"+query);
 
         if (searchInput === "") {
-            TaskIndexFilter.set(noSearchFilter);
+            AssignmentReactiveVars.TaskIndexFilter.set(noSearchFilter);
         } else {
-            TaskIndexFilter.set(searchInput);
+            AssignmentReactiveVars.TaskIndexFilter.set(searchInput);
         }
     }
 
@@ -136,11 +138,11 @@ class AssignmentTasksList extends BlazeComponent {
 
 
     tasks() {
-        var filter = TaskFilter.get();
-        var filterIndex = TaskIndexFilter.get();
+        var filter = AssignmentReactiveVars.TaskFilter.get();
+        var filterIndex = AssignmentReactiveVars.TaskIndexFilter.get();
         var teamFilter = this.taskTeamFilter.get();
         var displayAssignedTask = this.isplayAssignedTask.get();
-        var assignmentType = CurrentAssignmentType.get();
+        var assignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
         var skillsFilter = this.taskSkillsFilter.get();
         var neededTeamFilter = this.taskNeededTeamFilter.get();
@@ -232,10 +234,10 @@ class AssignmentTasksList extends BlazeComponent {
     timeSlotsInfo() {
         var task = this.currentData();
         var timeSlots = task.timeSlots;
-        if (CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
+        if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
             var result = [];
             _.each(timeSlots, (timeSlot) => {
-                var date = SelectedDate.get();
+                var date = AssignmentReactiveVars.SelectedDate.get();
                 var start = new moment(timeSlot.start);
                 var end = new moment(timeSlot.end);
                 if ((start.isBefore(date) || start.isSame(date)) &&
@@ -257,10 +259,10 @@ class AssignmentTasksList extends BlazeComponent {
     timeSlots() {
         var task = this.currentData();
         var timeSlots = task.timeSlots;
-        if (CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
+        if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
             var result = [];
             _.each(timeSlots, (timeSlot) => {
-                var date = SelectedDate.get();
+                var date = AssignmentReactiveVars.SelectedDate.get();
                 var start = new moment(timeSlot.start);
                 var end = new moment(timeSlot.end);
                 if ((start.isBefore(date) || start.isSame(date)) &&
@@ -277,11 +279,11 @@ class AssignmentTasksList extends BlazeComponent {
     peopleNeeded() {
         var peopleNeeded = this.currentData().peopleNeeded;
 
-        if (CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
+        if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
             var result = [];
 
             _.each(peopleNeeded, (peopleNeed) => {
-                var selectedUser = Users.findOne(SelectedUser.get());
+                var selectedUser = Users.findOne(AssignmentReactiveVars.SelectedUser.get());
 
                 //userId : if existing, selected user must be the one
                 if (peopleNeed.userId) {

@@ -1,37 +1,23 @@
 import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
 
-defaultFilter = {};
-noSearchFilter = "";
-noneFilter = {none: "none"};
-
-//TODO don't user global var
-UserFilter = new ReactiveVar(defaultFilter); //route and service
-UserIndexFilter = new ReactiveVar(noSearchFilter); //route and service
-//UserTeamFilter = new ReactiveVar(defaultFilter); //ok
-//UserSkillsFilter = new ReactiveVar(defaultFilter); //ok
-TaskFilter = new ReactiveVar(defaultFilter); //route and calendar component
-TaskIndexFilter = new ReactiveVar(noSearchFilter); //route
-//TaskTeamFilter = new ReactiveVar(defaultFilter); //ok
-//DisplayAssignedTask = new ReactiveVar(false); //ok
-CurrentAssignmentType = new ReactiveVar(AssignmentType.ALL); //service and route
-//TaskSkillsFilter = new ReactiveVar(null); //ok
-//TaskNeededTeamFilter = new ReactiveVar(null); //ok
 
 
-//
+//AssignmentReactiveVars = {
+//    UserFilter: new ReactiveVar(defaultFilter), //route and service
+//    UserIndexFilter: new ReactiveVar(noSearchFilter), //route and service
+//    TaskFilter: new ReactiveVar(defaultFilter), //route and calendar component
+//    TaskIndexFilter: new ReactiveVar(noSearchFilter), //route
+//    CurrentAssignmentType: new ReactiveVar(AssignmentType.ALL), //service and route
+//    SelectedUser : new ReactiveVar(null), //route and menu
+//    SelectedTask: new ReactiveVar(null),//route and menu
+//    SelectedTaskBreadCrumb: new ReactiveVar(null), //TODO voir si on peut la merger avec AssignmentReactiveVars.SelectedTask
+//    SelectedTimeSlot: new ReactiveVar(null), //route and menu
+//    SelectedDate: new ReactiveVar(null),//rpute and menu
+//    SelectedAvailability: new ReactiveVar(null), //rpute and menu
+//    SelectedPeopleNeed: new ReactiveVar(null), //service and cmponentn
+//    IsUnassignment: new ReactiveVar(false) //menu and service
+//};
 
-SelectedUser = new ReactiveVar(null); //route and menu
-SelectedTask = new ReactiveVar(null);//route and menu
-SelectedTaskBreadCrumb = new ReactiveVar(null); //TODO voir si on peut la merger avec SelectedTask
-SelectedTimeSlot = new ReactiveVar(null); //route and menu
-SelectedDate = new ReactiveVar(null);//rpute and menu
-
-SelectedAvailability = new ReactiveVar(null); //rpute and menu
-SelectedPeopleNeed = new ReactiveVar(null); //service and cmponentn
-
-IsUnassignment = new ReactiveVar(false); //menu and service
-
-//TaskListTeamFilter = new ReactiveVar(defaultFilter); //what is it used for ?
 
 
 Meteor.startup(function () {

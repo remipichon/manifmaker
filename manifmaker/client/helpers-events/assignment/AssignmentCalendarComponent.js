@@ -2,6 +2,9 @@ import {BaseCalendarComponent} from "../common/BaseCalendarComponent"
 import {AssignmentService} from "../../../both/service/AssignmentService"
 import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
+import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
+import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
+
 
 class AssignmentCalendarComponent extends BaseCalendarComponent {
     constructor() {
@@ -28,7 +31,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
     //works for .heure et .quart d'heure
     isSelected(date, timeHours) {
-        if (this.getCalendarDateTime(date, timeHours, 0).isSame(SelectedDate.get())) {
+        if (this.getCalendarDateTime(date, timeHours, 0).isSame(AssignmentReactiveVars.SelectedDate.get())) {
             return "selected"
         }
         return ""
@@ -37,13 +40,13 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
     timeSlot(date, timeHours, idTask) {
         var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
-        var currentAssignmentType = CurrentAssignmentType.get();
+        var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
         var data = {};
 
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK:
-                var user = SelectedUser.get() == null ? null : Users.findOne(SelectedUser.get());
+                var user = AssignmentReactiveVars.SelectedUser.get() == null ? null : Users.findOne(AssignmentReactiveVars.SelectedUser.get());
                 if (user === null) return [];
 
 
@@ -85,7 +88,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
                 break;
             case AssignmentType.TASKTOUSER:
-                var task = SelectedTask.get() == null ? null : Tasks.findOne(SelectedTask.get());
+                var task = AssignmentReactiveVars.SelectedTask.get() == null ? null : Tasks.findOne(AssignmentReactiveVars.SelectedTask.get());
                 if (!task) return [];
 
                 var timeSlotFound = TimeSlotService.getTimeSlotByStart(task.timeSlots, startCalendarTimeSlot);
@@ -141,7 +144,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
     selectPeopleNeed() {
-        SelectedPeopleNeed.set(this.currentData());
+        AssignmentReactiveVars.SelectedPeopleNeed.set(this.currentData());
         //event should bubbles to .creneau
     }
 
@@ -154,7 +157,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                     //TODO DISPLAY NOTIF
                     console.debug("TODO DISPLAY NOTIF click on peopleNeed.assigned : double click to perform remove assignment");
                 } else {
-                    AssignmentService.taskToUserPerformUserFilterRemoveAssignment();
+                    AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
                 }
                 this.peopleNeedAssignedClick = 0;
             }, this.currentData()), 300);
@@ -165,7 +168,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     //taskToUser (we click on a complete task time slot)
     creanOnClick() {
 
-        var currentAssignmentType = CurrentAssignmentType.get();
+        var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK:
@@ -173,9 +176,8 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 return;
                 break;
             case AssignmentType.TASKTOUSER: //only display users that have at least one availability matching the selected time slot
-                SelectedTimeSlot.set(this.currentData());
-
-                AssignmentService.taskToUserPerformUserFilter();
+                AssignmentReactiveVars.SelectedTimeSlot.set(this.currentData());
+                AssignmentServiceClient.taskToUserPerformUserFilter();
                 break;
         }
     }
@@ -184,7 +186,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     quartHeureOnClick(event) {
         //TODO gerer le double click pour la desaffectation
 
-        var currentAssignmentType = CurrentAssignmentType.get();
+        var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK://only display task that have at least one time slot matching the selected availability slot
@@ -198,10 +200,10 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 } else if (typeof $target.attr("quarter") !== "undefined") {
                     selectedDate = new moment(new Date($target.attr("quarter")));
                 }
-                SelectedDate.set(selectedDate);
+                AssignmentReactiveVars.SelectedDate.set(selectedDate);
 
 
-                var userId = SelectedUser.get()._id;
+                var userId = AssignmentReactiveVars.SelectedUser.get()._id;
                 var user = Users.findOne({_id: userId});
                 var availability = AvailabilityService.getSurroundingAvailability(user, selectedDate);
 
@@ -209,7 +211,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                     console.error("Template.assignmentCalendar.events.click .heure, .quart_heure", "User can't normally click on this kind of element when in userToTask");
                     return;
                 }
-                SelectedAvailability.set(availability);
+                AssignmentReactiveVars.SelectedAvailability.set(availability);
 
 
                 /*
@@ -294,7 +296,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 //aggregate is not supported by mini mongo
 
 
-                TaskFilter.set(newFilter);
+                AssignmentReactiveVars.TaskFilter.set(newFilter);
                 break;
             case
             AssignmentType.TASKTOUSER:

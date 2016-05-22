@@ -1,15 +1,16 @@
 import {AvailabilityService} from "../../../both/service/AvailabilityService"
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
 Router.route('/assignment/userToTask', function () {
         console.info("routing", '/assignment/userToTask');
 
-        TaskFilter.set(noneFilter);
-        UserIndexFilter.set(noSearchFilter);
+        AssignmentReactiveVars.TaskFilter.set(noneFilter);
+        AssignmentReactiveVars.UserIndexFilter.set(noSearchFilter);
         $("#search_user_name").val("");
-        UserFilter.set(defaultFilter);
-        CurrentAssignmentType.set(AssignmentType.USERTOTASK);
-        SelectedUser.set(null);
-        SelectedDate.set(null);
+        AssignmentReactiveVars.UserFilter.set(defaultFilter);
+        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
+        AssignmentReactiveVars.SelectedUser.set(null);
+        AssignmentReactiveVars.SelectedDate.set(null);
     }, {
         controller: 'AssignmentController',
         name: 'assignment.calendar.userToTask'
@@ -21,7 +22,7 @@ Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
 
         var selectedDate = parseInt(this.params.selectedDate);
         selectedDate = new moment(selectedDate);
-        var userId = SelectedUser.get()._id;
+        var userId = AssignmentReactiveVars.SelectedUser.get()._id;
         var user = Users.findOne({_id: userId});
         var availability = AvailabilityService.getSurroundingAvailability(user, selectedDate);
 
@@ -30,8 +31,8 @@ Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
             return;
         }
 
-        SelectedDate.set(selectedDate);
-        SelectedAvailability.set(availability);
+        AssignmentReactiveVars.SelectedDate.set(selectedDate);
+        AssignmentReactiveVars.SelectedAvailability.set(availability);
 
         /*
          Task whose have at least one timeSlot (to begin, just one) as
@@ -50,7 +51,7 @@ Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
             }
         };
 
-        TaskFilter.set(newFilter);
+        AssignmentReactiveVars.TaskFilter.set(newFilter);
 
     }, {
         controller: 'AssignmentController',
@@ -61,12 +62,12 @@ Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
 Router.route('/assignment/userToTask/:userId', function () {
         console.info("routing", '/assignment/userToTask/' + this.params.userId);
 
-        CurrentAssignmentType.set(AssignmentType.USERTOTASK);
-        SelectedUser.set({_id: this.params.userId});
-        TaskFilter.set(noneFilter);
+        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
+        AssignmentReactiveVars.SelectedUser.set({_id: this.params.userId});
+        AssignmentReactiveVars.TaskFilter.set(noneFilter);
 
-        SelectedAvailability.set(null);
-        UserFilter.set(defaultFilter);
+        AssignmentReactiveVars.SelectedAvailability.set(null);
+        AssignmentReactiveVars.UserFilter.set(defaultFilter);
         //TODO reduire la liste à ses amis
 
     }, {

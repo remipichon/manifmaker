@@ -1,5 +1,6 @@
 import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
 assignmentCalendarIsRendered = false;
 
@@ -33,7 +34,7 @@ AssignmentController = RouteController.extend({
 Router.route('/assignment', function () {
         console.info("routing", '/assignment');
 
-        CurrentAssignmentType.set(AssignmentType.ALL);
+        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.ALL);
     }, {
         controller: 'AssignmentController',
         name: 'assignment.calendar',
@@ -100,7 +101,7 @@ Router.route('/assignment/task/:taskId', function () {
 //    var searchInput = this.params.searchInput;
 //
 //    if (searchInput === "") {
-//        TaskFilter.set(defaultFilter);
+//        AssignmentReactiveVars.TaskFilter.set(defaultFilter);
 //        this.redirect("/assignment");
 //    } else {
 //
@@ -113,7 +114,7 @@ Router.route('/assignment/task/:taskId', function () {
 //        if (this.ready()) {
 //            console.info("task search for", searchInput);
 //
-//            TaskIndexFilter.set(searchInput);
+//            AssignmentReactiveVars.TaskIndexFilter.set(searchInput);
 //        } else {
 //            console.log("waiting task data"); //TODO add a spinner
 //        }
@@ -133,7 +134,7 @@ Router.route('/assignment/task/:taskId', function () {
 //    var searchInput = this.params.searchInput;
 //
 //    if (searchInput === "") {
-//        UserFilter.set(defaultFilter);
+//        AssignmentReactiveVars.UserFilter.set(defaultFilter);
 //        this.redirect("/assignment");
 //    } else {
 //
@@ -145,7 +146,7 @@ Router.route('/assignment/task/:taskId', function () {
 //        if (this.ready()) {
 //            console.info("user search for", searchInput);
 //
-//            UserIndexFilter.set(searchInput);
+//            AssignmentReactiveVars.UserIndexFilter.set(searchInput);
 //        } else {
 //            console.log("waiting user data"); //TODO add a spinner
 //        }

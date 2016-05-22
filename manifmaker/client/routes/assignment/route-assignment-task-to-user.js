@@ -1,16 +1,17 @@
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
 Router.route('/assignment/taskToUser', function () {
         console.info("routing", '/assignment/taskToUser');
 
-        TaskFilter.set(defaultFilter);
-        TaskIndexFilter.set(noSearchFilter);
+        AssignmentReactiveVars.TaskFilter.set(defaultFilter);
+        AssignmentReactiveVars.TaskIndexFilter.set(noSearchFilter);
         $("#search_task_name").val("");
-        UserFilter.set(noneFilter);
-        CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
-        SelectedUser.set(null);
-        SelectedTask.set(null);
-        SelectedDate.set(null);
+        AssignmentReactiveVars.UserFilter.set(noneFilter);
+        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
+        AssignmentReactiveVars.SelectedUser.set(null);
+        AssignmentReactiveVars.SelectedTask.set(null);
+        AssignmentReactiveVars.SelectedDate.set(null);
 
     }, {
         controller: 'AssignmentController',
@@ -21,9 +22,9 @@ Router.route('/assignment/taskToUser', function () {
 Router.route('/assignment/taskToUser/:taskId/:timeSlotId', function () {
         console.info("routing", '/assignment/taskToUser/' + this.params.taskId + '/' + this.params.timeSlotId);
 
-        CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
-        SelectedTask.set({_id: this.params.taskId});
-        SelectedTimeSlot.set({_id: this.params.timeSlotId});
+        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
+        AssignmentReactiveVars.SelectedTask.set({_id: this.params.taskId});
+        AssignmentReactiveVars.SelectedTimeSlot.set({_id: this.params.timeSlotId});
 
         var task = Tasks.findOne({_id: this.params.taskId});
         var timeSlot = TimeSlotService.getTimeSlot(task, this.params.timeSlotId);
@@ -37,7 +38,7 @@ Router.route('/assignment/taskToUser/:taskId/:timeSlotId', function () {
             }
         };
 
-        UserFilter.set(newFilter);
+        AssignmentReactiveVars.UserFilter.set(newFilter);
 
     }, {
         controller: 'AssignmentController',
@@ -48,10 +49,10 @@ Router.route('/assignment/taskToUser/:taskId/:timeSlotId', function () {
 Router.route('/assignment/taskToUser/:taskId', function () {
         console.info("routing", '/assignment/taskToUser/' + this.params.taskId);
 
-        CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
-        SelectedTask.set({_id: this.params.taskId});
-        SelectedTimeSlot.set(null);
-        UserFilter.set(noneFilter);
+        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
+        AssignmentReactiveVars.SelectedTask.set({_id: this.params.taskId});
+        AssignmentReactiveVars.SelectedTimeSlot.set(null);
+        AssignmentReactiveVars.UserFilter.set(noneFilter);
 
 
     }, {
