@@ -1,6 +1,59 @@
 
-Add a reference collection
-===========================
+# Installation
+
+* install meteor itself : https://www.meteor.com/install
+* fetch this repo
+* cd REPO/manifmaker
+* meteor
+
+visit localhost:3000
+
+
+# Contribution
+
+Usual merge request stuff
+
+# Teckos Documentation
+
+## Data test
+When Meteor restart, all data are erased and some are added
+
+### at startup data (populate-data-helper.js)
+
+* role
+* user
+  * admin/admin
+  * hard/hardhard
+  * bureau/bureaubureau
+  * resplog/resplogresplog
+  * respsecu/respsecurespsecu
+  * humain/humainhumain
+  * soft/softsoft
+* customUser
+  * user1
+  * user2
+  * user3
+
+TODO
+
+## JSDoc
+
+TODO
+
+
+file watchers
+
+https://github.com/thomasfl/filewatcher
+
+filewatcher '**/*.js' 'echo buidling docs; meteor-jsdoc build'
+
+## How to use home-made stuff
+
+### CustomSelect
+
+TODO
+
+### Add a reference collection
 
 Add the schema to /both/collection/schema/schema-references.js (to create Schema and Mongo Collection and generatares every needed routes)
 
@@ -80,8 +133,3 @@ You should follow the current populate/clean policy
 
 
 
-file watchers
-======
-https://github.com/thomasfl/filewatcher
-
-filewatcher '**/*.js' 'echo buidling docs; meteor-jsdoc build'
