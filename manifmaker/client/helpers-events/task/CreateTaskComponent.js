@@ -38,7 +38,7 @@ class CreateTaskComponent extends BlazeComponent {
         TempCollection.update({_id: this.tempItemId},
             {
                 $set: {
-                    name: $("[data-key=description]").val()
+                    description: $("[data-key=description]").val()
                 }
             }
         );
