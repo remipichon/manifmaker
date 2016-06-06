@@ -27,8 +27,6 @@ class TaskNameComponent extends BlazeComponent{
     enterKeydown(e){
         if (e.which == 13 && e.shiftKey == false) {
             //Prevent insertion of a return
-            //You could do other things here, for example
-            //focus on the next field
             this.updateName();
             e.preventDefault();
             e.stopPropagation();

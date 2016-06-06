@@ -30,8 +30,8 @@
                     {{#each equipments this}}
                         <div class="col-md-6">
                             <div class="col-md-4">
-                                {{> afQuickField name=autoformNameForQuantity readonly=isEquipmentsReadOnly}}
-                                {{> afQuickField name=autoformNameForEquipmentId}}
+                                {{> afQuickField name=autoformNameForQuantity disabled=isEquipmentsReadOnly}}
+                                {{> afQuickField name=autoformNameForEquipmentId disabled=isEquipmentsReadOnly}}
                             </div>
                             <div class="col-md-8">
                                 {{name}}
