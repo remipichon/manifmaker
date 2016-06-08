@@ -23,7 +23,6 @@ class TaskEquipmentsComponent extends BlazeComponent{
     }
 
     displayItem(item){
-        console.log(this.data());
         if(this.data()[item] === null && this.isEquipmentsReadOnly())
             return "hidden";
         return "";
