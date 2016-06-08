@@ -8,7 +8,7 @@
                 <li class="collection-item" data-toggle="collapse" data-target="#collaspeEquipmentValidation" aria-expanded="false" aria-controls="collapseExample">
                     <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                     {{#if equipmentValidation.comments}}
-                        {{equipmentValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{equipmentValidation.comments.[0].content}}"
+                        {{equipmentValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with {{#if equipmentValidation.comments.[0].content}}"{{equipmentValidation.comments.[0].content}}"{{else}} no comment{{/if}}
                     {{else}}
                         There are not comments right now but with luck there will be yours soon.
                     {{/if}}
@@ -17,7 +17,7 @@
                 <div class="collapse" id="collaspeEquipmentValidation">
                     {{#each equipmentValidation.comments}}
                         {{#unless equals @index 0}}
-                            <li class="collection-item">{{author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
+                            <li class="collection-item">{{author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with {{#if content}}"{{content}}"{{else}}no comment{{/if}}</li>
                         {{/unless}}
                     {{/each}}
                 </div>
@@ -62,7 +62,7 @@
                 <li class="collection-item" data-toggle="collapse" data-target="#collaspeTimeSlotValidation" aria-expanded="false" aria-controls="collapseExample">
                     <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                     {{#if timeSlotValidation.comments}}
-                        {{timeSlotValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState timeSlotValidation.comments.[0].stateBefore}}</b> to <b>{{displayValidationState timeSlotValidation.comments.[0].stateAfter}}</b> on {{displayDateTime timeSlotValidation.comments.[0].creationDate}} with "{{timeSlotValidation.comments.[0].content}}"
+                        {{timeSlotValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState timeSlotValidation.comments.[0].stateBefore}}</b> to <b>{{displayValidationState timeSlotValidation.comments.[0].stateAfter}}</b> on {{displayDateTime timeSlotValidation.comments.[0].creationDate}} with {{#if timeSlotValidation.comments.[0].content}}"{{timeSlotValidation.comments.[0].content}}"{{else}} no comment{{/if}}
                     {{else}}
                         There are not comments right now but with luck there will be yours soon.
                     {{/if}}
@@ -71,7 +71,7 @@
                 <div class="collapse" id="collaspeTimeSlotValidation">
                     {{#each timeSlotValidation.comments}}
                         {{#unless equals @index 0}}
-                            <li class="collection-item">{{author}} update time slot validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with "{{content}}"</li>
+                            <li class="collection-item">{{author}} update time slot validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with {{#if content}}"{{content}}"{{else}}no comment{{/if}}</li>
                         {{/unless}}
                     {{/each}}
                 </div>

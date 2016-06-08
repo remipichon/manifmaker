@@ -14,13 +14,25 @@ class TaskNameComponent extends BlazeComponent{
             {
                 "input .header-limited-to-text": this.displayDoneButton,//TODO more precise selector
                 "click #done-name": this.updateName,//TODO more precise selector
-                "click #edit-name": this.focusName,//TODO more precise selector
+                "click #edit-name": this.focusName,//TODO more precise selector,
+                "keydown #edit-task-name-content": this.enterKeydown
             }
         ];
     }
 
     nameIsEditing() {
         return this.nameIsEditingReactive.get();
+    }
+
+    enterKeydown(e){
+        if (e.which == 13 && e.shiftKey == false) {
+            //Prevent insertion of a return
+            this.updateName();
+            e.preventDefault();
+            e.stopPropagation();
+            this.$("#edit-task-name-content").blur();
+            return false;
+        }
     }
 
     displayDoneButton() {

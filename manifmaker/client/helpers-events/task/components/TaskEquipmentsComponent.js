@@ -22,6 +22,13 @@ class TaskEquipmentsComponent extends BlazeComponent{
         return this.isReadOnly || !this.isEquipmentsUpdateAllowed();
     }
 
+    displayItem(item){
+        if(this.data()[item] === null && this.isEquipmentsReadOnly())
+            return "hidden";
+        return "";
+    }
+
+
     equipmentsCategories() {
         var categories = EquipmentCategories.find().fetch();
 

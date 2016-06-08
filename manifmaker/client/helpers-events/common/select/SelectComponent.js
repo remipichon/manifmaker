@@ -99,7 +99,7 @@ export class SelectComponent extends BlazeComponent {
             this.previousSearchQuery = searchQuery;
 
             var tmpl = Template.instance();
-            if (tmpl.view.isRenderedBoolean) {
+            if (tmpl.view.isRendered) {
 
                 var data = this.optionCollectionIndex.search(searchQuery).fetch();
 

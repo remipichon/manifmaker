@@ -1,23 +1,27 @@
 <template name="taskEquipments">
     <div class="row">
-        <div class="col-md-3">
-            <div>
-                {{> SingleNonMandatorySelectComponent selectLabel="Equipment storage place" title="Equipment storage place"
-                optionCollection="EquipmentStorages" optionValueName="name" optionCollectionIndex="EquipmentStoragesIndex"
-                updateCollection="Tasks" updateItemId=taskData._id updateItemPath="equipmentStorageId"
-                readOnly=isEquipmentsReadOnly
-                }}
+        {{#if displayItem 'equipmentStorageId'}}
+            <div class="col-md-3">
+                <div>
+                    {{> SingleNonMandatorySelectComponent selectLabel="Equipment storage place" title="Equipment storage place"
+                    optionCollection="EquipmentStorages" optionValueName="name" optionCollectionIndex="EquipmentStoragesIndex"
+                    updateCollection="Tasks" updateItemId=taskData._id updateItemPath="equipmentStorageId"
+                    readOnly=isEquipmentsReadOnly
+                    }}
+                </div>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div>
-                {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
-                optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
-                updateCollection="Tasks" updateItemId=taskData._id updateItemPath="powerSupplyId"
-                readOnly=isEquipmentsReadOnly
-                }}
+        {{/if}}
+        {{#if displayItem 'powerSupplyId'}}
+            <div class="col-md-3">
+                <div>
+                    {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
+                    optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
+                    updateCollection="Tasks" updateItemId=taskData._id updateItemPath="powerSupplyId"
+                    readOnly=isEquipmentsReadOnly
+                    }}
+                </div>
             </div>
-        </div>
+        {{/if}}
     </div>
 
     <div class="equipment-wrapper">
@@ -30,8 +34,8 @@
                     {{#each equipments this}}
                         <div class="col-md-6">
                             <div class="col-md-4">
-                                {{> afQuickField name=autoformNameForQuantity readonly=isEquipmentsReadOnly}}
-                                {{> afQuickField name=autoformNameForEquipmentId}}
+                                {{> afQuickField name=autoformNameForQuantity disabled=isEquipmentsReadOnly}}
+                                {{> afQuickField name=autoformNameForEquipmentId disabled=isEquipmentsReadOnly}}
                             </div>
                             <div class="col-md-8">
                                 {{name}}
