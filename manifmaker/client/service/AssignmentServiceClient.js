@@ -1,4 +1,6 @@
 import {AssignmentService} from "../../both/service/AssignmentService"
+import {PeopleNeedService} from "../../both/service/PeopleNeedService"
+import {TimeSlotService} from "../../both/service/TimeSlotService"
 import {AssignmentReactiveVars} from "../../client/helpers-events/assignment/AssignmentReactiveVars"
 
 export class AssignmentServiceClient {
@@ -240,13 +242,13 @@ export class AssignmentServiceClient {
             $('body').popover({html: true, selector: '.creneau[data-popover]', trigger: 'click hover', placement: 'auto', delay: {show: 50, hide: 400}});
 
             $(document).on("click", ".popover .peopleNeed.assigned", function (event) {
-                AssignmentService.readSelectedPeopleNeedAndTimeSlotFromPopover(event, true);
-                this.taskToUserPerformUserFilterRemoveAssignment();
+                AssignmentServiceClient.readSelectedPeopleNeedAndTimeSlotFromPopover(event, true);
+                AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
             });
 
             $(document).on("click", ".popover .peopleNeed:not(.assigned)", function (event) {
-                AssignmentService.readSelectedPeopleNeedAndTimeSlotFromPopover(event, false);
-                this.taskToUserPerformUserFilter();
+                AssignmentServiceClient.readSelectedPeopleNeedAndTimeSlotFromPopover(event, false);
+                AssignmentServiceClient.taskToUserPerformUserFilter();
             });
         }
 
@@ -275,5 +277,60 @@ export class AssignmentServiceClient {
             }
 
         }
+
+
+    /**
+     * @memberOf AssignmentService
+     * @summary Read from popover to perform filter on user list in task to user mode only.
+     * Reactive Var :
+     *  - Set AssignmentReactiveVars.SelectedPeopleNeed
+     *  - Set AssignmentReactiveVars.SelectedTimeSlot
+     * @locus Anywhere
+     * @returns {timeSlot|null}
+     */
+    static readSelectedPeopleNeedAndTimeSlotFromPopover(event, isAssigned) {
+        var target = $(event.target);
+
+        var peopleNeedId;
+        if (target.data('_id')) {
+            peopleNeedId = target.data('_id');
+        } else {
+            peopleNeedId = $(target.parents(".peopleNeed")).data('_id');
+        }
+
+        var task, ret;
+        if(isAssigned){
+            task = Tasks.findOne({
+                timeSlots: {
+                    $elemMatch: {
+                        peopleNeededAssigned: {
+                            $elemMatch: {
+                                _id: peopleNeedId
+                            }
+                        },
+                    }
+                }
+            });
+            ret = PeopleNeedService.getAssignedPeopleNeedByIdAndTask(peopleNeedId, task);
+        } else {
+            task = Tasks.findOne({
+                timeSlots: {
+                    $elemMatch: {
+                        peopleNeeded: {
+                            $elemMatch: {
+                                _id: peopleNeedId
+                            }
+                        },
+                    }
+                }
+            });
+            ret = PeopleNeedService.getPeopleNeedByIdAndTask(peopleNeedId, task);
+        }
+
+        var peopleNeeded = ret.peopleNeed;
+        var timeSlot = TimeSlotService.getTimeSlot(task, ret.timeSlotId);
+        AssignmentReactiveVars.SelectedPeopleNeed.set(peopleNeeded);
+        AssignmentReactiveVars.SelectedTimeSlot.set(timeSlot);
+    }
     }
 
