@@ -149,7 +149,7 @@ export class PeopleNeedService {
             peopleNeed.assignedUserId = userId;
             timeSlotToUpdate.peopleNeededAssigned.push(peopleNeed);
 
-            Tasks.update({_id: task._id},
+            return Tasks.update({_id: task._id},
                 {
                     $set: {
                         ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded, //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
@@ -295,7 +295,7 @@ export class PeopleNeedService {
                     if (task.timeSlotValidation.currentState === ValidationState.READY)
                         return 1;
                     else
-                        return "updateNotAllowed"
+                        return "peopleNeededUpdateNotAllowed"
                 }
             }
 
