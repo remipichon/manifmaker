@@ -47,9 +47,17 @@ export class ServerTaskService {
                 }
             }
 
-            if(_.contains(fieldNames,"assignments"))
-                if(modifier.$set.assignments)
+            if(_.contains(fieldNames,"assignments")) {
+                if (modifier.$push)
+                    if (modifier.$push.assignments)
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+                if (modifier.$set)//TODO a virer
+                    if (modifier.$set.assignments)
+                        SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+                if (modifier.$pull)
+                    if (modifier.$pull.assignments)
+                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+            }
         }
 
         static allowDelete(userId, doc){

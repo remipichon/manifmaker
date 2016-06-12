@@ -79,7 +79,10 @@ export class ServerUserService {
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ROLE, doc, 'user');
 
             if (_.contains(fieldNames, "assignments")) {
-                if (modifier.$set)
+                if (modifier.$pull)
+                    if (modifier.$pull.assignments)
+                        SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+                if (modifier.$set) //TODO a virer
                     if (modifier.$set.assignments)
                         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
                 if (modifier.$push)

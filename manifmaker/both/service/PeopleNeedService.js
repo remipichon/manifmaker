@@ -283,22 +283,9 @@ export class PeopleNeedService {
 
 
         static schemaCustomPeopleNeed(schemaContext){
+            return 1;
 
-            //the trick here is to know whether it's a classic task's timeslots update or an assignment (when peopleNeeded are move to peopleNeededAssigned
-            if (schemaContext.isSet && schemaContext.operator === "$set") {
-                //perhaps it's a $pull that has been done with a $set on whole peopleNeeded array to remove one element
-                var timeSlotIndex = schemaContext.key.split(".")[1];
-                if (schemaContext.field("timeSlots." + timeSlotIndex + ".peopleNeededAssigned").isSet) {
-                    //it's an assignment, peopleNeed has been removed from peopleNeeded and added to peopleNeededAssigned (probably...)
-                    //the task state required to do an assignment is READY
-                    var task = Tasks.findOne(schemaContext.docId);
-                    if (task.timeSlotValidation.currentState === ValidationState.READY)
-                        return 1;
-                    else
-                        return "peopleNeededUpdateNotAllowed"
-                }
-            }
-
+            //TODO a reactiver
             if (schemaContext.isUpdate) {
                 var task = Tasks.findOne(schemaContext.docId);
                 if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState)){
