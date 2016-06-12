@@ -82,3 +82,22 @@ Router.route('/demo-select', function () {
     },
     {name: 'demo-select'}
 );
+
+Router.route('/inject-data', function () {
+        if (Meteor.isDevelopment) {
+            Accounts.logout();
+            $("#result").html("please wait while injecting data, you are now logged out");
+            Meteor.call("injectData",function(error, result){
+                if(error){
+                    $("#result").html(error);
+                } else {
+                    $("#result").html("inject happened without error, please log in");
+                }
+            })
+        } else {
+            console.error("/inject-data is a dev only route")
+        }
+
+    }
+)
+

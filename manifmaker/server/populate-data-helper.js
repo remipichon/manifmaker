@@ -1,3 +1,50 @@
+injectData = function(){
+    console.info("inject data starts")
+    deleteAll();
+    console.info("deleteAll done")
+    initAccessRightData();
+    console.info("initAccessRightData done")
+    populateData();
+
+    console.info("**** Data init success ****");
+    console.info("Here are some infos what have been added");
+    console.info("Accounts Users collection size is "+Meteor.users.find().fetch().length);
+    console.info("Customs Users collection size is "+Users.find().fetch().length);
+    console.info("Tasks collection size is "+Tasks.find().fetch().length);
+    console.info("Assignments collection size is "+ Assignments.find().fetch().length);
+    console.info("Groups collection size is "+Groups.find().fetch().length);
+    console.info("Skills collection size is "+Skills.find().fetch().length);
+    console.info("Teams collection size is "+Teams.find().fetch().length);
+    console.info("Places collection size is "+Places.find().fetch().length);
+    console.info("AssignmentTerms collection size is "+AssignmentTerms.find().fetch().length);
+    console.info("GroupRoles collection size is "+GroupRoles.find().fetch().length);
+}
+
+deleteAll = function() {
+    Meteor.roles.remove({});
+    GroupRoles.remove({});
+    Meteor.users.remove({});
+
+    Users.remove({});
+
+    Assignments.remove({});
+    Tasks.remove({});
+    Places.remove({});
+    Teams.remove({});
+    Groups.remove({});
+    Skills.remove({});
+    Teams.remove({});
+    EquipmentCategories.remove({});
+    Equipments.remove({});
+    WaterSupplies.remove({});
+    WaterDisposals.remove({});
+    PowerSupplies.remove({});
+    EquipmentStorages.remove({});
+
+    AssignmentTerms.remove({});
+
+}
+
 initAccessRightData =  function(){
 
     var assignmentReadyTeam = Teams.insert({name: ASSIGNMENTREADYTEAM});
@@ -378,7 +425,7 @@ populateData = function () {
             ]
         },
         equipmentValidation: {
-            currentState: ValidationState.READY,
+            currentState: ValidationState.OPEN,
             lastUpdateDate:now,
             comments: [
                 {
@@ -394,6 +441,7 @@ populateData = function () {
     updateTaskEquipmentQuantity(task1d, equipment11,11);
     updateTaskEquipmentQuantity(task1d, equipment12,12);
     updateTaskEquipmentQuantity(task1d, equipment21,21);
+    Tasks.update(task1d,{$set:{"equipmentValidation.currentState": ValidationState.READY}})
 
 
     var task2d = Tasks.insert({

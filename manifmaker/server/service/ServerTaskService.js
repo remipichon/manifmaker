@@ -24,7 +24,8 @@ export class ServerTaskService {
             }
 
             if(_.contains(fieldNames,"equipmentValidation"))
-                if(modifier.$set.equipmentValidation.currentState === ValidationState.TOBEVALIDATED)
+                if (( modifier.$set.equipmentValidation && modifier.$set.equipmentValidation.currentState === ValidationState.TOBEVALIDATED ||
+                    modifier.$set["equipmentValidation.currentState"] === ValidationState.TOBEVALIDATED))
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.TASKWRITE, doc, 'task');
                 else
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.EQUIPMENTVALIDATION, doc, 'task');
