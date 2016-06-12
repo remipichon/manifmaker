@@ -78,22 +78,19 @@ Meteor.methods({
             throw new Meteor.Error(500, `User ${user.name} with skills ${skillsToString} can't be assigned to peopleNeed userId ${peopleNeed.userId} teamId ${peopleNeed.teamId} skills ${peopleNeed.skills.toString()}`);
         }
 
+        var assignmentId = Assignments.insert({
+            userId: userId,
+            taskId: task._id,
+            timeSlotId: timeSlot._id,
+            peopleNeedId: peopleNeed._id
+        });
 
-        if(PeopleNeedService.assignedPeopleNeeded(task, timeSlot, peopleNeed, userId) === 1) {
 
-            var assignmentId = Assignments.insert({
-                userId: userId,
-                taskId: task._id,
-                timeSlotId: timeSlot._id,
-                peopleNeedId: peopleNeed._id
-            });
+        AvailabilityService.removeAvailabilities(user, timeSlot.start, timeSlot.end);
+        PeopleNeedService.assignedPeopleNeeded(task, timeSlot, peopleNeed, userId);
 
-            AvailabilityService.removeAvailabilities(user, timeSlot.start, timeSlot.end);
 
-            return assignmentId;
-        }
-
-        return null;
+        return assignmentId;
     }
 });
 

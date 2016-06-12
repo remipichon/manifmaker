@@ -78,9 +78,14 @@ export class ServerUserService {
                 if(modifier.$set.groupRoles)
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ROLE, doc, 'user');
 
-            if(_.contains(fieldNames,"assignments"))
-                if(modifier.$set.assignments)
-                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+            if (_.contains(fieldNames, "assignments")) {
+                if (modifier.$set)
+                    if (modifier.$set.assignments)
+                        SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+                if (modifier.$push)
+                    if (modifier.$push.assignments)
+                        SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+            }
 
         }
 

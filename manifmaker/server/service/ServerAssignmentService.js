@@ -21,23 +21,25 @@ export class ServerAssignmentService {
 
             var timeSlot = TimeSlotService.getTimeSlot(task, assignment.timeSlotId);
 
-            updateUser.assignments = user.assignments;
-            updateUser.assignments.push({
+            var userAssignment = {
                 taskName: task.name,
                 start: timeSlot.start,
                 end: timeSlot.end,
                 assignmentId: assignment._id
+            };
+            Users.update(assignment.userId, {
+                $push: {assignments: userAssignment}
             });
-            Users.update(assignment.userId, {$set: updateUser});
 
-            updateTask.assignments = task.assignments;
-            updateTask.assignments.push({
+            var taskAssignment = {
                 userName: user.name,
                 start: timeSlot.start,
                 end: timeSlot.end,
                 assignmentId: assignment._id
+            };
+            Tasks.update(assignment.taskId, {
+                $push: {assignments : taskAssignment}
             });
-            Tasks.update(assignment.taskId, {$set: updateTask});
         }
 
 
@@ -56,6 +58,7 @@ export class ServerAssignmentService {
                 user = Users.findOne(assignment.userId),//Meteor.users.findOne(review.userId),
                 task = Tasks.findOne(assignment.taskId);
 
+            //TODO use $pull
             updateUser.assignments = user.assignments;
             updateUser.assignments.pop(
                 user.assignments.indexOf(
