@@ -9,9 +9,23 @@
 visit localhost:3000
 
 
+# Staging 
+
+Coming soon : whenever a merge request is made against branch "deploy", a Docker somewhere runs automatic tests and gives feedback to allow or not the MR
+
+# Deploy
+
+Each pull on branch "deploy" trigger a git pull on a machine where Meteor is run in dev mode (auto-restart if server code changes, auto refresh is client code changes)
+
+assomaker.leomartinez.fr 
+
+(ask Rémi Pichon or Léo Martinez to gain access on the machine, you will need a private key) 
+
 # Contribution
 
 Usual merge request stuff
+
+Coming soon : branch "deploy" is locked, only MR can push to it
 
 # Teckos Documentation
 
@@ -46,6 +60,58 @@ file watchers
 https://github.com/thomasfl/filewatcher
 
 filewatcher '**/*.js' 'echo buidling docs; meteor-jsdoc build'
+
+
+## Security
+
+Access Right verification : 
+
+* client side : routes
+* server side : in collection allow/deny (insert/update/delete)
+
+## Data integrity
+
+Data validation is done inside the schemas (both/collection/model). Simple Schema provides common validations like date, string, int. Other 
+validation can be done in custom methods with custom code to validate dates overlapping, fields updates according to validation state...
+
+**If a single operation/action needs several atomic database update, all validation has to be done explicitly BEFORE updating the data.** 
+If the validation is done one times (in the operation/action), no need to put it in the schema, just do it along with the action/operation. If not and you have to put
+the validation in the schema and use pre validation from Simple Schema BEFORE updating any data. This way you ensure that the data updates will not fail. 
+
+That is because of one thing : Meteor+MongoDB is not transactional. Indeed, if one of the database update fails because of a custom control that throws an error, the previous database updates will not be reverted and the following could occurs if you 
+don't use a callback or manage the update return by yourself. 
+
+Lets take two example : update an assignment term and perform an assignment : 
+
+* an assignment term name has to be unique, the assignment start/end dates can not overlap with any other assignment term. When inserting/updating, the system has to assert all this.  
+* a assignment has to verify several things :
+  * the user is actually free during the time slot target time
+  * the task time slot people need specs can be satisfied by the target user
+  * the task is ready for assignment
+  
+
+Updating a assignment term uses ONE atomic database. An update on AssignmentTerms collection. The controls can be performed on the related schema without any side effects. If the 
+requirements are not satisfied, the update will just fail and the error can be displayed to the user. 
+
+Performing an assignment used THREE atomic database update (actually SIX but let's simplify the example) : 
+* creating an assignment in Assignments collection
+* updating user's availabilities
+* updating task's time slot's people needed 
+If one of the three update fails because of one the custom control in the schema, let's say the task was not ready for assignment. The two others DB updates will work (creating an
+Assignment and update user's availabilities) resulting in not complete assignment : user will be assigned to the task but the task will not know that the user is assigned to her. 
+
+(Let's cut it short : it could have been prevented by another data design where the assignment information is only store in one place (Assignments) instead of having the data copied in 
+the Task and the User.)
+
+From here, two philosophies to take into account whether you agree or not to : 
+> "it's easier to ask forgiveness than it is to get permission"  which can be explained by "try to do it and if it fails, repair it"
+
+When assigning, either you firstly check everything (user is available, task is ready, people need specs matches the user) and if it's ok, you perform the assignment or you perform the assignment and revert it if something failed. 
+When choosing what to do you have to keep in mind that Meteor is real time, if you update something on the DB, it will be broadcasted to everyone subscribed. If you update something
+and revert it right away, you will unefficiently use DDP, the clients will compute the data and probably display something for a short amount of time before the sytem reverts the changes.
+It can lead the GUI to flickr. That is why it is probably better **to check everything BEFORE** database operations **if you need more than one database update** to perform one operation/action).
+
+
 
 ## How to use home-made stuff
 
