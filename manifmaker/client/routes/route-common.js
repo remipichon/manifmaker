@@ -97,7 +97,63 @@ Router.route('/inject-data', function () {
         } else {
             console.error("/inject-data is a dev only route")
         }
-
-    }
+    },
+    {name: 'inject-data'}
 )
+
+Router.route('/delete-all', function () {
+        if (Meteor.isDevelopment) {
+            Accounts.logout();
+            $("#result").html("please wait while deleting data, you are now logged out");
+            Meteor.call("deleteAll",function(error, result){
+                if(error){
+                    $("#result").html(error);
+                } else {
+                    $("#result").html("deleteAll happened without error, you should use /init-access-right-data to be able to log in");
+                }
+            })
+        } else {
+            console.error("/delete-all is a dev only route")
+        }
+    },
+    {name: 'delete-all'}
+)
+
+
+Router.route('/init-access-right-data', function () {
+        if (Meteor.isDevelopment) {
+            Accounts.logout();
+            $("#result").html("please wait while injecting data, you are now logged out");
+            Meteor.call("initAccessRightData",function(error, result){
+                if(error){
+                    $("#result").html(error);
+                } else {
+                    $("#result").html("initAccessRightData happened without error, please log in");
+                }
+            })
+        } else {
+            console.error("/init-access-right-dat is a dev only route")
+        }
+    },
+    {name: 'init-access-right-data'}
+)
+
+Router.route('/populate-data', function () {
+        if (Meteor.isnject-dataDevelopment) {
+            Accounts.logout();
+            $("#result").html("please wait while injecting data, you are now logged out");
+            Meteor.call("populateData",function(error, result){
+                if(error){
+                    $("#result").html(error);
+                } else {
+                    $("#result").html("populateData happened without error, please log in");
+                }
+            })
+        } else {
+            console.error("/populate-data is a dev only route")
+        }
+    },
+    {name: 'populate-data'}
+)
+
 
