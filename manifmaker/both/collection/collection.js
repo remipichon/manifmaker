@@ -1,5 +1,6 @@
 import {Schemas} from './model/SchemasHelpers'
 
+
 /**
  * @memberOf Models
  * @summary Users collection
@@ -7,6 +8,7 @@ import {Schemas} from './model/SchemasHelpers'
  * @instancename collection
  */
 Users = new Mongo.Collection("users_custom");
+UsersCustom = Users;
 
 /**
  * @memberOf Models

@@ -37,3 +37,6 @@ accounts-ui
 peerlibrary:blaze-components
 tsega:bootstrap3-datetimepicker
 modules
+practicalmeteor:mocha
+practicalmeteor:chai
+xolvio:cleaner

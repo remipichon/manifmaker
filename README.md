@@ -188,5 +188,16 @@ You should follow the current populate/clean policy
 
 
 
+# Test
+
+## Simple test
+To test service/helpers with a mocked BDD
+
+meteor test --driver-package practicalmeteor:mocha --port 3101
+
+## Full app
+If BDD is required,use this mode or help yourself with including everything needed to test the model/collection you need.
+
+meteor test --full-app  --driver-package practicalmeteor:mocha --port 3102
 
 

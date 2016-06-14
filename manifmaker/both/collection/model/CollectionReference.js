@@ -1,5 +1,7 @@
 import {Schemas} from './SchemasHelpers'
 
+import "/both/collection/model/enum/EquipementTargetUsage.js"
+
 /**
  * @memberOf Route
  * @summary References collections URL
