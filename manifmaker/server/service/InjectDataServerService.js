@@ -1,6 +1,6 @@
 export class InjectDataServerService {
 
-    static injectAllData (){
+    static injectAllData() {
         console.info("inject data starts")
         this.deleteAll();
         console.info("deleteAll done")
@@ -10,16 +10,16 @@ export class InjectDataServerService {
 
         console.info("**** Data init success ****");
         console.info("Here are some infos what have been added");
-        console.info("Accounts Users collection size is "+Meteor.users.find().fetch().length);
-        console.info("Customs Users collection size is "+Users.find().fetch().length);
-        console.info("Tasks collection size is "+Tasks.find().fetch().length);
-        console.info("Assignments collection size is "+ Assignments.find().fetch().length);
-        console.info("Groups collection size is "+Groups.find().fetch().length);
-        console.info("Skills collection size is "+Skills.find().fetch().length);
-        console.info("Teams collection size is "+Teams.find().fetch().length);
-        console.info("Places collection size is "+Places.find().fetch().length);
-        console.info("AssignmentTerms collection size is "+AssignmentTerms.find().fetch().length);
-        console.info("GroupRoles collection size is "+GroupRoles.find().fetch().length);
+        console.info("Accounts Users collection size is " + Meteor.users.find().fetch().length);
+        console.info("Customs Users collection size is " + Users.find().fetch().length);
+        console.info("Tasks collection size is " + Tasks.find().fetch().length);
+        console.info("Assignments collection size is " + Assignments.find().fetch().length);
+        console.info("Groups collection size is " + Groups.find().fetch().length);
+        console.info("Skills collection size is " + Skills.find().fetch().length);
+        console.info("Teams collection size is " + Teams.find().fetch().length);
+        console.info("Places collection size is " + Places.find().fetch().length);
+        console.info("AssignmentTerms collection size is " + AssignmentTerms.find().fetch().length);
+        console.info("GroupRoles collection size is " + GroupRoles.find().fetch().length);
     }
 
     static deleteAll() {
@@ -47,7 +47,7 @@ export class InjectDataServerService {
 
     }
 
-    static injectRoles() {
+    static _injectRoles() {
         var adminRoles = [];
         _.each(RolesEnum, function (role) {
             Roles.createRole(role);
@@ -56,7 +56,7 @@ export class InjectDataServerService {
         return adminRoles;
     }
 
-    static injectGroupRoles(adminRoles) {
+    static _injectGroupRoles(adminRoles) {
         var admin = GroupRoles.insert({
             name: "admin",
             roles: adminRoles
@@ -112,15 +112,17 @@ export class InjectDataServerService {
         };
     }
 
-    static initAccessRightData (){
+    static initAccessRightData() {
 
         var assignmentReadyTeam = Teams.insert({name: ASSIGNMENTREADYTEAM});
 
         //create roles
-        var adminRoles = this.injectRoles();
+        console.info("inject Roles");
+        var adminRoles = this._injectRoles();
 
         //create groups and add roles to groups
-        var groupRoles =  this.injectGroupRoles(adminRoles);
+        console.info("inject GroupRoles");
+        var groupRoles = this._injectGroupRoles(adminRoles);
 
         var admin = groupRoles.admin;
         var bureau = groupRoles.bureau;
@@ -130,6 +132,7 @@ export class InjectDataServerService {
         var respSecu = groupRoles.respSecu;
         var humain = groupRoles.humain;
 
+        console.info("inject log in account (admin/admin and others)");
         this.createAccountAndUser("admin", "admin@yopmail.com", "admin", admin);
         this.createAccountAndUser("hard", "hard@yopmail.com", "hard", hard);
         this.createAccountAndUser("bureau", "bureau@yopmail.com", "bureau", bureau);
@@ -138,57 +141,130 @@ export class InjectDataServerService {
         this.createAccountAndUser("humain", "humain@yopmail.com", "humain", humain);
         this.createAccountAndUser("soft", "soft@yopmail.com", "soft", soft);
 
-
     }
 
-    static populateData () {
+    static populateData() {
 
         //teams
+        console.info("inject Teams");
         var team1Id = Teams.insert({name: "team1"});
         var team2Id = Teams.insert({name: "team2"});
         var team3Id = Teams.insert({name: "team3"});
 
 
         //places
+        console.info("inject Places");
         var place1Id = Places.insert({name: "place1"});
         var place2Id = Places.insert({name: "place2"});
         var place3Id = Places.insert({name: "place3"});
 
 
         //equipment categories
+        console.info("inject EquipmentCategories");
         var equipmentCategory1 = EquipmentCategories.insert({name: "category1"});
         var equipmentCategory2 = EquipmentCategories.insert({name: "category2"});
         var equipmentCategory3 = EquipmentCategories.insert({name: "category3"});
 
         //equipment
-        var equipment11 = Equipments.insert({name: "equipment11", quantity: 10, targetUsage: EquipementTargetUsage.ACTIVITY, EquipmentCategories_Id: equipmentCategory1});
-        var equipment12 = Equipments.insert({name: "equipment12", quantity: 10, targetUsage: EquipementTargetUsage.TASK, EquipmentCategories_Id: equipmentCategory1});
-        var equipment13 = Equipments.insert({name: "equipment13", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory1});
+        console.info("inject Equipments");
+        var equipment11 = Equipments.insert({
+            name: "equipment11",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.ACTIVITY,
+            EquipmentCategories_Id: equipmentCategory1
+        });
+        var equipment12 = Equipments.insert({
+            name: "equipment12",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.TASK,
+            EquipmentCategories_Id: equipmentCategory1
+        });
+        var equipment13 = Equipments.insert({
+            name: "equipment13",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory1
+        });
+        var equipment21 = Equipments.insert({
+            name: "equipment21",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.ACTIVITY,
+            EquipmentCategories_Id: equipmentCategory2
+        });
+        var equipment22 = Equipments.insert({
+            name: "equipment22",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.TASK,
+            EquipmentCategories_Id: equipmentCategory2
+        });
+        var equipment23 = Equipments.insert({
+            name: "equipment23",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory2
+        });
+        var equipment24 = Equipments.insert({
+            name: "equipment24",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory2
+        });
+        var equipment25 = Equipments.insert({
+            name: "equipment25",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory2
+        });
+        var equipment26 = Equipments.insert({
+            name: "equipment26",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory2
+        });
 
-        var equipment21 = Equipments.insert({name: "equipment21", quantity: 10, targetUsage: EquipementTargetUsage.ACTIVITY, EquipmentCategories_Id: equipmentCategory2});
-        var equipment22 = Equipments.insert({name: "equipment22", quantity: 10, targetUsage: EquipementTargetUsage.TASK, EquipmentCategories_Id: equipmentCategory2});
-        var equipment23 = Equipments.insert({name: "equipment23", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
-        var equipment24 = Equipments.insert({name: "equipment24", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
-        var equipment25 = Equipments.insert({name: "equipment25", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
-        var equipment26 = Equipments.insert({name: "equipment26", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory2});
-
-        var equipment31 = Equipments.insert({name: "equipment31", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
-        var equipment32 = Equipments.insert({name: "equipment32", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
-        var equipment33 = Equipments.insert({name: "equipment33", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
-        var equipment34 = Equipments.insert({name: "equipment34", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
-        var equipment35 = Equipments.insert({name: "equipment35", quantity: 10, targetUsage: EquipementTargetUsage.BOTH, EquipmentCategories_Id: equipmentCategory3});
-
+        var equipment31 = Equipments.insert({
+            name: "equipment31",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory3
+        });
+        var equipment32 = Equipments.insert({
+            name: "equipment32",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory3
+        });
+        var equipment33 = Equipments.insert({
+            name: "equipment33",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory3
+        });
+        var equipment34 = Equipments.insert({
+            name: "equipment34",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory3
+        });
+        var equipment35 = Equipments.insert({
+            name: "equipment35",
+            quantity: 10,
+            targetUsage: EquipementTargetUsage.BOTH,
+            EquipmentCategories_Id: equipmentCategory3
+        });
 
         //storage
+        console.info("inject EquipmentStorages");
         var equipmentStorage1 = EquipmentStorages.insert({name: "equipmentStorage1"});
         var equipmentStorage2 = EquipmentStorages.insert({name: "equipmentStorage2"});
 
         //power supply
+        console.info("inject PowerSupplies");
         var powerSupply1 = PowerSupplies.insert({name: "powerSupply1"});
         var powerSupply2 = PowerSupplies.insert({name: "powerSupply2"});
 
-
         //skills
+        console.info("inject Skills");
         var skill1Id = Skills.insert({
             key: "RESP_TASK_1",
             label: "Responsable tache 1"
@@ -206,90 +282,72 @@ export class InjectDataServerService {
             label: "Responsable tache 4"
         });
 
-
-
-
         //users
-        Accounts.createUser({
-            username: "user1",
-            email: "user1@yopmail.com",
-            password: "user1"
+        console.info("inject Users");
+        var softGroupRoleId = GroupRoles.findOne({name: "soft"})._id;
+        var user1Id = this.createAccountAndUser("user1", "user1@yopmail.com", "user1", softGroupRoleId);
+        var user2Id = this.createAccountAndUser("user2", "user2@yopmail.com", "user2", softGroupRoleId);
+        var user3Id = this.createAccountAndUser("user3", "user3@yopmail.com", "user3", softGroupRoleId);
+        var user4Id = this.createAccountAndUser("user4", "user4@yopmail.com", "user4", softGroupRoleId);
+        Users.update(user1Id, {
+            $set: {
+                teams: [team1Id],
+                skills: [skill1Id],
+                availabilities: [
+                    {
+                        start: this._getDateFromTime(2),
+                        end: this._getDateFromTime(14)
+                    }
+                ]
+            }
         });
-        var user1Id = Users.insert({
-            name: "user1",
-            loginUserId: Meteor.users.findOne({username:"user1"})._id,
-            teams: [team1Id],
-            skills: [skill1Id],
-            availabilities: [
-                {
-                    start: this._getDateFromTime(2),
-                    end: this._getDateFromTime(14)
-                }
-            ]
+        Users.update(user2Id, {
+            $set: {
+                teams: [team2Id, team3Id],
+                skills: [skill2Id],
+                availabilities: [
+                    {
+                        start: this._getDateFromTime(2),
+                        end: this._getDateFromTime(16)
+                    }
+                ]
+            }
         });
-        Accounts.createUser({
-            username: "user2",
-            email: "user2@yopmail.com",
-            password: "user2"
+        Users.update(user3Id, {
+            $set: {
+                //teams: [team3Id],
+                skills: [skill2Id, skill3Id],
+                availabilities: [
+                    {
+                        start: this._getDateFromTime(10),
+                        end: this._getDateFromTime(14)
+                    },
+                    {
+                        start: this._getDateFromTime(14),
+                        end: this._getDateFromTime(18)
+                    }
+                ]
+            }
         });
-        var user2Id = Users.insert({
-            name: "user2",
-            loginUserId: Meteor.users.findOne({username:"user1"})._id,
-            teams: [team2Id,team3Id],
-            skills: [skill2Id],
-            availabilities: [
-                {
-                    start: this._getDateFromTime(2),
-                    end: this._getDateFromTime(16)
-                }
-            ]
+        Users.update(user4Id, {
+            $set: {
+                //teams: [team3Id],
+                skills: [skill2Id, skill3Id, skill1Id, skill4Id],
+                availabilities: [
+                    {
+                        start: this._getDateFromTime(10),
+                        end: this._getDateFromTime(14)
+                    },
+                    {
+                        start: this._getDateFromTime(14),
+                        end: this._getDateFromTime(18)
+                    }
+                ]
+            }
         });
-        Accounts.createUser({
-            username: "user3",
-            email: "user3@yopmail.com",
-            password: "user3"
-        });
-        var user3Id = Users.insert({
-            name: "user3",
-            loginUserId: Meteor.users.findOne({username:"user1"})._id,
-            //teams: [team3Id],
-            skills: [skill2Id,skill3Id],
-            availabilities: [
-                {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(14)
-                },
-                {
-                    start: this._getDateFromTime(14),
-                    end: this._getDateFromTime(18)
-                }
-            ]
-        });
-        Accounts.createUser({
-            username: "user4",
-            email: "user4@yopmail.com",
-            password: "user4"
-        });
-        var user4Id = Users.insert({
-            name: "user4",
-            loginUserId: Meteor.users.findOne({username:"user1"})._id,
-            //teams: [team3Id],
-            skills: [skill2Id,skill3Id,skill1Id,skill4Id],
-            availabilities: [
-                {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(14)
-                },
-                {
-                    start: this._getDateFromTime(14),
-                    end: this._getDateFromTime(18)
-                }
-            ]
-        });
-
-
 
         //assignmentCalendarDay
+        console.info("inject AssignmentTerms");
         AssignmentTerms.insert({
             name: "Terms 1",
             start: this._getDateFromDate(13, 5 - 1),
@@ -306,10 +364,9 @@ export class InjectDataServerService {
             end: this._getDateFromDate(27, 5 - 1)
         });
 
-
-
+        console.info("inject Tasks");
         var now = new Date();
-        var aDayAgo = new moment().add("days",-1).toDate();
+        var aDayAgo = new moment().add("days", -1).toDate();
         //tasks
         var task1d = Tasks.insert({
             name: "task 1",
@@ -317,11 +374,11 @@ export class InjectDataServerService {
             placeId: place1Id,
             liveEventMasterId: user1Id,
             masterId: user1Id,
-            timeSlots : [
+            timeSlots: [
                 {
                     start: this._getDateFromTime(2),
                     end: this._getDateFromTime(4),
-                    peopleNeeded : [
+                    peopleNeeded: [
                         {
                             teamId: team1Id
                         }
@@ -330,7 +387,7 @@ export class InjectDataServerService {
                 {
                     start: this._getDateFromTime(10),
                     end: this._getDateFromTime(14),
-                    peopleNeeded : [
+                    peopleNeeded: [
                         {
                             userId: user2Id
                         },
@@ -356,20 +413,20 @@ export class InjectDataServerService {
                             skills: [skill1Id]
                         },
                         {
-                            skills: [skill1Id,skill2Id]
+                            skills: [skill1Id, skill2Id]
                         },
                         {
-                            skills: [skill1Id,skill2Id]
+                            skills: [skill1Id, skill2Id]
                         },
                         {
-                            skills: [skill1Id,skill2Id]
+                            skills: [skill1Id, skill2Id]
                         }
                     ],
                 }
             ],
             timeSlotValidation: {
                 currentState: ValidationState.READY,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: [
                     {
                         author: "Gerard",
@@ -382,7 +439,7 @@ export class InjectDataServerService {
             },
             accessPassValidation: {
                 currentState: ValidationState.READY,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: [
                     {
                         author: "Gerard",
@@ -395,7 +452,7 @@ export class InjectDataServerService {
             },
             equipmentValidation: {
                 currentState: ValidationState.OPEN,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: [
                     {
                         author: "Gerard",
@@ -407,11 +464,10 @@ export class InjectDataServerService {
                 ]
             },
         });
-        this._updateTaskEquipmentQuantity(task1d, equipment11,11);
-        this._updateTaskEquipmentQuantity(task1d, equipment12,12);
-        this._updateTaskEquipmentQuantity(task1d, equipment21,21);
-        Tasks.update(task1d,{$set:{"equipmentValidation.currentState": ValidationState.READY}})
-
+        this._updateTaskEquipmentQuantity(task1d, equipment11, 11);
+        this._updateTaskEquipmentQuantity(task1d, equipment12, 12);
+        this._updateTaskEquipmentQuantity(task1d, equipment21, 21);
+        Tasks.update(task1d, {$set: {"equipmentValidation.currentState": ValidationState.READY}})
 
         var task2d = Tasks.insert({
             name: "task 2",
@@ -419,11 +475,11 @@ export class InjectDataServerService {
             placeId: place2Id,
             liveEventMasterId: user2Id,
             masterId: user2Id,
-            timeSlots : [
+            timeSlots: [
                 {
                     start: this._getDateFromTime(10),
                     end: this._getDateFromTime(12),
-                    peopleNeeded : [
+                    peopleNeeded: [
                         {
                             teamId: team2Id,
                             skills: [skill2Id]
@@ -433,7 +489,7 @@ export class InjectDataServerService {
             ],
             timeSlotValidation: {
                 currentState: ValidationState.REFUSED,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: [
                     {
                         author: "Gerard",
@@ -446,7 +502,7 @@ export class InjectDataServerService {
             },
             accessPassValidation: {
                 currentState: ValidationState.REFUSED,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: [
                     {
                         author: "Gerard",
@@ -459,7 +515,7 @@ export class InjectDataServerService {
             },
             equipmentValidation: {
                 currentState: ValidationState.REFUSED,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: [
                     {
                         author: "Gerard",
@@ -477,11 +533,11 @@ export class InjectDataServerService {
             placeId: place2Id,
             liveEventMasterId: user2Id,
             masterId: user2Id,
-            timeSlots : [
+            timeSlots: [
                 {
                     start: this._getDateFromTime(10),
                     end: this._getDateFromTime(12),
-                    peopleNeeded : [
+                    peopleNeeded: [
                         {
                             teamId: team1Id,
                             skills: [skill1Id]
@@ -491,7 +547,7 @@ export class InjectDataServerService {
             ],
             timeSlotValidation: {
                 currentState: ValidationState.TOBEVALIDATED,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: [
                     {
                         author: "Gerard",
@@ -504,7 +560,7 @@ export class InjectDataServerService {
             },
             accessPassValidation: {
                 currentState: ValidationState.TOBEVALIDATED,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: [
                     {
                         author: "Gerard",
@@ -517,7 +573,7 @@ export class InjectDataServerService {
             },
             equipmentValidation: {
                 currentState: ValidationState.TOBEVALIDATED,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: [
                     {
                         author: "Gerard",
@@ -535,11 +591,11 @@ export class InjectDataServerService {
             placeId: place2Id,
             liveEventMasterId: user2Id,
             masterId: user2Id,
-            timeSlots : [
+            timeSlots: [
                 {
                     start: this._getDateFromTime(10),
                     end: this._getDateFromTime(12),
-                    peopleNeeded : [
+                    peopleNeeded: [
                         {
                             teamId: team1Id,
                             skills: [skill1Id]
@@ -549,26 +605,24 @@ export class InjectDataServerService {
             ],
             timeSlotValidation: {
                 currentState: ValidationState.OPEN,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: []
             },
             accessPassValidation: {
                 currentState: ValidationState.OPEN,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: []
             },
             equipmentValidation: {
                 currentState: ValidationState.OPEN,
-                lastUpdateDate:now,
+                lastUpdateDate: now,
                 comments: []
             }
 
         });
-
-
     };
 
-    static createAccountAndUser(username, email, password, groupRole) {
+    static createAccountAndUser(username, email, password, groupRoleId) {
         Accounts.createUser({
             username: username,
             email: email,
@@ -579,10 +633,12 @@ export class InjectDataServerService {
             loginUserId: Meteor.users.findOne({username: username})._id
         });
 
-        this.setGroupRolesToUsers(_id, groupRole)
+        this._setGroupRolesToUsers(_id, groupRoleId);
+
+        return _id;
     }
 
-    static setGroupRolesToUsers(userId, groupId) {
+    static _setGroupRolesToUsers(userId, groupId) {
         Users.update(userId, {
             $set: {
                 groupRoles: [groupId]
@@ -590,26 +646,26 @@ export class InjectDataServerService {
         });
     }
 
-    static _insertAndFetch (Collection, data) {
+    static _insertAndFetch(Collection, data) {
         var _id = Collection.insert(data);
         return Collection.findOne({_id: _id});
     }
 
-    static _getDateFromTime (hours, minutes = 0) {
+    static _getDateFromTime(hours, minutes = 0) {
         var now = new Date();
         return new Date(now.getYear(), 5 - 1 /*now.getMonth()*/, 13 /*now.getDate()*/, hours, minutes, 0);
     }
 
-    static _getDateFromDate (day, month, year) {
+    static _getDateFromDate(day, month, year) {
         var now = new Date();
         year = year || now.getYear();
         month = month || now.getMonth();
         return new Date(year, month, day, 0, 0, 0);
     }
 
-    static _updateTaskEquipmentQuantity (taskId, equipmentId, quantity){
-        Tasks.update({_id: taskId, "equipments.equipmentId":equipmentId },{
-            $set : {
+    static _updateTaskEquipmentQuantity(taskId, equipmentId, quantity) {
+        Tasks.update({_id: taskId, "equipments.equipmentId": equipmentId}, {
+            $set: {
                 "equipments.$.quantity": quantity
             }
         });

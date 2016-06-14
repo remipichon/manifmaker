@@ -139,7 +139,7 @@ Router.route('/init-access-right-data', function () {
 )
 
 Router.route('/populate-data', function () {
-        if (Meteor.isnject-dataDevelopment) {
+        if (Meteor.isDevelopment) {
             Accounts.logout();
             $("#result").html("please wait while injecting data, you are now logged out");
             Meteor.call("populateData",function(error, result){

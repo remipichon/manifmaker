@@ -5,8 +5,8 @@
 * fetch this repo
 * cd REPO/manifmaker
 * meteor
-
-visit localhost:3000
+* visit localhost:3000
+* click on "inject data" or visit localhost:3000/inject-data
 
 
 # Staging 
@@ -32,23 +32,14 @@ Coming soon : branch "deploy" is locked, only MR can push to it
 ## Data test
 When Meteor restart, all data are erased and some are added
 
-### at startup data (populate-data-helper.js)
-
-* role
-* user
+* role : \both\collection\model\enum\RolesEnum.js
+* groupRole : see InjectDataServerService._injectGroupRoles
+* user : see InjectDataServerService.initAccessRightData
   * admin/admin
-  * hard/hardhard
-  * bureau/bureaubureau
-  * resplog/resplogresplog
-  * respsecu/respsecurespsecu
-  * humain/humainhumain
-  * soft/softsoft
-* customUser
-  * user1
-  * user2
-  * user3
+  * hard/hard
+  * user1/user1
 
-TODO
++ some conf + some tasks
 
 ## JSDoc
 
