@@ -8,7 +8,7 @@ Meteor.startup(function () {
     // code to run on server at startup
 
     //propagate assignment update
-    //  Assignments.before.insert( /*if we need to add user and task data to assignments*/);
+    //Assignments.before.insert( /*if we need to add user and task data to assignments*/);
     Assignments.after.insert(ServerAssignmentService.propagateAssignment);
     Assignments.before.update(ServerAssignmentService.preventUpdate);
     Assignments.after.remove(ServerAssignmentService.removeAssignment);
@@ -38,8 +38,6 @@ Meteor.startup(function () {
         ReferenceCollection.before.update(ServerReferenceCollectionsService.allowUpdate);
         ReferenceCollection.before.remove(ServerReferenceCollectionsService.allowDelete);
     });
-
-    injectData();
 
 
 });
