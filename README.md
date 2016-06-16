@@ -3,34 +3,51 @@
 
 * install meteor itself : https://www.meteor.com/install
 * fetch this repo
-* cd REPO/manifmaker
-* meteor
-* visit localhost:3000
-* click on "inject data" or visit localhost:3000/inject-data
+```bash
+git clone https://github.com/assomaker/manifmaker.git
+```
+* go into the folder with a .meteor directory in it (this is the app)
+```bash
+cd PATH_TO_REPO/manifmaker
+```
+* launch the framework who will first download all the dependencies (once for all), run MongoDB and run the app itself
+```bash
+meteor
+```
+* once Meteor started, you can visit the app : localhost:3000
+* click on "inject data" on the main page or visit localhost:3000/inject-data
 
+> Windows User : you need to install[Git](https://git-scm.com/)if you don't already have it
+
+> Windows User : if Meteor is not a known command, add meteor to your path. Meteor binary can be found here C:\Users\YOU\AppData\Local\.meteor
+>
+>[Edit Windows path](http://www.computerhope.com/issues/ch000549.htm)
 
 # Staging 
 
-Coming soon : whenever a merge request is made against branch "deploy", a Docker somewhere runs automatic tests and gives feedback to allow or not the MR
+Coming soon : whenever a merge request is made against branch deploy, a Docker somewhere runs automatic tests and gives feedback to allow or not the MR
 
 # Deploy
 
-Each pull on branch "deploy" trigger a git pull on a machine where Meteor is run in dev mode (auto-restart if server code changes, auto refresh is client code changes)
+Using Webhooks, each push on branch deploy triggers a _git pull_ on a machine where Meteor is run in dev mode (auto-restart if server code changes, auto refresh is client code changes)
 
-assomaker.leomartinez.fr 
+[http://assomaker.leomartinez.fr](http://assomaker.leomartinez.fr)
 
-(ask Rémi Pichon or Léo Martinez to gain access on the machine, you will need a private key) 
+(ask[Rémi](https://github.com/remipichon)or[Léo](https://github.com/martinezleoml)to gain access on the machine, only with key auth)
 
 # Contribution
 
 Usual merge request stuff
 
-Coming soon : branch "deploy" is locked, only MR can push to it
+Coming soon : branch deploy is locked, only MR can push to it
 
 # Teckos Documentation
 
 ## Data test
-When Meteor restart, all data are erased and some are added
+In dev mode, from the home page you can inject data or use URL to do so :
+* /inject-data : delete everything and inject auth profiles to log in as well as some conf and data.
+
+Details regarding authentication data can be found here :
 
 * role : \both\collection\model\enum\RolesEnum.js
 * groupRole : see InjectDataServerService._injectGroupRoles
@@ -39,7 +56,6 @@ When Meteor restart, all data are erased and some are added
   * hard/hard
   * user1/user1
 
-+ some conf + some tasks
 
 ## JSDoc
 
@@ -57,8 +73,10 @@ filewatcher '**/*.js' 'echo buidling docs; meteor-jsdoc build'
 
 Access Right verification : 
 
-* client side : routes
-* server side : in collection allow/deny (insert/update/delete)
+* client side : Iron.Router routes
+* server side :
+  * read : for each collection, in publish method : /server/server-collection
+  * write : for each collection, in allow/deny that (insert/update/delete) : /server/main.js see "allow/deny policies"
 
 ## Data integrity
 
@@ -193,11 +211,28 @@ You should follow the current populate/clean policy
 ## Simple test
 To test service/helpers with a mocked BDD
 
-meteor test --driver-package practicalmeteor:mocha --port 3101
+meteor test --driver-package practicalmeteor:mocha --port 3010
 
 ## Full app
 If BDD is required,use this mode or help yourself with including everything needed to test the model/collection you need.
 
-meteor test --full-app  --driver-package practicalmeteor:mocha --port 3102
+meteor test --full-app  --driver-package practicalmeteor:mocha --port 3020
 
+meteor add practicalmeteor:mocha
+
+## avec un autre truc
+https://atmospherejs.com/dispatch/mocha-phantomjs
+
+meteor test --once --driver-package dispatch:mocha-phantomjs
+
+
+## Tests and CI
+
+TODO
+
+installer Docker sur la VM de staging et tester spacejam pour avoir les tests en CLI et pouvoir recuperer le retour
+
+
+npm install -g spacejam
+spacejam test --driver-package practicalmeteor:mocha
 
