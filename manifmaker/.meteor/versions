@@ -34,6 +34,9 @@ ddp-rate-limiter@1.0.3
 ddp-server@1.2.5
 deps@1.0.11
 diff-sequence@1.0.4
+dispatch:mocha-core@0.0.2
+dispatch:mocha-phantomjs@0.1.5
+dispatch:phantomjs-tests@0.0.5
 easy:search@2.0.9
 easysearch:components@2.0.9
 easysearch:core@2.0.9

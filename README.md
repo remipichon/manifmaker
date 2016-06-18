@@ -208,6 +208,21 @@ You should follow the current populate/clean policy
 
 # Test
 
+## Browser report
+meteor test --full-app  --driver-package practicalmeteor:mocha --port 3020
+
+
+## CLI report (CI usage)
+meteor test --once --full-app --driver-package dispatch:mocha-phantomjs
+
+
+
+
+==============================================================================
+
+
+===> below, surement inutile
+
 ## Simple test
 To test service/helpers with a mocked BDD
 
@@ -220,13 +235,11 @@ meteor test --full-app  --driver-package practicalmeteor:mocha --port 3020
 
 meteor add practicalmeteor:mocha
 
+
 ## avec un autre truc
 https://atmospherejs.com/dispatch/mocha-phantomjs
 
 meteor test --once --driver-package dispatch:mocha-phantomjs
-
-
-## Tests and CI
 
 TODO
 

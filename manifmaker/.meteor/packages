@@ -40,3 +40,4 @@ modules
 practicalmeteor:mocha
 practicalmeteor:chai
 xolvio:cleaner
+dispatch:mocha-phantomjs
