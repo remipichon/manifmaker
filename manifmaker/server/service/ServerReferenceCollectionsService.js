@@ -1,5 +1,6 @@
 import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
 
+/** @class ServerReferenceCollectionsService */
 export class ServerReferenceCollectionsService {
 
         static allowInsert(userId, doc){

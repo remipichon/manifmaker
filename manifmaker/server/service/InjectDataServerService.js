@@ -1,3 +1,4 @@
+/** @class InjectDataServerService */
 export class InjectDataServerService {
 
     static injectAllData() {

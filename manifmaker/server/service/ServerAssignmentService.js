@@ -1,6 +1,7 @@
 import {TimeSlotService} from "../../both/service/TimeSlotService"
 import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
 
+/** @class ServerAssignmentService */
 export class ServerAssignmentService {
 
         /**

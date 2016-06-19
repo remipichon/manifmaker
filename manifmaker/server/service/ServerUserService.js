@@ -1,14 +1,13 @@
 import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
 import {ServerTaskService} from "../../server/service/ServerTaskService"
 
+/** @class ServerUserService */
 export class ServerUserService {
 
-        /*
-         * @memberOf ServerUserService
+        /**
          * @summary GroupRoles.after.update hook
-         *
+         * @description
          * If group roles' roles are updated user roles are update as well.
-         *
          * @locus server
          * @param userId
          * @param doc
@@ -33,9 +32,8 @@ export class ServerUserService {
         }
 
         /**
-         * @memberOf ServerUserService
          * @summary Users.after.update hook.
-         *
+         * @description
          * About roles, we only add roles to the custom Users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
          * Meteor.users linked account.
          * @locus server

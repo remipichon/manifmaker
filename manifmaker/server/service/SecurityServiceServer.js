@@ -1,3 +1,4 @@
+/** @class SecurityServiceServer */
 export class SecurityServiceServer {
 
         static grantAccessToItem(userId, neededRole, doc, type) {

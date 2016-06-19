@@ -1,5 +1,6 @@
 import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
 
+/** @class ServerTaskService */
 export class ServerTaskService {
 
         static allowInsert(userId, doc){
