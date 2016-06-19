@@ -59,24 +59,27 @@ Details regarding authentication data can be found here :
 
 ## JSDoc
 
-From the following doc, perform 
-* Installation
-* Building the docs
-* Starting the Meteor server
+### HTML
+[JSDoc Github](https://github.com/jsdoc3/jsdoc)
 
-You will see an amazing doc at localhost:3333
-[doc meteor-jsdoc](https://www.npmjs.com/package/meteor-jsdoc)
-
-To learn how to doc, refer to the existing and the JSDoc's doc.
-[do Jsdoc](http://usejsdoc.org/)
-
-
-## File watchers
-In order to rebuild the doc each time you modify a file
+```bash
+npm install jsdoc -g
+npm run doc:html
 ```
-gem install filewatcher
-filewatcher '**/*.js' 'echo buidling docs; meteor-jsdoc build'
+
+Open doc/html/index.html in a browser. 
+
+
+### Markdown
+
+[doc jsdoc-to-markdown](https://www.npmjs.com/package/jsdoc-to-markdown)
+
+```bash
+npm install jsdoc-to-markdown --save-dev
+npm run doc:md
 ```
+
+Generated in /doc/markdown
 
 ## Security
 
@@ -228,8 +231,6 @@ The BDD is up as well as everything else.
 
 ``` bash
 npm run test:watch 
-# or
-meteor test --full-app  --driver-package practicalmeteor:mocha --port 3020
 ```
 
 Visit localhost:3020 to run tests and see the test report. The test are automatically re-run if code changes. 
