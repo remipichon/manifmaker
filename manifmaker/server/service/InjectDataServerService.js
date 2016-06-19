@@ -1,6 +1,9 @@
 /** @class InjectDataServerService */
 export class InjectDataServerService {
 
+    /**
+     * @summary perform deleteAll, initAccessRightData and populateData
+     */
     static injectAllData() {
         console.info("inject data starts")
         this.deleteAll();
@@ -23,6 +26,9 @@ export class InjectDataServerService {
         console.info("GroupRoles collection size is " + GroupRoles.find().fetch().length);
     }
 
+    /**
+     * @summmary delete all data
+     */
     static deleteAll() {
         Meteor.roles.remove({});
         GroupRoles.remove({});
@@ -113,6 +119,9 @@ export class InjectDataServerService {
         };
     }
 
+    /**
+     * @summary Initialize Roles, GroupRoles and basic login profiles
+     */
     static initAccessRightData() {
 
         var assignmentReadyTeam = Teams.insert({name: ASSIGNMENTREADYTEAM});
@@ -144,6 +153,14 @@ export class InjectDataServerService {
 
     }
 
+    /**
+     * @summary inject test data
+     * @description
+     *
+     *   -  conf
+     *   - 3 tasks
+     *   - 3 users with some availabilities
+     */
     static populateData() {
 
         //teams
@@ -623,6 +640,14 @@ export class InjectDataServerService {
         });
     };
 
+    /**
+     * @summary insert a User and an Account
+     * @param username {String} unique
+     * @param email {emailformat} unique
+     * @param password
+     * @param groupRoleId {MongoId|Array<MongoId>} group role to add (at least one is needed)
+     * @returns {*}
+     */
     static createAccountAndUser(username, email, password, groupRoleId) {
         Accounts.createUser({
             username: username,
@@ -640,9 +665,15 @@ export class InjectDataServerService {
     }
 
     static _setGroupRolesToUsers(userId, groupId) {
+        var groupArray;
+        if (Array.isArray(groupId))
+            groupArray = groupId
+        else
+            groupArray = [groupId];
+
         Users.update(userId, {
             $set: {
-                groupRoles: [groupId]
+                groupRoles: groupArray
             }
         });
     }
