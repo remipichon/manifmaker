@@ -16,5 +16,3 @@ describe("ValidationService", () => {
         assert.isFalse(ValidationService.isUpdateAllowed(ValidationState.TOBEVALIDATED,"TOBEVALIDATED"));
     })
 });
-
-describe()

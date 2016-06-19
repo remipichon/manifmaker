@@ -1,16 +1,18 @@
 /* eslint-env mocha */
 
 import {Meteor} from 'meteor/meteor';
-import { assert } from 'meteor/practicalmeteor:chai';
+import {assert} from 'meteor/practicalmeteor:chai';
 
 /**
  * Test mode
  */
 
-describe('Test on server', () => {
+describe('Test on client and server', () => {
     describe('is working', () => {
         it('test is working', () => {
-            assert.equal(true,true);
+            assert.equal(true, false);
         });
     });
 });
+
+
