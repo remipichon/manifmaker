@@ -206,36 +206,28 @@ You should follow the current populate/clean policy
 
 
 
-<<<<<<< HEAD
-=======
 # Test
 
-## Simple test
-To test service/helpers with a mocked BDD
+## Writing test
 
-meteor test --driver-package practicalmeteor:mocha --port 3010
+Tests are located in three directories named "test" in /both, /client and /server. Tests in /both contains "B : " in their description. 
 
-## Full app
-If BDD is required,use this mode or help yourself with including everything needed to test the model/collection you need.
+They are based on Mocha (testing) and Chai (asserting) and user full app mode meaning that you can do whatever you want without mocking anything. 
+The BDD is up as well as everything else. 
 
+## Browser report
+
+``` bash
+npm run test:watch 
+# or
 meteor test --full-app  --driver-package practicalmeteor:mocha --port 3020
+```
 
-meteor add practicalmeteor:mocha
-
-## avec un autre truc
-https://atmospherejs.com/dispatch/mocha-phantomjs
-
-meteor test --once --driver-package dispatch:mocha-phantomjs
+Visit localhost:3020 to run tests and see the test report. The test are automatically re-run if code changes. 
 
 
-## Tests and CI
+## CLI report (CI usage)
+dispatch:mocha-phantomjs et practicalmeteor:mocha ne peuvent pas bosser ensemble, en attente qu'ils resolvent ca pour faire la CI
 
-TODO
-
-installer Docker sur la VM de staging et tester spacejam pour avoir les tests en CLI et pouvoir recuperer le retour
-
->>>>>>> 30785cb... [RPI] improve docs : installation process
-
-npm install -g spacejam
-spacejam test --driver-package practicalmeteor:mocha
+"test:ci": "SERVER_TEST_REPORTER='list' CLIENT_TEST_REPORTER='list' meteor test --once --full-app --driver-package dispatch:mocha-phantomjs",
 

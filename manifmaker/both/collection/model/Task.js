@@ -2,6 +2,7 @@ import {Schemas} from './SchemasHelpers'
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
 import {ValidationService} from "../../../both/service/ValidationService"
+import "/both/collection/model/T-Validation.js"
 
 //order matters !
 Schemas.EquipmentAsked = new SimpleSchema({
@@ -479,6 +480,7 @@ Schemas.Tasks = new SimpleSchema({
         optional: true,
         defaultValue: null,
         custom(){
+            if(this.value !== null && !EquipmentStorages.findOne(this.value)) return "unknownId"
             if (this.isUpdate) {
                 var task = Tasks.findOne(this.docId);
                 if(!ValidationService.isUpdateAllowed(task.equipmentValidation.currentState)){
