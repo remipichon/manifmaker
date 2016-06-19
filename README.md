@@ -208,6 +208,13 @@ You should follow the current populate/clean policy
 
 # Test
 
+## Writing test
+
+Tests are located in three directories named "test" in /both, /client and /server. Tests in /both contains "B : " in their description. 
+
+They are based on Mocha (testing) and Chai (asserting) and user full app mode meaning that you can do whatever you want without mocking anything. 
+The BDD is up as well as everything else. 
+
 ## Browser report
 
 ``` bash
