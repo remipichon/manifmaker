@@ -23,6 +23,55 @@ meteor
 >
 >[Edit Windows path](http://www.computerhope.com/issues/ch000549.htm)
 
+
+# JSDoc
+
+## HTML
+[JSDoc Github](https://github.com/jsdoc3/jsdoc)
+
+```bash
+npm install jsdoc -g
+npm run doc:html
+```
+
+Open doc/html/index.html in a browser. 
+
+
+## Markdown
+
+[doc jsdoc-to-markdown](https://www.npmjs.com/package/jsdoc-to-markdown)
+
+```bash
+npm install jsdoc-to-markdown --save-dev
+npm run doc:md
+```
+
+Generated in /doc/markdown
+
+# Testing
+
+## Writing test
+
+Tests are located in three directories named "test" in /both, /client and /server. Tests in /both contains "B : " in their description. 
+
+They are based on Mocha (testing) and Chai (asserting) and user full app mode meaning that you can do whatever you want without mocking anything. 
+The BDD is up as well as everything else. 
+
+## Browser report
+
+``` bash
+npm run test:watch 
+```
+
+Visit localhost:3020 to run tests and see the test report. The test are automatically re-run if code changes. 
+
+
+## CLI report (CI usage)
+dispatch:mocha-phantomjs et practicalmeteor:mocha ne peuvent pas bosser ensemble, en attente qu'ils resolvent ca pour faire la CI
+
+"test:ci": "SERVER_TEST_REPORTER='list' CLIENT_TEST_REPORTER='list' meteor test --once --full-app --driver-package dispatch:mocha-phantomjs",
+
+
 # Staging 
 
 Coming soon : whenever a merge request is made against branch deploy, a Docker somewhere runs automatic tests and gives feedback to allow or not the MR
@@ -56,30 +105,6 @@ Details regarding authentication data can be found here :
   * hard/hard
   * user1/user1
 
-
-## JSDoc
-
-### HTML
-[JSDoc Github](https://github.com/jsdoc3/jsdoc)
-
-```bash
-npm install jsdoc -g
-npm run doc:html
-```
-
-Open doc/html/index.html in a browser. 
-
-
-### Markdown
-
-[doc jsdoc-to-markdown](https://www.npmjs.com/package/jsdoc-to-markdown)
-
-```bash
-npm install jsdoc-to-markdown --save-dev
-npm run doc:md
-```
-
-Generated in /doc/markdown
 
 ## Security
 
@@ -217,27 +242,4 @@ You should follow the current populate/clean policy
 
 
 
-
-# Test
-
-## Writing test
-
-Tests are located in three directories named "test" in /both, /client and /server. Tests in /both contains "B : " in their description. 
-
-They are based on Mocha (testing) and Chai (asserting) and user full app mode meaning that you can do whatever you want without mocking anything. 
-The BDD is up as well as everything else. 
-
-## Browser report
-
-``` bash
-npm run test:watch 
-```
-
-Visit localhost:3020 to run tests and see the test report. The test are automatically re-run if code changes. 
-
-
-## CLI report (CI usage)
-dispatch:mocha-phantomjs et practicalmeteor:mocha ne peuvent pas bosser ensemble, en attente qu'ils resolvent ca pour faire la CI
-
-"test:ci": "SERVER_TEST_REPORTER='list' CLIENT_TEST_REPORTER='list' meteor test --once --full-app --driver-package dispatch:mocha-phantomjs",
 
