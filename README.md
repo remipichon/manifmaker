@@ -59,15 +59,24 @@ Details regarding authentication data can be found here :
 
 ## JSDoc
 
-TODO
+From the following doc, perform 
+* Installation
+* Building the docs
+* Starting the Meteor server
+
+You will see an amazing doc at localhost:3333
+[doc meteor-jsdoc](https://www.npmjs.com/package/meteor-jsdoc)
+
+To learn how to doc, refer to the existing and the JSDoc's doc.
+[do Jsdoc](http://usejsdoc.org/)
 
 
-file watchers
-
-https://github.com/thomasfl/filewatcher
-
+## File watchers
+In order to rebuild the doc each time you modify a file
+```
+gem install filewatcher
 filewatcher '**/*.js' 'echo buidling docs; meteor-jsdoc build'
-
+```
 
 ## Security
 
