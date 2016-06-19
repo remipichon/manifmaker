@@ -223,6 +223,8 @@ npm run test:watch
 meteor test --full-app  --driver-package practicalmeteor:mocha --port 3020
 ```
 
+Visit localhost:3020 to run tests and see the test report. The test are automatically re-run if code changes. 
+
 
 ## CLI report (CI usage)
 dispatch:mocha-phantomjs et practicalmeteor:mocha ne peuvent pas bosser ensemble, en attente qu'ils resolvent ca pour faire la CI
