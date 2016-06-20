@@ -4,7 +4,7 @@ import {ServerTaskService} from "./ServerTaskService";
 import {ServerReferenceCollectionsService} from "./ServerReferenceCollectionsService";
 
 /**
- * @class
+ * @class ServerService
  */
 export class ServerService {
 
