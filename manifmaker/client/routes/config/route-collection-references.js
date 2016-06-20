@@ -1,12 +1,11 @@
 import {Schemas} from '../../../both/collection/model/SchemasHelpers'
 import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
-
 /**
- * @memberOf Models
- * @summary References of all the MongoDB collections used as references
- * @locus Anywhere
- * @instancename object
+ * This namespace describes the auto-generated routes for all Collection references described belove
+ * @memberOf Route
+ * @namespace Route.collectionReference
  */
+
 AllCollections = {
     Skills: Skills,
     Teams: Teams,
@@ -81,10 +80,10 @@ _.each(Schemas.references.options, function (referenceOptions) {
     confMakerReactiveTables.push(item);
 
     /**
-     * @memberOf Route
+     * @memberOf Route.collectionReference
      * @summary Display References Collection list (with filter and search soon)
      * @locus client
-     * @name  [collRefPluralUrl].list /[collRefPluralUrl]
+     * @name  '[REFERENCE_URL].list' /[PLURAL_REFERENCE_URL]
      */
     //get (list)
     Router.route('/' + PLURAL_REFERENCE_URL, function () {
@@ -98,10 +97,10 @@ _.each(Schemas.references.options, function (referenceOptions) {
     );
 
     /**
-     * @memberOf Route
+     * @memberOf Route.collectionReference
      * @summary Display the create References Collection form
      * @locus client
-     * @name  [collRefName].create /[collReflUrl]
+     * @name  '[REFERENCE_URL].create' /[REFERENCE_URL]
      */
 //post
     Router.route('/' + REFERENCE_URL, function () {
@@ -117,10 +116,10 @@ _.each(Schemas.references.options, function (referenceOptions) {
     );
 
     /**
-     * @memberOf Route
+     * @memberOf Route.collectionReference
      * @summary Display the update References Collection form
      * @locus client
-     * @name  [collRefName].update /[collReflUrl]/_id
+     * @name  '[REFERENCE_URL].update' /[REFERENCE_URL]/_id
      */
 //put
     Router.route('/' + REFERENCE_URL + '/:_id', function () {
@@ -139,7 +138,12 @@ _.each(Schemas.references.options, function (referenceOptions) {
 
 });
 
-
+/**
+ * @memberOf Route.collectionReference
+ * @summary Display the conf homepage
+ * @locus client
+ * @name  'confMaker' /confMaker
+ */
 //get (list)
 Router.route('/conf-maker', function () {
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.CONFMAKER);

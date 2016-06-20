@@ -3,9 +3,14 @@ import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
 
 /**
  * @memberOf Route
- * @summary Display the task list with filter and search
+ * @namespace Route.Task
+ */
+
+/**
+ * @memberOf Route.Task
+ * @summary Display tasks list
  * @locus client
- * @name task.list  /tasks
+ * @name 'home'  /tasks
  */
 Router.route('/tasks', function () {
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKREAD);
@@ -16,13 +21,13 @@ Router.route('/tasks', function () {
         });
     },
     {name: 'task.list'}
-);
+)
 
 /**
- * @memberOf Route
+ * @memberOf Route.Task
  * @summary Display the create task form without time slots and validation workflow
  * @locus client
- * @name task.create  /task
+ * @name 'task.create'  /task
  */
 Router.route('/task', function () {
         this.wait(Meteor.subscribe('users'));
@@ -43,11 +48,11 @@ Router.route('/task', function () {
 );
 
 /**
- * @memberOf Route
+ * @memberOf Route.Task
  * @summary Display the task update form by it's MongoId
  * @locus client
  * @param taskId
- * @name task.read  /task/:_id
+ * @name 'task.read'  /task/:_id
  */
 Router.route('/task/:_id', function () {
         this.wait(Meteor.subscribe('tasks'));
@@ -83,11 +88,11 @@ Router.route('/task/:_id', function () {
 
 
 /**
- * @memberOf Route
+ * @memberOf Route.Task
  * @summary Display the task in read mode by it's MongoId
  * @locus client
  * @param taskId
- * @name task.read  /task/:_id
+ * @name 'task.read'  /task/:_id
  */
 Router.route('/task/:_id/read', function () {
         this.wait(Meteor.subscribe('tasks'));
@@ -122,13 +127,13 @@ Router.route('/task/:_id/read', function () {
 );
 
 /**
- * @memberOf Route
+ * @memberOf Route.Task
  * @summary Update validation state for one the task part
  * @locus client
  * @param validationType
  * @param taskId
  * @param validationState
- * @name task.validation.timeSlot  /task/validation/:validationType/:_id/:state
+ * @name 'task.validation.timeSlot'  /task/validation/:validationType/:_id/:state
  */
 Router.route('/task/validation/:validationType/:_id/:state', function () {
         if (this.params.state === "to-be-validated") {

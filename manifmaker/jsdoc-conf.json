@@ -1,7 +1,7 @@
 {
   "plugins": ["plugins/markdown"],
   "markdown": {
-    "idInHeadings": true,
+    "idInHeadings": true
   },
   "opts": {
     "destination": "../doc/html"

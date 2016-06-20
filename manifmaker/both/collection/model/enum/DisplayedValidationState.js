@@ -1,7 +1,6 @@
 /**
- * @memberOf Models
+ * @memberOf Enum
  * @summary Enum Validation State used to friendly display validation state to user
- * values : OPEN, TOBEVALIDATED, REFUSED, READY
  * @enum {string}
  * @readonly
  * @locus Anywhere
