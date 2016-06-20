@@ -1,3 +1,14 @@
+/**
+ * @memberOf Route
+ * @namespace Route.User
+ */
+
+/**
+ * @memberOf Route.User
+ * @summary Display the user list with filter and search
+ * @locus client
+ * @name 'user.list'  /users
+ */
 Router.route('/roles', function () {
         console.info("routing", "/roles");
         if(Roles.userIsInRole(Meteor.userId(),"role"))

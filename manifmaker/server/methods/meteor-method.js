@@ -1,5 +1,6 @@
 import {InjectDataServerService} from "../service/InjectDataServerService"
 
+
 Meteor.methods({
      injectData: function(){
          if(Meteor.isDevelopment){

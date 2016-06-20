@@ -1,7 +1,8 @@
 /**
- * @memberOf Models
+ * @memberOf Enum
  * @summary Enum Validation State used to pass information through URL
- * values : open, to-be-validated, refuse, ready
+ * @description
+ * see {@link Enum.ValidationState}
  * @enum {string}
  * @readonly
  * @locus Anywhere

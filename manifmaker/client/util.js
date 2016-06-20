@@ -1,5 +1,6 @@
 /**
- * write key-path accessor
+ * @function
+ * @summary write key-path accessor
  * @param obj
  * @param path
  * @returns nested object from obj access by dot separated path

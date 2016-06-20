@@ -20,13 +20,12 @@ export class SecurityServiceServer {
     }
 
     /**
-     * same as grantAccessToItem but return true (access granted) or false (access denied)
+     * same as grantAccessToItem but return true (access granted) or false (access denied) without log
      * @param userId
      * @param neededRole
-     * @param doc
      * @returns {boolean}
      */
-    static testAccessToItem(userId, neededRole, doc) {
+    static testAccessToItem(userId, neededRole) {
         if (Roles.userIsInRole(userId, neededRole))
             return true;
         else {
@@ -34,6 +33,14 @@ export class SecurityServiceServer {
         }
     }
 
+
+    /**
+     * same as grantAccessToItem but return true (access granted) or false (access denied) with 
+     * @param userId
+     * @param neededRole
+     * @param collection {String} collection name to get access
+     * @returns {boolean}
+     */
     static grantAccessToCollection(userId, neededRole, collection) {
         if (Roles.userIsInRole(userId, neededRole)) {
             console.info(`access granted with ${neededRole} on collection ${collection} for user ${userId}`);

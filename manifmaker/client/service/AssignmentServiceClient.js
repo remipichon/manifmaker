@@ -239,7 +239,13 @@ export class AssignmentServiceClient {
             }
         };
 
-        $('body').popover({html: true, selector: '.creneau[data-popover]', trigger: 'click hover', placement: 'auto', delay: {show: 50, hide: 400}});
+        $('body').popover({
+            html: true,
+            selector: '.creneau[data-popover]',
+            trigger: 'click hover',
+            placement: 'auto',
+            delay: {show: 50, hide: 400}
+        });
 
         $(document).on("click", ".popover .peopleNeed.assigned", function (event) {
             AssignmentServiceClient.readSelectedPeopleNeedAndTimeSlotFromPopover(event, true);

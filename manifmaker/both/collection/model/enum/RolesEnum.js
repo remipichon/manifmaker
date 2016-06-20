@@ -1,23 +1,39 @@
+/**
+ * @memberOf Enum
+ * @summary Usable role to filter access right
+ * @enum {string}
+ * @readonly
+ * @locus Anywhere
+ */
 RolesEnum = {
-    //global
+    /** global */
     MANIFMAKER: "manifMaker",
 
-    //task
+    /** task */
     TASKREAD: "taskRead",
+    /** task */
     TASKWRITE: "taskWrite",
+    /** task */
     TASKDELETE: "taskDelete",
+    /** task */
     ACCESSPASSVALIDATION: "accessPassValidation",
+    /** task */
     EQUIPMENTVALIDATION: "equipmentValidation",
+    /** task */
     ASSIGNMENTVALIDATION: "assignmentValidation",
 
-    //assignment
+    /** assignment */
     ASSIGNMENTTASKUSER: "assignmentTaskUser",
 
-    //user
+    /** user */
     USERREAD: "userRead",
+    /** user */
     USERWRITE: "userWrite",
+    /** user */
     USERDELETE: "userDelete",
-    //conf
+
+    /** conf */
     CONFMAKER: "confMaker",
+    /** conf */
     ROLE: "role"
 };

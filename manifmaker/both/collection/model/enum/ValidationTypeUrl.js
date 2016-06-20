@@ -1,7 +1,6 @@
 /**
- * @memberOf Models
+ * @memberOf Enum
  * @summary Validation Type used to pass information through URL
- * values : time-slot, access, equipment
  * @enum {string}
  * @readonly
  * @locus Anywhere

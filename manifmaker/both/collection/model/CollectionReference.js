@@ -2,36 +2,21 @@ import {Schemas} from './SchemasHelpers'
 
 import "/both/collection/model/enum/EquipementTargetUsage.js"
 
-/**
- * @memberOf Route
- * @summary References collections URL
- *
- * Collection Name => URL
- *
- * Teams => team
- *
- * Places => place
- *
- * Skills => skill
- *
- * AssignmentTerms => assignment-term
- *
- * GroupRoles => group-role
- *
- * @locus client
- * @name Collection References
- */
-var forDocOnly = {};
+
 Schemas.references = {};
 Schemas.references.options = {};
 
-
+/**
+ * @memberOf Route.collectionReference
+ * @summary Teams option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.Teams = {
     PLURAL_REFERENCE_URL: "teams",
     REFERENCE_URL: "team",
     REFERENCE_COLLECTION_NAME: "Teams",
     REFERENCE_MONGO_COLLECTION_NAME: "teams",
-    REFERENCE_LABEL: "Team",
+    REFERENCE_LABEL: "Team"
 };
 Schemas.references.Teams = new SimpleSchema({
     name: {
@@ -55,7 +40,7 @@ Schemas.references.Teams = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary Teams collection
  * @locus Anywhere
  * @instancename collection
@@ -65,12 +50,17 @@ Teams.attachSchema(Schemas.references.Teams);
 
 ASSIGNMENTREADYTEAM = "assignmentReadyTeam"; //team de tous les users et toutes les taches prets pour affectation
 
+/**
+ * @memberOf Route.collectionReference
+ * @summary Places option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.Places = {
     PLURAL_REFERENCE_URL: "places",
     REFERENCE_URL: "place",
     REFERENCE_COLLECTION_NAME: "Places",
     REFERENCE_MONGO_COLLECTION_NAME: "places",
-    REFERENCE_LABEL: "Place",
+    REFERENCE_LABEL: "Place"
 };
 Schemas.references.Places = new SimpleSchema({
     name: {
@@ -94,7 +84,7 @@ Schemas.references.Places = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary Places collection
  * @locus Anywhere
  * @instancename collection
@@ -102,12 +92,17 @@ Schemas.references.Places = new SimpleSchema({
 Places = new Mongo.Collection("places");
 Places.attachSchema(Schemas.references.Places);
 
+/**
+ * @memberOf Route.collectionReference
+ * @summary Skills option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.Skills = {
     PLURAL_REFERENCE_URL: "skills",
     REFERENCE_URL: "skill",
     REFERENCE_COLLECTION_NAME: "Skills",
     REFERENCE_MONGO_COLLECTION_NAME: "skills",
-    REFERENCE_LABEL: "Skill",
+    REFERENCE_LABEL: "Skill"
 };
 Schemas.references.Skills = new SimpleSchema({
     key: {
@@ -138,7 +133,7 @@ Schemas.references.Skills = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary Skills collection
  * @locus Anywhere
  * @instancename collection
@@ -146,12 +141,17 @@ Schemas.references.Skills = new SimpleSchema({
 Skills = new Mongo.Collection("skills");
 Skills.attachSchema(Schemas.references.Skills);
 
+/**
+ * @memberOf Route.collectionReference
+ * @summary AssignmentTerms option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.AssignmentTerms = {
     PLURAL_REFERENCE_URL: "assignment-terms",
     REFERENCE_URL: "assignment-term",
     REFERENCE_COLLECTION_NAME: "AssignmentTerms",
     REFERENCE_MONGO_COLLECTION_NAME: "assignment-terms",
-    REFERENCE_LABEL: "Assignment Term",
+    REFERENCE_LABEL: "Assignment Term"
 };
 Schemas.references.AssignmentTerms = new SimpleSchema({
     name: {
@@ -171,7 +171,7 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
         label: "Assignment terms  End (not include)",
         autoform: {
             type: "datetime-local"
-        },
+        }
     },
     type: {   
         type: String,
@@ -189,7 +189,7 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary AssignmentTerms collection
  * @locus Anywhere
  * @instancename collection
@@ -197,12 +197,17 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
 AssignmentTerms = new Mongo.Collection("assignment-terms");
 AssignmentTerms.attachSchema(Schemas.references.AssignmentTerms);
 
+/**
+ * @memberOf Route.collectionReference
+ * @summary GroupRoles option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.GroupRoles = {
     PLURAL_REFERENCE_URL: "group-roles",
     REFERENCE_URL: "group-role",
     REFERENCE_COLLECTION_NAME: "GroupRoles",
     REFERENCE_MONGO_COLLECTION_NAME: "group_roles",
-    REFERENCE_LABEL: "Group Role",
+    REFERENCE_LABEL: "Group Role"
 };
 Schemas.references.GroupRoles = new SimpleSchema({
     name: {
@@ -246,7 +251,7 @@ Schemas.references.GroupRoles = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary Teams collection
  * @locus Anywhere
  * @instancename collection
@@ -254,12 +259,16 @@ Schemas.references.GroupRoles = new SimpleSchema({
 GroupRoles = new Mongo.Collection("group_roles");
 GroupRoles.attachSchema(Schemas.references.GroupRoles);
 
-
+/**
+ * @memberOf Route.collectionReference
+ * @summary EquipmentCategories option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.EquipmentCategory = {
     PLURAL_REFERENCE_URL: "equipment-categories",
     REFERENCE_URL: "equipment-category",
     REFERENCE_COLLECTION_NAME: "EquipmentCategories",
-    REFERENCE_LABEL: "Equipment Category",
+    REFERENCE_LABEL: "Equipment Category"
 };
 Schemas.references.EquipmentCategories = new SimpleSchema({
     name: {
@@ -283,7 +292,7 @@ Schemas.references.EquipmentCategories = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary EquipmentCategories collection
  * @locus Anywhere
  * @instancename collection
@@ -291,12 +300,16 @@ Schemas.references.EquipmentCategories = new SimpleSchema({
 EquipmentCategories = new Mongo.Collection("equipment_categories");
 EquipmentCategories.attachSchema(Schemas.references.EquipmentCategories);
 
-
+/**
+ * @memberOf Route.collectionReference
+ * @summary Equipments option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.Equipments = {
     PLURAL_REFERENCE_URL: "equipments",
     REFERENCE_URL: "equipment",
     REFERENCE_COLLECTION_NAME: "Equipments",
-    REFERENCE_LABEL: "Equipment",
+    REFERENCE_LABEL: "Equipment"
 };
 Schemas.references.Equipments = new SimpleSchema({
     name: {
@@ -307,7 +320,7 @@ Schemas.references.Equipments = new SimpleSchema({
     quantity: {
         type: Number,
         label: "Equipment available quantity",
-        min: 0,
+        min: 0
     },
     targetUsage: {
         type: String,
@@ -343,7 +356,7 @@ Schemas.references.Equipments = new SimpleSchema({
             afFieldInput: {
                 options: Schemas.helpers.allEquipmentCategoriesOptions
             }
-        },
+        }
     },
     type: {   
         type: String,
@@ -361,7 +374,7 @@ Schemas.references.Equipments = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary Equipments collection
  * @locus Anywhere
  * @instancename collection
@@ -369,11 +382,16 @@ Schemas.references.Equipments = new SimpleSchema({
 Equipments = new Mongo.Collection("equipments");
 Equipments.attachSchema(Schemas.references.Equipments);
 
+/**
+ * @memberOf Route.collectionReference
+ * @summary WaterSupply option to automatically generate routes and forms
+ * @description see code to get the value
+ */
 Schemas.references.options.WaterSupply = {
     PLURAL_REFERENCE_URL: "water-supplies",
     REFERENCE_URL: "water-supply",
     REFERENCE_COLLECTION_NAME: "WaterSupplies",
-    REFERENCE_LABEL: "Water supply",
+    REFERENCE_LABEL: "Water supply"
 };
 Schemas.references.WaterSupplies = new SimpleSchema({
     name: {
@@ -397,7 +415,7 @@ Schemas.references.WaterSupplies = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary WaterSupplies collection
  * @locus Anywhere
  * @instancename collection
@@ -405,12 +423,16 @@ Schemas.references.WaterSupplies = new SimpleSchema({
 WaterSupplies = new Mongo.Collection("water_supplies");
 WaterSupplies.attachSchema(Schemas.references.WaterSupplies);
 
-
+/**
+ * @memberOf Route.collectionReference
+ * @summary WaterDisposal option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.WaterDisposal = {
     PLURAL_REFERENCE_URL: "water-disposals",
     REFERENCE_URL: "water-disposal",
     REFERENCE_COLLECTION_NAME: "WaterDisposals",
-    REFERENCE_LABEL: "Water disposal",
+    REFERENCE_LABEL: "Water disposal"
 };
 Schemas.references.WaterDisposals = new SimpleSchema({
     name: {
@@ -434,7 +456,7 @@ Schemas.references.WaterDisposals = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary WaterDisposals collection
  * @locus Anywhere
  * @instancename collection
@@ -442,12 +464,16 @@ Schemas.references.WaterDisposals = new SimpleSchema({
 WaterDisposals = new Mongo.Collection("water_disposals");
 WaterDisposals.attachSchema(Schemas.references.WaterDisposals);
 
-
+/**
+ * @memberOf Route.collectionReference
+ * @summary PowerSupplies option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.PowerSupplies = {
     PLURAL_REFERENCE_URL: "power-supplies",
     REFERENCE_URL: "power-supply",
     REFERENCE_COLLECTION_NAME: "PowerSupplies",
-    REFERENCE_LABEL: "Power Supply",
+    REFERENCE_LABEL: "Power Supply"
 };
 Schemas.references.PowerSupplies = new SimpleSchema({
     name: {
@@ -471,7 +497,7 @@ Schemas.references.PowerSupplies = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary PowerSupplies collection
  * @locus Anywhere
  * @instancename collection
@@ -479,12 +505,16 @@ Schemas.references.PowerSupplies = new SimpleSchema({
 PowerSupplies = new Mongo.Collection("power_supplies");
 PowerSupplies.attachSchema(Schemas.references.PowerSupplies);
 
-
+/**
+ * @memberOf Route.collectionReference
+ * @summary EquipmentStorage option to automatically generate routes and forms
+ * @description see code to get the values
+ */
 Schemas.references.options.EquipmentStorage = {
     PLURAL_REFERENCE_URL: "equipment-storages",
     REFERENCE_URL: "equipment-storage",
     REFERENCE_COLLECTION_NAME: "EquipmentStorages",
-    REFERENCE_LABEL: "Equipment Storage",
+    REFERENCE_LABEL: "Equipment Storage"
 };
 Schemas.references.EquipmentStorages = new SimpleSchema({
     name: {
@@ -508,7 +538,7 @@ Schemas.references.EquipmentStorages = new SimpleSchema({
     }
 });
 /**
- * @memberOf Models
+ * @memberOf Collection
  * @summary EquipmentStorages collection
  * @locus Anywhere
  * @instancename collection

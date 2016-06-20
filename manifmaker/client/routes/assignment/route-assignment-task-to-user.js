@@ -1,6 +1,16 @@
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+/**
+ * @memberOf Route.Assignment
+ * @namespace Route.Assignment.taskToUser
+ */
 
+/**
+ * @memberOf Route.Assignment.taskToUser
+ * @summary Select Task to User mode
+ * @locus client
+ * @name 'assignment.calendar.taskToUser'  /assignment/taskToUser
+ */
 Router.route('/assignment/taskToUser', function () {
         console.info("routing", '/assignment/taskToUser');
 
@@ -19,6 +29,12 @@ Router.route('/assignment/taskToUser', function () {
     }
 );
 
+/**
+ * @memberOf Route.Assignment.taskToUser
+ * @summary Display available users for a given task at a given timeslot
+ * @locus client
+ * @name 'assignment.calendar.taskToUser.task.timeSlot'  assignment/taskToUser/:taskId/:timeSlotId
+ */
 Router.route('/assignment/taskToUser/:taskId/:timeSlotId', function () {
         console.info("routing", '/assignment/taskToUser/' + this.params.taskId + '/' + this.params.timeSlotId);
 
@@ -46,6 +62,12 @@ Router.route('/assignment/taskToUser/:taskId/:timeSlotId', function () {
     }
 );
 
+/**
+ * @memberOf Route.Assignment.taskToUser
+ * @summary Display task time slots
+ * @locus client
+ * @name 'assignment.calendar.taskToUser.task'  /assignment/taskToUser/:taskId
+ */
 Router.route('/assignment/taskToUser/:taskId', function () {
         console.info("routing", '/assignment/taskToUser/' + this.params.taskId);
 

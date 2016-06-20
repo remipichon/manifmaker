@@ -2,6 +2,11 @@ import {AssignmentServiceClient} from "../../../client/service/AssignmentService
 import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
+/**
+ * @memberOf Route
+ * @namespace Route.Assignment
+ */
+
 assignmentCalendarIsRendered = false;
 
 AssignmentController = RouteController.extend({
@@ -30,7 +35,12 @@ AssignmentController = RouteController.extend({
     }
 });
 
-
+/**
+ * @memberOf Route.Assignment
+ * @summary Display assignment screen (calendar + task list + user list)
+ * @locus client
+ * @name 'assignment.calendar'  /assignment
+ */
 Router.route('/assignment', function () {
         console.info("routing", '/assignment');
 
@@ -41,7 +51,12 @@ Router.route('/assignment', function () {
     }
 );
 
-
+/**
+ * @memberOf Route.Assignment
+ * @summary Redirect to /assignment/userToTask/:userId
+ * @locus client
+ * @name 'assignment.calendar.user'  /assignment/user/:userId
+ */
 Router.route('/assignment/user/:userId', function () {
         console.info("routing", '/assignment/user/' + this.params.userId);
 
@@ -67,7 +82,12 @@ Router.route('/assignment/user/:userId', function () {
     }
 );
 
-
+/**
+ * @memberOf Route.Assignment
+ * @summary Redirect to /assignment/taskToUser/:taskId
+ * @locus client
+ * @name 'assignment.calendar.task'  /assignment/task/:taskId
+ */
 Router.route('/assignment/task/:taskId', function () {
         console.info("routing", '/assignment/task/' + this.params.taskId);
 

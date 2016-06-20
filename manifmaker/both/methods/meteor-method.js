@@ -2,11 +2,21 @@ import {PeopleNeedService} from "../../both/service/PeopleNeedService"
 import {AvailabilityService} from "../../both/service/AvailabilityService"
 import {TimeSlotService} from "../../both/service/TimeSlotService"
 
+/**
+ * @namespace Meteor Methods
+ */
+
 Meteor.methods({
     /**
-     * @memberOf Meteor.call
+     * @memberOf Meteor Methods
      * @locus anywhere
-     * @summary Remove assignment for a user. Restore users' availabilities and restore task's people need to task's people need assigned.
+     * @summary Remove assignment for a user.
+     * @description
+     * 
+     *  - restore users' availabilities
+     *  - move back task's people need to task's people need assigned
+     *  - remove Assignment document
+     *
      * @param {MongoId} peopleNeedId
      * @param {MongoId} userId
      * @param {MongoId} taskId
@@ -45,9 +55,14 @@ Meteor.methods({
     },
 
     /**
-     * @memberOf Meteor.call
+     * @memberOf Meteor Methods
      * @locus anywhere
-     * @summary Assign a specific people need to a user. Remove users' availabilities and move task's people need.
+     * @summary Assign a specific people need to a user.
+     *
+     *  - remove users' availabilities
+     *  - move task's people need to task's people need assigned
+     *  - insert Assignment document
+
      * @param {MongoId} peopleNeedId
      * @param {MongoId} userId
      * @param {MongoId} taskId
