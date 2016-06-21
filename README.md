@@ -1,3 +1,6 @@
+demo : http://assomaker.leomartinez.fr/
+doc : http://assomaker.leomartinez.fr:8080/
+
 
 # Installation
 
