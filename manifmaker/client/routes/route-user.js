@@ -2,9 +2,14 @@ import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
 
 /**
  * @memberOf Route
+ * @namespace Route.User
+ */
+
+/**
+ * @memberOf Route.User
  * @summary Display the user list with filter and search
  * @locus client
- * @name user.list  /users
+ * @name 'user.list'  /users
  */
 Router.route('/users', function () {
         //everyone can at least edit its own profile
@@ -17,10 +22,10 @@ Router.route('/users', function () {
 );
 
 /**
- * @memberOf Route
+ * @memberOf Route.User
  * @summary Display the create user form 
  * @locus client
- * @name user.create  /user
+ * @name 'user.create'  /user
  */
 Router.route('/user', function () {
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.USERWRITE);
@@ -42,11 +47,11 @@ Router.route('/user', function () {
 );
 
 /**
- * @memberOf Route
+ * @memberOf Route.User
  * @summary Display the user update form by it's MongoId
  * @locus client
  * @param userId
- * @name user.read  /user/:_id
+ * @name 'user.read'  /user/:_id
  */
 Router.route('/user/:_id', function () {
     if(!Users.findOne(this.params._id)){
@@ -68,11 +73,11 @@ Router.route('/user/:_id', function () {
 );
 
 /**
- * @memberOf Route
+ * @memberOf Route.User
  * @summary Display the user in read mode by it's MongoId
  * @locus client
  * @param userId
- * @name user.read  /user/:_id
+ * @name 'user.read'  /user/:_id
  */
 Router.route('/user/:_id/read', function () {
         if(!Users.findOne({_id: this.params._id})){

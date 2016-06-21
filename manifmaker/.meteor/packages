@@ -22,7 +22,7 @@ momentjs:moment
 less
 mizzao:bootstrap-3
 iron:router
-materialize:materialize
+materialize:materialize@0.97.3
 aslagle:reactive-table #DAtaTables
 easy:search
 
@@ -37,3 +37,6 @@ accounts-ui
 peerlibrary:blaze-components
 tsega:bootstrap3-datetimepicker
 modules
+practicalmeteor:chai
+xolvio:cleaner
+practicalmeteor:mocha

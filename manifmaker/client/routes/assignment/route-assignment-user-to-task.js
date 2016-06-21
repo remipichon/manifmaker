@@ -1,6 +1,16 @@
 import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+/**
+ * @memberOf Route.Assignment
+ * @namespace Route.Assignment.userToTask
+ */
 
+/**
+ * @memberOf Route.Assignment.userToTask
+ * @summary Select User to Task mode
+ * @locus client
+ * @name 'assignment.calendar.userToTask'  /assignment/userToTask
+ */
 Router.route('/assignment/userToTask', function () {
         console.info("routing", '/assignment/userToTask');
 
@@ -17,6 +27,12 @@ Router.route('/assignment/userToTask', function () {
     }
 );
 
+/**
+ * @memberOf Route.Assignment.userToTask
+ * @summary Display available task/timeslot for a given user around a given date
+ * @locus client
+ * @name 'assignment.calendar.userToTask.user.date'  /assignment/userToTask/:userId/:selectedDate
+ */
 Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
         console.info("routing", '/assignment/userToTask/' + this.params.userId + '/' + this.params.selectedDate);
 
@@ -59,6 +75,12 @@ Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
     }
 );
 
+/**
+ * @memberOf Route.Assignment.userToTask
+ * @summary Display user availabilities 
+ * @locus client
+ * @name 'assignment.calendar.userToTask.user'  /assignment/userToTask/:userId/
+ */
 Router.route('/assignment/userToTask/:userId', function () {
         console.info("routing", '/assignment/userToTask/' + this.params.userId);
 

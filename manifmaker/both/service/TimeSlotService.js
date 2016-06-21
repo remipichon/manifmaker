@@ -190,7 +190,7 @@ export class TimeSlotService {
             return okGod
         }
 
-        static schemaCustomTimeSlotPeopleNeed(schemaContext){
+        static schemaCustomTimeSlot(schemaContext){
             //TODO $pull request doesn't use schema.custom...
             if (schemaContext.isUpdate) {
                 var task = Tasks.findOne(schemaContext.docId);

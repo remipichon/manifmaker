@@ -1,13 +1,20 @@
 import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
 
+/**
+ * @namespace Meteor_Publish
+ */
+//TODO namespace and memberof doesn't work with JSDoc
+
 Meteor.startup(function () {
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Users publication. Publish all Users data if role associated or only current user data
+     * @description
+     * Role required : USERREAD ou ASSIGNMENTTASKUSER
      *
-     * Role required : read
+     * Return current user if no role
      * @returns {Collection}
      */
     Meteor.publish("users", function () {
@@ -20,11 +27,11 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Tasks publication. No query, publish all Tasks data.
-     *
-     * Role required : read
+     * @description
+     * Role required : TASKREAD or ASSIGNMENTTASKUSER
      * @returns {Collection}
      */
     Meteor.publish("tasks", function () {
@@ -36,11 +43,11 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Assignments publication. No query, publish all Assignments data.
-     *
-     * Role required : assignment
+     * @description
+     * Role required : ASSIGNMENTTASKUSER
      * @returns {Collection}
      */
     Meteor.publish("assignments", function () {
@@ -51,7 +58,7 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Skills publication. No query, publish all Skills data.
      * @returns {Collection}
@@ -61,7 +68,7 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Teams publication. No query, publish all Teams data.
      * @returns {Collection}
@@ -71,7 +78,7 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Groups publication. No query, publish all Groups data.
      * @returns {Collection}
@@ -81,7 +88,7 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Places publication. No query, publish all Places data.
      * @returns {Collection}
@@ -91,10 +98,10 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary AssignmentTerms publication. No query, publish all AssignmentTerms data.
-     *
+     * @description
      * Role required : none
      * @returns {Collection}
      */
@@ -103,7 +110,7 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary GroupRoles publication. No query, publish all GroupRoles data.
      * @returns {Collection}
@@ -113,7 +120,7 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Roles publication. No query, publish all Roles data.
      * @returns {Collection}
@@ -124,7 +131,7 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Equipment Categories publication. No query, publish all Roles data.
      * @returns {Collection}
@@ -135,7 +142,7 @@ Meteor.startup(function () {
 
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Equipment Categories publication. No query, publish all Roles data.
      * @returns {Collection}
@@ -147,7 +154,7 @@ Meteor.startup(function () {
 
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Water supply publication. No query, publish all Roles data.
      * @returns {Collection}
@@ -157,7 +164,7 @@ Meteor.startup(function () {
     });
 
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Water disposal publication. No query, publish all Roles data.
      * @returns {Collection}
@@ -166,9 +173,8 @@ Meteor.startup(function () {
         return WaterDisposals.find({});
     });
 
-
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Equipments publication. No query, publish all Roles data.
      * @returns {Collection}
@@ -178,9 +184,8 @@ Meteor.startup(function () {
     });
 
 
-
     /**
-     * @memberOf Meteor Publish
+     * @memberOf Meteor_Publish
      * @locus server
      * @summary Equipment Storage publication. No query, publish all Roles data.
      * @returns {Collection}

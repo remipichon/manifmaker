@@ -1,6 +1,8 @@
 import {Schemas} from './SchemasHelpers'
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
+import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
 import {ValidationService} from "../../../both/service/ValidationService"
+import "/both/collection/model/T-Validation.js"
 
 //order matters !
 Schemas.EquipmentAsked = new SimpleSchema({
@@ -79,7 +81,7 @@ Schemas.PeopleNeed = new SimpleSchema({
         defaultValue: null,
         optional: true,
         custom: function () {
-            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            var cantUpdate = PeopleNeedService.schemaCustomPeopleNeed(this);
             if(cantUpdate) return cantUpdate;
 
             if (this.value) {
@@ -117,7 +119,7 @@ Schemas.PeopleNeed = new SimpleSchema({
         label: "People Need Team",
         optional: true,
         custom: function () {
-            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            var cantUpdate = PeopleNeedService.schemaCustomPeopleNeed(this);
             if(cantUpdate) return cantUpdate;
 
             if (!this.value) return 1;//autoValue already dit its job
@@ -150,7 +152,7 @@ Schemas.PeopleNeed = new SimpleSchema({
                 return [];
         },
         custom: function () {
-            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            var cantUpdate = PeopleNeedService.schemaCustomPeopleNeed(this);
             if(cantUpdate) return cantUpdate;
 
             _.each(this.value, function (skill) {
@@ -202,7 +204,7 @@ Schemas.TimeSlot = new SimpleSchema({
         type: Date,
         label: "TimeSlot Start Date",
         custom: function () {
-            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            var cantUpdate = TimeSlotService.schemaCustomTimeSlot(this);
             if(cantUpdate) return cantUpdate;
 
             var start, end, currentId, timeSlots;
@@ -248,7 +250,7 @@ Schemas.TimeSlot = new SimpleSchema({
         type: Date,
         label: " TimeSlot End Date",
         custom: function () {
-            var cantUpdate = TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            var cantUpdate = TimeSlotService.schemaCustomTimeSlot(this);
             if(cantUpdate) return cantUpdate;
 
             var start, end, currentId, timeSlots;
@@ -295,7 +297,7 @@ Schemas.TimeSlot = new SimpleSchema({
         label: "TimeSlot People needs",
         defaultValue: [],
         custom(){
-            return TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+            return PeopleNeedService.schemaCustomPeopleNeed(this);
         }
 
     },
@@ -394,7 +396,7 @@ Schemas.Tasks = new SimpleSchema({
         defaultValue: [],
         optional: true,
         custom(){
-           return TimeSlotService.schemaCustomTimeSlotPeopleNeed(this);
+           return TimeSlotService.schemaCustomTimeSlot(this);
         }
     },
     assignments: {
@@ -478,6 +480,7 @@ Schemas.Tasks = new SimpleSchema({
         optional: true,
         defaultValue: null,
         custom(){
+            if(this.value !== null && !EquipmentStorages.findOne(this.value)) return "unknownId"
             if (this.isUpdate) {
                 var task = Tasks.findOne(this.docId);
                 if(!ValidationService.isUpdateAllowed(task.equipmentValidation.currentState)){

@@ -1,4 +1,5 @@
 import {TimeSlotService} from "./TimeSlotService"
+import {ValidationService} from "./ValidationService"
 
 export class PeopleNeedService {
 
@@ -148,14 +149,16 @@ export class PeopleNeedService {
             peopleNeed.assignedUserId = userId;
             timeSlotToUpdate.peopleNeededAssigned.push(peopleNeed);
 
-            Tasks.update({_id: task._id},
+            return Tasks.update({_id: task._id},
                 {
                     $set: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
-                    },
-                    $push: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : peopleNeed
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded, //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : timeSlotToUpdate.peopleNeededAssigned
+                        //as $pull doesn't work, we need to update both peopleNeeded and peopleNeededAssigned in order to give a way for Task's schema to authorize updating peopleNeeded even when task is state is not open or refused
                     }
+                    //$push: {
+                    //    ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : peopleNeed
+                    //}
                 });
 
         }
@@ -276,5 +279,19 @@ export class PeopleNeedService {
                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
                    }
                 });
+        }
+
+
+        static schemaCustomPeopleNeed(schemaContext){
+            return 1;
+
+            //TODO a reactiver
+            if (schemaContext.isUpdate) {
+                var task = Tasks.findOne(schemaContext.docId);
+                if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+
         }
     }
