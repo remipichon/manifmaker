@@ -1,8 +1,5 @@
 date +"%m-%d-%y %T"
 echo 'ManifMaker doing fetch origin/deploy '
-
-cd ~/manifmaker
-git checkout deploy
-git pull
-
+docker stop manifmaker:deploy_demo
+docker run -rm manifmaker:deploy_demo
 

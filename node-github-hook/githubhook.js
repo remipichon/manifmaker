@@ -18,8 +18,8 @@ github.on('pull_request', function (repo, ref, data) {
   if(data.pull_request && data.pull_request.mergeable){
     sys.puts("a mergeable pull request occurs");
     if(data.pull_request.base.ref === "deploy"){
-      sys.puts("the pull request is on deploy, TODO : pull merged code ? pull source branch ? pull source and base and merge then run meteor test, get feedback, send POST status back to github (with error log in description");
-      
+      sys.puts("the pull request is on deploy");
+      exec("./launchCI.sh")
     }
   }
 });
@@ -35,8 +35,9 @@ github.on('push', function (repo, ref, data) {
   console.info("received a push event on branch "+branchName);
   if(branchName === "deploy"){
     sys.puts("push detected on "+branchName+". Launch deployManifmaker.sh script");
-
-    exec("/home/remip/node-github-hook/deployManiMaker.sh",puts)
+    exec("./deployManiMaker.sh",puts);
+    sys.puts("Launch updateDocHTML.sh script");
+    exec("./updateDocHTML.sh",puts);
 
   }
 });
