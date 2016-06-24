@@ -1,7 +1,8 @@
 <template name="AssignmentUserList">
     <h5 class="list-title">Users List</h5>
 
-    <form class="col s12">
+    <form class="col-md-12">
+        <!--TODO remettre un search bar trop styley-->
         <div class="row">
             <div class="input-field">
                 <input placeholder="" id="search_user_name" type="text" class="validate">
@@ -9,9 +10,11 @@
             </div>
         </div>
 
+        <!--TODO sera remplacé par SingleCustomSelect-->
         {{> commonTeamListDropdown}}
 
-        <div class="input-field col s12 reset-materialize-multiple-select">
+        <!--TODO sera remplacé par MultipleCustomSelect-->
+        <div class="input-field col-md-12 reset-materialize-multiple-select">
             <select id="filter_skills_user" multiple="multiple" class="browser-default">
                 {{#each allOptionsSkills}}
                     <option value="{{_id}}">{{label}}</option>
