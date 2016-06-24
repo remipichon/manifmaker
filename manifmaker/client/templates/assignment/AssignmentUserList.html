@@ -25,14 +25,18 @@
     </form>
 
 
-    <ul id="assignment-user-list-collapsible" class="collapsible " data-collapsible="accordion">
+    <div id="assignment-user-list-collapsible" class="panel-group">
         {{#each users}}
-            <li class="user" data-_id="{{_id}}">
-                <div class="collapsible-header">
-                    <a class="href-assignment-user">{{name}}</a>
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#assignment-user-list-collapsible"
+                     data-target="#{{_id}}">
+                    <h4 class="panel-title">
+                        <a class="href-assignment-user">{{name}}</a>
+                    </h4>
                 </div>
+                <div id="{{_id}}" class="panel-collapse collapse">
+                    <div class="panel-body">
 
-                    <div class="collapsible-body">
                         <div>
                             {{#each userTeamsWithoutGlobalTeam}}
                                 <div>{{team}}</div>
@@ -58,8 +62,10 @@
                         <!--<li>{{taskName}} from {{displayHours start}} to {{displayHours end}}</li>-->
                             <!--{{/each}}-->
                         <!--</ul>-->
+
                     </div>
-            </li>
+                </div>
+            </div>
         {{/each}}
-    </ul>
+    </div>
 </template>

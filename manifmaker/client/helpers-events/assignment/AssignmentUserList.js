@@ -17,10 +17,7 @@ class AssignmentUserList extends BlazeComponent {
             "change #filter_skills_user": this.performFilterSkills,
         }]
     }
-
-    onRendered(){
-        this.$('#assignment-user-list-collapsible').collapsible({});
-    }
+    
 
     onClickUserName(event) {
         event.stopPropagation();

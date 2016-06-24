@@ -35,50 +35,54 @@
 
     </form>
 
-    <ul  id="assignment-task-list-collapsible" class="collapsible " data-collapsible="accordion">
-
+    <div id="assignment-task-list-collapsible" class="panel-group">
         {{#each tasks}}
-            <li class="task" data-_id="{{_id}}">
-                <div class="collapsible-header">
-                    <a class="href-assignment-task">{{name}} {{timeSlotsInfo}}</a>
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#assignment-task-list-collapsible"
+                     data-target="#{{_id}}">
+                    <h4 class="panel-title">
+                        <a class="href-assignment-task">{{name}} {{timeSlotsInfo}}</a>
+                    </h4>
                 </div>
-                <div class="collapsible-body">
-                    <!--Timeslots :-->
-                    <ul>
-                        {{#each timeSlots}}
-                            <li class="time-slot" data-_id="{{_id}}">
-                                <!--from {{displayHours start}} to {{displayHours end}}-->
-                                <ul>
-                                    {{#each peopleNeeded}}
-                                        <li class="peopleNeed">
-                                            <div>
-                                                {{#each skills}}
-                                                    <div>{{skillLabel}}</div>
-                                                {{else}}
-                                                    <div>No specific skills</div>
-                                                {{/each}}
-                                            </div>
-                                            {{#if teamId}}
-                                                <div>{{team}}</div>
-                                            {{/if}}
-                                            {{#if userId}}
-                                                <div>{{user}}</div>
-                                            {{/if}}
-                                        </li>
-                                    {{/each}}
-                                </ul>
-                            </li>
-                        {{/each}}
-                    </ul>
-                    <!--Assignments :-->
-                    <!--<ul>-->
-                        <!--{{#each assignments}}-->
-                            <!--<li>{{userName}} from {{displayHours start}} to {{displayHours end}}</li>-->
-                        <!--{{/each}}-->
-                    <!--</ul>-->
+                <div id="{{_id}}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <!--Timeslots :-->
+                        <ul>
+                            {{#each timeSlots}}
+                                <li class="time-slot" data-_id="{{_id}}">
+                                    <!--from {{displayHours start}} to {{displayHours end}}-->
+                                    <ul>
+                                        {{#each peopleNeeded}}
+                                            <li class="peopleNeed">
+                                                <div>
+                                                    {{#each skills}}
+                                                        <div>{{skillLabel}}</div>
+                                                    {{else}}
+                                                        <div>No specific skills</div>
+                                                    {{/each}}
+                                                </div>
+                                                {{#if teamId}}
+                                                    <div>{{team}}</div>
+                                                {{/if}}
+                                                {{#if userId}}
+                                                    <div>{{user}}</div>
+                                                {{/if}}
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                </li>
+                            {{/each}}
+                        </ul>
+                        <!--Assignments :-->
+                        <!--<ul>-->
+                            <!--{{#each assignments}}-->
+                        <!--<li>{{userName}} from {{displayHours start}} to {{displayHours end}}</li>-->
+                            <!--{{/each}}-->
+                        <!--</ul>-->
+                    </div>
                 </div>
-            </li>
+            </div>
         {{/each}}
-    </ul>
+    </div>
 
 </template>
