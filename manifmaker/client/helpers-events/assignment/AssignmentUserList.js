@@ -11,7 +11,7 @@ class AssignmentUserList extends BlazeComponent {
     events() {
         return [{
             "click .href-assignment-user": this.onClickUserName,
-            "click li": this.onClickUser,
+            "click .user": this.onClickUser,
             "keyup #search_user_name": this.performSearch,
             "change .filter_team": this.performFilterTeam,
             "change #filter_skills_user": this.performFilterSkills,

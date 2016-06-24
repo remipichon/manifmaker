@@ -37,8 +37,9 @@
 
     <div id="assignment-task-list-collapsible" class="panel-group">
         {{#each tasks}}
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-parent="#assignment-task-list-collapsible"
+            <div class="task panel panel-default" data-_id="{{_id}}">
+
+            <div class="panel-heading" data-toggle="collapse" data-parent="#assignment-task-list-collapsible"
                      data-target="#{{_id}}">
                     <h4 class="panel-title">
                         <a class="href-assignment-task">{{name}} {{timeSlotsInfo}}</a>
