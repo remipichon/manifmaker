@@ -32,9 +32,9 @@
                     <div class="collapsible-body">
                         <div>
                             {{#each userTeamsWithoutGlobalTeam}}
-                                <div class="chip">{{team}}</div>
+                                <div>{{team}}</div>
                             {{else}}
-                                <div class="chip">User don't have any teams</div>
+                                <div>User don't have any teams</div>
                             {{/each}}
                         </div>
                         <!--Availabilities :-->
@@ -46,7 +46,7 @@
 
                         <div>
                             {{#each skills}}
-                                <div class="chip">{{skillLabel}}</div>
+                                <div>{{skillLabel}}</div>
                             {{/each}}
                         </div>
                         <!--Assignments :-->

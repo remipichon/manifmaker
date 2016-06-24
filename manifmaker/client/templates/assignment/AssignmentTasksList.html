@@ -44,21 +44,21 @@
                         {{#each timeSlots}}
                             <li class="time-slot" data-_id="{{_id}}">
                                 <!--from {{displayHours start}} to {{displayHours end}}-->
-                                <ul class="collection">
+                                <ul>
                                     {{#each peopleNeeded}}
-                                        <li class="peopleNeed collection-item">
+                                        <li class="peopleNeed">
                                             <div>
                                                 {{#each skills}}
-                                                    <div class="chip">{{skillLabel}}</div>
+                                                    <div>{{skillLabel}}</div>
                                                 {{else}}
-                                                    <div class="chip">No specific skills</div>
+                                                    <div>No specific skills</div>
                                                 {{/each}}
                                             </div>
                                             {{#if teamId}}
-                                                <div class="chip">{{team}}</div>
+                                                <div>{{team}}</div>
                                             {{/if}}
                                             {{#if userId}}
-                                                <div class="chip">{{user}}</div>
+                                                <div>{{user}}</div>
                                             {{/if}}
                                         </li>
                                     {{/each}}
