@@ -18,9 +18,9 @@
                     </div>
                     <div class="row">
                         <div class="custom-select-options">
-                            <ul class="collection">
+                            <ul>
                                 {{#each collectionItems}}
-                                    <li class="collection-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
+                                    <li><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
                                 {{/each}}
                             </ul>
                         </div>
@@ -39,11 +39,11 @@
                     <span class="col-md-1 custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
                 {{/if}}
             {{/unless}}
-            <ul class="collection">
+            <ul>
                 {{#each collectionSelectedItems}}
-                    <li class="collection-item">{{optionValue}}</li>
+                    <li>{{optionValue}}</li>
                 {{else}}
-                    <li class="collection-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
+                    <li>{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
                 {{/each}}
             </ul>
         </span>
@@ -75,12 +75,12 @@
                 </div>
                 <div class="row">
                     <div class="custom-select-options">
-                        <ul class="collection">
-                            <li class="collection-item">
+                        <ul>
+                            <li>
                                <div class="clear">{{clearMessage}}<i class="material-icons">delete</i></div>
                             </li>
                             {{#each collectionItems}}
-                                <li class="collection-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
+                                <li><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
                             {{/each}}
                         </ul>
                     </div>
@@ -99,11 +99,11 @@
                     <span class="col-md-1 custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
                 {{/if}}
             {{/unless}}
-            <ul class="collection">
+            <ul>
                 {{#each collectionSelectedItems}}
-                    <li class="collection-item">{{optionValue}}</li>
+                    <li>{{optionValue}}</li>
                 {{else}}
-                    <li class="collection-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
+                    <li>{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
                 {{/each}}
             </ul>
         </div>
@@ -116,9 +116,9 @@
 
 
 <template name="customSelectPopoverOption">
-    <ul class="collection">
+    <ul>
         {{#each collectionItemsPopover}}
-            <li class="collection-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
+            <li><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
         {{/each}}
     </ul>
 </template>
