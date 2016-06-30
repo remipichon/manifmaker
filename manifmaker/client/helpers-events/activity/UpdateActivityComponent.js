@@ -10,6 +10,11 @@ class UpdateActivityComponent extends BlazeComponent {
     }
 
 
+    activityDoc(){
+        return Activities.findOne(this.data()._id);
+    }
+
+
 }
 
 UpdateActivityComponent.register('UpdateActivityComponent');

@@ -3,5 +3,8 @@
 </template>
 
 <template name="updateActivityComponent">
-    Update activity {{_id}}
+    Update activity {{activityDoc.name}}
+
+    {{> quickForm collection="Activities" doc=activityDoc id="updateActivityForm" type="update"}}
+
 </template>
