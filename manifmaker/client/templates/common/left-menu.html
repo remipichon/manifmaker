@@ -5,6 +5,19 @@
             <li>{{> loginButtons}}</li>
             {{#if isInRole RolesEnum.MANIFMAKER}}
                 <li><a class="home-link" href="{{pathFor route='home'}}">Assomaker</a></li>
+                {{#if isInRole RolesEnum.ACITIVITYREAD}}
+                    <li>
+                        <div class="collapsible-header">Activity</div>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{{pathFor route='activity.list'}}">List</a></li>
+                                {{#if isInRole RolesEnum.ACITIVITYWRITE}}
+                                    <li><a href="{{pathFor route='activity.create'}}">Create</a></li>
+                                {{/if}}
+                            </ul>
+                        </div>
+                    </li>
+                {{/if}}
                 {{#if isInRole RolesEnum.TASKREAD}}
                     <li>
                         <div class="collapsible-header">Tasks</div>
