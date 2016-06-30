@@ -19,58 +19,67 @@
                 <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/53474/atom_profile_01.jpg">
             </div>
             <!-- Sidebar brand name -->
-            <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-                john.doe@gmail.com
-                <b class="caret"></b>
-            </a>
+            {{#if currentUser}}
+                <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+                    {{currentUser.username}}
+                    <b class="caret"></b>
+                </a>
+            {{else}}
+                {{> atForm}}
+
+            {{/if}}
         </div>
 
-        <!-- Sidebar navigation -->
-        <ul class="nav sidebar-nav">
+        {{#if currentUser}}
 
-            <li class="dropdown">
-                <ul id="settings-dropdown" class="dropdown-menu">
-                    <li><a href="{{pathFor route='user.write' data=currentUserId}}" tabindex="-1">Profile</a></li>
-                    <li><a href="/todo/disconnect" tabindex="-1">Exit</a></li>
-                </ul>
-            </li>
-            <li><a class="home-link" href="/">Home</a></li>
+            <!-- Sidebar navigation -->
+            <ul class="nav sidebar-nav">
 
-            {{#if isInRole RolesEnum.TASKREAD}}
                 <li class="dropdown">
-                    <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
-                        Tasks
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{pathFor route='task.list'}}">List</a></li>
-                        <li><a href="{{pathFor route='group.list'}}">Groups</a></li>
-                        {{#if isInRole RolesEnum.TASKWRITE}}
-                            <li><a href="{{pathFor route='task.create'}}">Create</a></li>
-                        {{/if}}
-                        <li><a href="{{pathFor route='task.stats'}}">Stats</a></li>
+                    <ul id="settings-dropdown" class="dropdown-menu">
+                        <li><a href="{{pathFor route='user.write' data=currentUserId}}" tabindex="-1">Profile</a></li>
+                        <li><a href="/logout" tabindex="-1">Logout</a></li>
                     </ul>
                 </li>
-            {{/if}}
+                <li><a class="home-link" href="/">Home</a></li>
 
-            {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
-                <li><a href="{{pathFor route='assignment.calendar'}}">Assignment</a></li>
-            {{/if}}
-            {{#if isInRole RolesEnum.USERREAD}}
-                <li><a href="{{pathFor route='user.list'}}">Users</a></li>
-            {{else}}
-                <li><a href="{{pathFor route='user.list'}}">Me</a></li>
-            {{/if}}
-            {{#if isInRole RolesEnum.CONFMAKER}}
-                <!--<li><a href="{{pathFor route='confMaker'}}">ConfMaker</a></li>-->
-                <li><a href="/conf-maker">ConfMaker</a></li>
-            {{/if}}
+                {{#if isInRole RolesEnum.TASKREAD}}
+                    <li class="dropdown">
+                        <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
+                            Tasks
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{pathFor route='task.list'}}">List</a></li>
+                            <li><a href="{{pathFor route='group.list'}}">Groups</a></li>
+                            {{#if isInRole RolesEnum.TASKWRITE}}
+                                <li><a href="{{pathFor route='task.create'}}">Create</a></li>
+                            {{/if}}
+                            <li><a href="{{pathFor route='task.stats'}}">Stats</a></li>
+                        </ul>
+                    </li>
+                {{/if}}
 
-        </ul>
-        <!-- Sidebar divider -->
-        <!-- <div class="sidebar-divider"></div> -->
+                {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+                    <li><a href="{{pathFor route='assignment.calendar'}}">Assignment</a></li>
+                {{/if}}
+                {{#if isInRole RolesEnum.USERREAD}}
+                    <li><a href="{{pathFor route='user.list'}}">Users</a></li>
+                {{else}}
+                    <li><a href="{{pathFor route='user.list'}}">Me</a></li>
+                {{/if}}
+                {{#if isInRole RolesEnum.CONFMAKER}}
+                    <!--<li><a href="{{pathFor route='confMaker'}}">ConfMaker</a></li>-->
+                    <li><a href="/conf-maker">ConfMaker</a></li>
+                {{/if}}
 
-        <!-- Sidebar text -->
-        <!--  <div class="sidebar-text">Text</div> -->
+            </ul>
+            <!-- Sidebar divider -->
+            <!-- <div class="sidebar-divider"></div> -->
+
+            <!-- Sidebar text -->
+            <!--  <div class="sidebar-text">Text</div> -->
+
+        {{/if}}
     </aside>
 </template>

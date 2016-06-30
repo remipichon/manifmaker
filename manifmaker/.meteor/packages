@@ -39,3 +39,4 @@ modules
 practicalmeteor:chai
 xolvio:cleaner
 practicalmeteor:mocha
+useraccounts:bootstrap
