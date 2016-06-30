@@ -50,8 +50,8 @@ Meteor.startup(function () {
      * @description
      * @returns {Collection}
      */
-    Meteor.publish("activity", function () {
-       return Activity.find({});
+    Meteor.publish("activities", function () {
+       return Activities.find({});
     });
 
 

@@ -23,11 +23,11 @@ Tasks = new Mongo.Collection("tasks");
 
 /**
  * @memberOf Collection
- * @summary Activity collection
+ * @summary Activities collection
  * @locus Anywhere
  * @instancename collectiono
  */
-Activity = new Mongo.Collection("activity");
+Activities = new Mongo.Collection("activities");
 
 /**
  * @memberOf Collection
@@ -58,6 +58,7 @@ Settings = new Mongo.Collection("settings");
 Tasks.attachSchema(Schemas.Tasks);
 TaskGroups.attachSchema(Schemas.TaskGroups);
 Activity.attachSchema(Schemas.Activity);
+Activities.attachSchema(Schemas.Activities);
 Assignments.attachSchema(Schemas.Assignments);
 Meteor.users.attachSchema(Schemas.User);
 Settings.attachSchema(Schemas.Settings);

@@ -1,6 +1,6 @@
 import {Schemas} from './SchemasHelpers'
 
-Schemas.Activity = new SimpleSchema({
+Schemas.Activities = new SimpleSchema({
     name: {
         type: String,
         label: "Task Name",
