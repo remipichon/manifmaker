@@ -29,6 +29,7 @@ export class InjectDataServerService {
         console.info("Accounts Meteor.users collection size is " + Meteor.users.find().fetch().length);
         console.info("Customs Meteor.users collection size is " + Meteor.users.find().fetch().length);
         console.info("Tasks collection size is " + Tasks.find().fetch().length);
+        console.info("Activities collection size is " + Activities.find().fetch().length);
         console.info("Assignments collection size is " + Assignments.find().fetch().length);
         console.info("Task Groups collection size is " + TaskGroups.find().fetch().length);
         console.info("Skills collection size is " + Skills.find().fetch().length);
@@ -42,6 +43,35 @@ export class InjectDataServerService {
         Settings.update(Settings.findOne()._id,{
             $set:{createAccountDefaultTeam: Teams.findOne()._id}
         })
+
+    }
+    /**
+     * @summmary delete all data
+     */
+    static deleteAll() {
+        Meteor.roles.remove({});
+        GroupRoles.remove({});
+        Meteor.users.remove({});
+
+        Users.remove({});
+
+        Assignments.remove({});
+        Tasks.remove({});
+        Activities.remove({});
+        Places.remove({});
+        Teams.remove({});
+        Groups.remove({});
+        Skills.remove({});
+        Teams.remove({});
+        EquipmentCategories.remove({});
+        Equipments.remove({});
+        WaterSupplies.remove({});
+        WaterDisposals.remove({});
+        PowerSupplies.remove({});
+        EquipmentStorages.remove({});
+
+        AssignmentTerms.remove({});
+
 
     }
 
@@ -647,6 +677,31 @@ export class InjectDataServerService {
             }
 
         });
+
+
+        //activities
+        var activity1 = Activities.insert({
+            name: "activity 1",
+            teamId: team1Id,
+            placeId: place1Id,
+            liveEventMasterId: user1Id,
+            masterId: user1Id
+        });
+        var activity2 = Activities.insert({
+            name: "activity 2",
+            teamId: team2Id,
+            placeId: place2Id,
+            liveEventMasterId: user2Id,
+            masterId: user2Id
+        });
+        var activity3 = Activities.insert({
+            name: "activity 3",
+            teamId: team2Id,
+            placeId: place3Id,
+            liveEventMasterId: user3Id,
+            masterId: user1Id
+        });
+    };
 
 
         //assignment user1 to task1
