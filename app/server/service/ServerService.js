@@ -1,9 +1,11 @@
 import {ServerAssignmentService} from "./ServerAssignmentService";
 import {ServerUserService} from "./ServerUserService";
 import {ServerTaskService} from "./ServerTaskService";
+<<<<<<< HEAD:app/server/service/ServerService.js
 import {ServerTaskGroupService} from "./ServerTaskGroupService";
 import {ServerGroupRoleService} from "./ServerGroupRoleService";
 import {ServerAssignmentTermService} from "./ServerAssignmentTermService";
+import {ServerActivityService} from "./ServerActivityService";
 import {ServerReferenceCollectionsService} from "./ServerReferenceCollectionsService";
 
 /**
@@ -51,6 +53,10 @@ export class ServerService {
         Meteor.users.before.insert(ServerUserService.allowInsert); //Meteor.users hooks are bypassed with .direct when registering a new user
         Meteor.users.before.update(ServerUserService.allowUpdate); //Meteor.users hooks are bypassed with .direct when registering a new user
         Meteor.users.before.remove(ServerUserService.allowDelete); //Meteor.users hooks are bypassed with .direct when registering a new user
+
+        Activities.before.insert(ServerActivityService.allowInsert);
+        Activities.before.update(ServerActivityService.allowUpdate);
+        Activities.before.remove(ServerActivityService.allowDelete);
 
         Assignments.before.insert(ServerAssignmentService.allowInsert);
         Assignments.before.update(ServerAssignmentService.allowUpdate);
