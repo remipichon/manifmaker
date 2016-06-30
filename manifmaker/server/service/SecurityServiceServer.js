@@ -9,9 +9,9 @@ export class SecurityServiceServer {
      */
     static grantAccessToItem(userId, neededRole, doc) {
         if (Roles.userIsInRole(userId, neededRole) ||
-            (Meteor.isDevelopment && Meteor.isServer) //TODO : MAX SECURITY BREACH : if a user is not logged in in dev mode, he will have all access
+            (Meteor.isDevelopment && !userId) //TODO : MAX SECURITY BREACH : if a user is not logged in in dev mode, he will have all access
         ) {
-            //console.info(`access granted with ${neededRole} on type item ${type} for user ${userId} to task ${doc._id}`);
+            console.info(`access granted with ${neededRole} on type item for user ${userId} to task ${doc._id}`);
         } else {
             console.error("thrown to client 403", `Forbidden, user ${userId} don't have access right ${neededRole}`);
             throw new Meteor.Error("403", `Forbidden, user don't have access right`);
