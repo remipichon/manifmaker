@@ -48,10 +48,14 @@ Meteor.startup(function () {
      * @locus server
      * @summary Activity publication. No query, publish all Tasks data.
      * @description
+     * Role required : ACTIVITYREAD
      * @returns {Collection}
      */
     Meteor.publish("activities", function () {
-       return Activities.find({});
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ACITIVITYREAD,"Activity"))
+            return Activities.find({});
+        else
+            return [];
     });
 
 
