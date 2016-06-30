@@ -57,6 +57,7 @@ Settings = new Mongo.Collection("settings");
 //using schema
 Tasks.attachSchema(Schemas.Tasks);
 TaskGroups.attachSchema(Schemas.TaskGroups);
+Activity.attachSchema(Schemas.Activity);
 Assignments.attachSchema(Schemas.Assignments);
 Meteor.users.attachSchema(Schemas.User);
 Settings.attachSchema(Schemas.Settings);
