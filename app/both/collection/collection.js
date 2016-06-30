@@ -20,6 +20,15 @@ import {Schemas} from './model/SchemasHelpers'
  * @instancename collectiono
  */
 Tasks = new Mongo.Collection("tasks");
+
+/**
+ * @memberOf Collection
+ * @summary Activity collection
+ * @locus Anywhere
+ * @instancename collectiono
+ */
+Activity = new Mongo.Collection("activity");
+
 /**
  * @memberOf Collection
  * @summary Assignments collection

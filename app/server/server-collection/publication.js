@@ -42,6 +42,19 @@ Meteor.startup(function () {
             return [];
     });
 
+
+    /**
+     * @memberOf Meteor_Publish
+     * @locus server
+     * @summary Activity publication. No query, publish all Tasks data.
+     * @description
+     * @returns {Collection}
+     */
+    Meteor.publish("activity", function () {
+       return Activity.find({});
+    });
+
+
     /**
      * @memberOf Meteor_Publish
      * @locus server
