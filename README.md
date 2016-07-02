@@ -160,7 +160,14 @@ When choosing what to do you have to keep in mind that Meteor is real time, if y
 and revert it right away, you will unefficiently use DDP, the clients will compute the data and probably display something for a short amount of time before the sytem reverts the changes.
 It can lead the GUI to flickr. That is why it is probably better **to check everything BEFORE** database operations **if you need more than one database update** to perform one operation/action).
 
+## Material design icon
 
+
+``` html
+<i class="mdi mdi-home"></i>
+```
+
+Icon definition can be found here : [https://materialdesignicons.com/](https://materialdesignicons.com/). 
 
 ## How to use home-made stuff
 

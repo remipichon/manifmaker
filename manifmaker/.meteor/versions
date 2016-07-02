@@ -27,6 +27,7 @@ caching-html-compiler@1.0.6
 callback-hook@1.0.9
 check@1.2.3
 coffeescript@1.1.1
+dapearce:material-icons@0.1.5
 ddp@1.2.5
 ddp-client@1.2.8
 ddp-common@1.2.6

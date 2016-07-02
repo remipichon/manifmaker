@@ -11,7 +11,7 @@
             <div class="top-bar">
                 <!-- Sidebar toggle button -->
                 <button type="button" class="sidebar-toggle btn btn-default navbar-btn" aria-label="Left Align">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                    <i class="mdi mdi-arrow-left"></i>
                 </button>
             </div>
             <!-- Sidebar brand image -->
@@ -37,34 +37,34 @@
 
                 <li class="dropdown">
                     <ul id="settings-dropdown" class="dropdown-menu">
-                        <li><a href="{{pathFor route='user.write' data=currentUserIdObject}}" tabindex="-1">Profile</a></li>
-                        <li><a href="/logout" tabindex="-1">Logout</a></li>
+                        <li><a href="{{pathFor route='user.write' data=currentUserIdObject}}" tabindex="-1"><i class="sidebar-icon mdi mdi-account"></i> Profile</a></li>
+                        <li><a href="/logout" tabindex="-1"><i class="sidebar-icon mdi mdi-logout"></i> Logout</a></li>
                     </ul>
                 </li>
-                <li><a class="home-link" href="{{pathFor route='home'}}">Home</a></li>
+                <li><a class="home-link" href="{{pathFor route='home'}}"><i class="sidebar-icon mdi mdi-home"></i> Home</a></li>
 
                 {{#if isInRole RolesEnum.TASKREAD}}
                     <li class="dropdown">
                         <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
-                            Tasks
+                            <i class="sidebar-icon mdi mdi-calendar-plus"></i> Tasks
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{pathFor route='task.list'}}">List</a></li>
-                            <li><a href="{{pathFor route='group.list'}}">Groups</a></li>
+                            <li><a href="{{pathFor route='task.list'}}"><i class="sidebar-icon mdi mdi-format-list-bulleted"></i> List</a></li>
+                            <li><a href="{{pathFor route='group.list'}}"><i class="sidebar-icon mdi mdi-folder"></i>  Groups</a></li>
                             {{#if isInRole RolesEnum.TASKWRITE}}
-                                <li><a href="{{pathFor route='task.create'}}">Create</a></li>
+                                <li><a href="{{pathFor route='task.create'}}"><i class="sidebar-icon mdi mdi-plus"></i> Create</a></li>
                             {{/if}}
-                            <li><a href="{{pathFor route='task.stats'}}">Stats</a></li>
+                            <li><a href="{{pathFor route='task.stats'}}"><i class="sidebar-icon mdi mdi-chart-line"></i>  Stats</a></li>
                         </ul>
                     </li>
                 {{/if}}
 
                 {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
-                    <li><a href="{{pathFor route='assignment.calendar'}}">Assignment</a></li>
+                    <li><a href="{{pathFor route='assignment.calendar'}}"><i class="sidebar-icon mdi mdi-calendar-multiple-check"></i> Assignment</a></li>
                 {{/if}}
                 {{#if isInRole RolesEnum.CONFMAKER}}
-                    <li><a href="{{pathFor route='conf-maker'}}">ConfMaker</a></li>
+                    <li><a href="{{pathFor route='conf-maker'}}"><i class="sidebar-icon mdi mdi-settings"></i> ConfMaker</a></li>
                 {{/if}}
 
             </ul>
