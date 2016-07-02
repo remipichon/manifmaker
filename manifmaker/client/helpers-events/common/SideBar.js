@@ -28,11 +28,6 @@ class SideBar extends BlazeComponent {
                 $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
             });
         });
-
-        $(document).on('hide.bs.dropdown', '#sideBar .dropdown', function (e) {
-            $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
-        });
-
     }
 
     template() {

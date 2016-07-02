@@ -41,7 +41,7 @@
                         <li><a href="/logout" tabindex="-1">Logout</a></li>
                     </ul>
                 </li>
-                <li><a class="home-link" href="/">Home</a></li>
+                <li><a class="home-link" href="{{pathFor route='home'}}">Home</a></li>
 
                 {{#if isInRole RolesEnum.TASKREAD}}
                     <li class="dropdown">
