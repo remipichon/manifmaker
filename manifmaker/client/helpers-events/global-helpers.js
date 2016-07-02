@@ -90,6 +90,14 @@ Template.registerHelper(
 );
 
 Template.registerHelper(
+    "currentUserIdObject", function () {
+        return {
+            _id: Users.findOne({loginUserId: Meteor.userId()})._id
+        }
+    }
+);
+
+Template.registerHelper(
     "currentUserTeamId", function () {
         return Users.findOne({loginUserId: Meteor.userId()}).teams[0]; //TODO which team to choose ?
     }

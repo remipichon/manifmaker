@@ -154,7 +154,7 @@ Router.route('/conf-maker', function () {
             to: 'mainContent'
         });
     },
-    {name: 'confMaker'}
+    {name: 'conf-maker'}
 );
 
 
