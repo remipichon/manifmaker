@@ -2,12 +2,16 @@
     <h5 class="list-title">Tasks List</h5>
 
     <form class="col s12">
-        <!--TODO remettre un search bar trop styley-->
+        <!--TODO ca va comme bar trop styley ?-->
         <div class="row">
-            <div class="input-field">
-                <input placeholder="" id="search_task_name" type="text" class="validate">
-                <label for="search_task_name"><i class="material-icons tiny">search</i>Task name..</label>
-            </div>
+            <div class="input-group">
+                <input type="text" class="form-control" id="search_task_name" placeholder="Search task...">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                  </button>
+                </span>
+            </div><!-- /input-group -->
         </div>
 
         <!--TODO sera remplacé par SingleCustomSelect-->
