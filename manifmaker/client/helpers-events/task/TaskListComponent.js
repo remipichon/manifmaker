@@ -24,9 +24,19 @@ class TaskListComponent extends BlazeComponent {
         var fields = [
             {
                 key: 'name',
-                label: 'Task name',
+                label: 'Name',
                 fnAdjustColumnSizing: true
             },
+            // TODO add GROUP
+            /*{
+                key: 'groupId',
+                label: 'Group',
+                fnAdjustColumnSizing: true,
+                searchable: false,
+                fn: function (groupId, Task) {
+                    return Groups.findOne(groupId).name;
+                }
+            },*/
             {
                 key: 'teamId',
                 label: 'Team',
@@ -45,12 +55,6 @@ class TaskListComponent extends BlazeComponent {
                     return timeSlots.length;
                 },
                 fnAdjustColumnSizing: true
-            },
-            {
-                label: 'Actions',
-                searchable: false, //TODO doesn't work (try with a teamId)
-                tmpl: Template.taskButtons,
-                fnAdjustColumnSizing: true
             }
         ];
 
@@ -60,6 +64,13 @@ class TaskListComponent extends BlazeComponent {
                 searchable: false, //TODO doesn't work (try with a teamId)
                 tmpl: Template.validationStateForList,
             });
+
+        fields.push({
+            label: 'Actions',
+                searchable: false, //TODO doesn't work (try with a teamId)
+            tmpl: Template.taskButtons,
+            fnAdjustColumnSizing: true
+        });
 
         return {
             collection: Tasks,

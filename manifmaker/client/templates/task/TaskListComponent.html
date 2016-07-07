@@ -4,59 +4,138 @@
 
 
 <template name="taskListComponent">
-    <div class="task-list-filter-wrapper input-field col s12">
-        {{> commonTeamListDropdown id="task-list-team-selector"}}
+
+    {{validateForm}}
+
+    <div>
+        {{#if isInRole RolesEnum.TASKWRITE}}
+            <a class="btn btn-primary pull-right" href="/task">Create a new Task</a>
+        {{/if}}
+
+        <h1>Tasks List</h1>
+
+    </div>
+    <div class="row task-list-filter-wrapper ">
+        <div class="input-field col s12">
+            {{> commonTeamListDropdown id="task-list-team-selector"}}
+        </div>
+
+        <div class="col-md-3">
+            <div class="input-group">
+                <input type="text" class="form-control" id="search_task_name" placeholder="Search task...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">
+                          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      </button>
+                    </span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            {{> SingleSelectComponent selectLabel="Task responsible" title="Task responsible"
+            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+            updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="masterId"
+            nothingSelectedLabel="No one" quickSelectLabel="select yourself" quickSelectId=currentUserId
+            }}
+        </div>
+
+        <div class="col-md-3">
+            {{> SingleSelectComponent selectLabel="Team" title="Select a team"
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teamId"
+            nothingSelectedLabel="None" quickSelectLabel="select yours" quickSelectId=currentUserTeamId id="task-list-team-selector"
+            }}
+        </div>
+
+        <div class="col-md-3">
+            <a class="btn btn-primary" href="">More</a>
+        </div>
+    </div>
+    <div class="row">
+
     </div>
 
     {{> reactiveTable settings=tasksList }}
 
-    {{#if isInRole RolesEnum.TASKWRITE}}
-        <a href="/task">Create a new Task</a>
-    {{/if}}
 </template>
 
 
 <template name="taskButtons">
     {{#if isInRole RolesEnum.TASKWRITE}}
-        <a class="btn btn-primary" href="/task/{{_id}}">Update</a>
+        <a class="btn btn-primary" href="/task/{{_id}}" role="button"> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
     {{else}}
         {{#if isInRole RolesEnum.TASKREAD}}
             <a class="btn btn-primary" href="/task/{{_id}}/read">Read</a>
         {{/if}}
     {{/if}}
     {{#if isInRole RolesEnum.TASKDELETE}}
-        {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete{{/quickRemoveButton}}
+        {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}} <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>{{/quickRemoveButton}}
     {{/if}}
 </template>
 
 <template name="validationStateForList">
+    <div class="task-list-filter-wrapper">
+        {{#if equals timeSlotValidation.currentState "OPEN"}}
+           <span class="open" title="Time slots are open for anything">
+               <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+        {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
+            <span class="tobevalidated"  title='Time slots has been submitted to validation by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}} with "{{lastComment "content" "timeSlotValidation"}}"'>
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+        {{#if equals timeSlotValidation.currentState "REFUSED"}}
+            <span class="refused" title='Time slots has been refused by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}} with "{{lastComment "content" "timeSlotValidation"}}"'>
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+        {{#if equals timeSlotValidation.currentState "READY"}}
+            <span class="validated" title='Time slots has been validated by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}}'>
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+            </span>
+        {{/if}}
 
-    {{#if equals timeSlotValidation.currentState "OPEN"}}
-        Time slots are <b>open</b> for anything
-    {{/if}}
-    {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
-        Time slots has been <b>submitted</b> to validation by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}} with "{{lastComment "content" "timeSlotValidation"}}"
-    {{/if}}
-    {{#if equals timeSlotValidation.currentState "REFUSED"}}
-        Time slots has been <b>refused</b> by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}} with "{{lastComment "content" "timeSlotValidation"}}"
-    {{/if}}
-    {{#if equals timeSlotValidation.currentState "READY"}}
-        Time slots has been <b>validated</b> by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}}
-    {{/if}}
+        {{#if equals equipmentValidation.currentState "OPEN"}}
+            <span class="open" title="Equipments are open for anything">
+                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+        {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
+            <span class="tobevalidated" title='Equipments has been submitted to validation by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime equipmentValidation.lastUpdateDate}} with "{{lastComment "content" "equipmentValidation"}}"'>
+                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+        {{#if equals equipmentValidation.currentState "REFUSED"}}
+            <span class="refused" title='Equipments has been refused by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime equipmentValidation.lastUpdateDate}} with "{{lastComment "content" "equipmentValidation"}}"'>
+                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+        {{#if equals equipmentValidation.currentState "READY"}}
+            <span class="validated" title='Equipments has been validated by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime equipmentValidation.lastUpdateDate}}'>
+                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            </span>
+        {{/if}}
 
-    <br>
-
-    {{#if equals equipmentValidation.currentState "OPEN"}}
-        Equipments are <b>open</b> for anything
-    {{/if}}
-    {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
-        Equipments has been <b>submitted</b> to validation by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}} with "{{lastComment "content" "equipmentValidation"}}"
-    {{/if}}
-    {{#if equals equipmentValidation.currentState "REFUSED"}}
-        Equipments has been <b>refused</b> by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}} with "{{lastComment "content" "equipmentValidation"}}"
-    {{/if}}
-    {{#if equals equipmentValidation.currentState "READY"}}
-        Equipments has been <b>validated</b> by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}}
-    {{/if}}
-
+        {{#if equals accessPassValidation.currentState "OPEN"}}
+            <span class="open" title="Security is open for anything">
+                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+        {{#if equals accessPassValidation.currentState "TOBEVALIDATED"}}
+            <span class="tobevalidated" title='Security has been submitted to validation by {{lastComment "author" "accessPassValidation"}} on {{displayDateTime accessPassValidation.lastUpdateDate}} with "{{lastComment "content" "accessPassValidation"}}"'>
+                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+        {{#if equals accessPassValidation.currentState "REFUSED"}}
+            <span class="refused" title='Security has been refused by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime accessPassValidation.lastUpdateDate}} with "{{lastComment "content" "accessPassValidation"}}"'>
+                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+        {{#if equals accessPassValidation.currentState "READY"}}
+            <span class="validated" title='Security has been validated by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime accessPassValidation.lastUpdateDate}}'>
+                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            </span>
+        {{/if}}
+    </div>
 </template>
