@@ -5,20 +5,42 @@ class TaskListComponent extends BlazeComponent {
 
     events() {
         return [{
-            "change #task-list-team-selector": this.filterTeam
+            "change #task-list-team-selector": this.filterTeam,
+            "keyup #search_task_name": this.filterName,
+            "click #advanced-search-button": this.switchAdvanced,
         }];
     }
 
+    switchAdvanced(event){
+        if(this.isSearchAdvanced()) {
+            document.getElementById("advanced-search-button").innerHTML='More <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>';
+        }else{
+            document.getElementById("advanced-search-button").innerHTML='Less <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>';
+        }
+        this.taskListAdvancedSearch.set(!this.isSearchAdvanced());
+    }
+
+    isSearchAdvanced(){
+        return this.taskListAdvancedSearch.get();
+    }
 
     filterTeam(event) {
         event.preventDefault();
         var _id = $(event.target).val();
         this.taskListTeamFilter.set(_id);
     }
+    filterName(event) {
+        event.preventDefault();
+        var _id = $(event.target).val();
+        this.taskListNameFilter.set(_id);
+    }
 
     onCreated() {
         this.taskListTeamFilter = new ReactiveTable.Filter("task-list-team-filter", ["teamId"]);
+        this.taskListNameFilter = new ReactiveTable.Filter('search-task-name-filter', ['name']);
+        this.taskListAdvancedSearch = new ReactiveVar(false);
     }
+
 
     tasksList() {
         var fields = [
@@ -61,13 +83,16 @@ class TaskListComponent extends BlazeComponent {
         if (Roles.userIsInRole(Meteor.userId(), RolesEnum.TASKWRITE))
             fields.push({
                 label: 'Validation',
+                sortable: false,
                 searchable: false, //TODO doesn't work (try with a teamId)
                 tmpl: Template.validationStateForList,
+                fnAdjustColumnSizing: true
             });
 
         fields.push({
             label: 'Actions',
-                searchable: false, //TODO doesn't work (try with a teamId)
+            sortable: false,
+            searchable: false, //TODO doesn't work (try with a teamId)
             tmpl: Template.taskButtons,
             fnAdjustColumnSizing: true
         });
@@ -75,9 +100,9 @@ class TaskListComponent extends BlazeComponent {
         return {
             collection: Tasks,
             rowsPerPage: 10,
-            showFilter: true,
+            showFilter: false,
             showRowCount: true,
-            filters: ['task-list-team-filter'],
+            filters: ['task-list-team-filter','search-task-name-filter'],
             fields: fields
         }
     }
