@@ -28,37 +28,165 @@ export class SelectComponent extends BlazeComponent {
             //to implement and use updateOption
         }
 
+        //TODO oCaA : optionCollection as array
+        //TODO  nOC : no update collection
         initializeData() {
-            //select popover init arguments
+
+            /**
+             * optionCollection
+             * required
+             * @type Mongo Collection in the window scope(findAll will be used) OR array
+             *
+             * Les options du select
+             */
+            //TODO oCaA :que faire ????
             if (!this.data().optionCollection || !window[this.data().optionCollection])
                 throw new Meteor.Error(this.constructor.name + " : optionCollection should be Collection instance in the window scope. Given :" + this.data().optionCollection);
             this.optionCollection = window[this.data().optionCollection]; //should be in window scope
+
+            /**
+             * optionCollectionIndex
+             * required if optionCollection is a Collection Mongo
+             * @type EasySearch.Index instance in the window scope
+             */
+            //TODO oCaA : que faire ????
             if (!this.data().optionCollectionIndex || !window[this.data().optionCollectionIndex])
                 throw new Meteor.Error(this.constructor.name + " : optionCollectionIndex should be EasySearch.Index instance in the window scope. Given :" + this.data().optionCollectionIndex);
             this.optionCollectionIndex = window[this.data().optionCollectionIndex];
-            this.optionValueName = this.data().optionValueName || "name";
-            this.title = this.data().title || "Update " + this.data().optionCollection;
-            this.selectLabel = this.data().selectLabel || this.data().updateCollection + "' " + this.data().optionCollection;
-            this.filterPlaceHolder = this.data().filterPlaceHolder || "Filter by " + this.optionValueName;
-            this.nothingSelectedLabel = this.data().nothingSelectedLabel || "Nothing yet selected";
-            this.withoutLabel = this.data().withoutLabel || false;
 
-            //item update arguments
+            /**
+             * optionValueName
+             * default if optionCollection is a Collection Mongo else don't set it: "name"
+             * @type {string}
+             *
+             * Name of the field where the label of the option will be found to be displayed in the popover
+             */
+            //TODO oCaA : que faire ????
+            this.optionValueName = this.data().optionValueName || "name";
+
+            //TODO  nOC : insert an item in the TempCollection as {_id: generated, selectedOption: null}
             if (!this.data().updateCollection || !window[this.data().updateCollection])
                 throw new Meteor.Error(this.constructor.name + " : updateCollection should be Collection instance in the window scope");
-            this.updateCollection = this.data().updateCollection; //should be in window scope
-            this.updateItemId = this.data().updateItemId; //mongoId
-            this.updateItemPath = this.data().updateItemPath; //path to an array
-            this.pathWithArray = this.data().pathWithArray || null;
 
-            //quick select arguments
+            /**
+             * Mongo Collection in the window scope
+             *
+             * Mongo Collection from which an item will be automacally updated when select changes.
+             * If not provided, you should use an updateCallback to handle yourself whatever you want to do with the custom select.
+             */
+            this.updateCollection = this.data().updateCollection; 
+            /**
+             * mongoId
+             * required if updateCollection is provided
+             * 
+             * _id of the item to be updated (need to be in updateCollection, of course)
+             */
+            //TODO  nOC : set to the item._id inserted previously
+            this.updateItemId = this.data().updateItemId;
+            /**
+             * path to an array
+             * required if updateCollection is provided and pathWithArray is not
+             *
+             * dot path to nested field to be updated
+             */
+            //TODO  nOC : set to "selectedOption"
+            this.updateItemPath = this.data().updateItemPath; //path to an array
+            /**
+             * 
+             * required if updateCollection is provided and updateItemPath is not
+             *
+             * JSON object to update a nested field which is itself in an array of object with an unique _id.
+             * See optionsToUpdate for more information
+             */
+            //TODO  nOC : unused
+            this.pathWithArray = this.data().pathWithArray || null;
+            
+
             if (this.data().quickSelectLabel && (this.data().quickSelectIds || this.data().quickSelectId)) {
                 this.quickSelectId = this.data().quickSelectId || null;
                 this.quickSelectIds = this.data().quickSelectIds || null;
                 this.quickSelectLabel = this.data().quickSelectLabel;
             }
 
+            /**
+             *  required if updateCollection is not provided
+             *  function
+             *
+             *  Called with an error object as the first argument and, if no error, the number of affected documents as the second and an array of the selected options as the third.
+             *  Required if updateCollection is not provided but can be used even if updateCollection is provided
+             */
+            //TODO  nOC : it's required
             this.updateCallback = this.data().updateCallback;
+
+            /**
+             * title
+             * default : "Update " + optionCollection
+             * @type {string}
+             *
+             * Popover title
+             */
+            this.title = this.data().title || "Update " + this.data().optionCollection;
+
+            /**
+             * selectLabel
+             * default : title
+             * @type {string}
+             *
+             * Label of the select component (not the popover title)
+             */
+            this.selectLabel = this.data().selectLabel || this.data().updateCollection + "' " + this.data().optionCollection;
+
+            /**
+             * default Filter by  + optionValueName
+             * @type {string}
+             *
+             * Search input text placeholder
+             */
+            this.filterPlaceHolder = this.data().filterPlaceHolder || "Filter by " + this.optionValueName;
+
+            /**
+             * default : Nothing yet selected
+             * @type {string}
+             */
+            this.nothingSelectedLabel = this.data().nothingSelectedLabel || "Nothing yet selected";
+
+            /**
+             * default : false
+             * @type {boolean}
+             *
+             * Compact form where selectLabel is not used
+             */
+            this.withoutLabel = this.data().withoutLabel || false;
+
+            /**
+             * default -1
+             * @type {number}
+             *
+             * Number of selected options displayed. If -1, all selected options are displayed. Else, if more than
+             * maxSelectedOptionDisplayed options are selected, a count is displayed with maxSelectedOptionDisplayedLabel
+             */
+            //TODO maxSelectedOptionDisplayed : tout
+            this.maxSelectedOptionDisplayed = this.data().maxSelectedOptionDisplayed || -1;
+
+            /**
+             * default optionCollection + selected
+             * @type {string}
+             * 
+             * label to display if maxSelectedOptionDisplayed is reached. Number of selected options will be added
+             * ad the beginning of the string. 
+             */
+            //TODO maxSelectedOptionDisplayedLabel : tout
+            this.maxSelectedOptionDisplayedLabel = this.data().maxSelectedOptionDisplayedLabel || this.optionCollection + " selected";
+
+            /**
+             * default false
+             * @type {boolean}
+             *
+             * If true, selected options are on top of the popover list
+             */
+            //TODO selectedOptionSortedOnTopOfList : TOUT
+            this.selectedOptionSortedOnTopOfList = this.data().selectedOptionSortedOnTopOfList || false;
+
 
             this.checkItemPath();
         }  

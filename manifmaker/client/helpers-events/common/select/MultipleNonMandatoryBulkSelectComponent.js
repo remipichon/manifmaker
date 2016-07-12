@@ -4,6 +4,8 @@ import {MultipleNonMandatorySelectComponent} from "./MultipleNonMandatorySelectC
 class MultipleNonMandatoryBulkSelectComponent extends MultipleNonMandatorySelectComponent {
     initializeData() {
         super.initializeData();
+
+        //TODO add docs
         this.bulkPeopleNeededIds = this.data().bulkPeopleNeededIds;
 
         //reconstructing pathWithArray with only _id on the LAST path from bulk
