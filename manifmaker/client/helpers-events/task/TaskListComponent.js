@@ -13,9 +13,9 @@ class TaskListComponent extends BlazeComponent {
 
     switchAdvanced(event){
         if(this.isSearchAdvanced()) {
-            document.getElementById("advanced-search-button").innerHTML='More <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>';
+            document.getElementById("advanced-search-button").innerHTML='More <i class="mdi mdi-chevron-down mdi-inline"></i>';
         }else{
-            document.getElementById("advanced-search-button").innerHTML='Less <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>';
+            document.getElementById("advanced-search-button").innerHTML='Less <i class="mdi mdi-chevron-up mdi-inline"></i>';
         }
         this.taskListAdvancedSearch.set(!this.isSearchAdvanced());
     }
