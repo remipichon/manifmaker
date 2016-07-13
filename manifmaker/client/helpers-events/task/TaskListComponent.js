@@ -11,6 +11,10 @@ class TaskListComponent extends BlazeComponent {
         }];
     }
 
+    /**
+     * Switch between hiding and showing the advanced search menu
+     * @param event
+     */
     switchAdvanced(event){
         if(this.isSearchAdvanced()) {
             document.getElementById("advanced-search-button").innerHTML='More <i class="mdi mdi-chevron-down mdi-inline"></i>';
@@ -47,12 +51,16 @@ class TaskListComponent extends BlazeComponent {
             {
                 key: 'name',
                 label: 'Name',
+                cellClass: 'col-sm-3',
+                headerClass: 'col-sm-3',
                 fnAdjustColumnSizing: true
             },
             // TODO add GROUP
             /*{
                 key: 'groupId',
                 label: 'Group',
+                cellClass: 'col-sm-2',
+                headerClass: 'col-sm-2',
                 fnAdjustColumnSizing: true,
                 searchable: false,
                 fn: function (groupId, Task) {
@@ -62,6 +70,8 @@ class TaskListComponent extends BlazeComponent {
             {
                 key: 'teamId',
                 label: 'Team',
+                cellClass: 'col-sm-2',
+                headerClass: 'col-sm-2',
                 fnAdjustColumnSizing: true,
                 searchable: false, //TODO doesn't work (try with a teamId)
                 fn: function (teamId, Task) {
@@ -71,6 +81,8 @@ class TaskListComponent extends BlazeComponent {
             {
                 key: 'timeSlots',
                 label: 'Time slots count',
+                cellClass: 'col-sm-1 text-center',
+                headerClass: 'col-sm-1 text-center',
                 searchable: false, //TODO doesn't work (try with a teamId)
                 sortable: false,
                 fn: function (timeSlots, Task) {
@@ -83,6 +95,8 @@ class TaskListComponent extends BlazeComponent {
         if (Roles.userIsInRole(Meteor.userId(), RolesEnum.TASKWRITE))
             fields.push({
                 label: 'Validation',
+                cellClass: 'col-sm-2 text-center',
+                headerClass: 'col-sm-2 text-center',
                 sortable: false,
                 searchable: false, //TODO doesn't work (try with a teamId)
                 tmpl: Template.validationStateForList,
@@ -91,6 +105,8 @@ class TaskListComponent extends BlazeComponent {
 
         fields.push({
             label: 'Actions',
+            cellClass: 'col-sm-2 text-center',
+            headerClass: 'col-sm-2 text-center',
             sortable: false,
             searchable: false, //TODO doesn't work (try with a teamId)
             tmpl: Template.taskButtons,
