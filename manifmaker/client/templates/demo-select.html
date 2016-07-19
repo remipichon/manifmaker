@@ -3,6 +3,24 @@
 
     <div class="form-group">
         <div class="col-md-3">
+            {{> MultipleSelectComponent selectLabel="maxSelectedOptionDisplayed = 0"
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+            maxSelectedOptionDisplayed=0}}
+        </div>
+        <div class="col-md-3">
+            {{> MultipleSelectComponent selectLabel="maxSelectedOptionDisplayed = 2"
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+            maxSelectedOptionDisplayed=2}}
+        </div>
+        <div class="col-md-3">
+            {{> MultipleSelectComponent selectLabel="maxSelectedOptionDisplayed = 1"
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+            maxSelectedOptionDisplayed=1 maxSelectedOptionDisplayedLabel=" teams in dha select"}}
+        </div>
+        <div class="col-md-3">
             {{> MultipleSelectComponent selectLabel="'user1' teams" filterPlaceHolder="Filter by team name..." title="Update teams..."
             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
             updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}

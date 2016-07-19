@@ -39,13 +39,19 @@
                     <span class="col-md-1 custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
                 {{/if}}
             {{/unless}}
-            <ul class="list-group">
-                {{#each collectionSelectedItems}}
-                    <li class="list-group-item">{{optionValue}}</li>
-                {{else}}
-                    <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
-                {{/each}}
-            </ul>
+            {{#if maxSelectedOptionDisplayed}}
+                <ul class="list-group">
+                    {{#unless maxSelectedOptionDisplayedReached}}
+                        {{#each collectionSelectedItems}}
+                            <li class="list-group-item">{{optionValue}}</li>
+                        {{else}}
+                            <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
+                        {{/each}}
+                    {{else}}
+                        <li class="list-group-item">{{cursorLength collectionSelectedItems}}{{maxSelectedOptionDisplayedLabel}}</li>
+                    {{/unless}}
+                </ul>
+            {{/if}}
         </span>
 
     </div>

@@ -158,15 +158,20 @@ export class SelectComponent extends BlazeComponent {
              */
             this.withoutLabel = this.data().withoutLabel || false;
 
+            var value = parseInt(this.data().maxSelectedOptionDisplayed);
             /**
              * default -1
              * @type {number}
              *
-             * Number of selected options displayed. If -1, all selected options are displayed. Else, if more than
-             * maxSelectedOptionDisplayed options are selected, a count is displayed with maxSelectedOptionDisplayedLabel
+             * Number of selected options displayed. If -1, all selected options are displayed. If 0, so selected options are displayed. Else, if more than
+             * maxSelectedOptionDisplayed options are selected, a count is displayed with maxSelectedOptionDisplayedLabel. 
+             * 
+             * Note : Any value greater than 0 are unless if the component is a SingleSelectComponent as no more than one selected options will ever be displayed. 
              */
-            //TODO maxSelectedOptionDisplayed : tout
-            this.maxSelectedOptionDisplayed = this.data().maxSelectedOptionDisplayed || -1;
+            if(value === 0) //0 is a falsy value
+                this.maxSelectedOptionDisplayed = value;
+            else
+                this.maxSelectedOptionDisplayed = value || -1;
 
             /**
              * default optionCollection + selected
@@ -175,8 +180,7 @@ export class SelectComponent extends BlazeComponent {
              * label to display if maxSelectedOptionDisplayed is reached. Number of selected options will be added
              * ad the beginning of the string. 
              */
-            //TODO maxSelectedOptionDisplayedLabel : tout
-            this.maxSelectedOptionDisplayedLabel = this.data().maxSelectedOptionDisplayedLabel || this.optionCollection + " selected";
+            this.maxSelectedOptionDisplayedLabel = this.data().maxSelectedOptionDisplayedLabel || " " + this.data().optionCollection + " selected";
 
             /**
              * default false
@@ -360,6 +364,11 @@ export class SelectComponent extends BlazeComponent {
 
         performSearch(e) {
             this.searchQuery.set($(e.target).val());
+        }
+
+        maxSelectedOptionDisplayedReached(){
+            if(this.maxSelectedOptionDisplayed === -1) return false;
+            return this.collectionSelectedItems().fetch().length > this.maxSelectedOptionDisplayed;
         }
 
     }
