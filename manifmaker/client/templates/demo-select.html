@@ -21,9 +21,10 @@
             maxSelectedOptionDisplayed=1 maxSelectedOptionDisplayedLabel=" teams in dha select"}}
         </div>
         <div class="col-md-3">
-            {{> MultipleSelectComponent selectLabel="'user1' teams" filterPlaceHolder="Filter by team name..." title="Update teams..."
+            {{> MultipleSelectComponent selectLabel="'user1' teams with sorted selected" filterPlaceHolder="Filter by team name..." title="Update teams..."
             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"}}
+            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+            selectedOptionSortedOnTopOfList=true}}
         </div>
         <div class="col-md-3">
             {{> MultipleSelectComponent

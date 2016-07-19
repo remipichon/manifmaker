@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="custom-select-options">
                             <ul class="list-group">
-                                {{#each collectionItems}}
+                                {{#each sortedCollectionItems}}
                                     <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
                                 {{/each}}
                             </ul>

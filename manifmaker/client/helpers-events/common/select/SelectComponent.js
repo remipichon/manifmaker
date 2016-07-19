@@ -188,7 +188,6 @@ export class SelectComponent extends BlazeComponent {
              *
              * If true, selected options are on top of the popover list
              */
-            //TODO selectedOptionSortedOnTopOfList : TOUT
             this.selectedOptionSortedOnTopOfList = this.data().selectedOptionSortedOnTopOfList || false;
 
 
@@ -219,6 +218,35 @@ export class SelectComponent extends BlazeComponent {
 
         collectionItems() {
             return this.optionCollection.find();
+        }
+
+        /**
+         * @summary If selectedOptionSortedOnTopOfList is true, sort selection options on top of the options list while keeping original order
+         */
+        sortedCollectionItems() {
+            if (this.selectedOptionSortedOnTopOfList) {
+                //it would have been cool to have mongo aggregation client side
+                var selectedOptions = this.collectionSelectedItems().fetch();
+                var selectedOptionsIds = _.map(selectedOptions, function (option) {
+                    return option._id
+                });
+                var allOptions = this.collectionItems().fetch();
+                var result = [], index = 0;
+
+                _.each(allOptions, function (option) {
+                    if (_.contains(selectedOptionsIds, option._id)) {
+                        // result.unshift(option);
+                        result.splice(index++, 0, option);
+                    } else {
+                        result.push(option);
+                    }
+                });
+
+                return result;
+            } else {
+                return this.collectionItems();
+            }
+
         }
 
         /**
