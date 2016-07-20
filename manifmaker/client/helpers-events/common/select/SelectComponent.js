@@ -56,13 +56,16 @@ export class SelectComponent extends BlazeComponent {
 
             /**
              * optionValueName
-             * default if optionCollection is a Collection Mongo else don't set it: "name"
+             * required if optionCollection is a Collection Mongo
              * @type {string}
              *
-             * Name of the field where the label of the option will be found to be displayed in the popover
+             * MongoDb field of the option label to be displayed (in the selectable list in the popover and the list displaying
+             * the selected options
              */
             //TODO oCaA : que faire ????
-            this.optionValueName = this.data().optionValueName || "name";
+            if (!this.data().optionValueName)
+                throw new Meteor.Error(this.constructor.name + " : optionValueName should be defined. Giver : " + this.data().optionValueName);
+            this.optionValueName = this.data().optionValueName;
 
 
             /**
@@ -128,6 +131,25 @@ export class SelectComponent extends BlazeComponent {
                 this.updateCallback = this.data().updateCallback;
             }
 
+            /**
+             * If nothing is selected, allow user to quickly select predefined option(s) without opening the popover
+             * If defined, either quickSelectId (SingleSelect) or quickSelectIds (MultipleSelect) should be defined. 
+             * @type {String}
+             */
+            this.quickSelectLabel;
+
+            /**
+             * Required if quickSelectLabel is defined. Works on a SingleSelect only.
+             * @type {MongoId}
+             */
+            this.quickSelectId;
+
+            /**
+             * Required if quickSelectLabel is defined. Works on a MultipleSelect only.
+             * @type {Array<MongoId>}
+             */
+            this.quickSelectIds;
+            
             if (this.data().quickSelectLabel && (this.data().quickSelectIds || this.data().quickSelectId)) {
                 this.quickSelectId = this.data().quickSelectId || null;
                 this.quickSelectIds = this.data().quickSelectIds || null;
