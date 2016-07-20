@@ -28,6 +28,9 @@ export class SelectComponent extends BlazeComponent {
         //TODO oCaA : optionCollection as array
         //TODO  nOC : no update collection
         initializeData() {
+            if(this.isDataInitialized)
+                return;
+            this.isDataInitialized = true;
 
             /**
              * optionCollection
@@ -61,9 +64,6 @@ export class SelectComponent extends BlazeComponent {
             //TODO oCaA : que faire ????
             this.optionValueName = this.data().optionValueName || "name";
 
-            //TODO  nOC : insert an item in the TempCollection as {_id: generated, selectedOption: null}
-            if (!this.data().updateCollection || !window[this.data().updateCollection])
-                throw new Meteor.Error(this.constructor.name + " : updateCollection should be Collection instance in the window scope");
 
             /**
              * Mongo Collection in the window scope
@@ -71,39 +71,29 @@ export class SelectComponent extends BlazeComponent {
              * Mongo Collection from which an item will be automacally updated when select changes.
              * If not provided, you should use an updateCallback to handle yourself whatever you want to do with the custom select.
              */
-            this.updateCollection = this.data().updateCollection; 
+            this.updateCollection;
             /**
              * mongoId
              * required if updateCollection is provided
-             * 
+             *
              * _id of the item to be updated (need to be in updateCollection, of course)
              */
-            //TODO  nOC : set to the item._id inserted previously
-            this.updateItemId = this.data().updateItemId;
+            this.updateItemId;
             /**
              * path to an array
              * required if updateCollection is provided and pathWithArray is not
              *
              * dot path to nested field to be updated
              */
-            //TODO  nOC : set to "item.selectedOption"
-            this.updateItemPath = this.data().updateItemPath; //path to an array
+            this.updateItemPath; //path to an array
             /**
-             * 
+             *
              * required if updateCollection is provided and updateItemPath is not
              *
              * JSON object to update a nested field which is itself in an array of object with an unique _id.
              * See optionsToUpdate for more information
              */
-            //TODO  nOC : unused
-            this.pathWithArray = this.data().pathWithArray || null;
-            
-
-            if (this.data().quickSelectLabel && (this.data().quickSelectIds || this.data().quickSelectId)) {
-                this.quickSelectId = this.data().quickSelectId || null;
-                this.quickSelectIds = this.data().quickSelectIds || null;
-                this.quickSelectLabel = this.data().quickSelectLabel;
-            }
+            this.pathWithArray;
 
             /**
              *  required if updateCollection is not provided
@@ -113,8 +103,36 @@ export class SelectComponent extends BlazeComponent {
              *  the second and an array of the selected options as the third.
              *  Required if updateCollection is not provided but can be used even if updateCollection is provided
              */
-            //TODO  nOC : it's required
-            this.updateCallback = this.data().updateCallback;
+            this.updateCallback;
+
+            if (!this.data().updateCollection || !window[this.data().updateCollection]) {
+                if(!this.data().updateCallback){
+                    throw new Meteor.Error(this.constructor.name + " : updateCollection should be Collection instance in the window scope or you should provide a updateCallback to handle the update by yourself");
+                } else {
+                    //mode callback only
+                    this.updateCallback = this.data().updateCallback;
+
+                    this.updateCollection = "TempCollection";
+                    //TODO  nOC : insert an empty array instead of null if this is MultipleSelectComponent
+                    //TODO nOC : comment faire pour prendre aussi en compte les filles de MultipleSelectComponent
+                    // => si pas de moyen propre avec Javascript, le array se fera juste ecrasé par le premier update du single select
+                    this.updateItemId = window[this.updateCollection].insert({"selectedOption" : []});
+                    this.updateItemPath = "selectedOption"; //path to an array
+                }
+            } else {
+                //mode update collection + optional callback
+                this.updateCollection = this.data().updateCollection;
+                this.updateItemId = this.data().updateItemId;
+                this.updateItemPath = this.data().updateItemPath; //path to an array
+                this.pathWithArray = this.data().pathWithArray || null;
+                this.updateCallback = this.data().updateCallback;
+            }
+
+            if (this.data().quickSelectLabel && (this.data().quickSelectIds || this.data().quickSelectId)) {
+                this.quickSelectId = this.data().quickSelectId || null;
+                this.quickSelectIds = this.data().quickSelectIds || null;
+                this.quickSelectLabel = this.data().quickSelectLabel;
+            }
 
             /**
              * title
@@ -301,7 +319,7 @@ export class SelectComponent extends BlazeComponent {
          */
         optionsToUpdate() {
             if (this.pathWithArray) {
-                var leaf = Tasks.findOne(this.updateItemId);
+                var leaf = [this.updateCollection].findOne(this.updateItemId);
                 _.each(this.pathWithArray, function (pathObj) {
                     leaf = _.findWhere(Leaf(leaf, pathObj.path), {_id: pathObj._id});
                 });

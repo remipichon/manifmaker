@@ -10,9 +10,14 @@
             }}
         </div>
         <div class="col-md-3">
-            {{> MultipleSelectComponent selectLabel="with updateCallback only"
+            {{> SingleSelectComponent selectLabel="single slect with updateCallback only"
             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+            updateCallback=updateCallbackDisplayArgs
+            }}
+        </div>
+        <div class="col-md-3">
+            {{> MultipleSelectComponent selectLabel="multiple slect with updateCallback only"
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
             updateCallback=updateCallbackDisplayArgs
             }}
         </div>
