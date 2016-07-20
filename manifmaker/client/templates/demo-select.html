@@ -1,7 +1,21 @@
-<template name="demo-select">
+<template name="demoSelect">
 
 
     <div class="form-group">
+        <div class="col-md-3">
+            {{> MultipleSelectComponent selectLabel="with updateCallback"
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+            updateCallback=updateCallbackDisplayArgs
+            }}
+        </div>
+        <div class="col-md-3">
+            {{> MultipleSelectComponent selectLabel="with updateCallback only"
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+            updateCallback=updateCallbackDisplayArgs
+            }}
+        </div>
         <div class="col-md-3">
             {{> MultipleSelectComponent selectLabel="maxSelectedOptionDisplayed = 0"
             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"

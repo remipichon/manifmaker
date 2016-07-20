@@ -20,9 +20,6 @@ export class SelectComponent extends BlazeComponent {
             //to implement
         }
 
-        updateOption(newOptions) {
-            //to implement
-        }
 
         onCheckboxOptionsChange(e) {
             //to implement and use updateOption
@@ -89,7 +86,7 @@ export class SelectComponent extends BlazeComponent {
              *
              * dot path to nested field to be updated
              */
-            //TODO  nOC : set to "selectedOption"
+            //TODO  nOC : set to "item.selectedOption"
             this.updateItemPath = this.data().updateItemPath; //path to an array
             /**
              * 
@@ -112,7 +109,8 @@ export class SelectComponent extends BlazeComponent {
              *  required if updateCollection is not provided
              *  function
              *
-             *  Called with an error object as the first argument and, if no error, the number of affected documents as the second and an array of the selected options as the third.
+             *  Called with an error object as the first argument and, if no error, the number of affected documents as
+             *  the second and an array of the selected options as the third.
              *  Required if updateCollection is not provided but can be used even if updateCollection is provided
              */
             //TODO  nOC : it's required
@@ -367,7 +365,10 @@ export class SelectComponent extends BlazeComponent {
                     $set: {
                         [pathOrPathWithIndex]: newOptions
                     }
-                },this.updateCallback
+                },_.bind(function(error, numberAffected){
+                    if(this.updateCallback)
+                        this.updateCallback(error, numberAffected, newOptions);
+                },this)
             );
         }
 
