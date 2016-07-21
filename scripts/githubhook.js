@@ -19,7 +19,6 @@ github.on('pull_request', function (repo, ref, data) {
     sys.puts("a mergeable pull request occurs");
     if(data.pull_request.base.ref === "deploy"){
       sys.puts("the pull request is on deploy");
-      exec("./launchCI.sh")
     }
   }
 });
@@ -35,9 +34,9 @@ github.on('push', function (repo, ref, data) {
   console.info("received a push event on branch "+branchName);
   if(branchName === "deploy"){
     sys.puts("push detected on "+branchName+". Launch deployManifmaker.sh script");
-    exec("./deployManiMaker.sh",puts);
+    //TODO
     sys.puts("Launch updateDocHTML.sh script");
-    exec("./updateDocHTML.sh",puts);
+    exec("./build_doc/updateDocHTML.sh",puts);
 
   }
 });

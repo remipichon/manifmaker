@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="custom-select-options">
                             <ul class="list-group">
-                                {{#each collectionItems}}
+                                {{#each sortedCollectionItems}}
                                     <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
                                 {{/each}}
                             </ul>
@@ -33,20 +33,26 @@
             </div>
         {{/if}}
 
-        <span class="selected-options">
-            {{#unless readOnly}}
-                {{#if withoutLabel}}
-                    <i class="mdi mdi-settings mdi-inline"></i>
-                {{/if}}
-            {{/unless}}
-            <ul class="list-group">
-                {{#each collectionSelectedItems}}
-                    <li class="list-group-item">{{optionValue}}</li>
-                {{else}}
-                    <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
-                {{/each}}
-            </ul>
-        </span>
+        {{#unless readOnly}}
+            {{#if withoutLabel}}
+                <i class="custom-select-icon mdi mdi-tooltip-edit"></i>
+            {{/if}}
+        {{/unless}}
+        <div class="selected-options">
+            {{#if maxSelectedOptionDisplayed}}
+                <ul class="list-group">
+                    {{#unless maxSelectedOptionDisplayedReached}}
+                        {{#each collectionSelectedItems}}
+                            <li class="list-group-item">{{optionValue}}</li>
+                        {{else}}
+                            <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
+                        {{/each}}
+                    {{else}}
+                        <li class="list-group-item">{{cursorLength collectionSelectedItems}}{{maxSelectedOptionDisplayedLabel}}</li>
+                    {{/unless}}
+                </ul>
+            {{/if}}
+        </div>
 
     </div>
 
@@ -79,7 +85,7 @@
                             <li class="list-group-item">
                                <div class="clear">{{clearMessage}} <i class="custom-select-icon mdi mdi-delete"></i></div>
                             </li>
-                            {{#each collectionItems}}
+                            {{#each sortedCollectionItems}}
                                 <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
                             {{/each}}
                         </ul>
@@ -96,16 +102,22 @@
         <div class="selected-options">
             {{#unless readOnly}}
                 {{#if withoutLabel}}
-                    <i class="mdi mdi-settings mdi-inline"></i>
+                    <i class="custom-select-icon mdi mdi-tooltip-edit"></i>
                 {{/if}}
             {{/unless}}
-            <ul class="list-group">
-                {{#each collectionSelectedItems}}
-                    <li class="list-group-item">{{optionValue}}</li>
-                {{else}}
-                    <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
-                {{/each}}
-            </ul>
+            {{#if maxSelectedOptionDisplayed}}
+                <ul class="list-group">
+                    {{#unless maxSelectedOptionDisplayedReached}}
+                        {{#each collectionSelectedItems}}
+                            <li class="list-group-item">{{optionValue}}</li>
+                        {{else}}
+                            <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
+                        {{/each}}
+                    {{else}}
+                        <li class="list-group-item">{{cursorLength collectionSelectedItems}}{{maxSelectedOptionDisplayedLabel}}</li>
+                    {{/unless}}
+                </ul>
+            {{/if}}
         </div>
 
     </div>

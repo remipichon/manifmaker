@@ -102,3 +102,8 @@ Template.registerHelper(
         return Users.findOne({loginUserId: Meteor.userId()}).teams[0]; //TODO which team to choose ?
     }
 );
+
+Template.registerHelper("cursorLength", function (array) {
+        return array.fetch().length;
+    }
+);

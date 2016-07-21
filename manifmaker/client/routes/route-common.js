@@ -64,7 +64,7 @@ Router.route('/demo-select', function () {
         this.wait(Meteor.subscribe('power-supplies'));
 
         if (this.ready()) {
-            this.render('demo-select', {to: 'mainContent',
+            this.render('demoSelect', {to: 'mainContent',
             data:{
                 user1Id : Users.findOne({name:"user1"})._id,
                 user2Id : Users.findOne({name:"user2"})._id,
@@ -72,7 +72,12 @@ Router.route('/demo-select', function () {
                 team1Id : Teams.findOne({name:"team1"})._id,
                 team1Idteam2Id: [Teams.findOne({name:"team1"})._id, Teams.findOne({name:"team2"})._id],
                 skill1Idskill2Id: [Skills.findOne({"label" : "Responsable tache 1"})._id, Skills.findOne({"label" : "Responsable tache 2"})._id],
-                powersupply1 : PowerSupplies.findOne({name:"powerSupply1"})._id
+                powersupply1 : PowerSupplies.findOne({name:"powerSupply1"})._id,
+                updateCallbackDisplayArgs: function(){
+                    return function(){
+                        console.log("updateCallbackDisplayArgs",arguments[0],arguments[1],arguments[2]);
+                    }
+                }
             }});
         } else {
             console.log("Route / : waiting users_custom data"); //TODO add a spinner
