@@ -4,7 +4,7 @@
 
             <ul>
                 <li data-toggle="collapse" data-target="#collaspeEquipmentValidation" aria-expanded="false" aria-controls="collapseExample">
-                    <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                    <i class="mdi mdi-chevron-down mdi-inline"></i>
                     {{#if equipmentValidation.comments}}
                         {{equipmentValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState stateBefore}}</b> to <b>{{displayValidationState stateAfter}}</b> on {{displayDateTime creationDate}} with {{#if equipmentValidation.comments.[0].content}}"{{equipmentValidation.comments.[0].content}}"{{else}} no comment{{/if}}
                     {{else}}
@@ -57,7 +57,7 @@
 
             <ul>
                 <li data-toggle="collapse" data-target="#collaspeTimeSlotValidation" aria-expanded="false" aria-controls="collapseExample">
-                    <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                    <i class="mdi mdi-chevron-down mdi-inline"></i>
                     {{#if timeSlotValidation.comments}}
                         {{timeSlotValidation.comments.[0].author}} update equipment validation from <b>{{displayValidationState timeSlotValidation.comments.[0].stateBefore}}</b> to <b>{{displayValidationState timeSlotValidation.comments.[0].stateAfter}}</b> on {{displayDateTime timeSlotValidation.comments.[0].creationDate}} with {{#if timeSlotValidation.comments.[0].content}}"{{timeSlotValidation.comments.[0].content}}"{{else}} no comment{{/if}}
                     {{else}}
