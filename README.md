@@ -173,7 +173,10 @@ Icon definition can be found here : [https://materialdesignicons.com/](https://m
 
 ### CustomSelect
 
-TODO
+Refer to the auto-generated doc : [select-component.md](https://github.com/assomaker/manifmaker/blob/refactor_select/doc/markdown/select-component.md)
+
+and the live demo : [/demo-select](localhost:3000/demo-select)
+
 
 ### Add a reference collection
 

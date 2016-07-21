@@ -24,10 +24,6 @@
     * [.maxSelectedOptionDisplayed](#SelectComponent+maxSelectedOptionDisplayed) : <code>number</code>
     * [.maxSelectedOptionDisplayedLabel](#SelectComponent+maxSelectedOptionDisplayedLabel) : <code>string</code>
     * [.selectedOptionSortedOnTopOfList](#SelectComponent+selectedOptionSortedOnTopOfList) : <code>boolean</code>
-    * [.sortedCollectionItems()](#SelectComponent+sortedCollectionItems)
-    * [.cloneSearchResultInPopover()](#SelectComponent+cloneSearchResultInPopover)
-    * [.optionsToUpdate()](#SelectComponent+optionsToUpdate) ⇒ <code>nested</code>
-    * [.updateOption(newOptions)](#SelectComponent+updateOption)
 
 <a name="new_SelectComponent_new"></a>
 
@@ -208,65 +204,3 @@ ad the beginning of the string.
 **Kind**: instance property of <code>[SelectComponent](#SelectComponent)</code>  
 **Summary**: If true, selected options are on top of the popover list  
 **Default**: <code>false</code>  
-<a name="SelectComponent+sortedCollectionItems"></a>
-
-### selectComponent.sortedCollectionItems()
-**Kind**: instance method of <code>[SelectComponent](#SelectComponent)</code>  
-**Summary**: If selectedOptionSortedOnTopOfList is true, sort selection options on top of the options list while keeping original order  
-<a name="SelectComponent+cloneSearchResultInPopover"></a>
-
-### selectComponent.cloneSearchResultInPopover()
-because popover, that's why
-
-**Kind**: instance method of <code>[SelectComponent](#SelectComponent)</code>  
-<a name="SelectComponent+optionsToUpdate"></a>
-
-### selectComponent.optionsToUpdate() ⇒ <code>nested</code>
-either extract from the updateItemPath or form pathWithArray and updateItemPath
-
-updateItemPath alone :
-
-     User object + pathToUpdate="userId" => extract the value stored in userId
-     Task object + pathToUpdate="timeSlots.0.peopleNeeded.1.skills" => extract skills array of second peopleNeeded from first timeSlots of the task
-
- pathWithArray and updateItemPath :
-
-     Task object + pathWithArray = [
-           {
-               path: "timeSlots",
-               _id: "0f89d7491be7cc4977fe85e9"
-           },
-           {
-               path: "peopleNeeded",
-               _id:"4c1ed4cdf1c83e946ed9a38b"
-           }
-           ];
-         + pathToUpdate =  "userId"
-     => extract userId value from people needed identified by its _id from time slot identified by its _id
-
-**Kind**: instance method of <code>[SelectComponent](#SelectComponent)</code>  
-<a name="SelectComponent+updateOption"></a>
-
-### selectComponent.updateOption(newOptions)
-if pathWithArray, generate a query object to update and a update key for $set.
-
-    ex : from pathWithArray = [
-           {
-               path: "timeSlots",
-               _id: "0f89d7491be7cc4977fe85e9"
-           },
-           {
-               path: "peopleNeeded",
-               _id:"4c1ed4cdf1c83e946ed9a38b"
-           }
-           ];
-         + pathToUpdate =  "userId"
-
-          generate  ==> "timeSlots.1.peopleNeeded.0.userId
-
-**Kind**: instance method of <code>[SelectComponent](#SelectComponent)</code>  
-
-| Param |
-| --- |
-| newOptions | 
-

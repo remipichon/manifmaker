@@ -1,26 +1,31 @@
 export class SelectComponent extends BlazeComponent {
 
+    /** @ignore */
     checkItemPath() {
         //to implement
     }
 
+    /** @ignore */
     template() {
         //to implement
     }
 
+    /** @ignore */
     collectionSelectedItems() {
         //to implement
     }
 
+    /** @ignore */
     isChecked() {
         //to implement
     }
 
+    /** @ignore */
     quickSelect() {
         //to implement
     }
 
-
+    /** @ignore */
     onCheckboxOptionsChange(e) {
         //to implement and use updateOption
     }
@@ -273,13 +278,14 @@ export class SelectComponent extends BlazeComponent {
         this.checkItemPath();
     }
 
-
+    /** @ignore */
     constructor() {
         super();
         this.isRenderedBoolean = false;
         this.searchQuery = new ReactiveVar("");
     }
 
+    /** @ignore */
     onRendered() {
         //this.$(".custom-select-label-wrapper[data-popover]").on("show.bs.popover",this.onPopoverShow);
         this.$('.custom-select-label-wrapper[data-popover]').popover({html: true, trigger: 'click', placement: 'bottom', delay: {show: 50, hide: 400}});
@@ -291,15 +297,18 @@ export class SelectComponent extends BlazeComponent {
         this.isRenderedBoolean = true;
     }
 
+    /** @ignore */
     onPopoverShow() {
         this.searchQuery.set("");
     }
 
+    /** @ignore */
     collectionItems() {
         return this.optionCollection.find();
     }
 
     /**
+     * @ignore
      * @summary If selectedOptionSortedOnTopOfList is true, sort selection options on top of the options list while keeping original order
      */
     sortedCollectionItems() {
@@ -329,6 +338,7 @@ export class SelectComponent extends BlazeComponent {
     }
 
     /**
+     * @ignore
      * because popover, that's why
      */
     cloneSearchResultInPopover() {
@@ -355,6 +365,7 @@ export class SelectComponent extends BlazeComponent {
     }
 
     /**
+     * @ignore
      * either extract from the updateItemPath or form pathWithArray and updateItemPath
      *
      * updateItemPath alone :
@@ -397,6 +408,7 @@ export class SelectComponent extends BlazeComponent {
 
 
     /**
+     * @ignore
      * if pathWithArray, generate a query object to update and a update key for $set.
      *
      *     ex : from pathWithArray = [
@@ -453,10 +465,12 @@ export class SelectComponent extends BlazeComponent {
         );
     }
 
+    /** @ignore */
     optionValue() {
         return this.currentData()[this.optionValueName];
     }
 
+    /** @ignore */
     events() {
         //to concat if needed
         var events = [{
@@ -472,10 +486,12 @@ export class SelectComponent extends BlazeComponent {
         return events;
     }
 
+    /** @ignore */
     performSearch(e) {
         this.searchQuery.set($(e.target).val());
     }
 
+    /** @ignore */
     maxSelectedOptionDisplayedReached() {
         if (this.maxSelectedOptionDisplayed === -1) return false;
         return this.collectionSelectedItems().fetch().length > this.maxSelectedOptionDisplayed;
