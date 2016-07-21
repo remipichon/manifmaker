@@ -341,7 +341,7 @@ export class SelectComponent extends BlazeComponent {
          */
         optionsToUpdate() {
             if (this.pathWithArray) {
-                var leaf = [this.updateCollection].findOne(this.updateItemId);
+                var leaf = window[this.updateCollection].findOne(this.updateItemId);
                 _.each(this.pathWithArray, function (pathObj) {
                     leaf = _.findWhere(Leaf(leaf, pathObj.path), {_id: pathObj._id});
                 });

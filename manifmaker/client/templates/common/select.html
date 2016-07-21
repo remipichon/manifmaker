@@ -33,12 +33,12 @@
             </div>
         {{/if}}
 
-        <span class="selected-options">
-            {{#unless readOnly}}
-                {{#if withoutLabel}}
-                    <span class="col-md-1 custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
-                {{/if}}
-            {{/unless}}
+        {{#unless readOnly}}
+            {{#if withoutLabel}}
+                <i class="custom-select-icon mdi mdi-tooltip-edit"></i>
+            {{/if}}
+        {{/unless}}
+        <div class="selected-options">
             {{#if maxSelectedOptionDisplayed}}
                 <ul class="list-group">
                     {{#unless maxSelectedOptionDisplayedReached}}
@@ -52,7 +52,7 @@
                     {{/unless}}
                 </ul>
             {{/if}}
-        </span>
+        </div>
 
     </div>
 
@@ -102,7 +102,7 @@
         <div class="selected-options">
             {{#unless readOnly}}
                 {{#if withoutLabel}}
-                    <span class="col-md-1 custom-select-icon glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    <i class="custom-select-icon mdi mdi-tooltip-edit"></i>
                 {{/if}}
             {{/unless}}
             {{#if maxSelectedOptionDisplayed}}
