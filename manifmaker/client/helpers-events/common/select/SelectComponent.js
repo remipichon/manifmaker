@@ -153,6 +153,16 @@ export class SelectComponent extends BlazeComponent {
          *  @summary required if updateCollection is not provided
          *  @type {function}
          *  @description
+         *  important : your callback should return a function. Blaze is made to evaluate everything that is given to him, a callback has
+         *  to be have this form :
+         *  ``` javascript
+         *   myUpdateCallback(error, docModified, newOption) {
+         *          return _.bind(function(error, docModified, newOption) {
+         *              //do something with newOption which is a MongoId if SingleSelect or an array of MongoId if MultipleSelect
+         *          },this);
+         *   }
+         *  ```
+         *
          *  Called with an error object as the first argument and, if no error, the number of affected documents as
          *  the second and an array of the selected options as the third.
          *  Required if updateCollection is not provided but can be used even if updateCollection is provided
@@ -161,7 +171,8 @@ export class SelectComponent extends BlazeComponent {
 
         if (!this.data().updateCollection || !window[this.data().updateCollection]) {
             if (!this.data().updateCallback) {
-                throw new Meteor.Error(this.constructor.name + " : updateCollection should be Collection instance in the window scope or you should provide a updateCallback to handle the update by yourself");
+                throw new Meteor.Error(this.constructor.name + " : updateCollection should be Collection instance in the window scope or you should provide a updateCallback to handle the update by yourself." +
+                    "The updateCallback should return a function (read the doc)");
             } else {
                 //mode callback only
                 this.updateCallback = this.data().updateCallback;

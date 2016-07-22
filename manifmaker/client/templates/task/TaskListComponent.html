@@ -34,20 +34,17 @@
             </div>
 
             <div class="col-md-3 col-md-offset-1">
-                <!-- TODO rendre fonctionnel le custom picker -->
-                {{> SingleSelectComponent selectLabel="Task responsible" title="Task responsible"
+                {{> SingleNonMandatorySelectComponent selectLabel="Task responsible" title="Task responsible"
                 optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
-                updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="masterId"
                 nothingSelectedLabel="No one" quickSelectLabel="select yourself" quickSelectId=currentUserId
+                updateCallback=filterResponsible
                 }}
             </div>
 
             <div class="col-md-3 col-md-offset-1">
-                <!-- TODO rendre fonctionnel le custom picker -->
-                {{> SingleSelectComponent selectLabel="Team" title="Select a team"
+                {{> SingleNonMandatorySelectComponent selectLabel="Team" title="Select a team"
                 optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teamId"
-                nothingSelectedLabel="None" quickSelectLabel="select yours" quickSelectId=currentUserTeamId id="task-list-team-selector"
+                updateCallback=filterTeam
                 }}
             </div>
 
@@ -66,11 +63,9 @@
                 {{#if isInRole RolesEnum.TASKWRITE}}
                     <div class="col-md-3">
                         <!-- TODO rendre fonctionnel le custom picker -->
-                        {{> SingleSelectComponent selectLabel="Validation Status" title="Select a team"
+                        <!--{{> SingleSelectComponent selectLabel="Validation Status" title="Select a team"
                         optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teamId"
-                        nothingSelectedLabel="None" quickSelectLabel="select yours" quickSelectId=currentUserTeamId id="task-list-team-selector"
-                        }}
+                        }}-->
 
                     </div>
                 {{/if}}

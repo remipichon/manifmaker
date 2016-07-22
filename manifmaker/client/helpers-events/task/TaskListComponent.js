@@ -5,7 +5,6 @@ class TaskListComponent extends BlazeComponent {
 
     events() {
         return [{
-            "change #task-list-team-selector": this.filterTeam,
             "keyup #search_task_name": this.filterName,
             "click #advanced-search-button": this.switchAdvanced,
         }];
@@ -17,6 +16,7 @@ class TaskListComponent extends BlazeComponent {
      */
     switchAdvanced(event){
         if(this.isSearchAdvanced()) {
+            //TODO this is not the way to do it, it has to be done with Blaze and reactive var, I can show you
             document.getElementById("advanced-search-button").innerHTML='More <i class="mdi mdi-chevron-down mdi-inline"></i>';
         }else{
             document.getElementById("advanced-search-button").innerHTML='Less <i class="mdi mdi-chevron-up mdi-inline"></i>';
@@ -28,11 +28,21 @@ class TaskListComponent extends BlazeComponent {
         return this.taskListAdvancedSearch.get();
     }
 
-    filterTeam(event) {
-        event.preventDefault();
-        var _id = $(event.target).val();
-        this.taskListTeamFilter.set(_id);
+    filterTeam(error, docModified, newOption) {
+        return _.bind(function (error, docModifier, newOption) {
+            var _id = newOption
+            this.taskListTeamFilter.set(_id);
+        },this);
     }
+
+
+    filterResponsible(error, docModifier, newOption) {
+        return _.bind(function(error,docModifier,newOption) {
+            var _id = newOption
+            this.taskListResponsibleFilter.set(_id);
+        },this);
+   }
+
     filterName(event) {
         event.preventDefault();
         var _id = $(event.target).val();
@@ -41,6 +51,7 @@ class TaskListComponent extends BlazeComponent {
 
     onCreated() {
         this.taskListTeamFilter = new ReactiveTable.Filter("task-list-team-filter", ["teamId"]);
+        this.taskListResponsibleFilter = new ReactiveTable.Filter("task-list-responsible-filter", ["masterId"]);
         this.taskListNameFilter = new ReactiveTable.Filter('search-task-name-filter', ['name']);
         this.taskListAdvancedSearch = new ReactiveVar(false);
     }
@@ -118,7 +129,7 @@ class TaskListComponent extends BlazeComponent {
             rowsPerPage: 10,
             showFilter: false,
             showRowCount: true,
-            filters: ['task-list-team-filter','search-task-name-filter'],
+            filters: ['task-list-team-filter','task-list-responsible-filter','search-task-name-filter'],
             fields: fields
         }
     }
