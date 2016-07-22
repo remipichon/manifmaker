@@ -128,7 +128,17 @@ See optionsToUpdate for more information
 <a name="SelectComponent+updateCallback"></a>
 
 ### selectComponent.updateCallback : <code>function</code>
-Called with an error object as the first argument and, if no error, the number of affected documents as
+important : your callback should return a function. Blaze is made to evaluate everything that is given to him, a callback has
+ to be have this form :
+ ``` javascript
+  myUpdateCallback(error, docModified, newOption) {
+         return _.bind(function(error, docModified, newOption) {
+             //do something with newOption which is a MongoId if SingleSelect or an array of MongoId if MultipleSelect
+         },this);
+  }
+ ```
+
+ Called with an error object as the first argument and, if no error, the number of affected documents as
  the second and an array of the selected options as the third.
  Required if updateCollection is not provided but can be used even if updateCollection is provided
 
