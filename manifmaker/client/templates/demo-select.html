@@ -16,27 +16,52 @@
         <div class="row">
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select with mininum params to update an item in a collection"
+                optionCollection="Teams" optionValueName="name"
+                updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+                }}
+            </div>
+            <div class="col-md-3">
+                {{> MultipleSelectComponent selectLabel="Multiple select to update an item in a collection and providing a search filter"
                 optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                 updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
                 }}
             </div>
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select with mininum params to handle result in a callback only"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                optionCollection="Teams" optionValueName="name"
                 updateCallback=updateCallbackDisplayArgs
                 }}
             </div>
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select to update an item in a collection and user a callback"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                optionCollection="Teams" optionValueName="name"
                 updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
                 updateCallback=updateCallbackDisplayArgs
                 }}
             </div>
             <div class="col-md-3">
                 {{> SingleSelectComponent selectLabel="Single slect with updateCallback only"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                optionCollection="Teams" optionValueName="name"
                 updateCallback=updateCallbackDisplayArgs
+                }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <h3>Select options, do what you want with it.</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                {{> MultipleSelectComponent selectLabel="Multiple select providing a search filter"
+                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+                }}
+            </div>
+            <div class="col-md-3">
+                {{> MultipleSelectComponent selectLabel="Multiple select with a pre-filtered options list coming from a Mongo collection"
+                optionCollection="Teams" optionValueName="name" optionQuery=optionQueryteamsWithoutAlreadyAssigned
+                updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
                 }}
             </div>
         </div>

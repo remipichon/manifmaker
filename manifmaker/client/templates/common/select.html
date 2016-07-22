@@ -13,9 +13,11 @@
             <div class="custom-select-label-wrapper hasPopover" data-popover="true"
                  data-toggle="popover" title="{{title}}"
                  data-content='
-                     <div class="row">
-                        <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
-                    </div>
+                    {{#if optionCollectionIndex}}
+                        <div class="row">
+                            <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
+                        </div>
+                    {{/if}}
                     <div class="row">
                         <div class="custom-select-options">
                             <ul class="list-group">

@@ -77,6 +77,11 @@ Router.route('/demo-select', function () {
                     return function(){
                         console.log("updateCallbackDisplayArgs",arguments[0],arguments[1],arguments[2]);
                     }
+                },
+                optionQueryteamsWithoutAlreadyAssigned: {
+                    name: {
+                        $not: ASSIGNMENTREADYTEAM
+                    }
                 }
             }});
         } else {

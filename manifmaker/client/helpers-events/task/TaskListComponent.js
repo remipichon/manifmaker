@@ -43,6 +43,14 @@ class TaskListComponent extends BlazeComponent {
         },this);
    }
 
+    optionQueryTeamsWithoutAlreadyAssigned(){
+        return {
+            name: {
+                $not: ASSIGNMENTREADYTEAM
+            }
+        }
+    }
+
     filterName(event) {
         event.preventDefault();
         var _id = $(event.target).val();

@@ -94,15 +94,26 @@ export class SelectComponent extends BlazeComponent {
         this.optionCollection = window[this.data().optionCollection]; //should be in window scope
 
         /**
-         * @summary required if optionCollection is a Collection Mongo
+         * @summary to pre-filter the options available to select
+         * @type {JSON}
          * @description
-         * EasySearch.Index instance in the window scope
+         * It should be a valid Mongo find query (it will be used as optionCollection.find(optionQuery) if defined)
+         */
+        this.optionQuery = this.data().optionQuery || null;
+
+
+        /**
+         * @summary If provided, allow the user to filter by text the option list from the popover
+         * @description
+         * Should be an EasySearch.Index instance in the window scope
          */
         this.optionCollectionIndex;
-        //TODO oCaA : que faire ????
-        if (!this.data().optionCollectionIndex || !window[this.data().optionCollectionIndex])
-            throw new Meteor.Error(this.constructor.name + " : optionCollectionIndex should be EasySearch.Index instance in the window scope. Given :" + this.data().optionCollectionIndex);
-        this.optionCollectionIndex = window[this.data().optionCollectionIndex];
+        if (this.data().optionCollectionIndex)
+            if (window[this.data().optionCollectionIndex])
+                this.optionCollectionIndex = window[this.data().optionCollectionIndex];
+            else
+                throw new Meteor.Error(this.constructor.name + " : optionCollectionIndex should be EasySearch.Index instance in the window scope. Given :" + this.data().optionCollectionIndex);
+
 
         /**
          * @summary required if optionCollection is a Collection Mongo
@@ -315,6 +326,8 @@ export class SelectComponent extends BlazeComponent {
 
     /** @ignore */
     collectionItems() {
+        if(this.optionQuery)
+            return this.optionCollection.find(this.optionQuery);
         return this.optionCollection.find();
     }
 
@@ -361,7 +374,11 @@ export class SelectComponent extends BlazeComponent {
         var tmpl = Template.instance();
         if (tmpl.view.isRendered) {
 
-            var data = this.optionCollectionIndex.search(searchQuery).fetch();
+            var data;
+            if(this.optionCollectionIndex)
+                data = this.optionCollectionIndex.search(searchQuery).fetch();
+            else
+                data = this.collectionItems.fetch();
 
             //a trick to find the dom of the popover, not very strong
             var parentNode = this.$(`.custom-select-label-wrapper[data-popover]`).parent().find(".popover .popover-content").find(".custom-select-options");

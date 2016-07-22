@@ -44,7 +44,7 @@
             <div class="col-md-3 col-md-offset-1">
                 {{> SingleNonMandatorySelectComponent selectLabel="Team" title="Select a team"
                 optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCallback=filterTeam
+                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned
                 }}
             </div>
 
@@ -63,9 +63,9 @@
                 {{#if isInRole RolesEnum.TASKWRITE}}
                     <div class="col-md-3">
                         <!-- TODO rendre fonctionnel le custom picker -->
-                        <!--{{> SingleSelectComponent selectLabel="Validation Status" title="Select a team"
+                        {{> SingleSelectComponent selectLabel="Validation Status" title="Select a team"
                         optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                        }}-->
+                        }}
 
                     </div>
                 {{/if}}
@@ -74,12 +74,12 @@
                         <input type="checkbox"> After :
                     </label>
                     <!-- TODO rendre fonctionnel le custom picker -->
-                    {{>DateTimePickerComponent date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate readOnly=isTimeSlotsReadOnly}}
+                    {{>DateTimePickerComponent date=TODO updateDateCallback=TODO}}
                     <label>
                         <input type="checkbox"> Before :
                     </label>
                     <!-- TODO rendre fonctionnel le custom picker -->
-                    {{>DateTimePickerComponent date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate readOnly=isTimeSlotsReadOnly}}
+                    {{>DateTimePickerComponent date=TODO updateDateCallback=TODO}}
                 </div>
 
                 {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
