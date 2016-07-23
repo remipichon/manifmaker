@@ -44,10 +44,27 @@ class TaskListComponent extends BlazeComponent {
    }
 
     filterValidationStatus(error, docModifier, newOption) {
-        return _.bind(function(error,docModifier,newOption) {
-            var validationStatus = newOption
-            console.log(validationStatus)
-        },this);
+        return _.bind(function(error,docModifier,validationOption) {
+            console.log(validationOption);
+            var queryTimeSlot = "", queryEquipment = "";
+            if(validationOption) {
+                var validationRole = validationOption.split("_")[0];
+                var validationStatus = validationOption.split("_")[1];
+
+                if (validationRole === RolesEnum.EQUIPMENTVALIDATION) {
+                    queryEquipment = validationStatus;
+                } else if (validationRole === RolesEnum.ASSIGNMENTVALIDATION) {
+                    queryTimeSlot = validationStatus;
+                } else if (validationRole === "ALL") {
+                    //TODO
+                    queryEquipment = validationStatus;
+                    queryTimeSlot = validationStatus;
+                }
+            }
+
+            this.taskListTimeSlotValidationStateFilter.set(queryTimeSlot);
+            this.taskListEquipmentValidationStateFilter.set(queryEquipment);
+        }, this);
     }
 
     optionQueryTeamsWithoutAlreadyAssigned(){
@@ -120,6 +137,8 @@ class TaskListComponent extends BlazeComponent {
         this.taskListTeamFilter = new ReactiveTable.Filter("task-list-team-filter", ["teamId"]);
         this.taskListResponsibleFilter = new ReactiveTable.Filter("task-list-responsible-filter", ["masterId"]);
         this.taskListNameFilter = new ReactiveTable.Filter('search-task-name-filter', ['name']);
+        this.taskListTimeSlotValidationStateFilter = new ReactiveTable.Filter('task-timeslot-validation-state-filter', ['timeSlotValidation.currentState']);
+        this.taskListEquipmentValidationStateFilter = new ReactiveTable.Filter('task-equipment-validation-state-filter', ['equipmentValidation.currentState']);
         this.taskListAdvancedSearch = new ReactiveVar(false);
     }
 
@@ -196,8 +215,14 @@ class TaskListComponent extends BlazeComponent {
             rowsPerPage: 10,
             showFilter: false,
             showRowCount: true,
-            filters: ['task-list-team-filter','task-list-responsible-filter','search-task-name-filter'],
-            fields: fields
+            fields: fields,
+            filters: [
+                'task-list-team-filter',
+                'task-list-responsible-filter',
+                'search-task-name-filter',
+                'task-timeslot-validation-state-filter',
+                'task-equipment-validation-state-filter'
+            ]
         }
     }
 }

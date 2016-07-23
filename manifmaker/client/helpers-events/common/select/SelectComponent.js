@@ -519,8 +519,12 @@ export class SelectComponent extends BlazeComponent {
                     newOptions.forEach(option => {
                         updateCallbackOptions.push(this.optionCollection.findOne(option).value);
                     });
-                else
-                    updateCallbackOptions = this.optionCollection.findOne(newOptions).value;
+                else {
+                    if (newOptions)
+                        updateCallbackOptions = this.optionCollection.findOne(newOptions).value;
+                    else
+                        updateCallbackOptions = null
+                }
 
             if (this.updateCollection !== "TempCollection") {
                 throw new Meteor.Error("Select Component not implemented : use updateCollection as an array while specifying an item to update in an updateCollection is not supported yet. ")
