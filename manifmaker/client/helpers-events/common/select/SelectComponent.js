@@ -82,16 +82,24 @@ export class SelectComponent extends BlazeComponent {
         this.isDataInitialized = true;
 
         /**
-         * @summary required
+         * @summary required. Les options du select
          * @description
-         * Mongo Collection in the window scope(findAll will be used) OR array (array is not implemented yet)
-         * Les options du select
+         * Mongo Collection in the window scope(findAll will be used) OR array of object.
+         *
+         * How to user an array of object :
+         * Each object should have
+         * * a "value" key which will be given in the updateCallback or user to update the item in the updateCollection
+         * (if a MongoCollection is provided).
+         * * an other key holding the label to be displayed
+         *
+         * You have to make sure all objects have unique value or you will have trouble knowing which option has been selected.
+         *
+         * optionValueName can be whatever you want as long as it is the same as the key holding the label
+         *
+         * Unfortunately, optionCollection as an array can be mixed with optionQuery. You should pre-filter your option array before.
+         *
          */
-        this.optionCollection
-        //TODO oCaA :que faire ????
-        if (!this.data().optionCollection || !window[this.data().optionCollection])
-            throw new Meteor.Error(this.constructor.name + " : optionCollection should be Collection instance in the window scope. Given :" + this.data().optionCollection);
-        this.optionCollection = window[this.data().optionCollection]; //should be in window scope
+        this.optionCollection;
 
         /**
          * @summary to pre-filter the options available to select
@@ -99,7 +107,43 @@ export class SelectComponent extends BlazeComponent {
          * @description
          * It should be a valid Mongo find query (it will be used as optionCollection.find(optionQuery) if defined)
          */
-        this.optionQuery = this.data().optionQuery || null;
+        this.optionQuery;
+
+        /**
+         * @summary required
+         * @type {string}
+         * @description
+         * MongoDb field of the option label to be displayed (in the selectable list in the popover and the list displaying
+         * the selected options
+         */
+        this.optionValueName
+        if (!this.data().optionValueName)
+            throw new Meteor.Error(this.constructor.name + " : optionValueName should be defined. Given : " + this.data().optionValueName);
+        this.optionValueName = this.data().optionValueName;
+
+        if (this.data().optionCollection){
+            if(window[this.data().optionCollection]){
+                this.optionCollection = window[this.data().optionCollection];
+                this.optionQuery = this.data().optionQuery || null;
+            } else if(Array.isArray(this.data().optionCollection)){
+                    //insert all item of array in temp collection and set an optionQuery and set optionValueName
+
+                this.optionCollection = window["TempCollection"];
+                var optionGroup = new Meteor.Collection.ObjectID()._str;
+                this.optionQuery = {
+                    "optionGroup": optionGroup
+                };
+                this.data().optionCollection.forEach(option => {
+                    this.optionCollection.insert({
+                        "optionGroup": optionGroup,
+                        "value": option.value,
+                        [this.optionValueName]: option[this.optionValueName]
+                    });
+                });
+            } else
+                throw new Meteor.Error(this.constructor.name + " : optionCollection should be Collection instance in the window scope or an array of string to be used as options. Given :" + this.data().optionCollection);
+        } else
+            throw new Meteor.Error(this.constructor.name + " : optionCollection should be Collection instance in the window scope or an array of string to be used as options. Given :" + this.data().optionCollection)
 
 
         /**
@@ -113,20 +157,6 @@ export class SelectComponent extends BlazeComponent {
                 this.optionCollectionIndex = window[this.data().optionCollectionIndex];
             else
                 throw new Meteor.Error(this.constructor.name + " : optionCollectionIndex should be EasySearch.Index instance in the window scope. Given :" + this.data().optionCollectionIndex);
-
-
-        /**
-         * @summary required if optionCollection is a Collection Mongo
-         * @type {string}
-         * @description
-         * MongoDb field of the option label to be displayed (in the selectable list in the popover and the list displaying
-         * the selected options
-         */
-        this.optionValueName
-        //TODO oCaA : que faire ????
-        if (!this.data().optionValueName)
-            throw new Meteor.Error(this.constructor.name + " : optionValueName should be defined. Giver : " + this.data().optionValueName);
-        this.optionValueName = this.data().optionValueName;
 
 
         /**
@@ -482,13 +512,31 @@ export class SelectComponent extends BlazeComponent {
         } else
             pathOrPathWithIndex = this.updateItemPath;
 
+        var updateCallbackOptions = [];
+        if (Array.isArray(this.data().optionCollection)) {//SelectComponent works with _id while managing options but the callback needs the value specified in optionCollection as an array
+            if (this.updateCallback)
+                if (this.constructor.name.indexOf("Multiple") !== -1)
+                    newOptions.forEach(option => {
+                        updateCallbackOptions.push(this.optionCollection.findOne(option).value);
+                    });
+                else
+                    updateCallbackOptions = this.optionCollection.findOne(newOptions).value;
+
+            if (this.updateCollection !== "TempCollection") {
+                throw new Meteor.Error("Select Component not implemented : use updateCollection as an array while specifying an item to update in an updateCollection is not supported yet. ")
+            }
+        } else { //directly update an item in a collection from an option collection. updateCallback and updateCollection need the same _id
+            updateCallbackOptions = newOptions;
+        }
+
+
         window[this.updateCollection].update(this.updateItemId, {
                 $set: {
                     [pathOrPathWithIndex]: newOptions
                 }
             }, _.bind(function (error, numberAffected) {
                 if (this.updateCallback)
-                    this.updateCallback(error, numberAffected, newOptions);
+                    this.updateCallback(error, numberAffected, updateCallbackOptions);
             }, this)
         );
     }

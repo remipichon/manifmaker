@@ -63,8 +63,9 @@
                 {{#if isInRole RolesEnum.TASKWRITE}}
                     <div class="col-md-3">
                         <!-- TODO rendre fonctionnel le custom picker -->
-                        {{> SingleSelectComponent selectLabel="Validation Status" title="Select a team"
-                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        {{> SingleNonMandatorySelectComponent selectLabel="Validation Status"
+                        optionCollection=optionValidationStatus optionValueName="label"
+                        updateCallback=filterValidationStatus
                         }}
 
                     </div>

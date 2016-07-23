@@ -51,6 +51,23 @@ class TaskListComponent extends BlazeComponent {
         }
     }
 
+    optionValidationStatus(){
+        return [
+            {
+                label: "First option",
+                value: "ONE"
+            },
+            {
+                label: "Second cat",
+                value: "TWO"
+            },
+            {
+                label: "Cypress",
+                value: "THREE"
+            }
+        ]
+    }
+
     filterName(event) {
         event.preventDefault();
         var _id = $(event.target).val();

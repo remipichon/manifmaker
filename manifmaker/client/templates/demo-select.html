@@ -64,6 +64,18 @@
                 updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
                 }}
             </div>
+            <div class="col-md-3">
+                {{> MultipleSelectComponent selectLabel="Multiple select with options coming from an array "
+                optionCollection=optionCollectionAsArray optionValueName="label"
+                updateCallback=updateCallbackDisplayArgs
+                }}
+            </div>
+            <div class="col-md-3">
+                {{> SingleSelectComponent selectLabel="Single select with options coming from an array "
+                optionCollection=optionCollectionAsArray optionValueName="label"
+                updateCallback=updateCallbackDisplayArgs
+                }}
+            </div>
         </div>
         <div class="row">
             <div class="col-md-offset-2 col-md-8">

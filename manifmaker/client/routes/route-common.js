@@ -82,7 +82,21 @@ Router.route('/demo-select', function () {
                     name: {
                         $not: ASSIGNMENTREADYTEAM
                     }
-                }
+                },
+                optionCollectionAsArray: [
+                    {
+                        label: "First option",
+                        value: "ONE"
+                    },
+                    {
+                        label: "Second cat",
+                        value: "TWO"
+                    },
+                    {
+                        label: "Cypress",
+                        value: "THREE"
+                    }
+                ]
             }});
         } else {
             console.log("Route / : waiting users_custom data"); //TODO add a spinner
