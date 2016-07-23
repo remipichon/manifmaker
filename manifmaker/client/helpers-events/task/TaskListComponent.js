@@ -43,6 +43,13 @@ class TaskListComponent extends BlazeComponent {
         },this);
    }
 
+    filterValidationStatus(error, docModifier, newOption) {
+        return _.bind(function(error,docModifier,newOption) {
+            var validationStatus = newOption
+            console.log(validationStatus)
+        },this);
+    }
+
     optionQueryTeamsWithoutAlreadyAssigned(){
         return {
             name: {
@@ -52,20 +59,55 @@ class TaskListComponent extends BlazeComponent {
     }
 
     optionValidationStatus(){
-        return [
-            {
-                label: "First option",
-                value: "ONE"
-            },
-            {
-                label: "Second cat",
-                value: "TWO"
-            },
-            {
-                label: "Cypress",
-                value: "THREE"
-            }
-        ]
+        /*
+         user with at least one validation role :
+                for each of its validation role :
+                    <ROLE>_TOBEVALIDATED
+                    <ROLE>_REFUSED
+         user without any validation role :
+            ALL_OPEN
+            ALL_TOBEVALIDATED
+            ALL_REFUSED
+            ALL_READY
+         */
+        var result = [];
+        var validationRoles = Meteor.roles.find({name:{$regex : ".*VALIDATION.*"}}).fetch();
+        var userValidationRole = [];
+        validationRoles.forEach(validationRole => {
+            if(Roles.userIsInRole(Meteor.userId(), validationRole.name))
+                userValidationRole.push(validationRole.name);
+        });
+
+        if(userValidationRole.length > 0){
+            validationRoles.forEach(validationRole => {
+                result.push({
+                    label: RolesEnumDisplay[validationRole.name] + " " +ValidationStateDisplay.TOBEVALIDATED,
+                    value: validationRole.name + "_" + ValidationState.TOBEVALIDATED
+                });
+                result.push({
+                    label: RolesEnumDisplay[validationRole.name] + " " +ValidationStateDisplay.REFUSED,
+                    value: validationRole.name + "_" + ValidationState.REFUSED
+                });
+            })
+        } else {
+            result.push({
+                label: ValidationStateDisplay.OPEN,
+                value: "ALL_"+ValidationState.OPEN
+            });
+            result.push({
+                label: ValidationStateDisplay.TOBEVALIDATED,
+                value: "ALL_"+ValidationState.TOBEVALIDATED
+            });
+            result.push({
+                label: ValidationStateDisplay.REFUSED,
+                value: "ALL_"+ValidationState.REFUSED
+            });
+            result.push({
+                label: ValidationStateDisplay.READY,
+                value: "ALL_"+ValidationState.READY
+            });
+        }
+        return result;
     }
 
     filterName(event) {
