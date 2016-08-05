@@ -15,12 +15,6 @@ class TaskListComponent extends BlazeComponent {
      * @param event
      */
     switchAdvanced(event){
-        if(this.isSearchAdvanced()) {
-            //TODO this is not the way to do it, it has to be done with Blaze and reactive var, I can show you
-            document.getElementById("advanced-search-button").innerHTML='More <i class="mdi mdi-chevron-down mdi-inline"></i>';
-        }else{
-            document.getElementById("advanced-search-button").innerHTML='Less <i class="mdi mdi-chevron-up mdi-inline"></i>';
-        }
         this.taskListAdvancedSearch.set(!this.isSearchAdvanced());
     }
 

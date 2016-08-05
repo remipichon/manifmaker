@@ -52,7 +52,13 @@
 
         <div class="row">
             <div class="col-md-2 col-md-offset-9">
-                <button class="btn btn-primary pull-right" id="advanced-search-button" href="">More <i class="mdi mdi-chevron-down mdi-inline"></i></button>
+                <button class="btn btn-primary pull-right" id="advanced-search-button" href="">
+                    {{#if isSearchAdvanced}}
+                        Less <i class="mdi mdi-chevron-up mdi-inline"></i>
+                    {{else}}
+                        More <i class="mdi mdi-chevron-down mdi-inline"></i>
+                    {{/if}}
+                </button>
                 <br><br>
             </div>
         </div>
