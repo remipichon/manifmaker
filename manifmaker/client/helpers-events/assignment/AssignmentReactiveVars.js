@@ -16,6 +16,8 @@ export var AssignmentReactiveVars = {
     SelectedAvailability: new ReactiveVar(null), //rpute and menu
     SelectedPeopleNeed: new ReactiveVar(null), //service and cmponentn
     IsUnassignment: new ReactiveVar(false), //menu and service,
+    isUsersListDeveloped: new ReactiveVar(false),
+    isTasksListDeveloped: new ReactiveVar(false),
     defaultFilter: defaultFilter,
     noSearchFilter: noSearchFilter,
     noneFilter: noneFilter

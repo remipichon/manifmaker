@@ -12,12 +12,16 @@ class AssignmentIndicationsBar extends BlazeComponent {
         AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
         AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
+        AssignmentReactiveVars.isUsersListDeveloped.set(true);
+        AssignmentReactiveVars.isTasksListDeveloped.set(false);
     }
 
     onClickTaskToUser(event) {
         AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.noneFilter);
         AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.defaultFilter);
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
+        AssignmentReactiveVars.isUsersListDeveloped.set(false);
+        AssignmentReactiveVars.isTasksListDeveloped.set(true);
     }
 
     isSelected(mode) {

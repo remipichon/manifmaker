@@ -27,7 +27,7 @@ class AssignmentNavbar extends BlazeComponent {
         if (currentAssignmentType === AssignmentType.USERTOTASK) {
             if (selectedUser === null) {
                 result.push({
-                    label: "Select a user",
+                    label: "Select an user",
                     url: ""
                 });
             } else {
@@ -54,7 +54,7 @@ class AssignmentNavbar extends BlazeComponent {
 
                     if (!selectedTaskBreadCrumb) {
                         result.push({
-                            label: "Select one of the available task",
+                            label: "Select one of the available tasks",
                             url: ""
                         });
                     } else {
