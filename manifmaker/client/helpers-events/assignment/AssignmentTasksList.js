@@ -1,4 +1,5 @@
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
+import {TeamService} from "../../../both/service/TeamService"
 
 class AssignmentTasksList extends BlazeComponent {
     constructor(parent) {
@@ -147,6 +148,9 @@ class AssignmentTasksList extends BlazeComponent {
         this.isplayAssignedTask.set($($(event.target)[0]).is(':checked'));
     }
 
+    optionQueryTeamsWithoutAlreadyAssigned(){
+        return TeamService.optionQueryTeamsWithoutAlreadyAssigned();
+    }
 
     tasks() {
         var filter = AssignmentReactiveVars.TaskFilter.get();

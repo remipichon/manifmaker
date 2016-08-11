@@ -1,4 +1,5 @@
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+import {TeamService} from "../../../both/service/TeamService"
 
 class AssignmentUserList extends BlazeComponent {
 
@@ -106,6 +107,9 @@ class AssignmentUserList extends BlazeComponent {
         },this);
     }
 
+    optionQueryTeamsWithoutAlreadyAssigned(){
+        return TeamService.optionQueryTeamsWithoutAlreadyAssigned();
+    }
 
     users() {
         var filter = AssignmentReactiveVars.UserFilter.get();

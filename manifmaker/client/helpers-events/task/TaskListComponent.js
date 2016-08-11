@@ -1,3 +1,5 @@
+import {TeamService} from "../../../both/service/TeamService"
+
 class TaskListComponent extends BlazeComponent {
     template() {
         return "taskListComponent";
@@ -61,12 +63,9 @@ class TaskListComponent extends BlazeComponent {
         }, this);
     }
 
+
     optionQueryTeamsWithoutAlreadyAssigned(){
-        return {
-            name: {
-                $not: ASSIGNMENTREADYTEAM
-            }
-        }
+        return TeamService.optionQueryTeamsWithoutAlreadyAssigned();
     }
 
     optionValidationStatus(){
