@@ -5,13 +5,10 @@
 <template name="AssignmentIndicationsBar">
     <div class="navbar-complement">
         <div class="{{isSelected "userToTask"}} assignment-mode-button col-md-6">
-            <a id="userToTask" href="/assignment/userToTask">User to Task mode</a>
+            <a class="link-button" id="userToTask" href="/assignment/userToTask">User to Task mode</a>
         </div>
         <div class="{{isSelected "taskToUser"}} assignment-mode-button col-md-6">
-            <a id="taskToUser" href="/assignment/taskToUser">Task to User mode</a>
+            <a class="link-button" id="taskToUser" href="/assignment/taskToUser">Task to User mode</a>
         </div>
     </div>
 </template>
-
-<!--
-    {{isSelected "taskToUser"}} -->
