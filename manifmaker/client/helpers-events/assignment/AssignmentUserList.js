@@ -1,4 +1,5 @@
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+import {TeamService} from "../../../both/service/TeamService"
 
 class AssignmentUserList extends BlazeComponent {
 
@@ -11,16 +12,12 @@ class AssignmentUserList extends BlazeComponent {
     events() {
         return [{
             "click .href-assignment-user": this.onClickUserName,
-            "click li": this.onClickUser,
+            "click .user": this.onClickUser,
+            "click .users-list-header": this.switchUsersListDeveloped,
             "keyup #search_user_name": this.performSearch,
-            "change .filter_team": this.performFilterTeam,
-            "change #filter_skills_user": this.performFilterSkills,
         }]
     }
 
-    onRendered(){
-        this.$('#assignment-user-list-collapsible').collapsible({});
-    }
 
     onClickUserName(event) {
         event.stopPropagation();
@@ -59,6 +56,16 @@ class AssignmentUserList extends BlazeComponent {
 
     }
 
+    switchUsersListDeveloped(event){
+        AssignmentReactiveVars.isUsersListDeveloped.set(!AssignmentReactiveVars.isUsersListDeveloped.get());
+        if(AssignmentReactiveVars.isTasksListDeveloped.get()){
+            AssignmentReactiveVars.isTasksListDeveloped.set(false);
+        }
+    }
+
+    isUsersListDeveloped(){ return AssignmentReactiveVars.isUsersListDeveloped.get()}
+
+
     performSearch(event) {
         var searchInput = $("#search_user_name").val();
 
@@ -73,30 +80,36 @@ class AssignmentUserList extends BlazeComponent {
         }
     }
 
-    performFilterTeam(event) {
-        var _id = $(event.target).val();
-        if (_id === "") {
-            this.userTeamFilter.set(AssignmentReactiveVars.defaultFilter);
-        } else {
-            this.userTeamFilter.set({
-                teams: _id
-            });
-        }
+    filterTeam(error, docModified, newOption) {
+        return _.bind(function (error, docModifier, newOption) {
+            var _id = newOption;
+            if (!_id) {
+                this.userTeamFilter.set(AssignmentReactiveVars.defaultFilter);
+            } else {
+                this.userTeamFilter.set({
+                    teams: _id
+                });
+            }
+        },this);
+    }
+    filterSkill(error, docModified, newOption) {
+        return _.bind(function (error, docModifier, newOption) {
+            var _ids = newOption;
+            if (!_ids || _ids=="") {
+                this.userSkillsFilter.set(AssignmentReactiveVars.defaultFilter);
+            } else {
+                this.userSkillsFilter.set({
+                    skills: {
+                        $all: _ids
+                    }
+                });
+            }
+        },this);
     }
 
-    performFilterSkills(event) {
-        var _ids = $(event.target).val();
-        if (!_ids) {
-            this.userSkillsFilter.set(AssignmentReactiveVars.defaultFilter);
-        } else {
-            this.userSkillsFilter.set({
-                skills: {
-                    $all: _ids
-                }
-            });
-        }
+    optionQueryTeamsWithoutAlreadyAssigned(){
+        return TeamService.optionQueryTeamsWithoutAlreadyAssigned();
     }
-
 
     users() {
         var filter = AssignmentReactiveVars.UserFilter.get();

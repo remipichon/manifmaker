@@ -1,35 +1,10 @@
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
-class AssignmentMenu extends BlazeComponent {
-    events() {
-        return [{
-            "click #userToTask": this.onClickUserToTask,
-            "click #taskToUser": this.onClickTaskToUser
-        }];
-    }
-
-    onClickUserToTask(event) {
-        AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
-        AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);
-        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
-    }
-
-    onClickTaskToUser(event) {
-        AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.noneFilter);
-        AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.defaultFilter);
-        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
-    }
+class AssignmentNavbar extends BlazeComponent {
 
     assignmentTerms() {
         return AssignmentTerms.find({});
-    }
-
-    isSelected(mode) {
-        if (mode === AssignmentReactiveVars.CurrentAssignmentType.get()) {
-            return "active";
-        }
-        return "";
     }
 
     breadCrumbAssignment() {
@@ -52,7 +27,7 @@ class AssignmentMenu extends BlazeComponent {
         if (currentAssignmentType === AssignmentType.USERTOTASK) {
             if (selectedUser === null) {
                 result.push({
-                    label: "Select a user",
+                    label: "Select an user",
                     url: ""
                 });
             } else {
@@ -79,7 +54,7 @@ class AssignmentMenu extends BlazeComponent {
 
                     if (!selectedTaskBreadCrumb) {
                         result.push({
-                            label: "Select one of the available task",
+                            label: "Select one of the available tasks",
                             url: ""
                         });
                     } else {
@@ -153,5 +128,5 @@ class AssignmentMenu extends BlazeComponent {
 
 }
 
-AssignmentMenu.register("AssignmentMenu");
+AssignmentNavbar.register("AssignmentNavbar");
 

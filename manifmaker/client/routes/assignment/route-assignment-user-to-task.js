@@ -21,6 +21,9 @@ Router.route('/assignment/userToTask', function () {
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
         AssignmentReactiveVars.SelectedUser.set(null);
         AssignmentReactiveVars.SelectedDate.set(null);
+
+        AssignmentReactiveVars.isUsersListDeveloped.set(true);
+        AssignmentReactiveVars.isTasksListDeveloped.set(false);
     }, {
         controller: 'AssignmentController',
         name: 'assignment.calendar.userToTask'
@@ -49,6 +52,9 @@ Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
 
         AssignmentReactiveVars.SelectedDate.set(selectedDate);
         AssignmentReactiveVars.SelectedAvailability.set(availability);
+
+        AssignmentReactiveVars.isUsersListDeveloped.set(false);
+        AssignmentReactiveVars.isTasksListDeveloped.set(true);
 
         /*
          Task whose have at least one timeSlot (to begin, just one) as
@@ -87,6 +93,9 @@ Router.route('/assignment/userToTask/:userId', function () {
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
         AssignmentReactiveVars.SelectedUser.set({_id: this.params.userId});
         AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
+
+        AssignmentReactiveVars.isUsersListDeveloped.set(false);
+        AssignmentReactiveVars.isTasksListDeveloped.set(true);
 
         AssignmentReactiveVars.SelectedAvailability.set(null);
         AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);

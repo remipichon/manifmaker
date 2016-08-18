@@ -2,7 +2,7 @@
 
     {{reactiveConstructor}}
 
-    <div class="row">
+    <div class="col-md-12">
         {{>AssignmentTermSelectComponent}}
     </div>
 
@@ -51,8 +51,8 @@
                                     <div class="col-md-3">
                                         <span>{{count}}</span>
                                         {{#unless isTimeSlotsReadOnly}}
-                                            <span class="glyphicon glyphicon-trash delete" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-file duplicate" data-peopleneededid="{{this._id}}" aria-hidden="true"></span>
+                                            <i class="mdi mdi-delete mdi-inline delete" data-peopleneededid="{{this._id}}"></i>
+                                            <i class="mdi mdi-content-copy mdi-inline duplicate" data-peopleneededid="{{this._id}}"></i>
                                         {{/unless}}
                                     </div>
                                     <div class="col-md-9">
@@ -159,17 +159,17 @@
                     {{#unless userId}}{{count}}{{/unless}}
                     {{#if userId }}
                         <div class="user">
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            <i class="mdi mdi-account mdi-inline"></i>
                         </div>{{/if}}
                     {{#if teamId}}
                         <div class="team">
-                            <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+                            <i class="mdi mdi-account-multiple mdi-inline"></i>
                         </div>{{/if}}
                         <!--{{#ifNotEmpty skills}}-->
                     <div>
                         {{#each skills}}
                             <div class="skill">
-                                <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+                                <i class="mdi mdi-android-studio mdi-inline"></i>
                             </div>
                         {{/each}}
                     </div>

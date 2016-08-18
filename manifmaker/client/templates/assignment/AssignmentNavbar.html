@@ -1,0 +1,15 @@
+<template name="AssignmentNavBarWrapper">
+    {{>AssignmentNavbar}}
+</template>
+
+<template name="AssignmentNavbar">
+
+    <div class="inline">
+        <i class="mdi mdi-help-circle"></i>
+        {{#each breadCrumbAssignment}}
+            <i class="mdi mdi-chevron-right"></i>
+            <a href="{{url}}">{{label}}</a>
+        {{/each}}
+    </div>
+
+</template>

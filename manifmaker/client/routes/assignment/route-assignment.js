@@ -15,7 +15,8 @@ AssignmentController = RouteController.extend({
 
         if (!assignmentCalendarIsRendered) {
             this.render('AssignmentHomeWrapper', {to: 'mainContent'});
-            this.render("AssignmentMenuWrapper", {to: "topNavBar"})
+            this.render("AssignmentNavBarWrapper", {to: "topNavBar"})
+            this.render("AssignmentIndicationsBarWrapper", {to: "topNavBarComplement"})
             assignmentCalendarIsRendered = true;
         }
 

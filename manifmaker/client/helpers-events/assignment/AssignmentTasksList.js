@@ -1,4 +1,5 @@
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
+import {TeamService} from "../../../both/service/TeamService"
 
 class AssignmentTasksList extends BlazeComponent {
     constructor(parent) {
@@ -15,17 +16,12 @@ class AssignmentTasksList extends BlazeComponent {
             "click .href-assignment-task": this.onClickTaskName,
             "click .task": this.onClickTask,
             "click li.peopleNeed": this.onClickPeopleNeed,
+            "click .tasks-list-header": this.switchTasksListDeveloped,
             "keyup #search_task_name": this.performSearch,
-            "change .filter_team": this.performFilterTeam,
-            "change #filter_needed_team_task": this.performFilterNeededTeam,
-            "change #filter_skills_task": this.performFilterSkills,
             "change #display-assigned-task-checkbox": this.switchDisplayAssignedTask
         }]
     }
-
-    onRendered() {
-        $('#assignment-task-list-collapsible').collapsible({});
-    }
+    
 
     onClickTaskName(event) {
         console.info("routing", "/assignment/task/" + this.currentData()._id);
@@ -83,6 +79,14 @@ class AssignmentTasksList extends BlazeComponent {
 
     }
 
+    switchTasksListDeveloped(event){
+        AssignmentReactiveVars.isTasksListDeveloped.set(!AssignmentReactiveVars.isTasksListDeveloped.get());
+        if(AssignmentReactiveVars.isUsersListDeveloped.get()){
+            AssignmentReactiveVars.isUsersListDeveloped.set(false);
+        }
+    }
+
+    isTasksListDeveloped(){ return AssignmentReactiveVars.isTasksListDeveloped.get()}
 
     performSearch(event) {
         var searchInput = $("#search_task_name").val();
@@ -98,44 +102,55 @@ class AssignmentTasksList extends BlazeComponent {
         }
     }
 
-    performFilterTeam(event) {
-        var _id = $(event.target).val();
-        if (_id === "") {
-            this.taskTeamFilter.set(AssignmentReactiveVars.defaultFilter);
-        } else {
-            this.taskTeamFilter.set({
-                teamId: _id
-            });
-        }
+    filterRespTeam(error, docModified, newOption) {
+        return _.bind(function (error, docModifier, newOption) {
+            var _id = newOption;
+            if (!_id) {
+                this.taskTeamFilter.set(AssignmentReactiveVars.defaultFilter);
+            } else {
+                this.taskTeamFilter.set({
+                    teamId: _id
+                });
+            }
+        },this);
     }
 
-    performFilterNeededTeam(event) {
-        var _id = $(event.target).val();
-        if (_id === "") {
-            this.taskNeededTeamFilter.set(null);
-        } else if (_id === "noNeededTeam") {
-            this.taskNeededTeamFilter.set("noNeededTeam");
-        }
-        else {
-            this.taskNeededTeamFilter.set(_id);
-        }
+    filterNeededTeam(error, docModified, newOption) {
+        return _.bind(function (error, docModifier, newOption) {
+            var _id = newOption;
+            if (!_id) {
+                this.taskNeededTeamFilter.set(null);
+            //TODO add this "noNeededTeam" in the select
+            } else if (_id === "noNeededTeam") {
+                this.taskNeededTeamFilter.set("noNeededTeam");
+            }
+            else {
+                this.taskNeededTeamFilter.set(_id);
+            }
+        },this);
     }
 
-    performFilterSkills(event) {
-        var _ids = $(event.target).val();
-        if (!_ids) {
-            this.taskSkillsFilter.set(null);
-        } else if (_ids[0] === "noSkills") {
-            this.taskSkillsFilter.set([]);
-        } else {
-            this.taskSkillsFilter.set(_ids);
-        }
+    filterSkill(error, docModified, newOption) {
+        return _.bind(function (error, docModifier, newOption) {
+            var _ids = newOption;
+            if (!_ids || _ids=="") {
+                this.taskSkillsFilter.set(null);
+            //TODO add this "noSkills" option in the select
+            } else if (_ids[0] === "noSkills") {
+                this.taskSkillsFilter.set([]);
+            } else {
+                this.taskSkillsFilter.set(_ids);
+            }
+        },this);
     }
 
     switchDisplayAssignedTask(event) {
         this.isplayAssignedTask.set($($(event.target)[0]).is(':checked'));
     }
 
+    optionQueryTeamsWithoutAlreadyAssigned(){
+        return TeamService.optionQueryTeamsWithoutAlreadyAssigned();
+    }
 
     tasks() {
         var filter = AssignmentReactiveVars.TaskFilter.get();
