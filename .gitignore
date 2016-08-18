@@ -1,4 +1,5 @@
 manifmaker/.idea/
 manifmaker/npm-debug.log
 doc/html
-manifmaker/.meteor/dev_bundle/
+manifmaker/.meteor/dev_bundle
+
