@@ -14,12 +14,14 @@
 
         <!-- Show the first validation state or the "no comment" message -->
         {{#if equipmentValidation.comments}}
-            {{displayDateTime equipmentValidation.comments.[0].creationDate}} : has been updated to <b>{{displayValidationState equipmentValidation.comments.[0].stateAfter}}</b>
-            {{#if equipmentValidation.comments.[0].content}}
-                with "{{equipmentValidation.comments.[0].content}}"
-            {{else}}
-                without any comment
-            {{/if}}
+            <span title="{{displayDateTime equipmentValidation.comments.[0].creationDate}} : {{equipmentValidation.comments.[0].author}} updated equipment validation from {{displayValidationState equipmentValidation.comments.[0].stateBefore}} to {{displayValidationState equipmentValidation.comments.[0].stateAfter}}  {{#if equipmentValidation.comments.[0].content}}with '{{equipmentValidation.comments.[0].content}}'{{else}}without any comment{{/if}}">
+                {{displayDateTime equipmentValidation.comments.[0].creationDate}} : has been updated to <b>{{displayValidationState equipmentValidation.comments.[0].stateAfter}}</b>
+                {{#if equipmentValidation.comments.[0].content}}
+                    with "{{equipmentValidation.comments.[0].content}}"
+                {{else}}
+                    without any comment
+                {{/if}}
+            </span>
         {{else}}
             There are not comments right now but with luck there will be yours soon.
         {{/if}}
@@ -32,14 +34,16 @@
 
             {{#each equipmentValidation.comments}}
                 {{#unless equals @index 0}}
-                    <i class="mdi mdi-wrench mdi-inline {{stateAfter.toLowerCase}}"></i>
-                    {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
-                    {{#if content}}
-                        with "{{content}}"
-                    {{else}}
-                        without any comment
-                    {{/if}}
-                    <br>
+                    <span title="{{displayDateTime creationDate}} : {{author}} updated equipment validation from {{displayValidationState stateBefore}} to {{displayValidationState stateAfter}}  {{#if content}}with '{{content}}'{{else}}without any comment{{/if}}">
+                        <i class="mdi mdi-wrench mdi-inline {{stateAfter.toLowerCase}}"></i>
+                        {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
+                        {{#if content}}
+                            with "{{content}}"
+                        {{else}}
+                            without any comment
+                        {{/if}}
+                        <br>
+                    </span>
                 {{/unless}}
             {{/each}}
         </div>
@@ -101,12 +105,14 @@
 
         <!-- Show the first validation state or the "no comment" message -->
         {{#if timeSlotValidation.comments}}
-            {{displayDateTime timeSlotValidation.comments.[0].creationDate}} : has been updated to <b>{{displayValidationState timeSlotValidation.comments.[0].stateAfter}}</b>
-            {{#if timeSlotValidation.comments.[0].content}}
-                with "{{timeSlotValidation.comments.[0].content}}"
-            {{else}}
-                without any comment
-            {{/if}}
+            <span title="{{displayDateTime timeSlotValidation.comments.[0].creationDate}} : {{timeSlotValidation.comments.[0].author}} updated time slots validation from {{displayValidationState timeSlotValidation.comments.[0].stateBefore}} to {{displayValidationState timeSlotValidation.comments.[0].stateAfter}}  {{#if timeSlotValidation.comments.[0].content}}with '{{timeSlotValidation.comments.[0].content}}'{{else}}without any comment{{/if}}">
+                {{displayDateTime timeSlotValidation.comments.[0].creationDate}} : has been updated to <b>{{displayValidationState timeSlotValidation.comments.[0].stateAfter}}</b>
+                {{#if timeSlotValidation.comments.[0].content}}
+                    with "{{timeSlotValidation.comments.[0].content}}"
+                {{else}}
+                    without any comment
+                {{/if}}
+            </span>
         {{else}}
             There are not comments right now but with luck there will be yours soon.
         {{/if}}
@@ -119,14 +125,16 @@
 
             {{#each timeSlotValidation.comments}}
                 {{#unless equals @index 0}}
-                    <i class="mdi mdi-clock mdi-inline {{stateAfter.toLowerCase}}"></i>
-                    {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
-                    {{#if content}}
-                        with "{{content}}"
-                    {{else}}
-                        without any comment
-                    {{/if}}
-                    <br>
+                    <span title="{{displayDateTime creationDate}} : {{author}} updated time slots validation from {{displayValidationState stateBefore}} to {{displayValidationState stateAfter}}  {{#if content}}with '{{content}}'{{else}}without any comment{{/if}}">
+                        <i class="mdi mdi-clock mdi-inline {{stateAfter.toLowerCase}}"></i>
+                        {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
+                        {{#if content}}
+                            with "{{content}}"
+                        {{else}}
+                            without any comment
+                        {{/if}}
+                        <br>
+                    </span>
                 {{/unless}}
             {{/each}}
         </div>
