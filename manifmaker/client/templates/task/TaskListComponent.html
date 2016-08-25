@@ -75,15 +75,13 @@
             {{/if}}
             <div class="col-md-3 col-md-offset-1">
                 <label>
-                    <input type="checkbox"> After :
+                    <input type="checkbox" id="checkbox-after-filter"> After :
                 </label>
-                <!-- TODO rendre fonctionnel le custom picker -->
-                {{>DateTimePickerComponent date=TODO updateDateCallback=TODO}}
+                {{>DateTimePickerComponent readOnly=isAfterFilterReadOnly date="now" updateDateCallback=filterAfter}}
                 <label>
-                    <input type="checkbox"> Before :
+                    <input type="checkbox" id="checkbox-before-filter"> Before :
                 </label>
-                <!-- TODO rendre fonctionnel le custom picker -->
-                {{>DateTimePickerComponent date=TODO updateDateCallback=TODO}}
+                {{>DateTimePickerComponent readOnly=isBeforeFilterReadOnly date="now" updateDateCallback=filterBefore}}
             </div>
 
             {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}

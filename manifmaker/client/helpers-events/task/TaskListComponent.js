@@ -9,6 +9,8 @@ class TaskListComponent extends BlazeComponent {
         return [{
             "keyup #search_task_name": this.filterName,
             "click #advanced-search-button": this.switchAdvanced,
+            "click #checkbox-after-filter": this.switchAfterFilter,
+            "click #checkbox-before-filter": this.switchBeforeFilter,
         }];
     }
 
@@ -26,7 +28,7 @@ class TaskListComponent extends BlazeComponent {
 
     filterTeam(error, docModified, newOption) {
         return _.bind(function (error, docModifier, newOption) {
-            var _id = newOption
+            var _id = newOption;
             this.taskListTeamFilter.set(_id);
         },this);
     }
@@ -34,7 +36,7 @@ class TaskListComponent extends BlazeComponent {
 
     filterResponsible(error, docModifier, newOption) {
         return _.bind(function(error,docModifier,newOption) {
-            var _id = newOption
+            var _id = newOption;
             this.taskListResponsibleFilter.set(_id);
         },this);
    }
@@ -126,13 +128,61 @@ class TaskListComponent extends BlazeComponent {
         this.taskListNameFilter.set(_id);
     }
 
+
+    switchAfterFilter(event){
+        var _id = $(event.target).prop("checked");
+        if(_id){
+            this.isAfterFilterOn.set(true);
+            //TODO reactivate the filter
+        }else{
+            this.isAfterFilterOn.set(false);
+            this.taskAfterFilter.set("");
+        }
+    }
+    isAfterFilterReadOnly(){
+        return !this.isAfterFilterOn.get();
+    }
+    filterAfter(newOption) {
+        return _.bind(function(newOption) {
+            var _time = new Date(newOption);
+            this.taskAfterFilter.set({ "$elemMatch": {"start": { "$gte":  _time } } });
+        },this);
+    }
+
+    switchBeforeFilter(event){
+        var _id = $(event.target).prop("checked");
+        if(_id){
+            this.isBeforeFilterOn.set(true);
+            //TODO reactivate the filter
+        }else{
+            this.isBeforeFilterOn.set(false);
+            this.taskBeforeFilter.set("");
+        }
+    }
+    isBeforeFilterReadOnly(){
+        return !this.isBeforeFilterOn.get();
+    }
+    filterBefore(newOption) {
+        return _.bind(function(newOption) {
+            var _time = new Date(newOption);
+            this.taskBeforeFilter.set({ "$elemMatch": {"start": { "$lte":  _time } } });
+            alert(_time);
+        },this);
+    }
+
     onCreated() {
         this.taskListTeamFilter = new ReactiveTable.Filter("task-list-team-filter", ["teamId"]);
         this.taskListResponsibleFilter = new ReactiveTable.Filter("task-list-responsible-filter", ["masterId"]);
         this.taskListNameFilter = new ReactiveTable.Filter('search-task-name-filter', ['name']);
         this.taskListTimeSlotValidationStateFilter = new ReactiveTable.Filter('task-timeslot-validation-state-filter', ['timeSlotValidation.currentState']);
         this.taskListEquipmentValidationStateFilter = new ReactiveTable.Filter('task-equipment-validation-state-filter', ['equipmentValidation.currentState']);
+        this.taskAfterFilter = new ReactiveTable.Filter("task-after-filter", ["timeSlots"]);
+        this.taskBeforeFilter = new ReactiveTable.Filter("task-before-filter", ["timeSlots"]);
+
         this.taskListAdvancedSearch = new ReactiveVar(false);
+        this.isAfterFilterOn = new ReactiveVar(false);
+        this.isBeforeFilterOn = new ReactiveVar(false);
+
     }
 
 
@@ -214,7 +264,9 @@ class TaskListComponent extends BlazeComponent {
                 'task-list-responsible-filter',
                 'search-task-name-filter',
                 'task-timeslot-validation-state-filter',
-                'task-equipment-validation-state-filter'
+                'task-equipment-validation-state-filter',
+                'task-after-filter',
+                'task-before-filter'
             ]
         }
     }
