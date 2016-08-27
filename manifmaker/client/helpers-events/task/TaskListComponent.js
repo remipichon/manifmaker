@@ -133,7 +133,8 @@ class TaskListComponent extends BlazeComponent {
         var _id = $(event.target).prop("checked");
         if(_id){
             this.isAfterFilterOn.set(true);
-            //TODO reactivate the filter
+            _date = new Date(this.$(".date-after-filter>.datetimepicker").data("DateTimePicker").date());
+            this.taskAfterFilter.set({ "$elemMatch": {"start": { "$gte":  _date } } });
         }else{
             this.isAfterFilterOn.set(false);
             this.taskAfterFilter.set("");
@@ -153,7 +154,8 @@ class TaskListComponent extends BlazeComponent {
         var _id = $(event.target).prop("checked");
         if(_id){
             this.isBeforeFilterOn.set(true);
-            //TODO reactivate the filter
+            _date = new Date(this.$(".date-before-filter>.datetimepicker").data("DateTimePicker").date());
+            this.taskBeforeFilter.set({ "$elemMatch": {"start": { "$lte":  _date } } });
         }else{
             this.isBeforeFilterOn.set(false);
             this.taskBeforeFilter.set("");
@@ -166,7 +168,6 @@ class TaskListComponent extends BlazeComponent {
         return _.bind(function(newOption) {
             var _time = new Date(newOption);
             this.taskBeforeFilter.set({ "$elemMatch": {"start": { "$lte":  _time } } });
-            alert(_time);
         },this);
     }
 

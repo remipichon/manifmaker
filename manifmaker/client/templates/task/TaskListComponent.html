@@ -77,11 +77,11 @@
                 <label>
                     <input type="checkbox" id="checkbox-after-filter"> After :
                 </label>
-                {{>DateTimePickerComponent readOnly=isAfterFilterReadOnly date="now" updateDateCallback=filterAfter}}
+                {{>DateTimePickerComponent class="date-after-filter" readOnly=isAfterFilterReadOnly date="now" updateDateCallback=filterAfter}}
                 <label>
                     <input type="checkbox" id="checkbox-before-filter"> Before :
                 </label>
-                {{>DateTimePickerComponent readOnly=isBeforeFilterReadOnly date="now" updateDateCallback=filterBefore}}
+                {{>DateTimePickerComponent class="date-after-filter" readOnly=isBeforeFilterReadOnly date="now" updateDateCallback=filterBefore}}
             </div>
 
             {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
