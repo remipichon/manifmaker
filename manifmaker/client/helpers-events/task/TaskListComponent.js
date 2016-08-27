@@ -133,11 +133,12 @@ class TaskListComponent extends BlazeComponent {
         var _id = $(event.target).prop("checked");
         if(_id){
             this.isAfterFilterOn.set(true);
-            _date = new Date(this.$(".date-after-filter>.datetimepicker").data("DateTimePicker").date());
-            this.taskAfterFilter.set({ "$elemMatch": {"start": { "$gte":  _date } } });
+
+            var _date = new Date(this.$(".date-after-filter>.datetimepicker").data("DateTimePicker").date()); //get the date
+            this.changeDateFilter(_date,"after");
         }else{
+            this.deleteDateFilter("after");
             this.isAfterFilterOn.set(false);
-            this.taskAfterFilter.set("");
         }
     }
     isAfterFilterReadOnly(){
@@ -146,7 +147,7 @@ class TaskListComponent extends BlazeComponent {
     filterAfter(newOption) {
         return _.bind(function(newOption) {
             var _time = new Date(newOption);
-            this.taskAfterFilter.set({ "$elemMatch": {"start": { "$gte":  _time } } });
+            this.changeDateFilter(_time,"after");
         },this);
     }
 
@@ -154,11 +155,12 @@ class TaskListComponent extends BlazeComponent {
         var _id = $(event.target).prop("checked");
         if(_id){
             this.isBeforeFilterOn.set(true);
-            _date = new Date(this.$(".date-before-filter>.datetimepicker").data("DateTimePicker").date());
-            this.taskBeforeFilter.set({ "$elemMatch": {"start": { "$lte":  _date } } });
+
+            var _date = new Date(this.$(".date-before-filter>.datetimepicker").data("DateTimePicker").date()); //get the date
+            this.changeDateFilter(_date,"before");
         }else{
+            this.deleteDateFilter("before");
             this.isBeforeFilterOn.set(false);
-            this.taskBeforeFilter.set("");
         }
     }
     isBeforeFilterReadOnly(){
@@ -167,8 +169,53 @@ class TaskListComponent extends BlazeComponent {
     filterBefore(newOption) {
         return _.bind(function(newOption) {
             var _time = new Date(newOption);
-            this.taskBeforeFilter.set({ "$elemMatch": {"start": { "$lte":  _time } } });
+            this.changeDateFilter(_time,"before");
         },this);
+    }
+
+
+    changeDateFilter(newDate,beforeOrAfter){
+        if(this.taskDateFilter.get()["$elemMatch"]){ //if a filter is already defined
+            dateQuery = this.taskDateFilter.get();
+            if(beforeOrAfter=="before"){
+                dateQuery["$elemMatch"]["end"]={ "$lte":  newDate };
+            }else if(beforeOrAfter=="after"){
+                dateQuery["$elemMatch"]["start"]={ "$gte":  newDate };
+            }else{
+                console.log("Error, this shouldn't happen");
+            }
+            this.taskDateFilter.set(dateQuery);
+        }else{
+            if(beforeOrAfter=="before"){
+                this.taskDateFilter.set({ "$elemMatch": {"end": { "$lte":  newDate } } });
+            }else if(beforeOrAfter=="after"){
+                this.taskDateFilter.set({ "$elemMatch": {"start": { "$gte":  newDate } } });
+            }else{
+                console.log("Error, this shouldn't happen");
+            }
+        }
+    }
+    deleteDateFilter(beforeOrAfter){
+        var paramToChange, otherParam;
+        if(beforeOrAfter=="before"){
+            paramToChange="end";otherParam="start";
+        }else if(beforeOrAfter=="after"){
+            paramToChange="start";otherParam="end";
+        }else{
+            console.log("Error, this shouldn't happen");
+        }
+
+        if(this.taskDateFilter.get()["$elemMatch"]){ //if a filter is defined
+            if(this.taskDateFilter.get()["$elemMatch"][otherParam]){ //if the other filter is active
+                var dateQuery = this.taskDateFilter.get();
+                delete dateQuery["$elemMatch"][paramToChange]; //just delete the one we don't want
+                this.taskDateFilter.set(dateQuery);
+            }else{
+                this.taskDateFilter.set("");
+            }
+        }else{
+            this.taskDateFilter.set("");
+        }
     }
 
     onCreated() {
@@ -177,8 +224,7 @@ class TaskListComponent extends BlazeComponent {
         this.taskListNameFilter = new ReactiveTable.Filter('search-task-name-filter', ['name']);
         this.taskListTimeSlotValidationStateFilter = new ReactiveTable.Filter('task-timeslot-validation-state-filter', ['timeSlotValidation.currentState']);
         this.taskListEquipmentValidationStateFilter = new ReactiveTable.Filter('task-equipment-validation-state-filter', ['equipmentValidation.currentState']);
-        this.taskAfterFilter = new ReactiveTable.Filter("task-after-filter", ["timeSlots"]);
-        this.taskBeforeFilter = new ReactiveTable.Filter("task-before-filter", ["timeSlots"]);
+        this.taskDateFilter = new ReactiveTable.Filter("task-date-filter", ["timeSlots"]);
 
         this.taskListAdvancedSearch = new ReactiveVar(false);
         this.isAfterFilterOn = new ReactiveVar(false);
@@ -266,8 +312,7 @@ class TaskListComponent extends BlazeComponent {
                 'search-task-name-filter',
                 'task-timeslot-validation-state-filter',
                 'task-equipment-validation-state-filter',
-                'task-after-filter',
-                'task-before-filter'
+                'task-date-filter'
             ]
         }
     }
