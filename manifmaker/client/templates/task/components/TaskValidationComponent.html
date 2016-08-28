@@ -1,7 +1,6 @@
 <template name="taskValidation">
     <h4><i class="mdi mdi-wrench"></i> Equipment validation</h4>
 
-
     <div class="validation-comments-list-header toggle-equipment-validation-comments-list" data-toggle="collapse" data-target="#equipment-validation-comments-list">
         <!-- Show the expand/collapse icon if there is more than 1 validation states -->
         <!-- comment between lines are here to avoid a white space between element, keeping a clean code with incrementations -->
@@ -57,17 +56,17 @@
 
             <!-- button to display -->
             {{#if equals equipmentValidation.currentState "OPEN"}}
-                <a class="input-group-addon btn btn-primary askforvalidation-button" href="/task/validation/equipment/{{this._id}}/to-be-validated">Ask for validation</a>
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-_id="{{this._id}}" data-type="equipment" data-state="to-be-validated">Ask for validation</span>
             {{/if}}
             {{#if equals equipmentValidation.currentState "REFUSED"}}
-                <a class="input-group-addon btn btn-primary askforvalidation-button" href="/task/validation/equipment/{{this._id}}/to-be-validated">Ask for validation</a>
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-_id="{{this._id}}" data-type="equipment" data-state="to-be-validated">Ask for validation</span>
             {{/if}}
             {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
-                <a class="input-group-addon btn btn-primary refuse-button" href="/task/validation/equipment/{{this._id}}/refuse">Refuse</a>
-                <a class="input-group-addon btn btn-primary close-button" href="/task/validation/equipment/{{this._id}}/ready">Close</a>
+                <span class="input-group-addon btn btn-primary refuse-button" data-_id="{{this._id}}" data-type="equipment" data-state="refuse">Refuse</span>
+                <span class="input-group-addon btn btn-primary close-button" data-_id="{{this._id}}" data-type="equipment" data-state="ready">Close</span>
             {{/if}}
             {{#if equals equipmentValidation.currentState "READY"}}
-                <a class="input-group-addon btn btn-primary refuse-button" href="/task/validation/equipment/{{this._id}}/refuse">Refuse</a>
+                <span class="input-group-addon btn btn-primary refuse-button" data-_id="{{this._id}}" data-type="equipment" data-state="refuse">Refuse</span>
             {{/if}}
 
         </div>
@@ -148,17 +147,17 @@
 
             <!-- button to display -->
             {{#if equals timeSlotValidation.currentState "OPEN"}}
-                <a class="input-group-addon btn btn-primary askforvalidation-button" href="/task/validation/time-slot/{{this._id}}/to-be-validated">Ask for validation</a>
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-_id="{{this._id}}" data-type="time-slot" data-state="to-be-validated">Ask for validation</span>
             {{/if}}
             {{#if equals timeSlotValidation.currentState "REFUSED"}}
-                <a class="input-group-addon btn btn-primary askforvalidation-button" href="/task/validation/time-slot/{{this._id}}/to-be-validated">Ask for validation</a>
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-_id="{{this._id}}" data-type="time-slot" data-state="to-be-validated">Ask for validation</span>
             {{/if}}
             {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
-                <a class="input-group-addon btn btn-primary refuse-button" href="/task/validation/time-slot/{{this._id}}/refuse">Refuse</a>
-                <a class="input-group-addon btn btn-primary close-button" href="/task/validation/time-slot/{{this._id}}/ready">Close</a>
+                <span class="input-group-addon btn btn-primary refuse-button" data-_id="{{this._id}}" data-type="time-slot" data-state="refuse">Refuse</span>
+                <span class="input-group-addon btn btn-primary close-button" data-_id="{{this._id}}" data-type="time-slot" data-state="ready">Close</span>
             {{/if}}
             {{#if equals timeSlotValidation.currentState "READY"}}
-                <a class="input-group-addon btn btn-primary refuse-button" href="/task/validation/time-slot/{{this._id}}/refuse">Refuse</a>
+                <span class="input-group-addon btn btn-primary refuse-button" data-_id="{{this._id}}" data-type="time-slot" data-state="refuse">Refuse</span>
             {{/if}}
 
         </div>
