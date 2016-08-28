@@ -119,6 +119,7 @@ Router.route('/task/:_id/read', function () {
     {controller: ManifMakerRouterController, name: 'task.read'}
 );
 
+<<<<<<< e53066f5f20d849691b1c8c6102ea336fee45a33
 /**
  * @memberOf Route.Task
  * @summary Update validation state for one the task part
@@ -162,3 +163,5 @@ Router.route('/task/validation/:validationType/:_id/:state', function () {
 
 
 
+=======
+>>>>>>> [LOH] Task Update : changing validation state workflow without routes

@@ -1,8 +1,12 @@
+import {ValidationService} from "../../../../both/service/ValidationService"
+import {SecurityServiceClient} from "../../../../client/service/SecurityServiceClient"
+
 class TaskValidationComponent extends BlazeComponent{
     events() {
         return [{
             "click .toggle-equipment-validation-comments-list": this.switchEquipmentListDeveloped,
             "click .toggle-time-slots-validation-comments-list": this.switchTimeSlotsListDeveloped,
+            "click .askforvalidation-button,.refuse-button,.close-button": this.changeState,
         }];
     }
 
@@ -36,6 +40,12 @@ class TaskValidationComponent extends BlazeComponent{
         this.TimeSlotsCommentsListDeveloped.set(!this.TimeSlotsCommentsListDeveloped.get());
     }
 
+    /**
+     * This function states if the comment input has to be displayed or not
+     * @param validationType 'EQUIPMENTVALIDATION' or 'ASSIGNMENTVALIDATION'
+     * @param state 'TOBEVALIDATED' or 'OPEN' or 'READY' or 'REFUSED'
+     * @returns {boolean}
+     */
     displayTextArea(validationType, state) {
         if (!Roles.userIsInRole(Meteor.userId(), RolesEnum[validationType]) &&
             (state === "TOBEVALIDATED" || state === "READY"))
@@ -43,6 +53,32 @@ class TaskValidationComponent extends BlazeComponent{
         return true;
     }
 
+    /**
+     * @summary Update validation state for one the task part
+     * @locus client
+     * @param event
+     */
+    changeState(event){
+        var _id= $(event.target).data('_id');
+        var validationType = $(event.target).data('type');
+        var state = $(event.target).data('state');
+
+         if (state === "to-be-validated") {
+            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
+         } else {
+         if (validationType === "time-slot")
+            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ASSIGNMENTVALIDATION, "time slot validation");
+         if (validationType === "access-pass")
+            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ACCESSPASSVALIDATION, "access pass validation");
+         if (validationType === "equipment")
+            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.EQUIPMENTVALIDATION, "equipment validation");
+         }
+
+         var comment = $("#" + validationType + "-validation-new-comment").val();
+         $("#" + validationType + "-validation-new-comment").val("");
+
+         ValidationService.updateValidation(_id, ValidationStateUrl[state], ValidationTypeUrl[validationType], comment);
+    }
 
 }
 
