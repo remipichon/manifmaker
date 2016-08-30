@@ -11,18 +11,18 @@
             <div class="top-bar">
                 <!-- Sidebar toggle button -->
                 <button type="button" class="sidebar-toggle btn btn-default navbar-btn" aria-label="Left Align">
-                    <i class="mdi mdi-arrow-left"></i>
+                    <i class="mdi mdi-arrow-left sidebar-arrow"></i>
                 </button>
             </div>
 
             {{#if currentUser}}
                 <!-- Sidebar brand image -->
-                <div class="sidebar-image">
+                <div class="sidebar-image hidden-when-reduced">
                     <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/53474/atom_profile_01.jpg">
                 </div>
                 <!-- Sidebar brand name -->
                 <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-                    {{currentUser.username}}
+                    <span class=" hidden-when-reduced">{{currentUser.username}}</span>
                     <b class="caret"></b>
                 </a>
             {{/if}}

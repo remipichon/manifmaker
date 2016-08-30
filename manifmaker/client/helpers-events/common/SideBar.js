@@ -47,7 +47,12 @@ class SideBar extends BlazeComponent {
     toggleSideBar() {
         var overlay = $('.sidebar-overlay');
         var sidebar = $('#sidebar');
+        var arrow = $('.sidebar-arrow');
         sidebar.toggleClass('open');
+        sidebar.toggleClass('reduced');
+        arrow.toggleClass('mdi-arrow-left');
+        arrow.toggleClass('mdi-arrow-right');
+
         if ((sidebar.hasClass('sidebar-fixed-left') || sidebar.hasClass('sidebar-fixed-right')) && sidebar.hasClass('open')) {
             overlay.addClass('active');
         } else {
@@ -58,6 +63,9 @@ class SideBar extends BlazeComponent {
     onClickOverlay(e) {
         this.$(e.target).removeClass('active');
         this.$('#sidebar').removeClass('open');
+        this.$('#sidebar').addClass('reduced');
+        this.$('.sidebar-arrow').removeClass('mdi-arrow-left');
+        this.$('.sidebar-arrow').addClass('mdi-arrow-right');
     }
 
 
