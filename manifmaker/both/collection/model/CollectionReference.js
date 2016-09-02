@@ -213,7 +213,8 @@ Schemas.references.GroupRoles = new SimpleSchema({
     name: {
         type: String,
         label: "Group role Name",
-        max: 100
+        max: 100,
+        unique: true
     },
     roles: {
         type: [String],
