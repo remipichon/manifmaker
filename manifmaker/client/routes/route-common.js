@@ -159,7 +159,7 @@ Router.route('/delete-all', function () {
 
 /**
  * @memberOf Route.common
- * @summary Inject some authent profil (admin/admin and others)
+ * @summary Inject some authent profil
  * @locus client
  * @name 'init-access-right-data'  /init-access-right-data
  */

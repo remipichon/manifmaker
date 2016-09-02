@@ -55,18 +55,18 @@ export class InjectDataServerService {
     }
 
     static _injectRoles() {
-        var adminRoles = [];
+        var superadminRoles = [];
         _.each(RolesEnum, function (role) {
             Roles.createRole(role);
-            adminRoles.push(role);
+            superadminRoles.push(role);
         });
-        return adminRoles;
+        return superadminRoles;
     }
 
-    static _injectGroupRoles(adminRoles) {
-        var admin = GroupRoles.insert({
-            name: "admin",
-            roles: adminRoles
+    static _injectGroupRoles(superadminRoles) {
+        var superadmin = GroupRoles.insert({
+            name: "superadmin",
+            roles: superadminRoles
         });
         var bureau = GroupRoles.insert({
             name: "bureau",
@@ -109,7 +109,7 @@ export class InjectDataServerService {
             roles: [RolesEnum.MANIFMAKER]
         });
         return {
-            admin: admin,
+            superadmin: superadmin,
             bureau: bureau,
             hard: hard,
             soft: soft,
@@ -128,13 +128,13 @@ export class InjectDataServerService {
 
         //create roles
         console.info("inject Roles");
-        var adminRoles = this._injectRoles();
+        var superadminRoles = this._injectRoles();
 
         //create groups and add roles to groups
         console.info("inject GroupRoles");
-        var groupRoles = this._injectGroupRoles(adminRoles);
+        var groupRoles = this._injectGroupRoles(superadminRoles);
 
-        var admin = groupRoles.admin;
+        var superadmin = groupRoles.superadmin;
         var bureau = groupRoles.bureau;
         var hard = groupRoles.hard;
         var soft = groupRoles.soft;
@@ -142,8 +142,7 @@ export class InjectDataServerService {
         var respSecu = groupRoles.respSecu;
         var humain = groupRoles.humain;
 
-        console.info("inject log in account (admin/admin and others)");
-        this.createAccountAndUser("admin", "admin@yopmail.com", "admin", admin);
+        console.info("inject log in account");
         this.createAccountAndUser("hard", "hard@yopmail.com", "hard", hard);
         this.createAccountAndUser("bureau", "bureau@yopmail.com", "bureau", bureau);
         this.createAccountAndUser("resplog", "resplog@yopmail.com", "resplog", respLog);
