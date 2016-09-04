@@ -1,4 +1,5 @@
 import {ServerService} from "./ServerService";
+import {SecurityServiceServer} from "./SecurityServiceServer";
 
 /** @class InjectDataServerService */
 export class InjectDataServerService {
@@ -7,6 +8,7 @@ export class InjectDataServerService {
      * @summary perform deleteAll, initAccessRightData and populateData
      */
     static injectAllData() {
+        SecurityServiceServer.isItProd("InjectDataServerService.injectAllData");
         console.info("inject data starts");
         this.deleteAll();
         console.info("deleteAll done");
@@ -35,6 +37,7 @@ export class InjectDataServerService {
      * @summmary delete all data
      */
     static deleteAll() {
+        SecurityServiceServer.isItProd();
         Meteor.roles.remove({});
         GroupRoles.direct.remove({});
         Meteor.users.remove({});

@@ -1,13 +1,11 @@
 import {InjectDataServerService} from "../service/InjectDataServerService"
+import {SecurityServiceServer} from "../service/SecurityServiceServer"
 
 
 Meteor.methods({
      injectData: function(){
-         if(Meteor.isDevelopment){
-             InjectDataServerService.injectAllData();
-         } else {
-             throw new Meteor.Error(500,"Meteor Methods injectData has been called but cancel because Meteor is not in developement mode")
-         }
+         SecurityServiceServer.isItProd("inject data from front");
+         InjectDataServerService.injectAllData();
     }
 });
 

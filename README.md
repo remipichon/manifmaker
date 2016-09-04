@@ -87,6 +87,9 @@ Using Webhooks, each push on branch deploy triggers a _git pull_ on a machine wh
 
 (ask[Rémi](https://github.com/remipichon)or[Léo](https://github.com/martinezleoml)to gain access on the machine, only with key auth)
 
+
+use ENV ISPROD to prevent using inject-data in prod
+
 # Contribution
 
 Usual merge request stuff
