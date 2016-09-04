@@ -120,9 +120,10 @@ Router.route('/inject-data', function () {
             $("#result").html("please wait while injecting data, you are now logged out");
             Meteor.call("injectData",function(error, result){
                 if(error){
-                    $("#result").html(error);
+                    alert(error);
                 } else {
-                    $("#result").html("inject happened without error, please log in");
+                    alert("inject happened without error, please log in");
+                    Router.go("/");
                 }
             })
         } else {
@@ -130,79 +131,6 @@ Router.route('/inject-data', function () {
         }
     },
     {name: 'inject-data'}
-)
-
-/**
- * @memberOf Route.common
- * @summary Delete all DB data
- * @locus client
- * @name 'home'  /delete-all
- */
-Router.route('/delete-all', function () {
-        if (Meteor.isDevelopment) {
-            Accounts.logout();
-            $("#result").html("please wait while deleting data, you are now logged out");
-            Meteor.call("deleteAll",function(error, result){
-                if(error){
-                    $("#result").html(error);
-                } else {
-                    $("#result").html("deleteAll happened without error, you should use /init-access-right-data to be able to log in");
-                }
-            })
-        } else {
-            console.error("/delete-all is a dev only route")
-        }
-    },
-    {name: 'delete-all'}
-)
-
-
-/**
- * @memberOf Route.common
- * @summary Inject some authent profil
- * @locus client
- * @name 'init-access-right-data'  /init-access-right-data
- */
-Router.route('/init-access-right-data', function () {
-        if (Meteor.isDevelopment) {
-            Accounts.logout();
-            $("#result").html("please wait while injecting data, you are now logged out");
-            Meteor.call("initAccessRightData",function(error, result){
-                if(error){
-                    $("#result").html(error);
-                } else {
-                    $("#result").html("initAccessRightData happened without error, please log in");
-                }
-            })
-        } else {
-            console.error("/init-access-right-dat is a dev only route")
-        }
-    },
-    {name: 'init-access-right-data'}
-)
-
-/**
- * @memberOf Route.common
- * @summary Add some data test (some conf, 3 tasks)
- * @locus client
- * @name 'populate-data'  /populate-data
- */
-Router.route('/populate-data', function () {
-        if (Meteor.isDevelopment) {
-            Accounts.logout();
-            $("#result").html("please wait while injecting data, you are now logged out");
-            Meteor.call("populateData",function(error, result){
-                if(error){
-                    $("#result").html(error);
-                } else {
-                    $("#result").html("populateData happened without error, please log in");
-                }
-            })
-        } else {
-            console.error("/populate-data is a dev only route")
-        }
-    },
-    {name: 'populate-data'}
 )
 
 
