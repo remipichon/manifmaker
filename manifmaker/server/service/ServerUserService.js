@@ -104,6 +104,9 @@ export class ServerUserService {
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
         }
 
+        if(Users.findOne(doc._id).name === SUPERADMIN){
+            throw new Meteor.Error("403","User superadmin can not be updated");
+        }
     }
 
     /**
@@ -114,6 +117,10 @@ export class ServerUserService {
      */
     static allowDelete(userId, doc) {
         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERDELETE, doc, 'task');
+
+        if(Users.findOne(doc._id).name === SUPERADMIN){
+            throw new Meteor.Error("403","User superadmin can not be deleted");
+        }
     }
 
 }
