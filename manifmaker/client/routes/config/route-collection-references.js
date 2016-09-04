@@ -1,5 +1,7 @@
 import {Schemas} from '../../../both/collection/model/SchemasHelpers'
 import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
+import {ManifMakerRouterController} from "../ManifMakerRouterController"
+
 /**
  * This namespace describes the auto-generated routes for all Collection references described belove
  * @memberOf Route
@@ -154,7 +156,10 @@ Router.route('/conf-maker', function () {
             to: 'mainContent'
         });
     },
-    {name: 'conf-maker'}
+    {
+        name: 'conf-maker',
+        controller: ManifMakerRouterController
+    }
 );
 
 
