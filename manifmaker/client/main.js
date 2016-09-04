@@ -20,6 +20,8 @@ AccountsTemplates.addField({
     errStr: 'At least 1 digit, 1 lower-case and 1 upper-case',
 });
 
+beforeLogginRoute = null;
+
 Meteor.startup(function () {
 
     Meteor.subscribe("skills");
@@ -48,6 +50,12 @@ Meteor.startup(function () {
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
             console.log("AutoForm.addHooks : "+name + " error:", error);
+        },
+        onSuccess: function(formType, result) {
+            if(beforeLogginRoute){
+                Router.go(beforeLogginRoute);
+                beforeLogginRoute = null;
+            }
         }
     });
 

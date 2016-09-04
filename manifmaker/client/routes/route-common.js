@@ -1,3 +1,5 @@
+import {ManifMakerRouterController} from "./ManifMakerRouterController"
+
 /**
  * @namespace Route
  */
@@ -48,7 +50,23 @@ Router.route('/', function () {
 
 
     },
-    {name: 'home'}
+    {name: 'home',
+    controller: ManifMakerRouterController
+    }
+);
+
+/**
+ * @memberOf Route.common
+ * @summary Login
+ * @locus client
+ * @name 'login'  /login
+ */
+Router.route('/login', function () {
+        this.render('login', {to: 'mainContent'})
+    },
+    {
+        name: 'login',
+    }
 );
 
 /**
