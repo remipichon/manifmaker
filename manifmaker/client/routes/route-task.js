@@ -1,5 +1,6 @@
 import {ValidationService} from "../../both/service/ValidationService"
 import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
+import {ManifMakerRouterController} from "./ManifMakerRouterController"
 
 /**
  * @memberOf Route
@@ -25,7 +26,7 @@ Router.route('/tasks', function () {
             console.log("Route /tasks : waiting users and tasks data"); //TODO add a spinner
         }
     },
-    {name: 'task.list'}
+    {controller: ManifMakerRouterController,name: 'task.list'}
 )
 
 /**
@@ -48,7 +49,7 @@ Router.route('/task', function () {
         }
 
     },
-    {name: 'task.create'}
+    {controller: ManifMakerRouterController,name: 'task.create'}
 );
 
 /**
@@ -81,7 +82,7 @@ Router.route('/task/:_id', function () {
             console.log("waiting for data")
         }
     },
-    {name: 'task.update'}
+    {controller: ManifMakerRouterController,name: 'task.update'}
 );
 
 
@@ -115,7 +116,7 @@ Router.route('/task/:_id/read', function () {
             console.log("waiting for data")
         }
     },
-    {name: 'task.read'}
+    {controller: ManifMakerRouterController, name: 'task.read'}
 );
 
 /**
@@ -149,7 +150,7 @@ Router.route('/task/validation/:validationType/:_id/:state', function () {
         this.redirect("/task/" + this.params._id);
 
     },
-    {name: 'task.validation.timeSlot'}
+    {controller: ManifMakerRouterController,name: 'task.validation.timeSlot'}
 );
 
 

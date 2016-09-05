@@ -1,13 +1,15 @@
+import {ManifMakerRouterController} from "./ManifMakerRouterController"
+
 Router.route('/groups', function () {
         this.render('groupsList', {to: 'mainContent'});
     },
-    {name: 'group.list'}
+    {controller: ManifMakerRouterController,name: 'group.list'}
 );
 
 Router.route('/group', function () {
         this.render('group', {to: 'mainContent'});
     },
-    {name: 'group.create'}
+    {controller: ManifMakerRouterController,name: 'group.create'}
 );
 
 Router.route('/group/:_id', function () {
@@ -17,7 +19,7 @@ Router.route('/group/:_id', function () {
                 return Groups.findOne({_id: currentGroup});
             },to: 'mainContent'});
     },
-    {name: 'group.read'}
+    {controller: ManifMakerRouterController,name: 'group.read'}
 );
 
 Router.route('/group/:_id/delete', function () {
@@ -27,5 +29,5 @@ Router.route('/group/:_id/delete', function () {
                 return Groups.remove({_id: currentGroup});
             },to: 'mainContent'});
     },
-    {name: 'group.delete'}
+    {controller: ManifMakerRouterController,name: 'group.delete'}
 );

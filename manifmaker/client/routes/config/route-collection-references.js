@@ -95,7 +95,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
                 to: 'mainContent'
             });
         },
-        {name: REFERENCE_URL + '.list'}
+        {controller: ManifMakerRouterController,name: REFERENCE_URL + '.list'}
     );
 
     /**
@@ -114,7 +114,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
                 to: 'mainContent'
             });
         },
-        {name: REFERENCE_URL + '.create'}
+        {controller: ManifMakerRouterController,name: REFERENCE_URL + '.create'}
     );
 
     /**
@@ -135,7 +135,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
                 to: 'mainContent'
             });
         },
-        {name: REFERENCE_URL + '.update'}
+        {controller: ManifMakerRouterController,name: REFERENCE_URL + '.update'}
     );
 
 });

@@ -1,4 +1,5 @@
 import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
+import {ManifMakerRouterController} from "./ManifMakerRouterController"
 
 /**
  * @memberOf Route
@@ -18,7 +19,7 @@ Router.route('/users', function () {
             to: 'mainContent'
         });
     },
-    {name: 'user.list'}
+    {controller: ManifMakerRouterController,name: 'user.list'}
 );
 
 /**
@@ -41,7 +42,7 @@ Router.route('/user', function () {
         }
 
     },
-    {name: 'user.create'}
+    {controller: ManifMakerRouterController,name: 'user.create'}
 );
 
 /**
@@ -67,7 +68,7 @@ Router.route('/user/:_id', function () {
             }, to: 'mainContent'
         });
     },
-    {name: 'user.write'}
+    {controller: ManifMakerRouterController,name: 'user.write'}
 );
 
 /**
@@ -92,7 +93,7 @@ Router.route('/user/:_id/read', function () {
             }, to: 'mainContent'
         });
     },
-    {name: 'user.read'}
+    {controller: ManifMakerRouterController,name: 'user.read'}
 );
 
 
@@ -106,7 +107,7 @@ Router.route('/logout', function () {
         Accounts.logout();
         Router.go("/")
     },
-    {name: 'logout'}
+    {controller: ManifMakerRouterController,name: 'logout'}
 );
 
 

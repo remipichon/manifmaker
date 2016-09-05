@@ -12,7 +12,6 @@ assignmentCalendarIsRendered = false;
 
 AssignmentController = ManifMakerRouterController.extend({
     onBeforeAction: function () {
-        console.log("AssignmentController");
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ASSIGNMENTTASKUSER, "assignment");
 
         if (!assignmentCalendarIsRendered) {
