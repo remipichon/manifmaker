@@ -80,6 +80,7 @@ modules-runtime@0.6.4
 momentjs:moment@2.13.1
 mongo@1.1.9
 mongo-id@1.0.5
+mrt:nprogress@0.2.0
 npm-bcrypt@0.8.6_1
 npm-mongo@1.4.44
 observe-sequence@1.0.12
