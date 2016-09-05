@@ -13,8 +13,6 @@ import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
  * @name 'home'  /tasks
  */
 Router.route('/tasks', function () {
-        this.wait(Meteor.subscribe('users'));
-        this.wait(Meteor.subscribe('tasks'));
 
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKREAD);
         console.info("routing", "/tasks");
@@ -37,7 +35,6 @@ Router.route('/tasks', function () {
  * @name 'task.create'  /task
  */
 Router.route('/task', function () {
-        this.wait(Meteor.subscribe('users'));
 
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
         console.info("routing", "/task");
@@ -62,12 +59,6 @@ Router.route('/task', function () {
  * @name 'task.read'  /task/:_id
  */
 Router.route('/task/:_id', function () {
-        this.wait(Meteor.subscribe('tasks'));
-        this.wait(Meteor.subscribe('teams'));
-        this.wait(Meteor.subscribe('places'));
-        this.wait(Meteor.subscribe('skills'));
-        this.wait(Meteor.subscribe('users'));
-        this.wait(Meteor.subscribe('power-supplies'));
 
         if (this.ready()) {
 
@@ -102,12 +93,6 @@ Router.route('/task/:_id', function () {
  * @name 'task.read'  /task/:_id
  */
 Router.route('/task/:_id/read', function () {
-        this.wait(Meteor.subscribe('tasks'));
-        this.wait(Meteor.subscribe('teams'));
-        this.wait(Meteor.subscribe('places'));
-        this.wait(Meteor.subscribe('skills'));
-        this.wait(Meteor.subscribe('users'));
-        this.wait(Meteor.subscribe('power-supplies'));
 
         if (this.ready()) {
 

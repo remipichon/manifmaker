@@ -32,8 +32,6 @@ Router.route('/user', function () {
 
         console.info("routing", "/user");
 
-        this.wait(Meteor.subscribe('teams'));
-
         if (this.ready()) {
             this.render('insertUserForm', {
                 to: 'mainContent'
