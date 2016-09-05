@@ -1,4 +1,5 @@
 import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
+import { AutoForm } from 'meteor/aldeed:autoform'
 
 AccountsTemplates.removeField('email');
 AccountsTemplates.removeField('password');
@@ -47,6 +48,7 @@ Meteor.startup(function () {
 
 
     SimpleSchema.debug = true;
+    //TODO autoform addHooks doesnt' seem to work
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
             console.log("AutoForm.addHooks : "+name + " error:", error);

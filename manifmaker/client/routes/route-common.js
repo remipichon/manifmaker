@@ -71,6 +71,25 @@ Router.route('/login', function () {
 
 /**
  * @memberOf Route.common
+ * @summary Login
+ * @locus client
+ * @name 'forbidden'  /login
+ */
+Router.route('/forbidden', function () {
+        this.render("forbidden",{
+            data : {
+                message : "You don't have permission to access this component."
+            },
+            to: 'mainContent'
+        });
+    },
+    {
+        name: 'forbidden',
+    }
+);
+
+/**
+ * @memberOf Route.common
  * @summary Demo du custom select
  * @locus client
  * @name 'demo-select'  /demo-select
