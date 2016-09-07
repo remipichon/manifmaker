@@ -1,5 +1,7 @@
 import {Schemas} from '../../../both/collection/model/SchemasHelpers'
 import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
+import {ManifMakerRouterController} from "../ManifMakerRouterController"
+
 /**
  * This namespace describes the auto-generated routes for all Collection references described belove
  * @memberOf Route
@@ -93,7 +95,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
                 to: 'mainContent'
             });
         },
-        {name: REFERENCE_URL + '.list'}
+        {controller: ManifMakerRouterController,name: REFERENCE_URL + '.list'}
     );
 
     /**
@@ -112,7 +114,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
                 to: 'mainContent'
             });
         },
-        {name: REFERENCE_URL + '.create'}
+        {controller: ManifMakerRouterController,name: REFERENCE_URL + '.create'}
     );
 
     /**
@@ -133,7 +135,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
                 to: 'mainContent'
             });
         },
-        {name: REFERENCE_URL + '.update'}
+        {controller: ManifMakerRouterController,name: REFERENCE_URL + '.update'}
     );
 
 });
@@ -154,7 +156,10 @@ Router.route('/conf-maker', function () {
             to: 'mainContent'
         });
     },
-    {name: 'conf-maker'}
+    {
+        name: 'conf-maker',
+        controller: ManifMakerRouterController
+    }
 );
 
 

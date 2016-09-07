@@ -1,5 +1,6 @@
 import {ValidationService} from "../../both/service/ValidationService"
 import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
+import {ManifMakerRouterController} from "./ManifMakerRouterController"
 
 /**
  * @memberOf Route
@@ -13,8 +14,6 @@ import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
  * @name 'home'  /tasks
  */
 Router.route('/tasks', function () {
-        this.wait(Meteor.subscribe('users'));
-        this.wait(Meteor.subscribe('tasks'));
 
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKREAD);
         console.info("routing", "/tasks");
@@ -27,7 +26,7 @@ Router.route('/tasks', function () {
             console.log("Route /tasks : waiting users and tasks data"); //TODO add a spinner
         }
     },
-    {name: 'task.list'}
+    {controller: ManifMakerRouterController,name: 'task.list'}
 )
 
 /**
@@ -37,7 +36,6 @@ Router.route('/tasks', function () {
  * @name 'task.create'  /task
  */
 Router.route('/task', function () {
-        this.wait(Meteor.subscribe('users'));
 
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
         console.info("routing", "/task");
@@ -51,7 +49,7 @@ Router.route('/task', function () {
         }
 
     },
-    {name: 'task.create'}
+    {controller: ManifMakerRouterController,name: 'task.create'}
 );
 
 /**
@@ -62,12 +60,6 @@ Router.route('/task', function () {
  * @name 'task.read'  /task/:_id
  */
 Router.route('/task/:_id', function () {
-        this.wait(Meteor.subscribe('tasks'));
-        this.wait(Meteor.subscribe('teams'));
-        this.wait(Meteor.subscribe('places'));
-        this.wait(Meteor.subscribe('skills'));
-        this.wait(Meteor.subscribe('users'));
-        this.wait(Meteor.subscribe('power-supplies'));
 
         if (this.ready()) {
 
@@ -90,7 +82,7 @@ Router.route('/task/:_id', function () {
             console.log("waiting for data")
         }
     },
-    {name: 'task.update'}
+    {controller: ManifMakerRouterController,name: 'task.update'}
 );
 
 
@@ -102,12 +94,6 @@ Router.route('/task/:_id', function () {
  * @name 'task.read'  /task/:_id
  */
 Router.route('/task/:_id/read', function () {
-        this.wait(Meteor.subscribe('tasks'));
-        this.wait(Meteor.subscribe('teams'));
-        this.wait(Meteor.subscribe('places'));
-        this.wait(Meteor.subscribe('skills'));
-        this.wait(Meteor.subscribe('users'));
-        this.wait(Meteor.subscribe('power-supplies'));
 
         if (this.ready()) {
 
@@ -130,7 +116,7 @@ Router.route('/task/:_id/read', function () {
             console.log("waiting for data")
         }
     },
-    {name: 'task.read'}
+    {controller: ManifMakerRouterController, name: 'task.read'}
 );
 
 /**
@@ -164,7 +150,7 @@ Router.route('/task/validation/:validationType/:_id/:state', function () {
         this.redirect("/task/" + this.params._id);
 
     },
-    {name: 'task.validation.timeSlot'}
+    {controller: ManifMakerRouterController,name: 'task.validation.timeSlot'}
 );
 
 

@@ -1,4 +1,5 @@
 import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
+import { AutoForm } from 'meteor/aldeed:autoform'
 
 AccountsTemplates.removeField('email');
 AccountsTemplates.removeField('password');
@@ -19,6 +20,8 @@ AccountsTemplates.addField({
     re: /(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
     errStr: 'At least 1 digit, 1 lower-case and 1 upper-case',
 });
+
+beforeLogginRoute = null;
 
 Meteor.startup(function () {
 
@@ -45,9 +48,16 @@ Meteor.startup(function () {
 
 
     SimpleSchema.debug = true;
+    //TODO autoform addHooks doesnt' seem to work
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
             console.log("AutoForm.addHooks : "+name + " error:", error);
+        },
+        onSuccess: function(formType, result) {
+            if(beforeLogginRoute){
+                Router.go(beforeLogginRoute);
+                beforeLogginRoute = null;
+            }
         }
     });
 

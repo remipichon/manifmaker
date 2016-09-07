@@ -1,6 +1,7 @@
 import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+import {ManifMakerRouterController} from "../ManifMakerRouterController"
 
 /**
  * @memberOf Route
@@ -9,14 +10,15 @@ import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/
 
 assignmentCalendarIsRendered = false;
 
-AssignmentController = RouteController.extend({
+AssignmentController = ManifMakerRouterController.extend({
     onBeforeAction: function () {
         SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ASSIGNMENTTASKUSER, "assignment");
 
+        this.render("AssignmentNavBarWrapper", {to: "topNavBar"})
+
+
         if (!assignmentCalendarIsRendered) {
             this.render('AssignmentHomeWrapper', {to: 'mainContent'});
-            this.render("AssignmentNavBarWrapper", {to: "topNavBar"})
-            this.render("AssignmentIndicationsBarWrapper", {to: "topNavBarComplement"})
             assignmentCalendarIsRendered = true;
         }
 
@@ -69,7 +71,6 @@ Router.route('/assignment/user/:userId', function () {
 
         //ceci est seulement le userToTask => TODO faire le taskToUser
 
-        this.wait(Meteor.subscribe('users', this.params.userId));
 
         if (this.ready()) {
             Router.go("/assignment/userToTask/" + this.params.userId);
@@ -99,8 +100,6 @@ Router.route('/assignment/task/:taskId', function () {
         //}
 
         //ceci est seulement le taskToUser => faire le  userToTask
-
-        this.wait(Meteor.subscribe('tasks', this.params.taskId));
 
         if (this.ready()) {
             Router.go("/assignment/taskToUser/" + this.params.taskId);

@@ -1,5 +1,7 @@
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+import {ManifMakerRouterController} from "../ManifMakerRouterController"
+
 /**
  * @memberOf Route.Assignment
  * @namespace Route.Assignment.taskToUser

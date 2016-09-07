@@ -1,3 +1,5 @@
+import {ManifMakerRouterController} from "./ManifMakerRouterController"
+
 /**
  * @namespace Route
  */
@@ -6,11 +8,9 @@ Router.configure({
     layoutTemplate: 'wrapper'
 });
 
-
 //hide topNavBar to each expect assignment
 Router.onAfterAction(function () {
-        this.render("", {to: "topNavBar"});
-        this.render("", {to: "topNavBarComplement"});
+    console.log("1")
         assignmentCalendarIsRendered = false;
     },
     {
@@ -24,9 +24,26 @@ Router.onAfterAction(function () {
             'assignment.calendar.taskToUser',
             'assignment.calendar.taskToUser.task',
             'assignment.calendar.taskToUser.task.timeSlot',
+        ]
+    }
+);
 
-            'assignment.calendar.task.search'
+//hide topNavBar to each expect assignment
+Router.onAfterAction(function () {
+    console.log("2")
+        this.render("", {to: "topNavBar"});
+    },
+    {
+        except: [
+            'assignment.calendar',
+            'assignment.calendar.user',
+            'assignment.calendar.userToTask',
+            'assignment.calendar.userToTask.user',
+            'assignment.calendar.userToTask.user.date',
 
+            'assignment.calendar.taskToUser',
+            'assignment.calendar.taskToUser.task',
+            'assignment.calendar.taskToUser.task.timeSlot',
         ]
     }
 );
@@ -48,7 +65,42 @@ Router.route('/', function () {
 
 
     },
-    {name: 'home'}
+    {name: 'home',
+    controller: ManifMakerRouterController
+    }
+);
+
+/**
+ * @memberOf Route.common
+ * @summary Login
+ * @locus client
+ * @name 'login'  /login
+ */
+Router.route('/login', function () {
+        this.render('login', {to: 'mainContent'})
+    },
+    {
+        name: 'login',
+    }
+);
+
+/**
+ * @memberOf Route.common
+ * @summary Login
+ * @locus client
+ * @name 'forbidden'  /login
+ */
+Router.route('/forbidden', function () {
+        this.render("forbidden",{
+            data : {
+                message : "You don't have permission to access this component."
+            },
+            to: 'mainContent'
+        });
+    },
+    {
+        name: 'forbidden',
+    }
 );
 
 /**
