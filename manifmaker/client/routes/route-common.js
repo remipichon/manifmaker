@@ -12,7 +12,6 @@ Router.configure({
 //hide topNavBar to each expect assignment
 Router.onAfterAction(function () {
         this.render("", {to: "topNavBar"});
-        this.render("", {to: "topNavBarComplement"});
         assignmentCalendarIsRendered = false;
     },
     {

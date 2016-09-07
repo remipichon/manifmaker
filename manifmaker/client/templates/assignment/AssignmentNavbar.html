@@ -4,12 +4,20 @@
 
 <template name="AssignmentNavbar">
 
+    <div class="row">
+
     <div class="inline">
         <i class="mdi mdi-help-circle"></i>
         {{#each breadCrumbAssignment}}
             <i class="mdi mdi-chevron-right"></i>
             <a href="{{url}}">{{label}}</a>
         {{/each}}
+    </div>
+    </div>
+
+
+    <div class="row">
+        {{> AssignmentIndicationsBarWrapper}}
     </div>
 
 </template>
