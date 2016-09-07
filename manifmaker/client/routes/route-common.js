@@ -8,10 +8,9 @@ Router.configure({
     layoutTemplate: 'wrapper'
 });
 
-
 //hide topNavBar to each expect assignment
 Router.onAfterAction(function () {
-        this.render("", {to: "topNavBar"});
+    console.log("1")
         assignmentCalendarIsRendered = false;
     },
     {
@@ -25,9 +24,26 @@ Router.onAfterAction(function () {
             'assignment.calendar.taskToUser',
             'assignment.calendar.taskToUser.task',
             'assignment.calendar.taskToUser.task.timeSlot',
+        ]
+    }
+);
 
-            'assignment.calendar.task.search'
+//hide topNavBar to each expect assignment
+Router.onAfterAction(function () {
+    console.log("2")
+        this.render("", {to: "topNavBar"});
+    },
+    {
+        except: [
+            'assignment.calendar',
+            'assignment.calendar.user',
+            'assignment.calendar.userToTask',
+            'assignment.calendar.userToTask.user',
+            'assignment.calendar.userToTask.user.date',
 
+            'assignment.calendar.taskToUser',
+            'assignment.calendar.taskToUser.task',
+            'assignment.calendar.taskToUser.task.timeSlot',
         ]
     }
 );
