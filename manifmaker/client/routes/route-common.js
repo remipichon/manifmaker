@@ -115,20 +115,16 @@ Router.route('/demo-select', function () {
  * @name 'inject-data'  /inject-data
  */
 Router.route('/inject-data', function () {
-        if (Meteor.isDevelopment) {
-            Accounts.logout();
-            $("#result").html("please wait while injecting data, you are now logged out");
-            Meteor.call("injectData",function(error, result){
-                if(error){
-                    alert(error);
-                } else {
-                    alert("inject happened without error, please log in");
-                    Router.go("/");
-                }
-            })
-        } else {
-            console.error("/inject-data is a dev only route")
-        }
+        Accounts.logout();
+        alert("You are about to delete all data and add some new fresh ones");
+        Meteor.call("injectData",function(error, result){
+            if(error){
+                alert(error);
+            } else {
+                alert("inject happened without error, please log in");
+                Router.go("/");
+            }
+        })
     },
     {name: 'inject-data'}
 )
