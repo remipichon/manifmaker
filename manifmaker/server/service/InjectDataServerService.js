@@ -1,3 +1,6 @@
+import {ServerService} from "./ServerService";
+import {SecurityServiceServer} from "./SecurityServiceServer";
+
 /** @class InjectDataServerService */
 export class InjectDataServerService {
 
@@ -5,11 +8,12 @@ export class InjectDataServerService {
      * @summary perform deleteAll, initAccessRightData and populateData
      */
     static injectAllData() {
-        console.info("inject data starts")
-        this.deleteAll();
-        console.info("deleteAll done")
-        this.initAccessRightData();
-        console.info("initAccessRightData done")
+        SecurityServiceServer.isItProd("InjectDataServerService.injectAllData");
+        console.info("inject data starts");
+        this._injectGroupRoles();
+        console.info("injectGroupRoles done");
+        this.injectUsers();
+        console.info("injectUsers done");
         this.populateData();
 
         console.info("**** Data init success ****");
@@ -30,13 +34,14 @@ export class InjectDataServerService {
      * @summmary delete all data
      */
     static deleteAll() {
+        SecurityServiceServer.isItProd();
         Meteor.roles.remove({});
-        GroupRoles.remove({});
+        GroupRoles.direct.remove({});
         Meteor.users.remove({});
 
-        Users.remove({});
+        Users.direct.remove({});
 
-        Assignments.remove({});
+        Assignments.direct.remove({});
         Tasks.remove({});
         Places.remove({});
         Teams.remove({});
@@ -55,19 +60,15 @@ export class InjectDataServerService {
     }
 
     static _injectRoles() {
-        var adminRoles = [];
+        var superadminRoles = [];
         _.each(RolesEnum, function (role) {
             Roles.createRole(role);
-            adminRoles.push(role);
+            superadminRoles.push(role);
         });
-        return adminRoles;
+        return superadminRoles;
     }
 
-    static _injectGroupRoles(adminRoles) {
-        var admin = GroupRoles.insert({
-            name: "admin",
-            roles: adminRoles
-        });
+    static _injectGroupRoles() {
         var bureau = GroupRoles.insert({
             name: "bureau",
             roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ROLE]
@@ -109,7 +110,6 @@ export class InjectDataServerService {
             roles: [RolesEnum.MANIFMAKER]
         });
         return {
-            admin: admin,
             bureau: bureau,
             hard: hard,
             soft: soft,
@@ -120,38 +120,70 @@ export class InjectDataServerService {
     }
 
     /**
-     * @summary Initialize Roles, GroupRoles and basic login profiles
+     * @summary Initialize Roles and superadmin profil
      */
     static initAccessRightData() {
-
-        var assignmentReadyTeam = Teams.insert({name: ASSIGNMENTREADYTEAM});
+        if(Users.findOne({name:SUPERADMIN})){
+            return;
+        }
+        console.info(SUPERADMIN+" user not found, now injecting roles and superadmin user");
 
         //create roles
         console.info("inject Roles");
-        var adminRoles = this._injectRoles();
+        var superadminRoles = this._injectRoles();
 
-        //create groups and add roles to groups
-        console.info("inject GroupRoles");
-        var groupRoles = this._injectGroupRoles(adminRoles);
+        var superAdmin = GroupRoles.insert({
+            name: "superadmin",
+            roles: superadminRoles
+        });
 
-        var admin = groupRoles.admin;
-        var bureau = groupRoles.bureau;
-        var hard = groupRoles.hard;
-        var soft = groupRoles.soft;
-        var respLog = groupRoles.respLog;
-        var respSecu = groupRoles.respSecu;
-        var humain = groupRoles.humain;
+        var email = "superadmin@yopmail.com";
+        var username = "superadmin";
+        var password = "superadmin";
+        var groupArray;
+        if (Array.isArray(superAdmin))
+            groupArray = superAdmin;
+        else
+            groupArray = [superAdmin];
 
-        console.info("inject log in account (admin/admin and others)");
-        this.createAccountAndUser("admin", "admin@yopmail.com", "admin", admin);
-        this.createAccountAndUser("hard", "hard@yopmail.com", "hard", hard);
-        this.createAccountAndUser("bureau", "bureau@yopmail.com", "bureau", bureau);
-        this.createAccountAndUser("resplog", "resplog@yopmail.com", "resplog", respLog);
-        this.createAccountAndUser("respsecu", "respsecu@yopmail.com", "respsecu", respSecu);
-        this.createAccountAndUser("humain", "humain@yopmail.com", "humain", humain);
-        this.createAccountAndUser("soft", "soft@yopmail.com", "soft", soft);
+        Accounts.createUser({
+            username: username,
+            email: email,
+            password: password
+        });
+
+        Users.insert({
+            name: username,
+            loginUserId: Meteor.users.findOne({username: username})._id,
+            groupRoles: groupArray
+        });
 
     }
+
+    static injectGroupRoles(){
+        //create groups and add roles to groups
+        console.info("inject GroupRoles");
+        var groupRoles = this._injectGroupRoles();
+        return groupRoles;
+    }
+
+    static injectUsers(){
+        var groupRolesArray = _.map(GroupRoles.find().fetch(),function(group){ return {name: group.name+'',_id:group._id}});
+        var groupRoles = {};
+        groupRolesArray.forEach(groupRole => {
+           groupRoles[groupRole.name] = groupRole._id;
+        });
+        console.info("inject log in account");
+        console.info(groupRoles)
+        this.createAccountAndUser("hard", "hard@yopmail.com", "hard", groupRoles.hard);
+        this.createAccountAndUser("bureau", "bureau@yopmail.com", "bureau", groupRoles.bureau);
+        this.createAccountAndUser("resplog", "resplog@yopmail.com", "resplog", groupRoles.respLog);
+        this.createAccountAndUser("respsecu", "respsecu@yopmail.com", "respsecu", groupRoles.respSecu);
+        this.createAccountAndUser("humain", "humain@yopmail.com", "humain", groupRoles.humain);
+        this.createAccountAndUser("soft", "soft@yopmail.com", "soft", groupRoles.soft);
+    }
+
+
 
     /**
      * @summary inject test data
@@ -665,6 +697,7 @@ export class InjectDataServerService {
     }
 
     static _setGroupRolesToUsers(userId, groupId) {
+        if(!groupId) return;
         var groupArray;
         if (Array.isArray(groupId))
             groupArray = groupId

@@ -50,4 +50,12 @@ export class SecurityServiceServer {
             return false;
         }
     }
+
+    static isItProd(method) {
+        if (process.env.ISPROD) {
+            if (process.env.ISPROD == "true") {
+                throw new Meteor.Error("403", method + " can not be used in production.");
+            }
+        }
+    }
 }

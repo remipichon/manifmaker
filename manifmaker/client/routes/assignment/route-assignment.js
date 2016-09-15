@@ -12,7 +12,7 @@ assignmentCalendarIsRendered = false;
 
 AssignmentController = ManifMakerRouterController.extend({
     onBeforeAction: function () {
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ASSIGNMENTTASKUSER, "assignment");
+        SecurityServiceClient.grantAccessToPage( RolesEnum.ASSIGNMENTTASKUSER, "assignment");
 
         this.render("AssignmentNavBarWrapper", {to: "topNavBar"})
 

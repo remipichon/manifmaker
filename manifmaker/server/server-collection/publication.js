@@ -18,8 +18,8 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("users", function () {
-        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"Task")
-        || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"Assignment"))
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"users")
+        || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"users"))
             return Users.find({});
         else
             return Users.find({loginUserId : this.userId});
@@ -35,8 +35,8 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("tasks", function () {
-        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.TASKREAD,"Task")
-        || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"Assignment"))
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.TASKREAD,"tasks")
+        || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"tasks"))
             return Tasks.find({});
         else
             return [];
@@ -51,7 +51,7 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("assignments", function () {
-        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"Assignment"))
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"assignments"))
             return Assignments.find({});
         else
             return [];

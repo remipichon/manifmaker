@@ -15,7 +15,7 @@ import {ManifMakerRouterController} from "./ManifMakerRouterController"
  */
 Router.route('/tasks', function () {
 
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKREAD);
+        SecurityServiceClient.grantAccessToPage( RolesEnum.TASKREAD);
         console.info("routing", "/tasks");
 
         if (this.ready()) {
@@ -37,7 +37,7 @@ Router.route('/tasks', function () {
  */
 Router.route('/task', function () {
 
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
+        SecurityServiceClient.grantAccessToPage( RolesEnum.TASKWRITE);
         console.info("routing", "/task");
 
         if (this.ready()) {
@@ -63,7 +63,7 @@ Router.route('/task/:_id', function () {
 
         if (this.ready()) {
 
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
+            SecurityServiceClient.grantAccessToPage( RolesEnum.TASKWRITE);
             console.info("routing", "/task/" + this.params._id);
 
             if(!Tasks.findOne(this.params._id)){
@@ -97,7 +97,7 @@ Router.route('/task/:_id/read', function () {
 
         if (this.ready()) {
 
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKREAD);
+            SecurityServiceClient.grantAccessToPage( RolesEnum.TASKREAD);
             console.info("routing", "/task/" + this.params._id);
 
             if(!Tasks.findOne(this.params._id)){
@@ -130,15 +130,15 @@ Router.route('/task/:_id/read', function () {
  */
 Router.route('/task/validation/:validationType/:_id/:state', function () {
         if (this.params.state === "to-be-validated") {
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
+            SecurityServiceClient.grantAccessToPage( RolesEnum.TASKWRITE);
         } else {
             var validationType = this.params.validationType;
             if (validationType === "time-slot")
-                SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ASSIGNMENTVALIDATION, "time slot validation");
+                SecurityServiceClient.grantAccessToPage( RolesEnum.ASSIGNMENTVALIDATION, "time slot validation");
             if (validationType === "access-pass")
-                SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ACCESSPASSVALIDATION, "access pass validation");
+                SecurityServiceClient.grantAccessToPage( RolesEnum.ACCESSPASSVALIDATION, "access pass validation");
             if (validationType === "equipment")
-                SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.EQUIPMENTVALIDATION, "equipment validation");
+                SecurityServiceClient.grantAccessToPage( RolesEnum.EQUIPMENTVALIDATION, "equipment validation");
         }
         console.info("routing", "/task/validation/" + this.params.validationType + "/" + this.params._id + "/" + this.params.state);
 

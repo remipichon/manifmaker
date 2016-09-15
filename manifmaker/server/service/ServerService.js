@@ -1,6 +1,7 @@
 import {ServerAssignmentService} from "./ServerAssignmentService";
 import {ServerUserService} from "./ServerUserService";
 import {ServerTaskService} from "./ServerTaskService";
+import {ServerGroupRoleService} from "./ServerGroupRoleService";
 import {ServerReferenceCollectionsService} from "./ServerReferenceCollectionsService";
 
 /**
@@ -45,8 +46,12 @@ export class ServerService {
         Assignments.before.update(ServerAssignmentService.allowUpdate);
         Assignments.before.remove(ServerAssignmentService.allowDelete);
 
+        GroupRoles.before.insert(ServerGroupRoleService.allowInsert);
+        GroupRoles.before.update(ServerGroupRoleService.allowUpdate);
+        GroupRoles.before.remove(ServerGroupRoleService.allowDelete);
 
-        var referencesCollections = [Skills, Teams, Places, AssignmentTerms, GroupRoles];
+
+        var referencesCollections = [Skills, Teams, Places, AssignmentTerms];
         referencesCollections.forEach(ReferenceCollection => {
             ReferenceCollection.before.insert(ServerReferenceCollectionsService.allowInsert);
             ReferenceCollection.before.update(ServerReferenceCollectionsService.allowUpdate);
