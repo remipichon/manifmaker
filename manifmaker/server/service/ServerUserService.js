@@ -43,23 +43,37 @@ export class ServerUserService {
      * @param modifier
      * @param options
      */
-    static propagateRoles(userId, doc, fieldNames, modifier, options) {
-        if (_.contains(fieldNames, "groupRoles")) {
-            if (modifier.$set.groupRoles) {
-                //we have to merge roles and roles from groups
-                var newGroups = GroupRoles.find({_id: {$in: modifier.$set.groupRoles}}).fetch(); //get all related roles
-                var result = []; //reduce to get only the roles array
-                newGroups.forEach(group => {
-                    result.push(group.roles);
-                });
-                var allGroupRolesMerged = _.uniq(_.flatten(result)); //obtain a single array
-            } else {
-                //we have to remove all roles
-                var allGroupRolesMerged = [];
+    static propagateRoles(userId, doc, fieldNames, modifier) {
+        if (fieldNames) { //update
+            if (_.contains(fieldNames, "groupRoles")) {
+                if (modifier.$set.groupRoles) {
+                    //we have to merge roles and roles from groups
+                    var allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(modifier.$set.groupRoles);
+                } else {
+                    //we have to remove all roles
+                    var allGroupRolesMerged = [];
+                }
+                console.info("Roles.setUserRoles"+ doc.loginUserId,allGroupRolesMerged);
+                Roles.setUserRoles(doc.loginUserId, allGroupRolesMerged); //add to Account package
             }
-            Roles.setUserRoles(doc.loginUserId, allGroupRolesMerged); //add to Account package
+        } else {//insert
+            if(doc.groupRoles){
+                var allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(doc.groupRoles);
+                console.info("Roles.setUserRoles"+ doc.loginUserId,allGroupRolesMerged);
+                Roles.setUserRoles(doc.loginUserId, allGroupRolesMerged); //add to Account package
+            }
         }
 
+    }
+
+    static getRolesFromGroupRoles(groupRoles) {
+        var newGroups = GroupRoles.find({_id: {$in: groupRoles}}).fetch(); //get all related roles
+        var result = []; //reduce to get only the roles array
+        newGroups.forEach(group => {
+            result.push(group.roles);
+        });
+        var allGroupRolesMerged = _.uniq(_.flatten(result)); //obtain a single array
+        return allGroupRolesMerged;
     }
 
 

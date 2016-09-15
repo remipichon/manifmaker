@@ -10,12 +10,9 @@ export class InjectDataServerService {
     static injectAllData() {
         SecurityServiceServer.isItProd("InjectDataServerService.injectAllData");
         console.info("inject data starts");
-        this.deleteAll();
-        console.info("deleteAll done");
-        this.initAccessRightData();
-        var groupRoles =  this.injectGroupRoles()
-        console.info("initAccessRightData done");
-        this.injectUsers(groupRoles);
+        this._injectGroupRoles();
+        console.info("injectGroupRoles done");
+        this.injectUsers();
         console.info("injectUsers done");
         this.populateData();
 
@@ -140,7 +137,27 @@ export class InjectDataServerService {
             roles: superadminRoles
         });
 
-        this.createAccountAndUser(SUPERADMIN, "superadmin@yopmail.com", "superadmin", superAdmin);
+        var email = "superadmin@yopmail.com";
+        var username = "superadmin";
+        var password = "superadmin";
+        var groupArray;
+        if (Array.isArray(superAdmin))
+            groupArray = superAdmin;
+        else
+            groupArray = [superAdmin];
+
+        Accounts.createUser({
+            username: username,
+            email: email,
+            password: password
+        });
+
+        Users.insert({
+            name: username,
+            loginUserId: Meteor.users.findOne({username: username})._id,
+            groupRoles: groupArray
+        });
+
     }
 
     static injectGroupRoles(){
@@ -150,8 +167,14 @@ export class InjectDataServerService {
         return groupRoles;
     }
 
-    static injectUsers(groupRoles){
+    static injectUsers(){
+        var groupRolesArray = _.map(GroupRoles.find().fetch(),function(group){ return {name: group.name+'',_id:group._id}});
+        var groupRoles = {};
+        groupRolesArray.forEach(groupRole => {
+           groupRoles[groupRole.name] = groupRole._id;
+        });
         console.info("inject log in account");
+        console.info(groupRoles)
         this.createAccountAndUser("hard", "hard@yopmail.com", "hard", groupRoles.hard);
         this.createAccountAndUser("bureau", "bureau@yopmail.com", "bureau", groupRoles.bureau);
         this.createAccountAndUser("resplog", "resplog@yopmail.com", "resplog", groupRoles.respLog);
