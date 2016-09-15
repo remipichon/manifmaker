@@ -28,7 +28,7 @@ Router.route('/users', function () {
  * @name 'user.create'  /user
  */
 Router.route('/user', function () {
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.USERWRITE);
+        SecurityServiceClient.grantAccessToPage( RolesEnum.USERWRITE);
 
         console.info("routing", "/user");
 
@@ -59,7 +59,7 @@ Router.route('/user/:_id', function () {
         return;
     }
         if(Users.findOne(this.params._id).loginUserId !== Meteor.userId())
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.USERWRITE);
+            SecurityServiceClient.grantAccessToPage( RolesEnum.USERWRITE);
 
         console.info("routing", "/user/" + this.params._id);
         this.render('updateUserForm', {
@@ -84,7 +84,7 @@ Router.route('/user/:_id/read', function () {
             throw new Meteor.Error("404","User not found");
         }
         if(Users.findOne(this.params._id).loginUserId !== Meteor.userId())
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.USERREAD);
+            SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
 
         console.info("routing", "/user/" + this.params._id);
         this.render('readUserForm', {

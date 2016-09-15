@@ -11,7 +11,9 @@ Meteor.startup(function () {
 
     ServerService.addCollectionHooks();
 
+    InjectDataServerService.deleteAll();
     InjectDataServerService.initAccessRightData();
+    InjectDataServerService.injectAllData();
 
 
 });

@@ -11,7 +11,7 @@ assignmentCalendarIsRendered = false;
 
 AssignmentController = RouteController.extend({
     onBeforeAction: function () {
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ASSIGNMENTTASKUSER, "assignment");
+        SecurityServiceClient.grantAccessToPage( RolesEnum.ASSIGNMENTTASKUSER, "assignment");
 
         if (!assignmentCalendarIsRendered) {
             this.render('AssignmentHomeWrapper', {to: 'mainContent'});

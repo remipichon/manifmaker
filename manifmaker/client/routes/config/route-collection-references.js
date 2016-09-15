@@ -87,7 +87,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
      */
     //get (list)
     Router.route('/' + PLURAL_REFERENCE_URL, function () {
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.CONFMAKER);
+            SecurityServiceClient.grantAccessToPage( RolesEnum.CONFMAKER);
             this.render('referenceList', {
                 data: item,
                 to: 'mainContent'
@@ -104,7 +104,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
      */
 //post
     Router.route('/' + REFERENCE_URL, function () {
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.CONFMAKER);
+            SecurityServiceClient.grantAccessToPage( RolesEnum.CONFMAKER);
             this.render(REFERENCE_URL + '-insert', {
                 data: {
                   options: referenceOptions
@@ -123,7 +123,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
      */
 //put
     Router.route('/' + REFERENCE_URL + '/:_id', function () {
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.CONFMAKER);
+            SecurityServiceClient.grantAccessToPage( RolesEnum.CONFMAKER);
             var current = this.params._id;
             this.render(REFERENCE_URL + '-update', {
                 data: {
@@ -146,7 +146,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
  */
 //get (list)
 Router.route('/conf-maker', function () {
-        SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.CONFMAKER);
+        SecurityServiceClient.grantAccessToPage( RolesEnum.CONFMAKER);
         this.render('confMaker', {
             data: {
                 confMakerReactiveTables : confMakerReactiveTables
