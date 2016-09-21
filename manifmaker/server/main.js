@@ -6,6 +6,7 @@ import {ServerService} from "./service/ServerService";
 import {InjectDataServerService} from "./service/InjectDataServerService";
 
 Meteor.startup(function () {
+    Meteor.isStartingUp = true;
 
     // code to run on server at startup
 
@@ -15,7 +16,7 @@ Meteor.startup(function () {
     InjectDataServerService.initAccessRightData();
     InjectDataServerService.injectAllData();
 
-
+    Meteor.isStartingUp = false;
 });
 
 

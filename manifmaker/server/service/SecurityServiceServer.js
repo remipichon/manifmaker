@@ -8,6 +8,10 @@ export class SecurityServiceServer {
      * @param doc {object} the whole object to update
      */
     static grantAccessToItem(userId, neededRole, doc) {
+        if(Meteor.isStartingUp){
+            console.info("SecurityServiceServer.grantAccessToItem : security skipped because Meteor.isStartingUp");
+            return true;
+        }
         if (Roles.userIsInRole(userId, neededRole) ||
             (Meteor.isDevelopment && !userId) //TODO : MAX SECURITY BREACH : if a user is not logged in in dev mode, he will have all access
         ) {
