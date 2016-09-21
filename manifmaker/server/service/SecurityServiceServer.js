@@ -12,9 +12,7 @@ export class SecurityServiceServer {
             console.info("SecurityServiceServer.grantAccessToItem : security skipped because Meteor.isStartingUp");
             return true;
         }
-        if (Roles.userIsInRole(userId, neededRole) ||
-            (Meteor.isDevelopment && !userId) //TODO : MAX SECURITY BREACH : if a user is not logged in in dev mode, he will have all access
-        ) {
+        if (Roles.userIsInRole(userId, neededRole)) {
             console.info(`access granted with ${neededRole} on type item for user ${userId} to task ${doc._id}`);
         } else {
             console.error("thrown to client 403", `Forbidden, user ${userId} don't have access right ${neededRole}`);
