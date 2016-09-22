@@ -7,7 +7,7 @@ env:
   DOCKER_COMPOSE_VERSION: 1.4.2
 
 script :
-  - ssh root:$STAGING_SSH_PWD@vps302914.ovh.net 'docker ps'
+  - ssh -o "StrictHostKeyChecking no" root:$STAGING_SSH_PWD@vps302914.ovh.net 'docker ps'
   - #docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - #cd manifmaker #will be app soon
   - #docker build -t assomaker/manifmaker:0.0 .
