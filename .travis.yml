@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+  - docker
+
+script :
+  - mv manifmaker #will be app soon
+  - docker build -t assomaker/manifmaker:0.0 .
+  - docker login -e="$" DOCKER_EMAIL-u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push assomaker/manifmaker:0.0
