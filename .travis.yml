@@ -11,8 +11,10 @@ before_install:
   - eval "$(ssh-agent -s)"
   - chmod 600 $TRAVIS_BUILD_DIR/deploy_rsa
   - ssh-add $TRAVIS_BUILD_DIR/deploy_rsa
-  - MANIFMAKER_VERSION=$(cat manifmaker/package.json | grep version | head -1 | awk -F: \'{ print $2 }\' | sed \'s/[\",]//g\')
+  - chmod 777 manifmaker/get_version.sh
+  - . manifmaker/get_version.sh
   - CONTAINER_NAME=manifaker_$MANIFMAKER_VERSION
+
 
 script:
   - echo "Now building and delivering" $MANIFMAKER_VERSION
