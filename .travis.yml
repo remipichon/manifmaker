@@ -3,9 +3,6 @@ sudo: required
 services:
   - docker
 
-env:
-  DOCKER_COMPOSE_VERSION: 1.4.2
-
 script :
   - mkdir .ssh
   - cd .ssh 
@@ -13,13 +10,7 @@ script :
   - $STAGING_SSH_KEY > id_rsa
   - ssh -o "StrictHostKeyChecking no" root@vps302914.ovh.net 'docker ps'
   - ssh root:$STAGING_SSH_PWD@vps302914.ovh.net 'docker pull assomaker/manifmaker:0.0'
-  - ssh root:$STAGING_SSH_PWD@vps302914.ovh.net 'docker run -d \
-  		-e ROOT_URL=http://manifmaker0-0.com \
-		-e MONGO_URL=mongodb://manifmaker0-0:manifmaker@manifmaker-mongo/manifmaker0-0 \
-		-p 8080:80 \
-		--link manifmaker-mongo \
-		assomaker/manifmaker:0-0'
-  - 
+  - ssh root:$STAGING_SSH_PWD@vps302914.ovh.net 'docker run -d -e ROOT_URL=http://manifmaker0-0.com -e MONGO_URL=mongodb://manifmaker0-0:manifmaker@manifmaker-mongo/manifmaker0-0 -p 8080:80 --link manifmaker-mongo assomaker/manifmaker:0-0'
   - #docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - #cd manifmaker #will be app soon
   - #docker build -t assomaker/manifmaker:0.0 .
