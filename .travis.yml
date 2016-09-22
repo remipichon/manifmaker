@@ -10,9 +10,8 @@ script :
   - mkdir .ssh
   - cd .ssh 
   - touch id_rsa
-  - $TAGING_SSH_KEY > id_rsa
-  - ssh root@vps302914.ovh.net 'docker ps'
-
+  - $STAGING_SSH_KEY > id_rsa
+  - ssh -o "StrictHostKeyChecking no" root@vps302914.ovh.net 'docker ps'
   - ssh root:$STAGING_SSH_PWD@vps302914.ovh.net 'docker pull assomaker/manifmaker:0.0'
   - ssh root:$STAGING_SSH_PWD@vps302914.ovh.net 'docker run -d \
   		-e ROOT_URL=http://manifmaker0-0.com \
