@@ -18,9 +18,9 @@ before_install:
 
 script:
   - echo "Now building and delivering" $MANIFMAKER_VERSION
-  #- cd manifmaker #will be app soon
-  #- docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
-  #- docker push assomaker/manifmaker:$MANIFMAKER_VERSION
+  - cd manifmaker
+  - docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
+  - docker push assomaker/manifmaker:$MANIFMAKER_VERSION
   - echo "Now deploying " $MANIFMAKER_VERSION
   - ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
   - ssh root@vps302914.ovh.net "docker stop $CONTAINER_NAME; docker rm -fv $CONTAINER_NAME"
