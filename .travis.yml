@@ -11,16 +11,18 @@ before_install:
   - eval "$(ssh-agent -s)"
   - chmod 600 $TRAVIS_BUILD_DIR/deploy_rsa
   - ssh-add $TRAVIS_BUILD_DIR/deploy_rsa
+  - MANIFMAKER_VERSION=$(cat package.json grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
+  - CONTAINER_NAME=manifaker_$MANIFMAKER_VERSION
 
 script:
+  - echo "Now building and delivering" $MANIFMAKER_VERSION
   #- cd manifmaker #will be app soon
-  #- docker build -t assomaker/manifmaker:0.0 .
-  #- docker push assomaker/manifmaker:0.0
-  - ssh root@vps302914.ovh.net 'docker ps'
-  #- ssh root@vps302914.ovh.net 'docker pull assomaker/manifmaker:0.0'
-  #- ssh root@vps302914.ovh.net 'docker stop manifaker_0.0; docker rm -fv manifaker_0.0'
-  #- ssh root@vps302914.ovh.net 'docker run -d --name manifaker_0.0 -e ROOT_URL=http://manifmaker0-0.com -e MONGO_URL=mongodb://manifmaker0-0:manifmaker@manifmaker-mongo/manifmaker0-0 -p 8080:80 --link manifmaker-mongo assomaker/manifmaker:0-0'
-
+  #- docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
+  #- docker push assomaker/manifmaker:$MANIFMAKER_VERSION
+  - echo "Now deploying " $MANIFMAKER_VERSION
+  - ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
+  - ssh root@vps302914.ovh.net "docker stop $CONTAINER_NAME; docker rm -fv $CONTAINER_NAME"
+  - ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e ROOT_URL=http://manifmaker0-0.com -e MONGO_URL=mongodb://manifmaker0-0:manifmaker@manifmaker-mongo/manifmaker0-0 -p 8080:80 --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
 
 
 branches:
