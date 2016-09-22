@@ -3,8 +3,17 @@ sudo: required
 services:
   - docker
 
+env:
+  DOCKER_COMPOSE_VERSION: 1.4.2
+
 script :
-  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - cd manifmaker #will be app soon
-  - docker build -t assomaker/manifmaker:0.0 .
-  - docker push assomaker/manifmaker:0.0
+  - ssh root:$STAGING_SSH_PWD@vps302914.ovh.net 'docker ps'
+  - #docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - #cd manifmaker #will be app soon
+  - #docker build -t assomaker/manifmaker:0.0 .
+  - #docker push assomaker/manifmaker:0.0
+
+
+branches:
+  only:
+    - deploy
