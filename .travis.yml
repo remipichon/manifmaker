@@ -11,7 +11,7 @@ before_install:
   - eval "$(ssh-agent -s)"
   - chmod 600 $TRAVIS_BUILD_DIR/deploy_rsa
   - ssh-add $TRAVIS_BUILD_DIR/deploy_rsa
-  - MANIFMAKER_VERSION=$(cat package.json | grep version | head -1 | awk -F: \'{ print $2 }\' | sed \'s/[\",]//g\')
+  - MANIFMAKER_VERSION=$(cat manifmaker/package.json | grep version | head -1 | awk -F: \'{ print $2 }\' | sed \'s/[\",]//g\')
   - CONTAINER_NAME=manifaker_$MANIFMAKER_VERSION
 
 script:
