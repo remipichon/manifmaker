@@ -30,7 +30,6 @@ script:
   #- ssh root@vps302914.ovh.net "docker stop $(docker ps --filter "name=manifaker_" --format="{{.ID}}"); docker rm -fv $(docker ps --filter "name=manifaker_" --format="{{.ID}}")"
   #- ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker0-0.com -e MONGO_URL=mongodb://manifmaker0-0:manifmaker@manifmaker-mongo/manifmaker0-0 -p 8080:80 --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
   - echo "Now building and delivering markdown doc to repo" 
-  - git checkout -b deploy
   - cd manifmaker
   - npm install jsdoc-to-markdown --save-dev
   - npm run doc:md
@@ -38,7 +37,10 @@ script:
   - git remote set-url origin git@github.com:assomaker/manifmaker.git
   - git add ../doc/markdown/*.md
   - git commit -m "update markdown doc [ci skip]"
-  - git push origin master
+  - git branch my-temporary-work
+  - git checkout deploy
+  - git merge my-temporary-work
+  - git push origin deploy
 
 branches:
   only:
