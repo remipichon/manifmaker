@@ -6,8 +6,9 @@
 * [SelectComponent](#SelectComponent)
     * [new SelectComponent#initializeData()](#new_SelectComponent_new)
     * [.optionCollection](#SelectComponent+optionCollection)
-    * [.optionCollectionIndex](#SelectComponent+optionCollectionIndex)
+    * [.optionQuery](#SelectComponent+optionQuery) : <code>JSON</code>
     * [.optionValueName](#SelectComponent+optionValueName) : <code>string</code>
+    * [.optionCollectionIndex](#SelectComponent+optionCollectionIndex)
     * [.updateCollection](#SelectComponent+updateCollection)
     * [.updateItemId](#SelectComponent+updateItemId) : <code>mongoId</code>
     * [.updateItemPath](#SelectComponent+updateItemPath)
@@ -72,18 +73,29 @@ You also have several other options to customize your select :
 <a name="SelectComponent+optionCollection"></a>
 
 ### selectComponent.optionCollection
-Mongo Collection in the window scope(findAll will be used) OR array (array is not implemented yet)
-Les options du select
+Mongo Collection in the window scope(findAll will be used) OR array of object.
+
+How to user an array of object :
+Each object should have
+* a "value" key which will be given in the updateCallback or user to update the item in the updateCollection
+(if a MongoCollection is provided).
+* an other key holding the label to be displayed
+
+You have to make sure all objects have unique value or you will have trouble knowing which option has been selected.
+
+optionValueName can be whatever you want as long as it is the same as the key holding the label
+
+Unfortunately, optionCollection as an array can be mixed with optionQuery. You should pre-filter your option array before.
 
 **Kind**: instance property of <code>[SelectComponent](#SelectComponent)</code>  
-**Summary**: required  
-<a name="SelectComponent+optionCollectionIndex"></a>
+**Summary**: required. Les options du select  
+<a name="SelectComponent+optionQuery"></a>
 
-### selectComponent.optionCollectionIndex
-EasySearch.Index instance in the window scope
+### selectComponent.optionQuery : <code>JSON</code>
+It should be a valid Mongo find query (it will be used as optionCollection.find(optionQuery) if defined)
 
 **Kind**: instance property of <code>[SelectComponent](#SelectComponent)</code>  
-**Summary**: required if optionCollection is a Collection Mongo  
+**Summary**: to pre-filter the options available to select  
 <a name="SelectComponent+optionValueName"></a>
 
 ### selectComponent.optionValueName : <code>string</code>
@@ -91,7 +103,14 @@ MongoDb field of the option label to be displayed (in the selectable list in the
 the selected options
 
 **Kind**: instance property of <code>[SelectComponent](#SelectComponent)</code>  
-**Summary**: required if optionCollection is a Collection Mongo  
+**Summary**: required  
+<a name="SelectComponent+optionCollectionIndex"></a>
+
+### selectComponent.optionCollectionIndex
+Should be an EasySearch.Index instance in the window scope
+
+**Kind**: instance property of <code>[SelectComponent](#SelectComponent)</code>  
+**Summary**: If provided, allow the user to filter by text the option list from the popover  
 <a name="SelectComponent+updateCollection"></a>
 
 ### selectComponent.updateCollection

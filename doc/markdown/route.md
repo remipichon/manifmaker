@@ -6,11 +6,10 @@
 * [Route](#Route) : <code>object</code>
     * [.common](#Route.common) : <code>object</code>
         * [.home  /](#Route.common.home  /)
+        * [.login  /login](#Route.common.login  /login)
+        * [.forbidden  /login](#Route.common.forbidden  /login)
         * [.demo-select  /demo-select](#Route.common.demo-select  /demo-select)
         * [.inject-data  /inject-data](#Route.common.inject-data  /inject-data)
-        * [.home  /delete-all](#Route.common.home  /delete-all)
-        * [.init-access-right-data  /init-access-right-data](#Route.common.init-access-right-data  /init-access-right-data)
-        * [.populate-data  /populate-data](#Route.common.populate-data  /populate-data)
     * [.Task](#Route.Task) : <code>object</code>
         * [.home  /tasks](#Route.Task.home  /tasks)
         * [.task.create  /task](#Route.Task.task.create  /task)
@@ -31,17 +30,28 @@
 
 * [.common](#Route.common) : <code>object</code>
     * [.home  /](#Route.common.home  /)
+    * [.login  /login](#Route.common.login  /login)
+    * [.forbidden  /login](#Route.common.forbidden  /login)
     * [.demo-select  /demo-select](#Route.common.demo-select  /demo-select)
     * [.inject-data  /inject-data](#Route.common.inject-data  /inject-data)
-    * [.home  /delete-all](#Route.common.home  /delete-all)
-    * [.init-access-right-data  /init-access-right-data](#Route.common.init-access-right-data  /init-access-right-data)
-    * [.populate-data  /populate-data](#Route.common.populate-data  /populate-data)
 
 <a name="Route.common.home  /"></a>
 
 #### common.home  /
 **Kind**: static property of <code>[common](#Route.common)</code>  
 **Summary**: Home  
+**Locus**: client  
+<a name="Route.common.login  /login"></a>
+
+#### common.login  /login
+**Kind**: static property of <code>[common](#Route.common)</code>  
+**Summary**: Login  
+**Locus**: client  
+<a name="Route.common.forbidden  /login"></a>
+
+#### common.forbidden  /login
+**Kind**: static property of <code>[common](#Route.common)</code>  
+**Summary**: Login  
 **Locus**: client  
 <a name="Route.common.demo-select  /demo-select"></a>
 
@@ -54,24 +64,6 @@
 #### common.inject-data  /inject-data
 **Kind**: static property of <code>[common](#Route.common)</code>  
 **Summary**: Inject Dada (remove all before)  
-**Locus**: client  
-<a name="Route.common.home  /delete-all"></a>
-
-#### common.home  /delete-all
-**Kind**: static property of <code>[common](#Route.common)</code>  
-**Summary**: Delete all DB data  
-**Locus**: client  
-<a name="Route.common.init-access-right-data  /init-access-right-data"></a>
-
-#### common.init-access-right-data  /init-access-right-data
-**Kind**: static property of <code>[common](#Route.common)</code>  
-**Summary**: Inject some authent profil (admin/admin and others)  
-**Locus**: client  
-<a name="Route.common.populate-data  /populate-data"></a>
-
-#### common.populate-data  /populate-data
-**Kind**: static property of <code>[common](#Route.common)</code>  
-**Summary**: Add some data test (some conf, 3 tasks)  
 **Locus**: client  
 <a name="Route.Task"></a>
 

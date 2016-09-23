@@ -11,6 +11,8 @@
 <dd></dd>
 <dt><a href="#ServerAssignmentService">ServerAssignmentService</a></dt>
 <dd></dd>
+<dt><a href="#ServerUserService">ServerUserService</a></dt>
+<dd></dd>
 <dt><a href="#ServerReferenceCollectionsService">ServerReferenceCollectionsService</a></dt>
 <dd></dd>
 <dt><a href="#ServerService">ServerService</a></dt>
@@ -151,7 +153,7 @@ Reactive Var :
 
 ### InjectDataServerService.initAccessRightData()
 **Kind**: static method of <code>[InjectDataServerService](#InjectDataServerService)</code>  
-**Summary**: Initialize Roles, GroupRoles and basic login profiles  
+**Summary**: Initialize Roles and superadmin profil  
 <a name="InjectDataServerService.populateData"></a>
 
 ### InjectDataServerService.populateData()
@@ -291,6 +293,81 @@ same as grantAccessToItem but return true (access granted) or false (access deni
 
 **Kind**: static method of <code>[ServerAssignmentService](#ServerAssignmentService)</code>  
 **Summary**: Assignments.before.remove  
+<a name="ServerUserService"></a>
+
+## ServerUserService
+**Kind**: global class  
+
+* [ServerUserService](#ServerUserService)
+    * [.propagateGroupRoles(userId, doc, fieldNames, modifier, options)](#ServerUserService.propagateGroupRoles)
+    * [.propagateRoles(userId, doc, fieldNames, modifier, options)](#ServerUserService.propagateRoles)
+    * [.allowInsert()](#ServerUserService.allowInsert)
+    * [.allowUpdate()](#ServerUserService.allowUpdate)
+    * [.allowDelete()](#ServerUserService.allowDelete)
+
+<a name="ServerUserService.propagateGroupRoles"></a>
+
+### ServerUserService.propagateGroupRoles(userId, doc, fieldNames, modifier, options)
+If group roles' roles are updated user roles are update as well.
+
+**Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
+**Summary**: GroupRoles.after.update hook  
+**Locus**: server  
+
+| Param |
+| --- |
+| userId | 
+| doc | 
+| fieldNames | 
+| modifier | 
+| options | 
+
+<a name="ServerUserService.propagateRoles"></a>
+
+### ServerUserService.propagateRoles(userId, doc, fieldNames, modifier, options)
+About roles, we only add roles to the custom Users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
+Meteor.users linked account.
+
+**Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
+**Summary**: Users.after.update hook.  
+**Locus**: server  
+
+| Param |
+| --- |
+| userId | 
+| doc | 
+| fieldNames | 
+| modifier | 
+| options | 
+
+<a name="ServerUserService.allowInsert"></a>
+
+### ServerUserService.allowInsert()
+- Collection Hooks :  Users.before.insert
+- Needed role : USERWRITE
+
+**Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
+**Summary**: Users.before.insert  
+<a name="ServerUserService.allowUpdate"></a>
+
+### ServerUserService.allowUpdate()
+- Collection Hooks :  Users.before.update
+- Needed role : USERWRITE
+   - ROLE
+   - ASSIGNMENTTASKUSER
+
+if userId is the doc being updated, no need of USERWRITE (a user can update itself)
+
+**Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
+**Summary**: Users.before.update  
+<a name="ServerUserService.allowDelete"></a>
+
+### ServerUserService.allowDelete()
+- Collection Hooks :  Users.before.remove
+- Needed role : USERDELETE
+
+**Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
+**Summary**: Users.before.remove  
 <a name="ServerReferenceCollectionsService"></a>
 
 ## ServerReferenceCollectionsService
