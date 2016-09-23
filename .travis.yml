@@ -17,26 +17,32 @@ before_install:
 
 
 script:
-  - echo "Now building and delivering" $MANIFMAKER_VERSION
-  - cd manifmaker
-  - docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
-  - docker push assomaker/manifmaker:$MANIFMAKER_VERSION
-  - echo "Now deploying " $MANIFMAKER_VERSION
-  - ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
-  - ssh root@vps302914.ovh.net "docker stop $CONTAINER_NAME; docker rm -fv $CONTAINER_NAME"
-  - ssh root@vps302914.ovh.net "docker stop $(docker ps --filter "name=manifaker_" --format="{{.ID}}"); docker rm -fv $(docker ps --filter "name=manifaker_" --format="{{.ID}}")"
-  - ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker0-0.com -e MONGO_URL=mongodb://manifmaker0-0:manifmaker@manifmaker-mongo/manifmaker0-0 -p 8080:80 --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
-  - echo "Now building and delivering markdown doc to repo" 
-  - npm install jsdoc-to-markdown --save-dev
-  - npm run doc:md
-  - git config --global push.default matching
-  - git remote set-url origin git@github.com:assomaker/manifmaker.git
-  - git add ../doc/markdown/*.md
-  - git commit -m "update markdown doc [ci skip]"
-  - git branch my-temporary-work
-  - git checkout master
-  - git merge my-temporary-work
-  - git push origin master
+  #- echo "Now building and delivering" $MANIFMAKER_VERSION
+  #- cd manifmaker
+  #- docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
+  #- docker push assomaker/manifmaker:$MANIFMAKER_VERSION
+  #- echo "Now deploying " $MANIFMAKER_VERSION
+  #- ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
+  #- ssh root@vps302914.ovh.net "docker stop $CONTAINER_NAME; docker rm -fv $CONTAINER_NAME"
+  #- ssh root@vps302914.ovh.net "docker stop $(docker ps --filter "name=manifaker_" --format="{{.ID}}"); docker rm -fv $(docker ps --filter "name=manifaker_" --format="{{.ID}}")"
+  #- ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker0-0.com -e MONGO_URL=mongodb://manifmaker0-0:manifmaker@manifmaker-mongo/manifmaker0-0 -p 8080:80 --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
+  #- echo "Now building and delivering markdown doc to repo" 
+  #- npm install jsdoc-to-markdown --save-dev
+  #- npm run doc:md
+  #- git config --global push.default matching
+  #- git remote set-url origin git@github.com:assomaker/manifmaker.git
+  #- git add ../doc/markdown/*.md
+  #- git commit -m "update markdown doc [ci skip]"
+  #- git branch my-temporary-work
+  #- git checkout master
+  #- git merge my-temporary-work
+  #- git push origin master
+  - echo "Now building and delivering html doc to staging" 
+  - npm install jsdoc -g
+  - npm run doc:html
+  - scp doc/html root@vps302914.ovh.net ~/html_doc
+  #- ssh root@vps302914.ovh.net "docker cp"
+  - ssh root@vps302914.ovh.net "rm -rf ~/html_doc
 
 branches:
   only:
