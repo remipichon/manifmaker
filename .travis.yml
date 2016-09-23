@@ -33,7 +33,7 @@ script:
   - git config --global push.default matching
   - git add ../doc/markdown/*.md
   - git commit -m "update markdown doc [ci skip]"
-  - git push
+  - git push https://$REPO_USER:$REPO_PASSWORD@myrepository.biz/file.git
 
 
 branches:
