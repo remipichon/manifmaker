@@ -41,8 +41,8 @@ script:
   - npm install jsdoc -g
   - npm run doc:html
   - scp -r ../doc/html root@vps302914.ovh.net:~/
-  - ssh root@vps302914.ovh.net "docker cp ~/html manifmaker-nginx:/usr/share/nginx/html"
-  #- ssh root@vps302914.ovh.net "rm -rf ~/html
+  - ssh root@vps302914.ovh.net "docker cp ~/html manifmaker-nginx:/usr/share/nginx/html/doc"
+  - ssh root@vps302914.ovh.net "rm -rf ~/html
 
 branches:
   only:
