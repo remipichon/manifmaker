@@ -2,7 +2,7 @@
  * @memberOf Enum
  * @summary Enum Validation State used to display
  * @description
- *
+ * Validation state label displayed on the UI
  *
  * @enum {string}
  * @readonly
