@@ -1,0 +1,16 @@
+version: '2'
+services:
+    nginx: 
+        build: 
+           context: ./nginx
+        image: manifmaker-nginx
+        ports: 
+            - "80:80"
+        environment:
+            - CONSUL=192.168.4.22:8500
+    mongo: 
+        image: mongo
+        ports: 
+            - "27017:27017"
+
+
