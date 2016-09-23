@@ -13,14 +13,14 @@ Meteor.startup(function () {
     ServerService.addCollectionHooks();
 
     var injectAll = process.env.INJECT_ALL;
-    if (typeof(injectAll) !== 'undefined') {
+    if (typeof(injectAll) !== 'undefined' && injectAll == "true") {
         console.info("Meteor.startup : injectAll trigger by ENV (deleteAll, initAccessRightData, injectAllData)");
         InjectDataServerService.deleteAll();
         InjectDataServerService.initAccessRightData();
         InjectDataServerService.injectAllData();
     }
     var initAccessRight = process.env.INJECT_MINIMUM_ACCESS_RIGHT;
-    if (typeof(initAccessRight) !== 'undefined') {
+    if (typeof(initAccessRight) !== 'undefined' && initAccessRight == "true") {
         console.info("Meteor.startup : initAccessRight trigger by ENV (deleteAll, initAccessRightData)");
         InjectDataServerService.deleteAll();
         InjectDataServerService.initAccessRightData();
