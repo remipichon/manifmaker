@@ -6,29 +6,26 @@ addons:
   ssh_known_hosts: vps302914.ovh.net
 
 before_install:
-  #- openssl aes-256-cbc -K $encrypted_80de618ab877_key -iv $encrypted_80de618ab877_iv -in deploy_rsa.enc -out deploy_rsa -d
-  - openssl aes-256-cbc -K $encrypted_80de618ab877_key -iv $encrypted_80de618ab877_iv -in repo_rsa.enc -out repo_rsa -d
+  - openssl aes-256-cbc -K $encrypted_80de618ab877_key -iv $encrypted_80de618ab877_iv -in travis_rsa.enc -out travis_rsa -d
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - eval "$(ssh-agent -s)"
-  #- chmod 600 $TRAVIS_BUILD_DIR/deploy_rsa
-  #- ssh-add $TRAVIS_BUILD_DIR/deploy_rsa  
-  - chmod 600 $TRAVIS_BUILD_DIR/repo_rsa
-  - ssh-add $TRAVIS_BUILD_DIR/repo_rsa
+  - chmod 600 $TRAVIS_BUILD_DIR/travis_rsa
+  - ssh-add $TRAVIS_BUILD_DIR/travis_rsa
   - chmod 777 manifmaker/get_version.sh
   - . manifmaker/get_version.sh
   - CONTAINER_NAME=manifaker_$MANIFMAKER_VERSION
 
 
 script:
-  #- echo "Now building and delivering" $MANIFMAKER_VERSION
-  #- cd manifmaker
-  #- docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
-  #- docker push assomaker/manifmaker:$MANIFMAKER_VERSION
-  #- echo "Now deploying " $MANIFMAKER_VERSION
-  #- ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
-  #- ssh root@vps302914.ovh.net "docker stop $CONTAINER_NAME; docker rm -fv $CONTAINER_NAME"
-  #- ssh root@vps302914.ovh.net "docker stop $(docker ps --filter "name=manifaker_" --format="{{.ID}}"); docker rm -fv $(docker ps --filter "name=manifaker_" --format="{{.ID}}")"
-  #- ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker0-0.com -e MONGO_URL=mongodb://manifmaker0-0:manifmaker@manifmaker-mongo/manifmaker0-0 -p 8080:80 --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
+  - echo "Now building and delivering" $MANIFMAKER_VERSION
+  - cd manifmaker
+  - docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
+  - docker push assomaker/manifmaker:$MANIFMAKER_VERSION
+  - echo "Now deploying " $MANIFMAKER_VERSION
+  - ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
+  - ssh root@vps302914.ovh.net "docker stop $CONTAINER_NAME; docker rm -fv $CONTAINER_NAME"
+  - ssh root@vps302914.ovh.net "docker stop $(docker ps --filter "name=manifaker_" --format="{{.ID}}"); docker rm -fv $(docker ps --filter "name=manifaker_" --format="{{.ID}}")"
+  - ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker0-0.com -e MONGO_URL=mongodb://manifmaker0-0:manifmaker@manifmaker-mongo/manifmaker0-0 -p 8080:80 --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
   - echo "Now building and delivering markdown doc to repo" 
   - cd manifmaker
   - npm install jsdoc-to-markdown --save-dev
@@ -38,9 +35,9 @@ script:
   - git add ../doc/markdown/*.md
   - git commit -m "update markdown doc [ci skip]"
   - git branch my-temporary-work
-  - git checkout deploy
+  - git checkout master
   - git merge my-temporary-work
-  - git push origin deploy
+  - git push origin master
 
 branches:
   only:
