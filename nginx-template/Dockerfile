@@ -2,7 +2,8 @@ FROM centos:latest
 
 MAINTAINER a567390 : github.com/remipichon inspired by https://github.com/grahamjenson/DR-CoN
 
-RUN yum install -y nginx gettext \
+RUN yum install -y epel-release \
+    && yum install -y nginx gettext \
     && yum clean all \
     && rm -rf /tmp/*
 
