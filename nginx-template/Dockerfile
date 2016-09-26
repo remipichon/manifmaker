@@ -1,4 +1,4 @@
-FROM centos7:latest
+FROM centos:latest
 
 MAINTAINER a567390 : github.com/remipichon inspired by https://github.com/grahamjenson/DR-CoN
 

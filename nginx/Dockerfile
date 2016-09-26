@@ -4,8 +4,7 @@ EXPOSE 80
 COPY nginx-consul-template.conf $CT_FILE
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# If needed, ADD/COPY
- static file to /usr/share/nginx/html
+# If needed, ADD/COPY static file to /usr/share/nginx/html
 
 # Command will
 # 1. Write Consul Template File
