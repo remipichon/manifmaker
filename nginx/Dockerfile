@@ -1,9 +1,15 @@
-FROM nginx
+FROM nginx-template
 
-# static content to /usr/share/nginx/html
-
-RUN rm /etc/nginx/conf.d/default.conf
-
+EXPOSE 80
+COPY nginx-consul-template.conf $CT_FILE
 COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY manifmaker.conf /etc/nginx/conf.d/manifmaker.conf
+# If needed, ADD/COPY
+ static file to /usr/share/nginx/html
+
+# Command will
+# 1. Write Consul Template File
+# 2. Start Nginx
+# 3. Start Consul Template
+
+CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf; CONSUL_TEMPLATE_LOG=debug consul-template -consul=$CONSUL -template "$CT_FILE:$NX_FILE:/usr/sbin/nginx -s reload";
