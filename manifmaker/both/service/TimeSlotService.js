@@ -7,7 +7,7 @@ export class TimeSlotService {
          * @memberOf TimeSlotService
          * @summary For a given task, get time slot by _id
          * @locus Anywhere
-         * @param task
+         * @param taskId or Task instance
          * @param timeSlotId
          * @returns {TimeSlot|null}
          */
