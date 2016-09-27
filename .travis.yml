@@ -12,8 +12,9 @@ before_install:
   - chmod 600 $TRAVIS_BUILD_DIR/travis_rsa
   - ssh-add $TRAVIS_BUILD_DIR/travis_rsa
   - chmod 777 get_version.sh
-  - ./get_version.sh
+  - . get_version.sh
   - CONTAINER_NAME=manifmaker_$MANIFMAKER_VERSION
+  - echo MANIFMAKER_VERSION=$MANIFMAKER_VERSION CONTAINER_NAME=$CONTAINER_NAME
 
 
 script:
