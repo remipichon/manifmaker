@@ -28,12 +28,12 @@ script:
   #- scp ../stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
   #- ssh root@vps302914.ovh.net "chmod 700 /root/stop_rm_docker_app.sh && CONTAINER_NAME=$CONTAINER_NAME . /root/stop_rm_docker_app.sh"
   #- ssh root@vps302914.ovh.net "rm -f /root/stop_rm_docker_app.sh"
-  - echo "... ... Creating new database with user in mongo" 
-  - scp ../create_manifmaker_mongo_user.js root@vps302914.ovh.net:/root/create_manifmaker_mongo_user.js
-  - ssh root@vps302914.ovh.net "docker cp /root/create_manifmaker_mongo_user.js manifmaker-mongo:/root/create_manifmaker_mongo_user.js"
-  - ssh root@vps302914.ovh.net "docker exec manifmaker-mongo mongo localhost:27017/manifmaker_$MANIFMAKER_VERSION /root/create_manifmaker_mongo_user.js"
+  #- echo "... ... Creating new database with user in mongo" 
+  #- scp ../create_manifmaker_mongo_user.js root@vps302914.ovh.net:/root/create_manifmaker_mongo_user.js
+  #- ssh root@vps302914.ovh.net "docker cp /root/create_manifmaker_mongo_user.js manifmaker-mongo:/root/create_manifmaker_mongo_user.js"
+  #- ssh root@vps302914.ovh.net "docker exec manifmaker-mongo mongo localhost:27017/manifmaker_$MANIFMAKER_VERSION /root/create_manifmaker_mongo_user.js"
   - echo "... ... Running new app container" 
-  - ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker0-0.com -e MONGO_URL=mongodb://manifmaker:manifmaker@manifmaker-mongo/manifmaker -p 8080:80 --link mongo_manifmaker_$MANIFMAKER_VERSION assomaker/manifmaker:$MANIFMAKER_VERSION"
+  - ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker_$MANIFMAKER_VERSION.com -e MONGO_URL=mongodb://manifmaker:manifmaker@manifmaker-mongo/manifmaker_$MANIFMAKER_VERSION -p 8080:80 --link mongo_manifmaker assomaker/manifmaker:$MANIFMAKER_VERSION"
   - echo "... Now building and delivering markdown doc to repo" 
   - npm install jsdoc-to-markdown --save-dev
   - npm run doc:md
