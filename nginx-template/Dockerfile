@@ -33,7 +33,7 @@ ENV CT_INDEX /etc/consul-templates/index-version-template.html
 
 #Setup Nginx File
 ENV NX_FILE /etc/nginx/conf.d/app.conf
-ENX INDEX_FILE /usr/share/nginx/html/index-version.html
+ENV INDEX_FILE /usr/share/nginx/html/index-version.html
 
 #Default Variables
 ENV CONSUL consul:8500
