@@ -27,10 +27,13 @@ RUN yum -y remove 'unzip'
 
 #Setup Consul Template Files
 RUN mkdir /etc/consul-templates
-ENV CT_FILE /etc/consul-templates/nginx-consul-template.conf
+ENV CT_NGINX /etc/consul-templates/nginx-consul-template.conf
+ENV CT_INDEX /etc/consul-templates/index-version-template.html
+
 
 #Setup Nginx File
 ENV NX_FILE /etc/nginx/conf.d/app.conf
+ENX INDEX_FILE /usr/share/nginx/html/index-version.html
 
 #Default Variables
 ENV CONSUL consul:8500
