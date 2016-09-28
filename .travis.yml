@@ -11,8 +11,8 @@ before_install:
   - eval "$(ssh-agent -s)"
   - chmod 600 $TRAVIS_BUILD_DIR/travis_rsa
   - ssh-add $TRAVIS_BUILD_DIR/travis_rsa
-  - chmod 700 get_version.sh
-  - . get_version.sh
+  - chmod 700 scripts/get_version.sh
+  - . scripts/get_version.sh
   - CONTAINER_NAME=manifmaker_$MANIFMAKER_VERSION
   - echo MANIFMAKER_VERSION=$MANIFMAKER_VERSION CONTAINER_NAME=$CONTAINER_NAME
 
@@ -25,7 +25,7 @@ script:
   - echo "... Now deploying " $MANIFMAKER_VERSION
   - ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
   - echo "... ... Stoping app container" 
-  - scp ../stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
+  - scp ../scritps/stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
   - ssh root@vps302914.ovh.net "chmod 700 /root/stop_rm_docker_app.sh && CONTAINER_NAME=$CONTAINER_NAME . /root/stop_rm_docker_app.sh"
   - ssh root@vps302914.ovh.net "rm -f /root/stop_rm_docker_app.sh"
   - echo "... ... Creating new database with user in mongo" 
