@@ -24,11 +24,12 @@ class UpdateTaskComponent extends BlazeComponent {
 
     beforeRemove() {
         return function () {
-            //TODO add a better dialog box to confirm deletion
-            if(window.confirm("About to delete the task")){
-                Router.go("/tasks");
-                this.remove();
-            }
+            bootbox.confirm("You are about to delete a task, are you sure ?", _.bind(function(result){
+                if(result){
+                    Router.go("/tasks");
+                    this.remove();
+                }
+            },this));
         }
     }
 
