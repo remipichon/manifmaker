@@ -9,7 +9,12 @@
     <ul>
       {{range services}}
         {{if .Name | regexMatch "manifmaker_"}}
-            <li>version <a href="{{.Name}}">{{.Name}}</a> or <a href="http://151.80.59.178:{{.Port}}">{{.Name}}</a>
+            <li>version <a href="{{.Name}}">{{.Name}}</a> or 
+                <ul>
+                {{range service .Name}} 
+                    <li><a href="http://151.80.59.178:{{.Port}}">{{.Name}}</a></li>
+                {{end}}
+              </ul>
         {{end}}
     {{end}}
     </ul>
@@ -21,3 +26,14 @@
 
   </body>
 </html>
+
+
+{{range services}}
+    {{if .Name | regexMatch "manifmaker_"}}
+        upstream {{.Name}} {
+            {{range service .Name}} 
+                server 172.17.0.1:{{.Port}};
+            {{end}}
+        }
+    {{end}}
+{{end}}
