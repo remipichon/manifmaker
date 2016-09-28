@@ -1,15 +1,14 @@
 Template.taskButtons.helpers({
     onDeleteSuccess: function() {
         return function () {
-            //TODO message de deletion success
-            console.log("TODO message de deletion success")
+            sAlert.info("Task has been successfully deleted");
         }
     },
 
     onDeleteError: function() {
-        return function () {
-            //TODO message de deletion success
-            console.log("TODO message de deletion error")
+        return function (error) {
+            sAlert.info(`Something went wrong when deleting Task (${error})`);
+            console.error(`Something went wrong when deleting Task (${error})`);
         }
     },
 

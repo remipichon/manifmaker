@@ -153,8 +153,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         if (this.peopleNeedAssignedClick == 1) {
             setTimeout(_.bind(function () {
                 if (this.peopleNeedAssignedClick == 1) {
-                    //TODO DISPLAY NOTIF
-                    console.debug("TODO DISPLAY NOTIF click on peopleNeed.assigned : double click to perform remove assignment");
+                    sAlert.info('Double click to perform remove assignment')
                 } else {
                     AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
                 }

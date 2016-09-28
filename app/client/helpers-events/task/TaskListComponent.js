@@ -43,7 +43,6 @@ class TaskListComponent extends BlazeComponent {
 
     filterValidationStatus(error, docModifier, newOption) {
         return _.bind(function(error,docModifier,validationOption) {
-            console.log(validationOption);
             var queryTimeSlot = "", queryEquipment = "";
             if(validationOption) {
                 var validationRole = validationOption.split("_")[0];
@@ -181,8 +180,6 @@ class TaskListComponent extends BlazeComponent {
                 dateQuery["$elemMatch"]["end"]={ "$lte":  newDate };
             }else if(beforeOrAfter=="after"){
                 dateQuery["$elemMatch"]["start"]={ "$gte":  newDate };
-            }else{
-                console.log("Error, this shouldn't happen");
             }
             this.taskDateFilter.set(dateQuery);
         }else{
@@ -190,8 +187,6 @@ class TaskListComponent extends BlazeComponent {
                 this.taskDateFilter.set({ "$elemMatch": {"end": { "$lte":  newDate } } });
             }else if(beforeOrAfter=="after"){
                 this.taskDateFilter.set({ "$elemMatch": {"start": { "$gte":  newDate } } });
-            }else{
-                console.log("Error, this shouldn't happen");
             }
         }
     }
@@ -201,8 +196,6 @@ class TaskListComponent extends BlazeComponent {
             paramToChange="end";otherParam="start";
         }else if(beforeOrAfter=="after"){
             paramToChange="start";otherParam="end";
-        }else{
-            console.log("Error, this shouldn't happen");
         }
 
         if(this.taskDateFilter.get()["$elemMatch"]){ //if a filter is defined

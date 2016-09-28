@@ -131,13 +131,8 @@ Router.route('/assignment/task/:taskId', function () {
 //            name: searchInput
 //        }));
 //
-//        if (this.ready()) {
 //            console.info("task search for", searchInput);
-//
 //            AssignmentReactiveVars.TaskIndexFilter.set(searchInput);
-//        } else {
-//            console.log("waiting task data"); //TODO add a spinner
-//        }
 //    }
 //
 //
@@ -163,13 +158,8 @@ Router.route('/assignment/task/:taskId', function () {
 //            name: searchInput
 //        }));
 //
-//        if (this.ready()) {
 //            console.info("user search for", searchInput);
-//
 //            AssignmentReactiveVars.UserIndexFilter.set(searchInput);
-//        } else {
-//            console.log("waiting user data"); //TODO add a spinner
-//        }
 //    }
 //
 //
