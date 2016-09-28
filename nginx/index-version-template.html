@@ -26,14 +26,3 @@
 
   </body>
 </html>
-
-
-{{range services}}
-    {{if .Name | regexMatch "manifmaker_"}}
-        upstream {{.Name}} {
-            {{range service .Name}} 
-                server 172.17.0.1:{{.Port}};
-            {{end}}
-        }
-    {{end}}
-{{end}}
