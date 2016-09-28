@@ -197,6 +197,21 @@ Alert box will be displayed 2.5 seconds, if 'Your message' if too long to be rea
 ##### Error
 
     sAlert.error('Your message',{ timeout : 60000 });
+    
+
+## Confirm and Prompt
+[BootBox](http://bootboxjs.com/) has to be used to display a confirmation or a prompt box. 
+
+```
+ bootbox.confirm("Are you sure ?", function(result){
+                if(result){
+                    //user was sure
+                }
+            });
+```
+
+Do not use alert or custom dialog features as S-Alert is the preferred way. 
+
 
 
 ## How to use home-made stuff
