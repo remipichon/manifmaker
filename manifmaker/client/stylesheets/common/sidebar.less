@@ -13,49 +13,6 @@
   font-style: normal;
 }
 
-// For more information about Material Design Iconic Font (examples and downloads) visit website: http://zavoloklom.github.io/material-design-iconic-font/
-
-[class^="md-"], [class*=" md-"] {
-  display: inline-block;
-  font: normal normal normal 14px/1 'Material Design Iconic Font';
-  font-size: inherit;
-  speak: none;
-  text-rendering: auto;
-
-  // Better Font Rendering
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.md {
-  line-height: inherit;
-  vertical-align: bottom;
-}
-
-.md-inbox:before {
-  content: "\f10c";
-}
-
-.md-star:before {
-  content: "\f2e5";
-}
-
-.md-send:before {
-  content: "\f119";
-}
-
-.md-drafts:before {
-  content: "\f107";
-}
-
-.md-arrow-back:before {
-  content: "\f297";
-}
-
-.md-arrow-forward:before {
-  content: "\f298";
-}
-
 /* -- You can use this sidebar in Bootstrap (v3) projects. HTML-markup like Navbar bootstrap component will make your work easier. -- */
 // @import "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css";
 
@@ -104,7 +61,7 @@
   background: rgba(0, 0, 0, 0.1);
 
   .sidebar-toggle{
-    margin-left: 15px;
+    margin-left: 8px;
     .mdi {
       font-size: 20px;
     }
@@ -248,6 +205,7 @@
 
 @sidebar-desktop-width: 280px;
 @sidebar-width: 240px;
+@sidebar-width-reduced: 64px;
 
 @sidebar-padding: 16px;
 @sidebar-divider: @sidebar-padding/2;
@@ -534,12 +492,6 @@
   //  .clearfix();
   //}
 
-  //** Sidebar arrow
-  //----------------
-  .icon-material-sidebar-arrow:before {
-    content: "\e610"; // icon-material-arrow-back
-  }
-
   //** Brand/project image
   //
   // In google guideline used for user profile image
@@ -762,14 +714,23 @@
 // Sidebar toggling
 //
 // Hide sidebar
+
+.not-sidebar{
+  margin-left: @sidebar-width-reduced;
+}
 .sidebar {
-  width: 0;
-  .translate3d(-@sidebar-desktop-width, 0, 0);
+  min-width: @sidebar-width-reduced;
+  width: @sidebar-width-reduced;
 
   &.open {
-    min-width: @sidebar-desktop-width;
     width: @sidebar-desktop-width;
-    .translate3d(0, 0, 0);
+    min-width: @sidebar-desktop-width;
+
+  }
+
+  &.reduced .hidden-when-reduced{
+    opacity:0;
+    .transition(opacity 0.5s ease-in-out);
   }
 }
 
@@ -791,6 +752,10 @@
   left: 0;
   box-shadow: 2px 0px 15px rgba(0, 0, 0, 0.35);
   -webkit-box-shadow: 2px 0px 15px rgba(0, 0, 0, 0.35);
+  &.reduced{
+    box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.35);
+    -webkit-box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.35);
+  }
 }
 
 .sidebar-fixed-right {
@@ -802,15 +767,21 @@
   &.open {
     .translate3d(0, 0, 0);
   }
-  .icon-material-sidebar-arrow:before {
-    content: "\e614"; // icon-material-arrow-forward
-  }
 }
 
 // Sidebar size
 //
 // Change size of sidebar and sidebar elements on small screens
 @media (max-width: @screen-tablet) {
+  //Hiding the reduced sidebar
+  .not-sidebar{
+    margin-left: 0;
+  }
+  .sidebar{
+    width:0;
+    min-width:0;
+  }
+
   .sidebar.open {
     min-width: @sidebar-width;
     width: @sidebar-width;

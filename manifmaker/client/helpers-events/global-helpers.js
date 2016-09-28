@@ -73,6 +73,10 @@ Template.registerHelper("equals", function (a, b) {
         return a === b;
     }
 );
+Template.registerHelper("isMore", function (a, b) {
+        return a > b;
+    }
+);
 
 Template.registerHelper("displayValidationState",function(state){
         return DisplayedValidationState[state];

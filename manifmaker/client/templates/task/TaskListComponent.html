@@ -50,7 +50,7 @@
 
         <div class="row">
             <div class="col-md-2 col-md-offset-9">
-                <button class="btn btn-primary pull-right" id="advanced-search-button" href="">
+                <button class="btn btn-primary pull-right" id="advanced-search-button"  data-toggle="collapse" data-target="#advanced-search">
                     {{#if isSearchAdvanced}}
                         Less <i class="mdi mdi-chevron-up mdi-inline"></i>
                     {{else}}
@@ -61,50 +61,46 @@
             </div>
         </div>
 
-        {{#if isSearchAdvanced}}
-            <div class="row">
+        <div class="row collapse" id="advanced-search">
 
-                {{#if isInRole RolesEnum.TASKWRITE}}
-                    <div class="col-md-3">
-                        <!-- TODO rendre fonctionnel le custom picker -->
-                        {{> SingleNonMandatorySelectComponent selectLabel="Validation Status"
-                        optionCollection=optionValidationStatus optionValueName="label"
-                        updateCallback=filterValidationStatus
-                        }}
+            {{#if isInRole RolesEnum.TASKWRITE}}
+                <div class="col-md-3">
+                    <!-- TODO rendre fonctionnel le custom picker -->
+                    {{> SingleNonMandatorySelectComponent selectLabel="Validation Status"
+                    optionCollection=optionValidationStatus optionValueName="label"
+                    updateCallback=filterValidationStatus
+                    }}
 
-                    </div>
-                {{/if}}
-                <div class="col-md-3 col-md-offset-1">
-                    <label>
-                        <input type="checkbox"> After :
-                    </label>
-                    <!-- TODO rendre fonctionnel le custom picker -->
-                    {{>DateTimePickerComponent date=TODO updateDateCallback=TODO}}
-                    <label>
-                        <input type="checkbox"> Before :
-                    </label>
-                    <!-- TODO rendre fonctionnel le custom picker -->
-                    {{>DateTimePickerComponent date=TODO updateDateCallback=TODO}}
                 </div>
-
-                {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
-                    <div class="col-md-3 col-md-offset-1">
-                        <!-- TODO V1.0 : rendre fonctionnel le custom picker sur l'affectation -->
-                        <!--
-                        <label>
-                            Affectation priority
-                        </label>
-                        <br>
-                        -->
-                        <!--
-                        <label>
-                            Is critical
-                        </label>
-                        -->
-                    </div>
-                {{/if}}
+            {{/if}}
+            <div class="col-md-3 col-md-offset-1">
+                <label>
+                    <input type="checkbox" id="checkbox-after-filter"> After :
+                </label>
+                {{>DateTimePickerComponent class="date-after-filter" readOnly=isAfterFilterReadOnly date="now" updateDateCallback=filterAfter}}
+                <label>
+                    <input type="checkbox" id="checkbox-before-filter"> Before :
+                </label>
+                {{>DateTimePickerComponent class="date-before-filter" readOnly=isBeforeFilterReadOnly date="now" updateDateCallback=filterBefore}}
             </div>
-        {{/if}}
+
+            {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+                <div class="col-md-3 col-md-offset-1">
+                    <!-- TODO V1.0 : rendre fonctionnel le custom picker sur l'affectation -->
+                    <!--
+                    <label>
+                        Affectation priority
+                    </label>
+                    <br>
+                    -->
+                    <!--
+                    <label>
+                        Is critical
+                    </label>
+                    -->
+                </div>
+            {{/if}}
+        </div>
         </div>
     {{> reactiveTable settings=tasksList }}
 
