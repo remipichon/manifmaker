@@ -1,25 +1,25 @@
 Template.taskButtons.helpers({
     onDeleteSuccess: function() {
         return function () {
-            //TODO message de deletion success
-            console.log("TODO message de deletion success")
+            sAlert.info("Task has been successfully deleted");
         }
     },
 
     onDeleteError: function() {
-        return function () {
-            //TODO message de deletion success
-            console.log("TODO message de deletion error")
+        return function (error) {
+            sAlert.info(`Something went wrong when deleting Task (${error})`);
+            console.error(`Something went wrong when deleting Task (${error})`);
         }
     },
 
     beforeRemove: function() {
         return function () {
-            //TODO add a better dialog box to confirm deletion
-            if(window.confirm("About to delete the task")){
-                Router.go("/tasks");
-                this.remove();
-            }
+            bootbox.confirm("You are about to delete a task, are you sure ?", _.bind(function(result){
+                if(result){
+                    Router.go("/tasks");
+                    this.remove();
+                }
+            },this));
         }
     }
 });

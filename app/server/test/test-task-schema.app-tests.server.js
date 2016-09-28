@@ -14,7 +14,6 @@ describe("TaskSchema", () => {
             assert.equal(Teams.findOne().name,"team1");
 
             var equipmentStorage1 = EquipmentStorages.insert({name: "equipmentStorage1"});
-            console.log("equipmentStorage1",equipmentStorage1);
             assert.equal(EquipmentStorages.findOne(equipmentStorage1).name,"equipmentStorage1");
 
             var place1Id = Places.insert({name: "place1"});

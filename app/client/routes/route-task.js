@@ -60,9 +60,6 @@ Router.route('/task', function () {
  * @name 'task.read'  /task/:_id
  */
 Router.route('/task/:_id', function () {
-
-        if (this.ready()) {
-
             SecurityServiceClient.grantAccessToPage( RolesEnum.TASKWRITE);
             console.info("routing", "/task/" + this.params._id);
 
@@ -78,9 +75,6 @@ Router.route('/task/:_id', function () {
                     return Tasks.findOne({_id: currentTask});
                 }, to: 'mainContent'
             });
-        } else {
-            console.log("waiting for data")
-        }
     },
     {controller: ManifMakerRouterController,name: 'task.update'}
 );
@@ -94,9 +88,6 @@ Router.route('/task/:_id', function () {
  * @name 'task.read'  /task/:_id
  */
 Router.route('/task/:_id/read', function () {
-
-        if (this.ready()) {
-
             SecurityServiceClient.grantAccessToPage( RolesEnum.TASKREAD);
             console.info("routing", "/task/" + this.params._id);
 
@@ -112,9 +103,6 @@ Router.route('/task/:_id/read', function () {
                 }, to: 'mainContent'
             });
 
-        } else {
-            console.log("waiting for data")
-        }
     },
     {controller: ManifMakerRouterController, name: 'task.read'}
 );

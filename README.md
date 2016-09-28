@@ -172,6 +172,48 @@ It can lead the GUI to flickr. That is why it is probably better **to check ever
 
 Icon definition can be found here : [https://materialdesignicons.com/](https://materialdesignicons.com/). 
 
+## Alert
+
+User friendly alerting use [s-alert](https://github.com/juliancwirko/meteor-s-alert). You basically only need 
+##### Error
+
+    sAlert.error('Your message');
+
+##### Warning
+
+    sAlert.warning('Your message');
+
+##### Info
+
+    sAlert.info('Your message');
+
+##### Success
+
+    sAlert.success('Your message');
+    
+
+Alert box will be displayed 2.5 seconds, if 'Your message' if too long to be read in 2.5 seconds you can override it with (in ms) :
+
+##### Error
+
+    sAlert.error('Your message',{ timeout : 60000 });
+    
+
+## Confirm and Prompt
+[BootBox](http://bootboxjs.com/) has to be used to display a confirmation or a prompt box. 
+
+```
+ bootbox.confirm("Are you sure ?", function(result){
+                if(result){
+                    //user was sure
+                }
+            });
+```
+
+Do not use alert or custom dialog features as S-Alert is the preferred way. 
+
+
+
 ## How to use home-made stuff
 
 ### CustomSelect

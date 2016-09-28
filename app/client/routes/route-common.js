@@ -10,7 +10,6 @@ Router.configure({
 
 //hide topNavBar to each expect assignment
 Router.onAfterAction(function () {
-    console.log("1")
         assignmentCalendarIsRendered = false;
     },
     {
@@ -30,7 +29,6 @@ Router.onAfterAction(function () {
 
 //hide topNavBar to each expect assignment
 Router.onAfterAction(function () {
-    console.log("2")
         this.render("", {to: "topNavBar"});
     },
     {
