@@ -172,6 +172,33 @@ It can lead the GUI to flickr. That is why it is probably better **to check ever
 
 Icon definition can be found here : [https://materialdesignicons.com/](https://materialdesignicons.com/). 
 
+## Alert
+
+User friendly alerting use [s-alert](https://github.com/juliancwirko/meteor-s-alert). You basically only need 
+##### Error
+
+    sAlert.error('Your message');
+
+##### Warning
+
+    sAlert.warning('Your message');
+
+##### Info
+
+    sAlert.info('Your message');
+
+##### Success
+
+    sAlert.success('Your message');
+    
+
+Alert box will be displayed 2.5 seconds, if 'Your message' if too long to be read in 2.5 seconds you can override it with (in ms) :
+
+##### Error
+
+    sAlert.error('Your message',{ timeout : 60000 });
+
+
 ## How to use home-made stuff
 
 ### CustomSelect
