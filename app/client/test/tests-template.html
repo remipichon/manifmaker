@@ -1,0 +1,29 @@
+<template name="tests">
+    page de test
+    {{> TestAssignmentComponent}}
+</template>
+
+
+<template name="testAssignmentComponent">
+
+    <div class="row">
+        <p>Inject Data</p>
+        <button id="inject_data">remove and inject all data</button>
+        <p id="inject_data_result">...result...</p>
+    </div>
+
+    <div class="row">
+        <p>Assign : nominal case </p>
+        <button id="assign_nominal_case">assign_nominal_case</button>
+        <p id="assign_nominal_case_before"></p>
+        <p id="assign_nominal_case_after">{{assign_nominal_case_after}}</p>
+    </div>
+
+    <div class="row">
+        <p>Remove Assign : nominal case </p>
+        <button id="remove_assign_nominal_case">remove_assign_nominal_case</button>
+        <p id="remove_assign_nominal_case_before"></p>
+        <p id="remove_assign_nominal_case_after">{{remove_assign_nominal_case_after}}</p>
+    </div>
+
+</template>
