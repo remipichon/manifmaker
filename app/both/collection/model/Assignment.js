@@ -18,7 +18,7 @@ Schemas.Assignments = new SimpleSchema({
         custom: function(){
             if(!Tasks.findOne(this.value))
                 return "unknownId";
-            if(Tasks.findOne(this.value).timeSlotValidation !== ValidationState.READY)
+            if(Tasks.findOne(this.value).timeSlotValidation.currentState !== ValidationState.READY)
                 return "updateNotAllowed"
         }
     },
