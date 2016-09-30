@@ -180,7 +180,17 @@ Schemas.PeopleNeed = new SimpleSchema({
         autoValue: function () {
             if (!this.isSet)
                 return null;
-        },        autoform: {
+        },
+        custom: function () {
+            var cantUpdate = PeopleNeedService.schemaCustomPeopleNeed(this);
+            if (cantUpdate) return cantUpdate;
+
+            if (this.value) {
+                if (!Users.findOne(this.value))
+                    return "unknownId";
+            }
+        },
+        autoform: {
             type: "hidden",
         }
     },

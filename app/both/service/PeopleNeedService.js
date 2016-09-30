@@ -224,14 +224,19 @@ export class PeopleNeedService {
 
 
         static schemaCustomPeopleNeed(schemaContext){
-            return 1;
-
-            //TODO a reactiver
             if (schemaContext.isUpdate) {
                 var task = Tasks.findOne(schemaContext.docId);
-                if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState)){
-                    return "updateNotAllowed"
+
+                if(schemaContext.key.indexOf("assignedUserId") !== -1){
+                    //assignedUserId : non editable sauf si READY
+                    if(task.timeSlotValidation.currentState !== ValidationState.READY)
+                        return "updateNotAllowed"
+                } else {
+                    //array, userId, skills, teamId : non editable si pas OPEN ou REFUSED
+                    if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState))
+                        return "updateNotAllowed"
                 }
+
             }
 
         }

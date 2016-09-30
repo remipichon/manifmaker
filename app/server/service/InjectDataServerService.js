@@ -476,7 +476,7 @@ export class InjectDataServerService {
                 }
             ],
             timeSlotValidation: {
-                currentState: ValidationState.READY,
+                currentState: ValidationState.OPEN,
                 lastUpdateDate: now,
                 comments: [
                     {
