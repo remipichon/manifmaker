@@ -173,6 +173,17 @@ Schemas.PeopleNeed = new SimpleSchema({
             }
         }
     },
+    assignedUserId: {
+        type: SimpleSchema.RegEx.Id,
+        label: "People Need assigned user id",
+        optional: true,
+        autoValue: function () {
+            if (!this.isSet)
+                return null;
+        },        autoform: {
+            type: "hidden",
+        }
+    },
     _id: {
         type: SimpleSchema.RegEx.Id,
         label: "People Need _id",
@@ -186,18 +197,6 @@ Schemas.PeopleNeed = new SimpleSchema({
     }
 });
 
-
-Schemas.PeopleNeedAssigned = new SimpleSchema([Schemas.PeopleNeed, {
-        assignedUserId: {
-            type: SimpleSchema.RegEx.Id,
-            label: "People Need assigned user id",
-            optional: true,
-            autoform: {
-                type: "hidden",
-            }
-        }
-    }
-]);
 
 Schemas.TimeSlot = new SimpleSchema({
     start: {
@@ -300,15 +299,6 @@ Schemas.TimeSlot = new SimpleSchema({
             return PeopleNeedService.schemaCustomPeopleNeed(this);
         }
 
-    },
-    peopleNeededAssigned: {
-        type: [Schemas.PeopleNeedAssigned],
-        label: "TimeSlot People needs assigned",
-        defaultValue: [],
-        optional: true,
-        autoform: {
-            type: "hidden",
-        }
     },
     _id: {
         type: SimpleSchema.RegEx.Id,

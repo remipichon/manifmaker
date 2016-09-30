@@ -154,7 +154,7 @@ export class TimeSlotService {
                 // if (!taskFound)
                 task.timeSlots.forEach(timeSlot => {
                     //   if (!timeSlotFound)
-                    timeSlot.peopleNeededAssigned.forEach(peopleNeed => {
+                    timeSlot.peopleNeeded.forEach(peopleNeed => {
                         //       if (!peopleNeed)
                         if (peopleNeed._id === peopleNeedId) {
                             peopleNeedFound = peopleNeed;

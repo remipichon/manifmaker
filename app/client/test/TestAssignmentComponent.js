@@ -20,12 +20,12 @@ class TestAssignmentComponent extends BlazeComponent {
         var task1 = Tasks.findOne({name: "task 1"});
         var user1 = Users.findOne({name: "user1"});
         var timeslot2h4h = task1.timeSlots[0];
-        var peopleNeedAssigned = timeslot2h4h.peopleNeededAssigned[0];
+        var peopleNeedNoSkillsTeam1 = timeslot2h4h.peopleNeeded[0];
 
-        this.printBeforeTest(testName,this.assignmentResultToString(user1,task1,timeslot2h4h,peopleNeedAssigned));
+        this.printBeforeTest(testName,this.assignmentResultToString(user1,task1,timeslot2h4h,peopleNeedNoSkillsTeam1));
 
         //test
-        Meteor.call("removeAssignUserToTaskTimeSlot", peopleNeedAssigned._id, user1._id, _.bind(function (error, result) {
+        Meteor.call("removeAssignUserToTaskTimeSlot", peopleNeedNoSkillsTeam1._id, user1._id, _.bind(function (error, result) {
             if(error){
                 this.printErrorTest(testName,error)
             }
@@ -37,11 +37,11 @@ class TestAssignmentComponent extends BlazeComponent {
 
     //asynchronous result (because Collection Hooks occur some time later)
     remove_assign_nominal_case_after(){
-        return this.assignmentResultToString(
+        return "After : "+this.assignmentResultToString(
             Users.findOne({name: "user1"}),
             Tasks.findOne({name: "task 1"}),
             Tasks.findOne({name: "task 1"}).timeSlots[0],
-            Tasks.findOne({name: "task 1"}).timeSlots[0].peopleNeededAssigned[0]
+            Tasks.findOne({name: "task 1"}).timeSlots[0].peopleNeeded[0]
         );
     }
 
@@ -75,7 +75,7 @@ class TestAssignmentComponent extends BlazeComponent {
 
     //asynchronous result (because Collection Hooks occur some time later)
     assign_nominal_case_after(){
-        return this.assignmentResultToString(
+        return "Befpre "+ this.assignmentResultToString(
             Users.findOne({name: "user1"}),
             Tasks.findOne({name: "task 1"}),
             Tasks.findOne({name: "task 1"}).timeSlots[0],
@@ -108,7 +108,7 @@ class TestAssignmentComponent extends BlazeComponent {
     }
 
     assignmentResultToString(user,task,timeSlot,peopleNeed){
-        return "After User : " +this.userAvailabilitiesToString(user) +
+        return "User : " +this.userAvailabilitiesToString(user) +
             "Task : " +this.timeSlotPeopleNeededtoString(timeSlot)+
             "Assignment : " + this.assignmentToString(user, task,timeSlot,peopleNeed);
 
@@ -125,7 +125,7 @@ class TestAssignmentComponent extends BlazeComponent {
             if (assignment) {
                 res += " found : " + assignment._id
             } else {
-                res += "not found [ERROR]"
+                res += "not found"
             }
         }
 
@@ -144,7 +144,7 @@ class TestAssignmentComponent extends BlazeComponent {
     timeSlotPeopleNeededtoString(timeSlot){
         var res = "timeSlot.peopleNeeded : ";
         timeSlot.peopleNeeded.forEach(peopleNeed => {
-            res += `teamId : ${peopleNeed.userId} teamId : ${peopleNeed.teamId} skills : ${peopleNeed.skills.length}`;
+            res += `teamId : ${peopleNeed.userId} teamId : ${peopleNeed.teamId} skills : ${peopleNeed.skills.length} userAssignedId : ${peopleNeed.assignedUserId}`;
             res += " | ";
         });
         return res;

@@ -108,7 +108,7 @@ export class PeopleNeedService {
          */
         static getAssignedPeopleNeedIndex(timeSlot, peopleNeedHunter) {
             var found;
-            timeSlot.peopleNeededAssigned.forEach(function (peopleNeed, index) {
+            timeSlot.peopleNeeded.forEach(function (peopleNeed, index) {
                 if (peopleNeed._id === peopleNeedHunter._id) {
                     found = index;
                 }
@@ -133,32 +133,16 @@ export class PeopleNeedService {
             console.info("PeopleNeedService.assignedPeopleNeeded for task", task, "when", timeSlot, "and need", peopleNeed);
             //we have the task
             var timeSlots = task.timeSlots; //all its timeslots
-            //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
-
-            var updatedTimeslot = timeSlot;
-
-            //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
 
             var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
             var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
             var peopleNeedToRemoveIndex = PeopleNeedService.getPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
-            //remove peopleNeed assigned
-            timeSlotToUpdate.peopleNeeded.splice(peopleNeedToRemoveIndex, 1);
-
-            //store assigned user
-            peopleNeed.assignedUserId = userId;
-            timeSlotToUpdate.peopleNeededAssigned.push(peopleNeed);
 
             return Tasks.update({_id: task._id},
                 {
                     $set: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded, //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : timeSlotToUpdate.peopleNeededAssigned
-                        //as $pull doesn't work, we need to update both peopleNeeded and peopleNeededAssigned in order to give a way for Task's schema to authorize updating peopleNeeded even when task is state is not open or refused
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded."+peopleNeedToRemoveIndex+".assignedUserId"] : userId
                     }
-                    //$push: {
-                    //    ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : peopleNeed
-                    //}
                 });
 
         }
@@ -233,30 +217,18 @@ export class PeopleNeedService {
             console.info("PeopleNeedService.restorePeopleNeed for task", task, "when", timeSlot, "and need", peopleNeed);
             //we have the task
             var timeSlots = task.timeSlots; //all its timeslots
-            //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
 
             var updatedTimeslot = timeSlot;
-
-            //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
 
             var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
             var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
 
-            //remove peopleNeed assigned
-            var assignedPeopleNeedToRemoveIndex = PeopleNeedService.getAssignedPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
-            timeSlotToUpdate.peopleNeededAssigned.splice(assignedPeopleNeedToRemoveIndex, 1);
-
-            //restore peopleNeed
-            delete peopleNeed.assignedUserId;
-            timeSlotToUpdate.peopleNeeded.push(peopleNeed);
+            var peopleNeedToRemoveIndex = PeopleNeedService.getAssignedPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
 
             Tasks.update({_id: task._id},
                 {
                     $set: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : timeSlotToUpdate.peopleNeededAssigned //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"])
-                    },
-                    $push: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : peopleNeed
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded."+peopleNeedToRemoveIndex+".assignedUserId"] : null
                     }
                 });
         }
