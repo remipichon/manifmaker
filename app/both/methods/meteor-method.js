@@ -32,7 +32,7 @@ Meteor.methods({
         if(!userId)
             throw new Meteor.Error(400,'assignUserToTaskTimeSlot userId is null');
 
-        var ret = TimeSlotService.getTaskAndTimeSlotAndAssignedPeopleNeedByAssignedPeopleNeedId(peopleNeedId);
+        var ret = TimeSlotService.getTaskAndTimeSlotAndPeopleNeedByPeopleNeedId(peopleNeedId);
         var timeSlot = ret.timeSlot;
         var task = ret.task;
         var peopleNeed = ret.peopleNeed;

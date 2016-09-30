@@ -9,6 +9,10 @@ export class BaseCalendarComponent extends BlazeComponent{
         //to implement
     }
 
+    peopleNeedOnClick(event){
+        //to implement
+    }
+
     creanOnClick() {
         //to implement
     }
@@ -35,6 +39,7 @@ export class BaseCalendarComponent extends BlazeComponent{
                 "click .on-calendar .peopleNeed": this.peopleNeedOnClick,
                 "click .heure, .quart_heure": this.quartHeureOnClick,
                 "click .on-calendar .peopleNeed.assigned": this.peopleNeedAssignedOnClick,
+                "click .on-calendar .peopleNeed": this.peopleNeedOnClick,
                 "click .creneau": this.creanOnClick
             }
         ]

@@ -37,7 +37,7 @@ export class AssignmentServiceClient {
                     _id: assignment.userId
                 };
 
-                AssignmentReactiveVars.SelectedTimeSlot.set(TimeSlotService.getTaskAndTimeSlotAndAssignedPeopleNeedByAssignedPeopleNeedId(peopleNeeded._id).timeSlot);
+                AssignmentReactiveVars.SelectedTimeSlot.set(TimeSlotService.getTaskAndTimeSlotAndPeopleNeedByPeopleNeedId(peopleNeeded._id).timeSlot);
                 AssignmentReactiveVars.UserFilter.set(newFilter);
                 AssignmentReactiveVars.IsUnassignment.set(true);
                 break;

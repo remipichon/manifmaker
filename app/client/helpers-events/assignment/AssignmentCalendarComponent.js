@@ -155,11 +155,6 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         });
     }
 
-    selectPeopleNeed() {
-        AssignmentReactiveVars.SelectedPeopleNeed.set(this.currentData());
-        //event should bubbles to .creneau
-    }
-
     peopleNeedAssignedOnClick(event) {
         event.stopPropagation();
         this.peopleNeedAssignedClick++;
@@ -176,6 +171,12 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
     }
 
+    peopleNeedOnClick(event){
+        AssignmentReactiveVars.SelectedPeopleNeed.set(this.currentData());
+        AssignmentReactiveVars.SelectedTimeSlot.set(TimeSlotService.getTaskAndTimeSlotAndPeopleNeedByPeopleNeedId(this.currentData()._id).timeSlot);
+        AssignmentServiceClient.taskToUserPerformUserFilter();
+    }
+
     //taskToUser (we click on a complete task time slot)
     creanOnClick() {
 
@@ -187,8 +188,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 return;
                 break;
             case AssignmentType.TASKTOUSER: //only display users that have at least one availability matching the selected time slot
-                AssignmentReactiveVars.SelectedTimeSlot.set(this.currentData());
-                AssignmentServiceClient.taskToUserPerformUserFilter();
+                console.error("Template.assignmentCalendar.events.click .creneau", "There is not action linked to a click on this kind of element when in userToTask");
                 break;
         }
     }
