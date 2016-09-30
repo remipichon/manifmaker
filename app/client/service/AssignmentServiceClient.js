@@ -305,33 +305,18 @@ export class AssignmentServiceClient {
         }
 
         var task, ret;
-        if (isAssigned) {
-            task = Tasks.findOne({
-                timeSlots: {
-                    $elemMatch: {
-                        peopleNeededAssigned: {
-                            $elemMatch: {
-                                _id: peopleNeedId
-                            }
-                        },
-                    }
+        task = Tasks.findOne({
+            timeSlots: {
+                $elemMatch: {
+                    peopleNeeded: {
+                        $elemMatch: {
+                            _id: peopleNeedId
+                        }
+                    },
                 }
-            });
-            ret = PeopleNeedService.getAssignedPeopleNeedByIdAndTask(peopleNeedId, task);
-        } else {
-            task = Tasks.findOne({
-                timeSlots: {
-                    $elemMatch: {
-                        peopleNeeded: {
-                            $elemMatch: {
-                                _id: peopleNeedId
-                            }
-                        },
-                    }
-                }
-            });
-            ret = PeopleNeedService.getPeopleNeedByIdAndTask(peopleNeedId, task);
-        }
+            }
+        });
+        ret = PeopleNeedService.getPeopleNeedByIdAndTask(peopleNeedId, task);
 
         var peopleNeeded = ret.peopleNeed;
         var timeSlot = TimeSlotService.getTimeSlot(task, ret.timeSlotId);

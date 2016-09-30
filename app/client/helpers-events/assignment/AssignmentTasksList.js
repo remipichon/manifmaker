@@ -183,12 +183,12 @@ class AssignmentTasksList extends BlazeComponent {
                 }
             };
             if (skillsFilter)
-                skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeededAssigned.$elemMatch.skills = {$all: skillsFilter};
+                skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
             if (neededTeamFilter) {
                 if (neededTeamFilter === "noNeededTeam")
-                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeededAssigned.$elemMatch.teamId = null;
+                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
                 else
-                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeededAssigned.$elemMatch.teamId = neededTeamFilter;
+                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
             }
         }
         var skillsAndNeededTeamFilter = {

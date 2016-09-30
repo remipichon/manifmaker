@@ -66,36 +66,6 @@ export class PeopleNeedService {
 
         }
 
-        /**
-         * @memberOf PeopleNeedService
-         * @summary Find people need assigned and time slot id for a given task by people need id.
-         * @locus Anywhere
-         * @param {MongoId} peopleNeedId
-         * @param {Task} task
-         * @returns {{timeSlotId: {MongoId}, peopleNeed: {PeopleNeed}}}
-         */
-        static getAssignedPeopleNeedByIdAndTask(peopleNeedId,task) {
-            var found;
-            var timeSlotIdFound;
-
-            task.timeSlots.forEach(timeSlot => {
-                timeSlot.peopleNeededAssigned.forEach(function (peopleNeed, index) {
-                    if (peopleNeed._id === peopleNeedId) {
-                        found = peopleNeed;
-                    }
-                });
-                if(!timeSlotIdFound && found)
-                    timeSlotIdFound = timeSlot._id;
-
-            });
-
-            return {
-                timeSlotId: timeSlotIdFound,
-                peopleNeed: found
-            };
-
-
-        }
 
 
         /**

@@ -188,7 +188,6 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 return;
                 break;
             case AssignmentType.TASKTOUSER: //only display users that have at least one availability matching the selected time slot
-                console.error("Template.assignmentCalendar.events.click .creneau", "There is not action linked to a click on this kind of element when in userToTask");
                 break;
         }
     }
