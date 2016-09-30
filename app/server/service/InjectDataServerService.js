@@ -200,6 +200,7 @@ export class InjectDataServerService {
         var team1Id = Teams.insert({name: "team1"});
         var team2Id = Teams.insert({name: "team2"});
         var team3Id = Teams.insert({name: "team3"});
+        Teams.insert({name: ASSIGNMENTREADYTEAM});
 
 
         //places
