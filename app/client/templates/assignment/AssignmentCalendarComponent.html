@@ -5,7 +5,7 @@
          data-content='
                                                 <div>
                                                     <div>
-                                                        {{#each peopleNeeded}}
+                                                        {{#each peopleNeededNonAssigned}}
                                                             <div class="peopleNeed" data-_id="{{_id}}">
                                                                 {{#if userId }}
                                                                     <div class="user">{{userName}}</div>
@@ -54,7 +54,7 @@
             {{/if}}
 
 
-            {{#each peopleNeeded}}
+            {{#each peopleNeededNonAssigned}}
                 <!--<div class="peopleNeed" style="height: {{../height}};">-->
                 <div class="peopleNeed">
                     {{#if userId }}

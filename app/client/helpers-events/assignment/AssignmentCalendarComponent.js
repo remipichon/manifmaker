@@ -142,6 +142,19 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
     }
 
+
+    peopleNeededNonAssigned(){
+        return _.reject(this.currentData().peopleNeeded,function(peopleNeed){
+            return peopleNeed.assignedUserId !== null;
+        });
+    }
+
+    peopleNeededAssigned(){
+        return _.reject(this.currentData().peopleNeeded,function(peopleNeed){
+            return peopleNeed.assignedUserId === null;
+        });
+    }
+
     selectPeopleNeed() {
         AssignmentReactiveVars.SelectedPeopleNeed.set(this.currentData());
         //event should bubbles to .creneau
