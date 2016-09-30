@@ -91,7 +91,7 @@ export class PeopleNeedService {
 
         /**
          * @memberOf PeopleNeedService
-         * @summary Move people need from task's peopleNeeded to task's peopleNeededAssigned
+         * @summary Assign peopleNeeded.assignedUserId
          * @locus Anywhere
          * @param {timeSlot} timeSlot
          * @param {Task} task
@@ -176,7 +176,7 @@ export class PeopleNeedService {
 
         /**
          * @memberOf PeopleNeedService
-         * @summary Move back people need from task's peopleNeededAssigned to task's peopleNeeded
+         * @summary Set peopleNeeded.assignedUserId to null
          * @locus Anywhere
          * @param {Task} task
          * @param {timeSlot} timeSlot
