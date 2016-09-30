@@ -163,11 +163,12 @@ class AssignmentTasksList extends BlazeComponent {
         var neededTeamFilter = this.taskNeededTeamFilter.get();
         var skillsAndNeededTeamFilterForAssigned = {};
 
+        //TODO possible de factoriser ca
         if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
             skillsAndNeededTeamFilterForAssigned = {
                 timeSlots: {
                     $elemMatch: {
-                        peopleNeededAssigned: {
+                        peopleNeeded: {
                             $elemMatch: {
                                 //below attributes will be added just after as it
                                 //skills: skillsFilter,
@@ -178,12 +179,12 @@ class AssignmentTasksList extends BlazeComponent {
                 }
             };
             if (skillsFilter)
-                skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeededAssigned.$elemMatch.skills = {$all: skillsFilter};
+                skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeededAssigned.$elemMatch.skills = {$all: skillsFilter};
             if (neededTeamFilter) {
                 if (neededTeamFilter === "noNeededTeam")
-                    skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeededAssigned.$elemMatch.teamId = null;
+                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeededAssigned.$elemMatch.teamId = null;
                 else
-                    skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeededAssigned.$elemMatch.teamId = neededTeamFilter;
+                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeededAssigned.$elemMatch.teamId = neededTeamFilter;
             }
         }
         var skillsAndNeededTeamFilter = {
@@ -191,6 +192,7 @@ class AssignmentTasksList extends BlazeComponent {
                 $elemMatch: {
                     peopleNeeded: {
                         $elemMatch: {
+                            assignedUserId:{ $eq: null }
                             //below attributes will be added just after as it
                             //skills: skillsFilter,
                             //teamId: neededTeamFilter
