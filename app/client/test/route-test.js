@@ -15,11 +15,11 @@ Router.route('/tests', function () {
 
         console.info("routing", "/tests");
 
-        Meteor.call("injectData", _.bind(function () {
+        //Meteor.call("injectData", _.bind(function () {
             this.render('tests', {
                 to: 'mainContent'
             })
-        }, this));
+        //}, this));
 
 
     },
