@@ -88,6 +88,10 @@ class AssignmentTasksList extends BlazeComponent {
 
     isTasksListDeveloped(){ return AssignmentReactiveVars.isTasksListDeveloped.get()}
 
+    displayAssignedTaskState (){
+        if(this.isplayAssignedTask.get()) return "checked"; else return "";
+    }
+
     performSearch(event) {
         var searchInput = $("#search_task_name").val();
 
