@@ -261,15 +261,37 @@ class TaskTimeSlotsComponent extends BlazeComponent{
         return this.taskData().timeSlots[this.getUpdateTimeSlotIndex()];
     }
 
-    currentTimeSlotPeopleNeededMerged() {
+    currentTimeSlotPeopleNeededMerged(fetchAlreadyAssigned = false) {
         if (!this.currentTimeSlot()) return [];
-        return this.getPeopleNeededMerged(this.currentTimeSlot()._id);
+        return this.getPeopleNeededMerged(this.currentTimeSlot()._id, fetchAlreadyAssigned);
     }
 
-    getPeopleNeededMerged(timeSlotId) {
+    getAlreadyAssignedPeopleNeedCount(timeSlotId) {
         var peopleNeeded = _.findWhere(this.taskData().timeSlots, {
             _id: timeSlotId
         }).peopleNeeded;
+
+        peopleNeeded = _.reject(peopleNeeded, (peopleNeed) => {
+            return peopleNeed.assignedUserId === null;
+        });
+
+        return peopleNeeded.length;
+    }
+
+    getPeopleNeededMerged(timeSlotId, fetchAlreadyAssigned) {
+        var peopleNeeded = _.findWhere(this.taskData().timeSlots, {
+            _id: timeSlotId
+        }).peopleNeeded;
+
+        if(fetchAlreadyAssigned){
+            peopleNeeded = _.reject(peopleNeeded, (peopleNeed) => {
+                return peopleNeed.assignedUserId === null;
+            });
+        } else {
+            peopleNeeded  = _.reject(peopleNeeded, (peopleNeed) => {
+                return peopleNeed.assignedUserId !== null;
+            });
+        }
 
         //group by identical people need
         var peopleNeededGroupBy = _.groupBy(peopleNeeded, function (peopleNeed) {
