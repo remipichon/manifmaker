@@ -1,6 +1,8 @@
 import {PeopleNeedService} from "../../../../both/service/PeopleNeedService"
 import {TimeSlotService} from "../../../../both/service/TimeSlotService"
 import {ValidationService} from "../../../../both/service/ValidationService"
+import {AssignmentServiceClient} from "../../../../client/service/AssignmentServiceClient"
+
 
 class TaskTimeSlotsComponent extends BlazeComponent{
 
@@ -24,6 +26,7 @@ class TaskTimeSlotsComponent extends BlazeComponent{
         this.currentSelectedStartDate = null;
         this.currentSelectedEndDate = null;
         this.bulkIds = {};
+        this.bulkAssignedIds = {};
         this.updatePeopleNeededErrorArray = new ReactiveVar([]);
         this.isTimeSlotCreated = new ReactiveVar(false);
         this.isTimeSlotUpdated = new ReactiveVar(false);
@@ -189,6 +192,20 @@ class TaskTimeSlotsComponent extends BlazeComponent{
     deletePeopleNeeded(e) {
         var peopleNeededId = $(e.target).data("peopleneededid");
         PeopleNeedService.removePeopleNeed(this.taskData(), this.taskData().timeSlots[this.getUpdateTimeSlotIndex()], {_id: peopleNeededId});
+
+        var val = $("#assignments-terms-select").val();
+        var newVar = this.updatedTimeSlotId.get();
+        this.updatedTimeSlotId.set(null);
+        //I had problem when user click several time too fast on delete.
+        //Indeed delete peopleNeed has to use $set of the whole array instead of $pull because of nested array and thus need
+        //peopleNeed array index to delete it, if several deletes are run in parallel, they conflict and end up deleting wrong people need (even affected ones).
+        //The trick here is to prevent user to click before 200ms, letting the delete to end.
+        setTimeout(_.bind(function(){
+            this.updatedTimeSlotId.set(newVar);
+            AssignmentServiceClient.setCalendarTerms(val);
+            console.warn("People Need section flickered ? It's because of me : TaskTimeSlotsComponent.deletePeopleNeeded");
+        },this), 200);
+
     }
 
     duplicatePeopleNeeded(e) {
@@ -309,7 +326,10 @@ class TaskTimeSlotsComponent extends BlazeComponent{
             return _.extend(groupBy[0], {count: groupBy.length});
         });
 
-        this.bulkIds = bulkIds;
+        if (fetchAlreadyAssigned)
+            this.bulkAssignedIds = bulkIds;
+        else
+            this.bulkIds = bulkIds;
 
         return peopleNeededMerged;
 
@@ -344,6 +364,23 @@ class TaskTimeSlotsComponent extends BlazeComponent{
 
         return result;
     }
+
+    bulkPeopleNeededAssignedIds() {
+        var result = [
+            {
+                path: "timeSlots",
+                _id: this.currentTimeSlot()._id
+            },
+            {
+                path: "peopleNeeded",
+                _ids: this.bulkAssignedIds[this.currentData()._id]
+            }
+        ];
+
+
+        return result;
+    }
+
 
     updatePeopleNeedCallback() {
         return _.bind(function (error, docAffected) {

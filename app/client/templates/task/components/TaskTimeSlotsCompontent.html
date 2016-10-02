@@ -116,7 +116,7 @@
                                             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                                             updateCollection="Tasks" updateItemId=taskData._id
                                             updateItemPath="teamId"
-                                            bulkPeopleNeededIds=bulkPeopleNeededIds
+                                            bulkPeopleNeededIds=bulkPeopleNeededAssignedIds
                                             readOnly=true}}
                                         {{/if}}
                                         {{#if skills}}
@@ -124,7 +124,7 @@
                                             optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
                                             updateCollection="Tasks" updateItemId=taskData._id
                                             updateItemPath="skills"
-                                            bulkPeopleNeededIds=bulkPeopleNeededIds
+                                            bulkPeopleNeededIds=bulkPeopleNeededAssignedIds
                                             readOnly=true}}
                                         {{/if}}
                                     </div>

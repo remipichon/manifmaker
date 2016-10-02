@@ -217,9 +217,16 @@ export class PeopleNeedService {
             Tasks.update({_id: task._id},
                 {
                    $set: {
-                       ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
+                       ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded
+                       //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
                    }
                 });
+
+            //Tasks.update({_id: task._id}, {
+            //    $pull: {
+            //        ["timeSlots." + timeSlotToUpdateIndex + ".peopleNeeded"]: {_id: peopleNeed._id}
+            //    }
+            //});
         }
 
 
@@ -227,9 +234,9 @@ export class PeopleNeedService {
             if (schemaContext.isUpdate) {
                 var task = Tasks.findOne(schemaContext.docId);
 
-                if(schemaContext.key.indexOf("assignedUserId") !== -1 && schemaContext.value !== null){
+                if(schemaContext.key.indexOf("assignedUserId") !== -1){
                     //assignedUserId : non editable sauf si READY
-                    if(task.timeSlotValidation.currentState !== ValidationState.READY)
+                    if(schemaContext.value !== null && task.timeSlotValidation.currentState !== ValidationState.READY)
                         return "updateNotAllowed"
                 } else {
                     //array, userId, skills, teamId : non editable si pas OPEN ou REFUSED
