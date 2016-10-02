@@ -213,6 +213,9 @@ class AssignmentTasksList extends BlazeComponent {
             else
                 skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
         }
+        var validationReadyFilter = {
+          "timeSlotValidation.currentState" : ValidationState.READY
+        };
 
         var searchResult;
         var filterResult;
@@ -220,6 +223,7 @@ class AssignmentTasksList extends BlazeComponent {
         if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
             filterResult = Tasks.find({
                 $and: [
+                    validationReadyFilter,
                     filter,
                     teamFilter,
                     {
@@ -233,6 +237,7 @@ class AssignmentTasksList extends BlazeComponent {
         } else {
             filterResult = Tasks.find({
                 $and: [
+                    validationReadyFilter,
                     filter,
                     teamFilter,
                     skillsAndNeededTeamFilter,
