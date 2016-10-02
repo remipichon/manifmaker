@@ -722,6 +722,12 @@ export class InjectDataServerService {
         return new Date(now.getYear(), 5 - 1 /*now.getMonth()*/, 13 /*now.getDate()*/, hours, minutes, 0);
     }
 
+    static _getDateFromDateAndTime(date,hours){
+        var now = new Date();
+        return new Date(now.getYear(), 5 - 1 /*now.getMonth()*/, date /*now.getDate()*/, hours, 0, 0);
+    }
+
+
     static _getDateFromDate(day, month, year) {
         var now = new Date();
         year = year || now.getYear();
