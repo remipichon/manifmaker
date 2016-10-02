@@ -227,7 +227,7 @@ export class PeopleNeedService {
             if (schemaContext.isUpdate) {
                 var task = Tasks.findOne(schemaContext.docId);
 
-                if(schemaContext.key.indexOf("assignedUserId") !== -1){
+                if(schemaContext.key.indexOf("assignedUserId") !== -1 && schemaContext.value !== null){
                     //assignedUserId : non editable sauf si READY
                     if(task.timeSlotValidation.currentState !== ValidationState.READY)
                         return "updateNotAllowed"
