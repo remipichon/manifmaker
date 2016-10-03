@@ -52,7 +52,7 @@
                                         <span>{{count}}</span>
                                         {{#unless isTimeSlotsReadOnly}}
                                             <i class="mdi mdi-delete mdi-inline delete" data-peopleneededid="{{this._id}}"></i>
-                                            <i class="mdi mdi-content-copy mdi-inline duplicate" data-peopleneededid="{{this._id}}"></i>
+                                            {{#unless userId}}<i class="mdi mdi-content-copy mdi-inline duplicate" data-peopleneededid="{{this._id}}"></i>{{/unless}}
                                         {{/unless}}
                                     </div>
                                     <div class="col-md-9">
