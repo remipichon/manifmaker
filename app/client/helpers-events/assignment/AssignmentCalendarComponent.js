@@ -4,6 +4,8 @@ import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
+import {TimeSlotCalendarServiceClient} from "../../../client/service/TimeSlotCalendarServiceClient"
+
 
 class AssignmentCalendarComponent extends BaseCalendarComponent {
     constructor() {
@@ -41,7 +43,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
         var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
-        var data = {};
+        var data = {},baseOneHourHeight,accuracy,end,start,duration,height,founded;
 
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK:
@@ -58,10 +60,8 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                     return [];
                 }
 
-                var baseOneHourHeight = 40;
-                var accuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy;
-
-                var data = {}, founded;
+                baseOneHourHeight = 40;
+                accuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy;
 
                 if (availabilityFound !== null) {
                     data.state = "available";
@@ -78,11 +78,11 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 }
 
                 _.extend(data, founded);
-                var end = new moment(founded.end);
-                var start = new moment(founded.start);
-                var duration = end.diff(start) / (3600 * 1000);
+                end = new moment(founded.end);
+                start = new moment(founded.start);
+                duration = end.diff(start) / (3600 * 1000);
 
-                var height = accuracy * baseOneHourHeight * duration;
+                height = accuracy * baseOneHourHeight * duration;
                 data.height = height + "px";
 
                 break;
@@ -90,48 +90,9 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 var task = AssignmentReactiveVars.SelectedTask.get() == null ? null : Tasks.findOne(AssignmentReactiveVars.SelectedTask.get());
                 if (!task) return [];
 
-                var timeSlotFound = TimeSlotService.getTimeSlotByStart(task.timeSlots, startCalendarTimeSlot);
-                var assignmentsFound = AssignmentService.getAssignmentByStart(task.assignments, startCalendarTimeSlot, true);
-
-                if (timeSlotFound === null && assignmentsFound.length === 0) return [];
-
-
-                var baseOneHourHeight = 40;
-                var accuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy;
-
-                var data = {}, founded;
-
-                if (timeSlotFound !== null) {
-                    data.state = "available";
-                    //data.name = task.name;
-                    //Template.parentData() doesn't work so we use a trick
-                    data.taskId = task._id;
-
-                    founded = timeSlotFound;
-
-                    //people need
-                    var peopleNeeds = founded.peopleNeeded;
-                    data.peopleNeeded = peopleNeeds;
-
-                }
-
-                //if (assignmentsFound.length !== 0) { //at least one assignment TODO code couleur d'avancement en fonction des peoples needed
-                //    data.name = assignmentsFound[0].taskName; //idem, la meme task
-                //    data.state = "in-progress";
-                //    data.taskId = task._id;
-                //
-                //
-                //    founded = assignmentsFound[0]; //normalement ils ont tous les memes date, TODO controler ca
-                //}
-
-
-                _.extend(data, founded);
-                var end = new moment(founded.end);
-                var start = new moment(founded.start);
-                var duration = end.diff(start) / (3600 * 1000);
-
-                var height = accuracy * baseOneHourHeight * duration;
-                data.height = height + "px";
+                var result = TimeSlotCalendarServiceClient.computeTimeSlotData(task,startCalendarTimeSlot);
+                if(!result) return []
+                else data = result;
 
                 break;
             case AssignmentType.ALL:

@@ -661,6 +661,15 @@ export class InjectDataServerService {
                             skills: [skill1Id]
                         }
                     ]
+                },
+                {
+                    start: this._getDateFromDateAndTime(20,22),
+                    end: this._getDateFromDateAndTime(22,2),
+                    peopleNeeded: [
+                        {
+                            skills: [skill1Id]
+                        }
+                    ]
                 }
             ],
             timeSlotValidation: {

@@ -51,25 +51,28 @@ export class TimeSlotService {
          * @locus Anywhere
          * @param availabilitiesOrTimeSlotsOrAssignments {Array<Availability|TimeSlot|Assignment>}
          * @param start {Date}
-         * @param several (default = false) {boolean}
          * @returns {Array<TimeSlot> | TimeSlot  | null}
          */
-        static getTimeSlotByStart(availabilitiesOrTimeSlotsOrAssignments, start, several = false) {
-            if (several) {
-                var found = [];
-            } else {
-                var found = null;
-            }
+        static getTimeSlotByStart(availabilitiesOrTimeSlotsOrAssignments, start) {
+            var found = null;
             var startDate = new moment(new Date(start));
             availabilitiesOrTimeSlotsOrAssignments.forEach(thing => {
                 //we only take the first matching timeSlot, le css ne sait aps encore gerer deux data timeSlot sur un meme calendar timeSlot
-                if (startDate.isSame(new moment(new Date(thing.start)))) {
-                    if (several) {
-                        found.push(thing)
-                    } else {
+                var thingStartDate = new moment(new Date(thing.start));
+                var thingEndDate = new moment(new Date(thing.end));
+                if (startDate.isSame(thingStartDate)) {
                         found = thing;
                         return false;
-                    }
+                } else {
+                    //is start midnight ? we should retrieve timeslot which started 'yesterday' and finish 'today' or later
+                    if (startDate.hour() === 0){
+                        //=> is thing.start lt start and thing.end gt start ?
+                        if(thingStartDate.isBefore(startDate) && thingEndDate.isAfter(startDate)){
+                            //=> => thing is a match
+                            found = thing;
+                            return false;
+                        }
+                     }
                 }
             });
             return found;
