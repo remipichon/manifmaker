@@ -35,12 +35,13 @@ Assignments = new Mongo.Collection("assignment");
  * @locus Anywhere
  * @instancename collection
  */
-Groups = new Mongo.Collection("groups"); //TODO group activity
+TaskGroups = new Mongo.Collection("task_groups"); //TODO group activity
 
 
 
 //using schema
 Tasks.attachSchema(Schemas.Tasks);
+TaskGroups.attachSchema(Schemas.TaskGroups);
 Assignments.attachSchema(Schemas.Assignments);
 Users.attachSchema(Schemas.Users);
 

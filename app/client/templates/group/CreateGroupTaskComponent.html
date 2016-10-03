@@ -1,0 +1,58 @@
+<template name="insertTaskGroupForm">
+    {{>CreateTaskGroupComponent}}
+</template>
+
+<template name="createTaskGroupComponent">
+
+    {{validateForm}}
+
+    <div class="panel panel-info">
+        <div class="panel-heading">General information</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <div class="form-group">
+                        <label for="first_name" data-required>Group name *</label>
+                        <br>
+                        <input placeholder="Group name" data-key="name" type="text" class="validate form-control">
+                    </div>
+
+                    <div>
+                        {{> SingleSelectComponent selectLabel="Team" title="Update team"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teamId"
+                        nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                        }}
+                    </div>
+
+                </div>
+                <div class="col-md-9">
+                    <div>
+                        <label>Description</label>
+                        <textarea name="description" rows="17" data-key="description" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            {{#if errors}}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <div><strong>Some errors remains in the form</strong></div>
+                            {{#each errors}}
+                                <div>{{message}}</div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+    </div>
+
+    <div class="col-md-2 col-md-offset-5">
+        <button type="submit" class="btn btn-primary">Insert</button>
+    </div>
+</template>

@@ -31,7 +31,7 @@ Meteor.startup(function () {
     Meteor.subscribe("places");
     Meteor.subscribe("assignments");
     Meteor.subscribe("teams");
-    Meteor.subscribe("groups");
+    Meteor.subscribe("task-groups");
     Meteor.subscribe("group-roles");
     Meteor.subscribe("roles");
     Meteor.subscribe("equipment-categories");

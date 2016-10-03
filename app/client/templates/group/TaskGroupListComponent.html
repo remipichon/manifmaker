@@ -1,0 +1,67 @@
+<template name="taskGroupsList">
+    {{> TaskGroupListComponent}}
+</template>
+
+
+<template name="taskGroupListComponent">
+
+    {{validateForm}}
+
+    <div>
+        {{#if isInRole RolesEnum.TASKGROUPWRITE}}
+            <a class="btn btn-primary pull-right" href="/task-group">Create a new Task Group</a>
+        {{/if}}
+
+        <h1>Task Groups List</h1>
+
+    </div>
+
+    <div class="task-group-list-filter-wrapper">
+        <div class="row">
+
+            <div class="col-md-3">
+                <label>
+                    Task Group name :
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search_group_task_name" placeholder="Search task group...">
+                    <span class="input-group-addon">
+                        <i class="mdi mdi-magnify mdi-inline"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-md-offset-1">
+                {{> SingleNonMandatorySelectComponent selectLabel="Team" title="Select a team"
+                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned
+                }}
+            </div>
+
+        </div>
+
+    </div>
+    {{> reactiveTable settings=taskGroupsList }}
+
+</template>
+
+
+
+
+<template name="taskGroupButtons">
+    {{#if isInRole RolesEnum.TASKGROUPWRITE}}
+        <a class="btn btn-primary" href="/task-group/{{_id}}" role="button" title="Edit"> <i class="mdi mdi-pencil"></i></a>
+    {{else}}
+        {{#if isInRole RolesEnum.TASKGROUPREAD}}
+            <a class="btn btn-primary" href="/task-group/{{_id}}/read" title="Read"> <i class="mdi mdi-chevron-right"></i></a>
+        {{/if}}
+    {{/if}}
+    {{#if isInRole RolesEnum.TASKGROUPDELETE}}
+        {{#quickRemoveButton class="btn btn-default" collection="TaskGroups" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}
+            <span title="Delete">
+                <i class="mdi mdi-delete"></i>
+            </span>
+        {{/quickRemoveButton}}
+    {{/if}}
+</template>
+

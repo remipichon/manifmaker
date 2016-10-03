@@ -22,7 +22,7 @@ export class InjectDataServerService {
         console.info("Customs Users collection size is " + Users.find().fetch().length);
         console.info("Tasks collection size is " + Tasks.find().fetch().length);
         console.info("Assignments collection size is " + Assignments.find().fetch().length);
-        console.info("Groups collection size is " + Groups.find().fetch().length);
+        console.info("Task Groups collection size is " + TaskGroups.find().fetch().length);
         console.info("Skills collection size is " + Skills.find().fetch().length);
         console.info("Teams collection size is " + Teams.find().fetch().length);
         console.info("Places collection size is " + Places.find().fetch().length);
@@ -45,7 +45,7 @@ export class InjectDataServerService {
         Tasks.remove({});
         Places.remove({});
         Teams.remove({});
-        Groups.remove({});
+        TaskGroups.remove({});
         Skills.remove({});
         Teams.remove({});
         EquipmentCategories.remove({});
