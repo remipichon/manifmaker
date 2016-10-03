@@ -390,8 +390,12 @@ export class InjectDataServerService {
                         end: this._getDateFromTime(14)
                     },
                     {
-                        start: this._getDateFromTime(14),
-                        end: this._getDateFromTime(18)
+                        start: this._getDateFromDateAndTime(13,16),
+                        end: this._getDateFromDateAndTime(14,10)
+                    },
+                    {
+                        start: this._getDateFromDateAndTime(20,12),
+                        end: this._getDateFromDateAndTime(23,12)
                     }
                 ]
             }
@@ -652,10 +656,28 @@ export class InjectDataServerService {
                             skills: [skill1Id]
                         }
                     ]
+                },
+                {
+                    start: this._getDateFromDateAndTime(13,22),
+                    end: this._getDateFromDateAndTime(14,2),
+                    peopleNeeded: [
+                        {
+                            skills: [skill1Id]
+                        }
+                    ]
+                },
+                {
+                    start: this._getDateFromDateAndTime(20,22),
+                    end: this._getDateFromDateAndTime(22,2),
+                    peopleNeeded: [
+                        {
+                            skills: [skill1Id]
+                        }
+                    ]
                 }
             ],
             timeSlotValidation: {
-                currentState: ValidationState.OPEN,
+                currentState: ValidationState.READY,
                 lastUpdateDate: now,
                 comments: []
             },

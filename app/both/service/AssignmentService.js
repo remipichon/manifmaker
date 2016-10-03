@@ -26,11 +26,10 @@ export class AssignmentService {
          * @locus Anywhere
          * @param assignment
          * @param start
-         * @param several
          * @returns {timeSlot|null}
          */
-        static getAssignmentByStart(assignment, start, several) {
-            return TimeSlotService.getTimeSlotByStart(assignment, start, several);
+        static getAssignmentByStart(assignment, start) {
+            return TimeSlotService.getTimeSlotByStart(assignment, start);
         }
 
 
