@@ -142,9 +142,17 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
     }
 
-    selectPeopleNeed() {
-        AssignmentReactiveVars.SelectedPeopleNeed.set(this.currentData());
-        //event should bubbles to .creneau
+
+    peopleNeededNonAssigned(){
+        return _.reject(this.currentData().peopleNeeded,function(peopleNeed){
+            return peopleNeed.assignedUserId !== null;
+        });
+    }
+
+    peopleNeededAssigned(){
+        return _.reject(this.currentData().peopleNeeded,function(peopleNeed){
+            return peopleNeed.assignedUserId === null;
+        });
     }
 
     peopleNeedAssignedOnClick(event) {
@@ -163,6 +171,12 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
     }
 
+    peopleNeedOnClick(event){
+        AssignmentReactiveVars.SelectedPeopleNeed.set(this.currentData());
+        AssignmentReactiveVars.SelectedTimeSlot.set(TimeSlotService.getTaskAndTimeSlotAndPeopleNeedByPeopleNeedId(this.currentData()._id).timeSlot);
+        AssignmentServiceClient.taskToUserPerformUserFilter();
+    }
+
     //taskToUser (we click on a complete task time slot)
     creanOnClick() {
 
@@ -174,8 +188,6 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 return;
                 break;
             case AssignmentType.TASKTOUSER: //only display users that have at least one availability matching the selected time slot
-                AssignmentReactiveVars.SelectedTimeSlot.set(this.currentData());
-                AssignmentServiceClient.taskToUserPerformUserFilter();
                 break;
         }
     }

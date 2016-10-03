@@ -117,6 +117,32 @@ class AssignmentUserList extends BlazeComponent {
         var teamFilter = this.userTeamFilter.get();
         var skillsFilter = this.userSkillsFilter.get();
 
+        var hasAvailabilitiesFilter = {$or: []};
+        var daysDisplayed = AssignmentCalendarDisplayedDays.find().fetch();
+        daysDisplayed.forEach(day => {
+            var start = day.date.toDate();
+            var end = new moment(day.date).add(1,'day').toDate();
+
+            var filter = {
+                $or: [ //$or does't work on $elemMatch with miniMongo, so we use it here
+                    {
+                        availabilities: {
+                            $elemMatch: {
+                                start: {$gte: start, $lte: end},
+                            }
+                        }
+                    }, {
+                        availabilities: {
+                            $elemMatch: {
+                                end: {$gte: start, $lte: end}
+                            }
+                        }
+                    }
+                ]
+            };
+            hasAvailabilitiesFilter.$or.push(filter);
+        });
+
         var searchResult;
         var filterResult;
 
@@ -124,7 +150,8 @@ class AssignmentUserList extends BlazeComponent {
             $and: [
                 filter,
                 teamFilter,
-                skillsFilter
+                skillsFilter,
+                hasAvailabilitiesFilter
             ]
         }, {limit: 20}).fetch();
         searchResult = UsersIndex.search(filterIndex, {limit: 20}).fetch();

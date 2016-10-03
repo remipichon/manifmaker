@@ -139,40 +139,6 @@ export class TimeSlotService {
             };
         }
 
-        /**
-         * @memberOf TimeSlotService
-         * @summary Give a people need assigned _id, looks over all Tasks to find and return people need assigned, time slot and task
-         * @locus Anywhere
-         * @param peopleNeedId {MondoId}
-         * @returns {{timeSlot: TimeSlot, task: Task, peopleNeed: PeopleNeed}}
-         */
-        static getTaskAndTimeSlotAndAssignedPeopleNeedByAssignedPeopleNeedId(peopleNeedId) {
-            var timeSlotFound;
-            var taskFound;
-            var peopleNeedFound;
-            Tasks.find().fetch().forEach(task => {
-                // if (!taskFound)
-                task.timeSlots.forEach(timeSlot => {
-                    //   if (!timeSlotFound)
-                    timeSlot.peopleNeededAssigned.forEach(peopleNeed => {
-                        //       if (!peopleNeed)
-                        if (peopleNeed._id === peopleNeedId) {
-                            peopleNeedFound = peopleNeed;
-                        }
-                    });
-                    if (!timeSlotFound && peopleNeedFound)
-                        timeSlotFound = timeSlot;
-                });
-                if (!taskFound && timeSlotFound)
-                    taskFound = task;
-            });
-
-            return {
-                timeSlot: timeSlotFound,
-                task: taskFound,
-                peopleNeed: peopleNeedFound
-            };
-        }
 
         static areTimeSlotOverlappingWithQuery(timeSlots,start,end,queryTimeSlotId){
             var okGod = true;

@@ -66,36 +66,6 @@ export class PeopleNeedService {
 
         }
 
-        /**
-         * @memberOf PeopleNeedService
-         * @summary Find people need assigned and time slot id for a given task by people need id.
-         * @locus Anywhere
-         * @param {MongoId} peopleNeedId
-         * @param {Task} task
-         * @returns {{timeSlotId: {MongoId}, peopleNeed: {PeopleNeed}}}
-         */
-        static getAssignedPeopleNeedByIdAndTask(peopleNeedId,task) {
-            var found;
-            var timeSlotIdFound;
-
-            task.timeSlots.forEach(timeSlot => {
-                timeSlot.peopleNeededAssigned.forEach(function (peopleNeed, index) {
-                    if (peopleNeed._id === peopleNeedId) {
-                        found = peopleNeed;
-                    }
-                });
-                if(!timeSlotIdFound && found)
-                    timeSlotIdFound = timeSlot._id;
-
-            });
-
-            return {
-                timeSlotId: timeSlotIdFound,
-                peopleNeed: found
-            };
-
-
-        }
 
 
         /**
@@ -108,7 +78,7 @@ export class PeopleNeedService {
          */
         static getAssignedPeopleNeedIndex(timeSlot, peopleNeedHunter) {
             var found;
-            timeSlot.peopleNeededAssigned.forEach(function (peopleNeed, index) {
+            timeSlot.peopleNeeded.forEach(function (peopleNeed, index) {
                 if (peopleNeed._id === peopleNeedHunter._id) {
                     found = index;
                 }
@@ -121,7 +91,7 @@ export class PeopleNeedService {
 
         /**
          * @memberOf PeopleNeedService
-         * @summary Move people need from task's peopleNeeded to task's peopleNeededAssigned
+         * @summary Assign peopleNeeded.assignedUserId
          * @locus Anywhere
          * @param {timeSlot} timeSlot
          * @param {Task} task
@@ -133,32 +103,16 @@ export class PeopleNeedService {
             console.info("PeopleNeedService.assignedPeopleNeeded for task", task, "when", timeSlot, "and need", peopleNeed);
             //we have the task
             var timeSlots = task.timeSlots; //all its timeslots
-            //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
-
-            var updatedTimeslot = timeSlot;
-
-            //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
 
             var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
             var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
             var peopleNeedToRemoveIndex = PeopleNeedService.getPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
-            //remove peopleNeed assigned
-            timeSlotToUpdate.peopleNeeded.splice(peopleNeedToRemoveIndex, 1);
-
-            //store assigned user
-            peopleNeed.assignedUserId = userId;
-            timeSlotToUpdate.peopleNeededAssigned.push(peopleNeed);
 
             return Tasks.update({_id: task._id},
                 {
                     $set: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded, //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : timeSlotToUpdate.peopleNeededAssigned
-                        //as $pull doesn't work, we need to update both peopleNeeded and peopleNeededAssigned in order to give a way for Task's schema to authorize updating peopleNeeded even when task is state is not open or refused
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded."+peopleNeedToRemoveIndex+".assignedUserId"] : userId
                     }
-                    //$push: {
-                    //    ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : peopleNeed
-                    //}
                 });
 
         }
@@ -222,7 +176,7 @@ export class PeopleNeedService {
 
         /**
          * @memberOf PeopleNeedService
-         * @summary Move back people need from task's peopleNeededAssigned to task's peopleNeeded
+         * @summary Set peopleNeeded.assignedUserId to null
          * @locus Anywhere
          * @param {Task} task
          * @param {timeSlot} timeSlot
@@ -233,30 +187,18 @@ export class PeopleNeedService {
             console.info("PeopleNeedService.restorePeopleNeed for task", task, "when", timeSlot, "and need", peopleNeed);
             //we have the task
             var timeSlots = task.timeSlots; //all its timeslots
-            //var peopleNeeded = timeSlot.peopleNeeded; //all its peopleNeed
 
             var updatedTimeslot = timeSlot;
-
-            //attention a ne pas pas perdre les poineteurs de tableau et du conteu des tableaux
 
             var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
             var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
 
-            //remove peopleNeed assigned
-            var assignedPeopleNeedToRemoveIndex = PeopleNeedService.getAssignedPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
-            timeSlotToUpdate.peopleNeededAssigned.splice(assignedPeopleNeedToRemoveIndex, 1);
-
-            //restore peopleNeed
-            delete peopleNeed.assignedUserId;
-            timeSlotToUpdate.peopleNeeded.push(peopleNeed);
+            var peopleNeedToRemoveIndex = PeopleNeedService.getAssignedPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
 
             Tasks.update({_id: task._id},
                 {
                     $set: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"] : timeSlotToUpdate.peopleNeededAssigned //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeededAssigned"])
-                    },
-                    $push: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : peopleNeed
+                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded."+peopleNeedToRemoveIndex+".assignedUserId"] : null
                     }
                 });
         }
@@ -275,21 +217,43 @@ export class PeopleNeedService {
             Tasks.update({_id: task._id},
                 {
                    $set: {
-                       ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
+                       ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"] : timeSlotToUpdate.peopleNeeded
+                       //$pull doesn't work with nested array (["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded"])
                    }
                 });
+
+            //Tasks.update({_id: task._id}, {
+            //    $pull: {
+            //        ["timeSlots." + timeSlotToUpdateIndex + ".peopleNeeded"]: {_id: peopleNeed._id}
+            //    }
+            //});
         }
 
 
         static schemaCustomPeopleNeed(schemaContext){
-            return 1;
-
-            //TODO a reactiver
             if (schemaContext.isUpdate) {
                 var task = Tasks.findOne(schemaContext.docId);
-                if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState)){
-                    return "updateNotAllowed"
+
+                if(schemaContext.key.indexOf("assignedUserId") !== -1){
+                    //assignedUserId : non editable sauf si READY
+                    if(schemaContext.value !== null && task.timeSlotValidation.currentState !== ValidationState.READY) {
+                        //Mongo doesn't support $pull with nested arrays meaning that a $set on the whole array is used.
+                        //All people need are updated when one is deleted causing a problem for all people need already assigned
+                        //below we check that the 'new' assignedUserId is the same as the 'old' one (we can update as long as we don't modify it....)
+                        //TODO avec ca on peut mettre à jour les autres fields (userId, skills, teamId) d'un people need deja affecté sans pour autant changer le assignedUserId
+                        //est ce qu'on s'en fout ? Ca ne pose de probleme que si on desaffecte le assignedUserId, le peopleNeed sera de nouveau dispo mais
+                        //avec des specs qui n'étaient pas les premieres mises. Un moindre mal...
+                        var split = schemaContext.key.split(".");
+                        var oldValue = Tasks.findOne(schemaContext.docId).timeSlots[split[1]].peopleNeeded[split[3]].assignedUserId;
+                        if(oldValue !== schemaContext.value)
+                            return "updateNotAllowed"
+                    }
+                } else {
+                    //array, userId, skills, teamId : non editable si pas OPEN ou REFUSED
+                    if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState))
+                        return "updateNotAllowed"
                 }
+
             }
 
         }

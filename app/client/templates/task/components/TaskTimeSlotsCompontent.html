@@ -91,6 +91,51 @@
                             {{updatePeopleNeededError}}
                         </div>
                     </div>
+
+                    <div class="row people-need-assigned">
+                        <label>People needs already assigned</label>
+
+                        <div class="row">
+                            {{#each currentTimeSlotPeopleNeededMerged true}}
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <span>{{count}}</span>
+                                    </div>
+                                    <div class="col-md-9">
+                                        {{#if userId}}
+                                            {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
+                                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                            updateCollection="Tasks" updateItemId=taskData._id
+                                            updateItemPath="userId"
+                                            pathWithArray=pathWithArrayPeopleNeeded
+                                            readOnly=true}}
+                                        {{/if}}
+                                        {{#if teamId}}
+                                            {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
+                                            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                            updateCollection="Tasks" updateItemId=taskData._id
+                                            updateItemPath="teamId"
+                                            bulkPeopleNeededIds=bulkPeopleNeededAssignedIds
+                                            readOnly=true}}
+                                        {{/if}}
+                                        {{#if skills}}
+                                            {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
+                                            optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
+                                            updateCollection="Tasks" updateItemId=taskData._id
+                                            updateItemPath="skills"
+                                            bulkPeopleNeededIds=bulkPeopleNeededAssignedIds
+                                            readOnly=true}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                        <div class="row error-holder">
+                            {{updatePeopleNeededError}}
+                        </div>
+                    </div>
+
                 </div>
             {{/if}}
 
@@ -177,6 +222,12 @@
                 </div>
                 <!--</div>-->
             {{/each}}
+
+            <div class="col-md-1 people-need">
+                <div>{{getAlreadyAssignedPeopleNeedCount _id}}</div>
+                <div>people need already assigned</div>
+            </div>
+
 
         </div>
     </div>

@@ -200,6 +200,7 @@ export class InjectDataServerService {
         var team1Id = Teams.insert({name: "team1"});
         var team2Id = Teams.insert({name: "team2"});
         var team3Id = Teams.insert({name: "team3"});
+        Teams.insert({name: ASSIGNMENTREADYTEAM});
 
 
         //places
@@ -475,7 +476,7 @@ export class InjectDataServerService {
                 }
             ],
             timeSlotValidation: {
-                currentState: ValidationState.READY,
+                currentState: ValidationState.OPEN,
                 lastUpdateDate: now,
                 comments: [
                     {
@@ -720,6 +721,12 @@ export class InjectDataServerService {
         var now = new Date();
         return new Date(now.getYear(), 5 - 1 /*now.getMonth()*/, 13 /*now.getDate()*/, hours, minutes, 0);
     }
+
+    static _getDateFromDateAndTime(date,hours){
+        var now = new Date();
+        return new Date(now.getYear(), 5 - 1 /*now.getMonth()*/, date /*now.getDate()*/, hours, 0, 0);
+    }
+
 
     static _getDateFromDate(day, month, year) {
         var now = new Date();

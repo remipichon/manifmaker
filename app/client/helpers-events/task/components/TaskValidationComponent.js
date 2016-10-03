@@ -64,14 +64,14 @@ class TaskValidationComponent extends BlazeComponent{
         var state = $(event.target).data('state');
 
          if (state === "to-be-validated") {
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.TASKWRITE);
+            SecurityServiceClient.grantAccessToPage(RolesEnum.TASKWRITE);
          } else {
          if (validationType === "time-slot")
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ASSIGNMENTVALIDATION, "time slot validation");
+            SecurityServiceClient.grantAccessToPage(RolesEnum.ASSIGNMENTVALIDATION, "time slot validation");
          if (validationType === "access-pass")
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.ACCESSPASSVALIDATION, "access pass validation");
+            SecurityServiceClient.grantAccessToPage(RolesEnum.ACCESSPASSVALIDATION, "access pass validation");
          if (validationType === "equipment")
-            SecurityServiceClient.grantAccessToPage(Meteor.userId(), RolesEnum.EQUIPMENTVALIDATION, "equipment validation");
+            SecurityServiceClient.grantAccessToPage(RolesEnum.EQUIPMENTVALIDATION, "equipment validation");
          }
 
          var comment = $("#" + validationType + "-validation-new-comment").val();

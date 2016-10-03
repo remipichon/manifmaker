@@ -37,7 +37,7 @@ export class AssignmentServiceClient {
                     _id: assignment.userId
                 };
 
-                AssignmentReactiveVars.SelectedTimeSlot.set(TimeSlotService.getTaskAndTimeSlotAndAssignedPeopleNeedByAssignedPeopleNeedId(peopleNeeded._id).timeSlot);
+                AssignmentReactiveVars.SelectedTimeSlot.set(TimeSlotService.getTaskAndTimeSlotAndPeopleNeedByPeopleNeedId(peopleNeeded._id).timeSlot);
                 AssignmentReactiveVars.UserFilter.set(newFilter);
                 AssignmentReactiveVars.IsUnassignment.set(true);
                 break;
@@ -305,33 +305,18 @@ export class AssignmentServiceClient {
         }
 
         var task, ret;
-        if (isAssigned) {
-            task = Tasks.findOne({
-                timeSlots: {
-                    $elemMatch: {
-                        peopleNeededAssigned: {
-                            $elemMatch: {
-                                _id: peopleNeedId
-                            }
-                        },
-                    }
+        task = Tasks.findOne({
+            timeSlots: {
+                $elemMatch: {
+                    peopleNeeded: {
+                        $elemMatch: {
+                            _id: peopleNeedId
+                        }
+                    },
                 }
-            });
-            ret = PeopleNeedService.getAssignedPeopleNeedByIdAndTask(peopleNeedId, task);
-        } else {
-            task = Tasks.findOne({
-                timeSlots: {
-                    $elemMatch: {
-                        peopleNeeded: {
-                            $elemMatch: {
-                                _id: peopleNeedId
-                            }
-                        },
-                    }
-                }
-            });
-            ret = PeopleNeedService.getPeopleNeedByIdAndTask(peopleNeedId, task);
-        }
+            }
+        });
+        ret = PeopleNeedService.getPeopleNeedByIdAndTask(peopleNeedId, task);
 
         var peopleNeeded = ret.peopleNeed;
         var timeSlot = TimeSlotService.getTimeSlot(task, ret.timeSlotId);
