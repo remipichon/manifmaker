@@ -78,12 +78,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 }
 
                 _.extend(data, founded);
-                end = new moment(founded.end);
-                start = new moment(founded.start);
-                duration = end.diff(start) / (3600 * 1000);
-
-                height = accuracy * baseOneHourHeight * duration;
-                data.height = height + "px";
+                data.height = TimeSlotCalendarServiceClient.computeTimeSlotAvailabilityHeight(founded,startCalendarTimeSlot) + "px";
 
                 break;
             case AssignmentType.TASKTOUSER:
@@ -91,7 +86,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 if (!task) return [];
 
                 var result = TimeSlotCalendarServiceClient.computeTimeSlotData(task,startCalendarTimeSlot);
-                if(!result) return []
+                if(!result) return [];
                 else data = result;
 
                 break;
@@ -221,15 +216,14 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                                             //skills filter
                                             peopleNeeded: {
                                                 $elemMatch: {
-                                                    skills: user.skills,
+                                                    skills: {
+                                                        $elemMatch: {
+                                                            $in: user.skills
+                                                        }
+                                                    },
                                                     teamId: {
-                                                        $in: user.teams
+                                                        $in: (user.teams.length === 0)? [null] : user.teams
                                                     }
-                                                    //{  ////=> or just skills : user.skills (what the differences ?)
-                                                    //    $elemMatch: {
-                                                    //        $in: user.skills
-                                                    //    }
-                                                    //}
                                                 }
                                             },
                                             //availabilities filter

@@ -390,8 +390,12 @@ export class InjectDataServerService {
                         end: this._getDateFromTime(14)
                     },
                     {
-                        start: this._getDateFromDateAndTime(13,14),
-                        end: this._getDateFromDateAndTime(14,18)
+                        start: this._getDateFromDateAndTime(13,16),
+                        end: this._getDateFromDateAndTime(14,10)
+                    },
+                    {
+                        start: this._getDateFromDateAndTime(20,12),
+                        end: this._getDateFromDateAndTime(23,12)
                     }
                 ]
             }
