@@ -60,9 +60,23 @@
 
             </div>
 
+            <div class="panel panel-info">
+                <div class="panel-heading">{{name}} Tasks</div>
+
+                <div class="panel-body">
+                    {{> TaskListForGroupComponent isForGroup=true group=this}}
+                </div>
+
+            </div>
+
 
         {{/autoForm}}
 
     </div>
 
+</template>
+
+
+<template name="checkBoxToAddToGroup">
+    <input type="checkbox" class="add-to-group-checkbox" {{isChecked _id group._id}}>
 </template>

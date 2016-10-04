@@ -12,7 +12,12 @@
             <a class="btn btn-primary pull-right" href="/task">Create a new Task</a>
         {{/if}}
 
-        <h1>Tasks List</h1>
+        {{#unless isForGroup}}
+            <h1>Tasks List</h1>
+        {{else}}
+            <h1>Tasks in {{group.name}}</h1>
+        {{/unless}}
+
 
     </div>
 

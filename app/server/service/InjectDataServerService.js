@@ -333,6 +333,9 @@ export class InjectDataServerService {
             label: "Responsable tache 4"
         });
 
+        //task groups
+        var taskGroup1 = TaskGroups.insert({name: "taskGroup1", teamId: team1Id});
+
         //users
         console.info("inject Users");
         var softGroupRoleId = GroupRoles.findOne({name: "soft"})._id;
@@ -646,6 +649,7 @@ export class InjectDataServerService {
             placeId: place2Id,
             liveEventMasterId: user2Id,
             masterId: user2Id,
+            taskGroupId : taskGroup1,
             timeSlots: [
                 {
                     start: this._getDateFromTime(10),

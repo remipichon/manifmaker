@@ -1,6 +1,6 @@
 import {TeamService} from "../../../both/service/TeamService"
 
-class TaskListComponent extends BlazeComponent {
+export class TaskListComponent extends BlazeComponent {
     template() {
         return "taskListComponent";
     }
@@ -237,16 +237,16 @@ class TaskListComponent extends BlazeComponent {
             },
             // TODO add GROUP
             /*{
-                key: 'groupId',
-                label: 'Group',
-                cellClass: 'col-sm-2',
-                headerClass: 'col-sm-2',
-                fnAdjustColumnSizing: true,
-                searchable: false,
-                fn: function (groupId, Task) {
-                    return Groups.findOne(groupId).name;
-                }
-            },*/
+             key: 'groupId',
+             label: 'Group',
+             cellClass: 'col-sm-2',
+             headerClass: 'col-sm-2',
+             fnAdjustColumnSizing: true,
+             searchable: false,
+             fn: function (groupId, Task) {
+             return Groups.findOne(groupId).name;
+             }
+             },*/
             {
                 key: 'teamId',
                 label: 'Team',
@@ -272,16 +272,7 @@ class TaskListComponent extends BlazeComponent {
             }
         ];
 
-        if (Roles.userIsInRole(Meteor.userId(), RolesEnum.TASKWRITE))
-            fields.push({
-                label: 'Validation',
-                cellClass: 'col-sm-2 text-center',
-                headerClass: 'col-sm-2 text-center',
-                sortable: false,
-                searchable: false, //TODO doesn't work (try with a teamId)
-                tmpl: Template.validationStateForList,
-                fnAdjustColumnSizing: true
-            });
+        this.addExtraColumn(fields);
 
         fields.push({
             label: 'Actions',
@@ -309,6 +300,20 @@ class TaskListComponent extends BlazeComponent {
             ]
         }
     }
+
+    addExtraColumn(fields) {
+        if (Roles.userIsInRole(Meteor.userId(), RolesEnum.TASKWRITE))
+            fields.push({
+                label: 'Validation',
+                cellClass: 'col-sm-2 text-center',
+                headerClass: 'col-sm-2 text-center',
+                sortable: false,
+                searchable: false, //TODO doesn't work (try with a teamId)
+                tmpl: Template.validationStateForList,
+                fnAdjustColumnSizing: true
+            });
+    }
+
 }
 
 TaskListComponent.register("TaskListComponent");
