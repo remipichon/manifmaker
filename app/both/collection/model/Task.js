@@ -349,6 +349,22 @@ Schemas.Tasks = new SimpleSchema({
             }
         }
     },
+    groupId: {
+        type: SimpleSchema.RegEx.Id,
+        label: "Task Group",
+        optional: true,
+        custom: function () {
+            if (this.isUpdate)
+                if (this.value !== null && !TaskGroups.findOne(this.value)) return "unknownId"
+            return 1
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allTaskGroupsOptions
+            }
+        },
+        defaultValue: null
+    },
     placeId: {
         type: SimpleSchema.RegEx.Id,
         label: "Task Place",

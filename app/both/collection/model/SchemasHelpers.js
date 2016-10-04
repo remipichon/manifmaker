@@ -36,6 +36,19 @@ Schemas.helpers.allTeamsOptions = function () {
     return result;
 };
 
+Schemas.helpers.allTaskGroupsOptions = function () {
+    var taskGroups = TaskGroups.find({}).fetch();
+    var result = [];
+    _.each(taskGroups, function (taskGroup) {
+        result.push({
+            label: taskGroup.name,
+            value: taskGroup._id
+        });
+    });
+
+    return result;
+};
+
 Schemas.helpers.allPlacesOptions = function () {
     var places = Places.find({}).fetch();
     var result = [];

@@ -8,7 +8,6 @@ class TaskGroupListComponent extends BlazeComponent {
     events() {
         return [{
             "keyup #search_task_group_name": this.filterName,
-            "click #checkbox-before-filter": this.switchBeforeFilter,
         }];
     }
 

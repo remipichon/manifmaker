@@ -11,6 +11,13 @@
         </div>
 
         <div>
+            {{> SingleNonMandatorySelectComponent selectLabel="Group" title="Update task group"
+            optionCollection="TaskGroups" optionValueName="name" optionCollectionIndex="TaskGroupsIndex"
+            updateCollection="Tasks" updateItemId=this._id updateItemPath="groupId" readOnly=readOnly
+            }}
+        </div>
+
+        <div>
             {{> SingleSelectComponent selectLabel="Team" title="Update team"
             optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
             updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId" readOnly=readOnly
@@ -35,7 +42,7 @@
     </div>
     <div class="col-md-9">
         <div>
-            {{> afQuickField name='description' rows=15}}
+            {{> afQuickField name='description' rows=20}}
         </div>
     </div>
 </template>
