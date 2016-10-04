@@ -1,15 +1,23 @@
-class TaskNameComponent extends BlazeComponent{
+class EditNameComponent extends BlazeComponent{
     template() {
-        return "taskNameEdit";
+        return "nameEdit";
     }
 
     constructor(){
         super();
+
         this.nameIsEditingReactive = new ReactiveVar(false);
 
     }
 
-    events() {
+    initializeData() {
+        this.collection = window[this.data().collection];
+
+        this.name = this.data().name;
+    }
+
+
+        events() {
         return [
             {
                 "input .header-limited-to-text": this.displayDoneButton,//TODO more precise selector
@@ -24,13 +32,14 @@ class TaskNameComponent extends BlazeComponent{
         return this.nameIsEditingReactive.get();
     }
 
+
     enterKeydown(e){
         if (e.which == 13 && e.shiftKey == false) {
             //Prevent insertion of a return
             this.updateName();
             e.preventDefault();
             e.stopPropagation();
-            this.$("#edit-task-name-content").blur();
+            this.$("#edit-name-content").blur();
             return false;
         }
     }
@@ -48,8 +57,8 @@ class TaskNameComponent extends BlazeComponent{
         this.nameIsEditingReactive.set(false);
 
         var name = $("[data-key=name]").html();
-        if (Tasks.simpleSchema().namedContext("updateTask").validateOne({name: name}, "name")) {
-            Tasks.update({_id: this.data()._id}, {
+        if (this.collection.simpleSchema().namedContext("updateTask").validateOne({name: name}, "name")) {
+            this.collection.update({_id: this.data()._id}, {
                 $set: {
                     name: name
                 }
@@ -62,4 +71,4 @@ class TaskNameComponent extends BlazeComponent{
 }
 
 
-TaskNameComponent.register("TaskNameComponent");
+EditNameComponent.register("EditNameComponent");

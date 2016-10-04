@@ -1,0 +1,68 @@
+<template name="updateTaskGroupForm">
+    {{>UpdateTaskGroupComponent}}
+</template>
+
+<template name="updateTaskGroupComponent">
+
+    <div class="update-task-wrapper-form">
+
+        {{reactiveConstructor}}
+
+        {{# autoForm collection="TaskGroups" doc=this id="updateTaskGroupForm" type="update" autosave=true}}
+
+            <div class="row">
+                <div class="col-md-12">
+                    {{>EditNameComponent collection="TaskGroups" name=name _id=_id}}
+                    {{#if isInRole RolesEnum.TASKGROUPDELETE}}
+                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Groups" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                    {{/if}}
+                </div>
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            <div>
+                                {{> SingleSelectComponent selectLabel="Team" title="Update team"
+                                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                updateCollection="TaskGroups" updateItemId=this._id updateItemPath="teamId" readOnly=readOnly
+                                }}
+                            </div>
+
+
+
+                        </div>
+                        <div class="col-md-9">
+                            <div>
+                                {{> afQuickField name='description' rows=15}}
+                            </div>
+                        </div>
+                    </div>
+
+                    {{#if errors}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger">
+                                    <div><strong>Some errors remains in the form</strong></div>
+                                    {{#each errors}}
+                                        <div>{{message}}</div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+
+            </div>
+
+
+        {{/autoForm}}
+
+    </div>
+
+</template>

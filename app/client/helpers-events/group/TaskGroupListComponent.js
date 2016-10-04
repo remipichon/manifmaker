@@ -7,7 +7,7 @@ class TaskGroupListComponent extends BlazeComponent {
 
     events() {
         return [{
-            "keyup #search_task_name": this.filterName,
+            "keyup #search_task_group_name": this.filterName,
             "click #checkbox-before-filter": this.switchBeforeFilter,
         }];
     }
@@ -26,12 +26,12 @@ class TaskGroupListComponent extends BlazeComponent {
     filterName(event) {
         event.preventDefault();
         var _id = $(event.target).val();
-        this.groupListNameFilter.set(_id);
+        this.taskGroupListNameFilter.set(_id);
     }
 
     onCreated() {
         this.taskGroupListTeamFilter = new ReactiveTable.Filter("task-group-list-team-filter", ["teamId"]);
-        this.groupListNameFilter = new ReactiveTable.Filter('search-goup-task-name-filter', ['name']);
+        this.taskGroupListNameFilter = new ReactiveTable.Filter('search-task-group-name-filter', ['name']);
 
     }
 

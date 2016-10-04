@@ -12,7 +12,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    {{>TaskNameComponent}}
+                    {{>EditNameComponent collection="Tasks" name=name _id=_id}}
                     {{#if isInRole RolesEnum.TASKDELETE}}
                         {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
                     {{/if}}
