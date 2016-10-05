@@ -54,7 +54,16 @@
         </div>
 
         <div class="row">
-            <div class="col-md-2 col-md-offset-9">
+            <div class="col-md-2 col-md-offset-2">
+                {{#if isForGroup}}
+                    {{#if isInRole RolesEnum.TASKWRITE}}
+                        <label>
+                            Display all Tasks : <input type="checkbox" id="display-all-task-toggle">
+                        </label>
+                    {{/if}}
+                {{/if}}
+            </div>
+            <div class="col-md-2 col-md-offset-5">
                 <button class="btn btn-primary pull-right" id="advanced-search-button"  data-toggle="collapse" data-target="#advanced-search">
                     {{#if isSearchAdvanced}}
                         Less <i class="mdi mdi-chevron-up mdi-inline"></i>
