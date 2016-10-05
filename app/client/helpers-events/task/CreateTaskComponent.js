@@ -13,7 +13,7 @@ class CreateTaskComponent extends BlazeComponent {
         this.errorsArray = new ReactiveVar([]);
         this.hasBeenSubmitted = new ReactiveVar(false);
 
-        window.truc = this;
+        this.sAlertIsDisplayed = false;
     }
 
 
@@ -95,6 +95,17 @@ class CreateTaskComponent extends BlazeComponent {
         var err = this.errorsArray.get();
 
         if (this.hasBeenSubmitted.get()) { //active reactivity
+            if (err.length !== 0 && !this.sAlertIsDisplayed) {
+                this.sAlertIsDisplayed = true;
+                sAlert.error('There is errors in the form', {
+                    onClose: _.bind(function () {
+                        this.sAlertIsDisplayed = false;
+                    }, this),
+                    timeout: 'none'
+                });
+            } else if(err.length === 0){
+                sAlert.closeAll();
+            }
             return err;
         }
         return [];
