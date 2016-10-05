@@ -9,10 +9,19 @@
 
     <div>
         {{#if isInRole RolesEnum.TASKWRITE}}
-            <a class="btn btn-primary pull-right" href="/task">Create a new Task</a>
+            {{#unless isForGroup}}
+                <a class="btn btn-primary pull-right" href="/task">Create a new Task</a>
+            {{else}}
+                <a class="btn btn-primary pull-right" href="/task?groupId={{group._id}}">Create a new Task in {{group.name}}</a>
+            {{/unless}}
         {{/if}}
 
-        <h1>Tasks List</h1>
+        {{#unless isForGroup}}
+            <h1>Tasks List</h1>
+        {{else}}
+            <h1>Tasks in {{group.name}}</h1>
+        {{/unless}}
+
 
     </div>
 
@@ -49,7 +58,16 @@
         </div>
 
         <div class="row">
-            <div class="col-md-2 col-md-offset-9">
+            <div class="col-md-2 col-md-offset-2">
+                {{#if isForGroup}}
+                    {{#if isInRole RolesEnum.TASKWRITE}}
+                        <label>
+                            Display all Tasks : <input type="checkbox" id="display-all-task-toggle">
+                        </label>
+                    {{/if}}
+                {{/if}}
+            </div>
+            <div class="col-md-2 col-md-offset-5">
                 <button class="btn btn-primary pull-right" id="advanced-search-button"  data-toggle="collapse" data-target="#advanced-search">
                     {{#if isSearchAdvanced}}
                         Less <i class="mdi mdi-chevron-up mdi-inline"></i>

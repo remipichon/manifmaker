@@ -56,7 +56,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{{pathFor route='task.list'}}"><i class="sidebar-icon mdi mdi-format-list-bulleted"></i> List</a></li>
-                            <li><a href="{{pathFor route='group.list'}}"><i class="sidebar-icon mdi mdi-folder"></i>  Groups</a></li>
+                            <li><a href="{{pathFor route='task-group.list'}}"><i class="sidebar-icon mdi mdi-folder"></i>  Groups</a></li>
                             {{#if isInRole RolesEnum.TASKWRITE}}
                                 <li><a href="{{pathFor route='task.create'}}"><i class="sidebar-icon mdi mdi-plus"></i> Create</a></li>
                             {{/if}}

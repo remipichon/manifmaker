@@ -349,6 +349,22 @@ Schemas.Tasks = new SimpleSchema({
             }
         }
     },
+    groupId: {
+        type: SimpleSchema.RegEx.Id,
+        label: "Task Group",
+        optional: true,
+        custom: function () {
+            if (this.isUpdate)
+                if (this.value !== null && !TaskGroups.findOne(this.value)) return "unknownId"
+            return 1
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allTaskGroupsOptions
+            }
+        },
+        defaultValue: null
+    },
     placeId: {
         type: SimpleSchema.RegEx.Id,
         label: "Task Place",
@@ -462,7 +478,7 @@ Schemas.Tasks = new SimpleSchema({
         defaultValue: null,
         custom(){
             if (this.isUpdate) {
-                if(this.value !== null && !EquipmentStorages.findOne(this.value)) return "unknownId"
+                if(this.value !== null && !PowerSupplies.findOne(this.value)) return "unknownId"
                 var task = Tasks.findOne(this.docId);
                 if(!ValidationService.isUpdateAllowed(task.equipmentValidation.currentState)){
                     return "updateNotAllowed"

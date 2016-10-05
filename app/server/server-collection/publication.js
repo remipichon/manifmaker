@@ -80,11 +80,11 @@ Meteor.startup(function () {
     /**
      * @memberOf Meteor_Publish
      * @locus server
-     * @summary Groups publication. No query, publish all Groups data.
+     * @summary Task Groups publication. No query, publish all Groups data.
      * @returns {Collection}
      */
-    Meteor.publish("groups", function (){
-        return Groups.find({});
+    Meteor.publish("task-groups", function (){
+        return TaskGroups.find({});
     });
 
     /**

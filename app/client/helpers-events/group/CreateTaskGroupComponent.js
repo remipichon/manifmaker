@@ -1,15 +1,12 @@
-class CreateTaskComponent extends BlazeComponent {
+class CreateTaskGroupComponent extends BlazeComponent {
 
     constructor() {
         super();
         this.tempItemId = TempCollection.insert({
             name: null,
             teamId: null,
-            placeId: null,
-            liveEventMasterId: null,
-            masterId: null
         });
-        this.insertTaskContext = Tasks.simpleSchema().namedContext("insertTask");
+        this.insertTaskGroupContext = TaskGroups.simpleSchema().namedContext("insertTaskGroup");
         this.errorsArray = new ReactiveVar([]);
         this.hasBeenSubmitted = new ReactiveVar(false);
 
@@ -22,7 +19,7 @@ class CreateTaskComponent extends BlazeComponent {
     }
 
     template() {
-        return "createTaskComponent";
+        return "createTaskGroupComponent";
     }
 
     events() {
@@ -59,10 +56,8 @@ class CreateTaskComponent extends BlazeComponent {
 
         if (this.validateForm()) {
             var temp = TempCollection.findOne({_id: this.tempItemId});
-            if(this.currentData().groupId)
-                temp.groupId = this.currentData().groupId;
-            var _id = Tasks.insert(temp);
-            Router.go("/task/" + _id);
+            var _id = TaskGroups.insert(temp);
+            Router.go("/task-group/" + _id);
         }
     }
 
@@ -70,13 +65,13 @@ class CreateTaskComponent extends BlazeComponent {
         //validating
         var temp = TempCollection.findOne({_id: this.tempItemId});
         delete temp._id; //cleaning
-        var isValid = Tasks.simpleSchema().namedContext("insertTask").validate(temp, {modifier: false});
+        var isValid = TaskGroups.simpleSchema().namedContext("insertTaskGroup").validate(temp, {modifier: false});
 
         //managing error
         if (!isValid) {
-            var ik = this.insertTaskContext.invalidKeys(); //it's reactive ! whouhou
+            var ik = this.insertTaskGroupContext.invalidKeys(); //it's reactive ! whouhou
             ik = _.map(ik, _.bind(function (o) {
-                return _.extend({message: this.insertTaskContext.keyErrorMessage(o.name)}, o);
+                return _.extend({message: this.insertTaskGroupContext.keyErrorMessage(o.name)}, o);
             }, this));
 
             this.errorsArray.set(ik);
@@ -111,12 +106,8 @@ class CreateTaskComponent extends BlazeComponent {
         return [];
     }
 
-    groupName(){
-        return TaskGroups.findOne(this.currentData().groupId).name;
-    }
-
 
 
 }
 
-CreateTaskComponent.register('CreateTaskComponent');
+CreateTaskGroupComponent.register('CreateTaskGroupComponent');

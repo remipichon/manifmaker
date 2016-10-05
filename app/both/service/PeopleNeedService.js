@@ -252,6 +252,19 @@ export class PeopleNeedService {
                     //array, userId, skills, teamId : non editable si pas OPEN ou REFUSED
                     if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState))
                         return "updateNotAllowed"
+                    //userId can not be duplicated
+                    if(schemaContext.key.indexOf("userId") !== -1 && schemaContext.value !== null){
+                        var split = schemaContext.key.split(".");
+                        var timeSlotIndex = split[1];
+                        var peopleNeeded = task.timeSlots[timeSlotIndex].peopleNeeded;
+                        if (_.find(peopleNeeded, (peopleNeed) => {
+                                return peopleNeed.userId === schemaContext.value;
+                            }) !== undefined
+                        ) {
+                            return "peopleNeedUserIdUnique";
+                        }
+
+                    }
                 }
 
             }

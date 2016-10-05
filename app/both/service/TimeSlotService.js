@@ -149,9 +149,10 @@ export class TimeSlotService {
                 if (!okGod || timeSlot._id === queryTimeSlotId)
                     return;
 
-                //TODO ce n'est pas un overlapp !
-                if (new moment(start).isBetween(timeSlot.start, timeSlot.end) ||
-                    new moment(end).isBetween(timeSlot.start, timeSlot.end))
+                //overlapp (StartA <= EndB) and (EndA >= StartB)
+                //proof http://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+                if (new moment(start).isBefore(timeSlot.end) &&
+                    new moment(end).isAfter(timeSlot.start))
                     okGod = false;
 
             }, this));

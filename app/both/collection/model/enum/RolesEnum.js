@@ -22,6 +22,13 @@ RolesEnum = {
     /** task */
     ASSIGNMENTVALIDATION: "ASSIGNMENTVALIDATION",
 
+    /** group task **/
+    TASKGROUPREAD: "TASKGROUPREAD",
+    /** group task **/
+    TASKGROUPWRITE: "TASKGROUPWRITE",
+    /** group task **/
+    TASKGROUPDELETE: "TASKGROUPDELETE",
+
     /** assignment */
     ASSIGNMENTTASKUSER: "ASSIGNMENTTASKUSER",
 

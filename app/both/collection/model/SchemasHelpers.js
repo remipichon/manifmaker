@@ -13,7 +13,8 @@ SimpleSchema.messages({
     peopleNeedIsEmpty: "A people need requires either a user either a team and/or some skills.",
     onePeopleNeedUserIdPerTimeSlot: "A time slot can not have more than once the same need for a user id",
     updateNotAllowed: "[label] can not be updated as it has is being validated or has already been validated",
-    peopleNeededUpdateNotAllowed: "[label] can not be update as task time slots are not ready for assignment"
+    peopleNeededUpdateNotAllowed: "[label] can not be update as task time slots are not ready for assignment",
+    peopleNeedUserIdUnique: "There can ba only one people need requiring a specific user by time slot"
 });
 
 Schemas.helpers = {};
@@ -29,6 +30,19 @@ Schemas.helpers.allTeamsOptions = function () {
         result.push({
             label: team.name,
             value: team._id
+        });
+    });
+
+    return result;
+};
+
+Schemas.helpers.allTaskGroupsOptions = function () {
+    var taskGroups = TaskGroups.find({}).fetch();
+    var result = [];
+    _.each(taskGroups, function (taskGroup) {
+        result.push({
+            label: taskGroup.name,
+            value: taskGroup._id
         });
     });
 
