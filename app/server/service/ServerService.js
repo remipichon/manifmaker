@@ -1,6 +1,7 @@
 import {ServerAssignmentService} from "./ServerAssignmentService";
 import {ServerUserService} from "./ServerUserService";
 import {ServerTaskService} from "./ServerTaskService";
+import {ServerTaskGroupService} from "./ServerTaskGroupService";
 import {ServerGroupRoleService} from "./ServerGroupRoleService";
 import {ServerReferenceCollectionsService} from "./ServerReferenceCollectionsService";
 
@@ -37,6 +38,11 @@ export class ServerService {
         Tasks.before.insert(ServerTaskService.allowInsert);
         Tasks.before.update(ServerTaskService.allowUpdate);
         Tasks.before.remove(ServerTaskService.allowDelete);
+
+        TaskGroups.before.insert(ServerTaskGroupService.allowInsert);
+        TaskGroups.before.update(ServerTaskGroupService.allowUpdate);
+        TaskGroups.before.remove(ServerTaskGroupService.allowDelete);
+        TaskGroups.after.remove(ServerTaskGroupService.afterRemove);
 
         Users.before.insert(ServerUserService.allowInsert);
         Users.before.update(ServerUserService.allowUpdate);
