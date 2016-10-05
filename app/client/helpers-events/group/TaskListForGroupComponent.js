@@ -59,6 +59,10 @@ class TaskListForGroupComponent extends TaskListComponent {
                         $(event.target).attr("checked",false);
                     }
                 },this));
+            } else {
+                Tasks.update(task._id, {
+                    $set: {groupId: this.parentComponent().data()._id}
+                });
             }
         } else
             Tasks.update(task._id, {
