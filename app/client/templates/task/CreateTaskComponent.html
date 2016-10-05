@@ -4,6 +4,10 @@
 
 <template name="createTaskComponent">
 
+    {{#if groupId}}
+        <div class="alert alert-success" role="alert">Task will be added to group '{{groupName}}'</div>
+    {{/if}}
+
     {{validateForm}}
 
     <div class="panel panel-info">

@@ -38,10 +38,13 @@ Router.route('/tasks', function () {
 Router.route('/task', function () {
 
         SecurityServiceClient.grantAccessToPage( RolesEnum.TASKWRITE);
-        console.info("routing", "/task");
+        console.info("routing", "/task?groupId="+this.params.query.groupId);
 
         if (this.ready()) {
             this.render('insertTaskForm', {
+                data: _.bind(function () {
+                    return {groupId: this.params.query.groupId};
+                },this),
                 to: 'mainContent'
             });
         } else {

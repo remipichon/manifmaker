@@ -9,7 +9,11 @@
 
     <div>
         {{#if isInRole RolesEnum.TASKWRITE}}
-            <a class="btn btn-primary pull-right" href="/task">Create a new Task</a>
+            {{#unless isForGroup}}
+                <a class="btn btn-primary pull-right" href="/task">Create a new Task</a>
+            {{else}}
+                <a class="btn btn-primary pull-right" href="/task?groupId={{group._id}}">Create a new Task in {{group.name}}</a>
+            {{/unless}}
         {{/if}}
 
         {{#unless isForGroup}}

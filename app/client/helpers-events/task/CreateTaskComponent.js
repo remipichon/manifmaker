@@ -59,6 +59,8 @@ class CreateTaskComponent extends BlazeComponent {
 
         if (this.validateForm()) {
             var temp = TempCollection.findOne({_id: this.tempItemId});
+            if(this.currentData().groupId)
+                temp.groupId = this.currentData().groupId;
             var _id = Tasks.insert(temp);
             Router.go("/task/" + _id);
         }
@@ -96,6 +98,10 @@ class CreateTaskComponent extends BlazeComponent {
             return err;
         }
         return [];
+    }
+
+    groupName(){
+        return TaskGroups.findOne(this.currentData().groupId).name;
     }
 
 
