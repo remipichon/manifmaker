@@ -1,0 +1,52 @@
+<template name="insertUserForm">
+    {{>CreateUserComponent}}
+</template>
+
+<template name="createUserComponent">
+
+    {{validateForm}}
+
+    <div class="panel panel-info">
+        <div class="panel-heading">General information</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <div class="form-group">
+                        <label for="first_name" data-required>User name *</label>
+                        <br>
+                        <input placeholder="User name" data-key="name" type="text" class="validate form-control">
+                    </div>
+
+                    <div>
+                        {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teams"
+                        nothingSelectedLabel="None yet"
+                        }}
+                    </div>
+
+                </div>
+            </div>
+
+            {{#if errors}}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <div><strong>Some errors remains in the form</strong></div>
+                            {{#each errors}}
+                                <div>{{message}}</div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+    </div>
+
+    <div class="col-md-2 col-md-offset-5">
+        <button type="submit" class="btn btn-primary">Insert</button>
+    </div>
+</template>

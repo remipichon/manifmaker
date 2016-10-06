@@ -132,12 +132,14 @@ Schemas.Users = new SimpleSchema({
     availabilities: {
         type: [Schemas.UserAvailabilities],
         label: "User availabilities",
+        optional: true,
         defaultValue: []
     },
     assignments: {
         type: [Schemas.UserAssignment],
         label: "User assignments",
         defaultValue: [],
+        optional: true,
         autoform: {
             type: "hidden",
         }
