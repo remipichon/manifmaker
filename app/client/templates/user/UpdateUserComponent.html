@@ -1,0 +1,72 @@
+<template name="updateUserForm">
+    {{>UpdateUserComponent}}
+</template>
+
+<template name="updateUserComponent">
+
+    <div class="update-user-wrapper-form">
+
+        {{reactiveConstructor}}
+
+        {{# autoForm collection="Users" doc=this id="updateUserForm" type="update" autosave=true}}
+
+            <div class="row">
+                <div class="col-md-12">
+                    {{>EditNameComponent collection="Users" name=name _id=_id}}
+                    {{#if isInRole RolesEnum.USERDELETE}}
+                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                    {{/if}}
+                </div>
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            <div>
+                                {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
+                                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                updateCollection="Users" updateItemId=this._id updateItemPath="teams"
+                                nothingSelectedLabel="None yet"
+                                }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {{#if errors}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger">
+                                    <div><strong>Some errors remains in the form</strong></div>
+                                    {{#each errors}}
+                                        <div>{{message}}</div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Availabilities</div>
+
+                <div class="panel-body">
+                    TODO Availabilities
+                </div>
+
+            </div>
+
+
+        {{/autoForm}}
+
+    </div>
+
+</template>

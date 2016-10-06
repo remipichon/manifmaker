@@ -135,6 +135,10 @@ export class ServerUserService {
         if(Users.findOne(doc._id).name === SUPERADMIN){
             throw new Meteor.Error("403","User superadmin can not be deleted");
         }
+
+        if(doc.assignments.length !== 0 ){
+            throw new Meteor.Error("403", "Can't delete user with assignments");
+        }
     }
 
 }
