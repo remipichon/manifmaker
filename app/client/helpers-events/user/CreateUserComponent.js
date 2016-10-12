@@ -4,7 +4,10 @@ class CreateUserComponent extends BlazeComponent {
         super();
         this.tempItemId = TempCollection.insert({
             name: null,
-            teams: []
+            firstName: null,
+            nickName: null,
+            phoneNumber: null,
+            birthDate: null
         });
         this.insertUserContext = Users.simpleSchema().namedContext("insertUser");
         this.errorsArray = new ReactiveVar([]);

@@ -62,6 +62,32 @@ Schemas.Users = new SimpleSchema({
         label: "Users Name",
         max: 100
     },
+    firstName: {
+        type: String,
+        label: "User first name",
+        max: 100,
+        optional: true,
+        defaultValue: null
+    },
+    nickName: {
+        type: String,
+        label: "User nickName",
+        max: 100,
+        optional: true,
+        defaultValue: null
+    },
+    phoneNumber:{
+        type: SimpleSchema.RegEx.Phone,
+        label: "User phone",
+        optional: true,
+        defaultValue: null
+    },
+    birthDate: {
+        type: Date,
+        label: "User birth date",
+        optional: true,
+        defaultValue: null
+    },
     loginUserId: {
         label: "User login link to collection managed by Account package",
         type: SimpleSchema.RegEx.Id,

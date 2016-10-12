@@ -14,19 +14,17 @@
                 <div class="col-md-3">
 
                     <div class="form-group">
-                        <label for="first_name" data-required>User name *</label>
+                        <label for="name" data-required>User name *</label>
                         <br>
                         <input placeholder="User name" data-key="name" type="text" class="validate form-control">
                     </div>
-
-                    <div>
-                        {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
-                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teams"
-                        nothingSelectedLabel="None yet"
-                        }}
+                    <div class="form-group">
+                        <label for="firstName" data-required>User first name</label>
+                        <br>
+                        <input placeholder="User first name" data-key="firstName" type="text" class="validate form-control">
                     </div>
 
+                    TODO demander le mail et verifier avec la partie authent 
                 </div>
             </div>
 
