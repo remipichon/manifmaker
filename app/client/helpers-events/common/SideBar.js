@@ -39,9 +39,14 @@ class SideBar extends BlazeComponent {
             {
                 "click .sidebar-toggle": this.toggleSideBar,
                 "click .sidebar-overlay": this.onClickOverlay,
-                "click a[href^='/']": this.toggleSideBar //all internal routes
+                "click a[href^='/']": this.hrefOnClick //all internal routes
             }
         ]
+    }
+
+    hrefOnClick(){
+        if(!$('#sidebar').hasClass("reduced"))
+            this.toggleSideBar();
     }
 
     toggleSideBar() {
