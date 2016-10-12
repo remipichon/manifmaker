@@ -11,7 +11,21 @@ export class ServerUserService {
      * @locus server
      */
     static createCustomUser(userId, doc) {
-        console.info("create custom user with",doc.username);
+        //user is not log in yet, userId is null, we bypass security with .direct and propagate role with direct call to method
+
+        var minimalId = GroupRoles.findOne({name:"minimal"})._id
+        var _id = Users.direct.insert({
+            name: doc.username,
+            loginUserId: Meteor.users.findOne({username: doc.username})._id,
+            groupRoles: [minimalId]
+        });
+
+        ServerUserService.propagateRoles(null,{
+            groupRoles: [minimalId],
+            loginUserId: Meteor.users.findOne({username: doc.username})._id
+        },null,null);
+        
+        console.info("A new user has been added to app :"+doc.username+" whith _id :"+_id+" and 'minimal' group roles");
     }
 
     /**

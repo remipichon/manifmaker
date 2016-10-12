@@ -33,7 +33,7 @@ export class ServerService {
         Assignments.after.remove(ServerAssignmentService.removeAssignment);
 
         //propagate roles update
-        Users.after.insert(ServerUserService.propagateRoles);
+        Users.after.insert(ServerUserService.propagateRoles); //Users hooks are bypassed with .direct when registering a new user
         Users.after.update(ServerUserService.propagateRoles);
         GroupRoles.after.update(ServerUserService.propagateGroupRoles);
 
@@ -47,9 +47,9 @@ export class ServerService {
         TaskGroups.before.remove(ServerTaskGroupService.allowDelete);
         TaskGroups.after.remove(ServerTaskGroupService.afterRemove);
 
-        Users.before.insert(ServerUserService.allowInsert);
-        Users.before.update(ServerUserService.allowUpdate);
-        Users.before.remove(ServerUserService.allowDelete);
+        Users.before.insert(ServerUserService.allowInsert); //Users hooks are bypassed with .direct when registering a new user
+        Users.before.update(ServerUserService.allowUpdate); //Users hooks are bypassed with .direct when registering a new user
+        Users.before.remove(ServerUserService.allowDelete); //Users hooks are bypassed with .direct when registering a new user
 
         Assignments.before.insert(ServerAssignmentService.allowInsert);
         Assignments.before.update(ServerAssignmentService.allowUpdate);

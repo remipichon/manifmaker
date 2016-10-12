@@ -1,8 +1,11 @@
 import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
 import { AutoForm } from 'meteor/aldeed:autoform'
+import {UserServiceClient} from "../client/service/UserServiceClient";
+
 
 AccountsTemplates.configure({
-    hideSignInLink: true
+    hideSignInLink: true,
+    onSubmitHook: UserServiceClient.onSubmitHook,
 });
 
 beforeLogginRoute = null;

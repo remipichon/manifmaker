@@ -9,8 +9,10 @@ export class SecurityServiceClient {
      */
     static grantAccessToPage(neededRole, page) {
         var _id = Meteor.userId();
-        if (!Roles.userIsInRole(_id, neededRole))
+        if (!Roles.userIsInRole(_id, neededRole)) {
+            console.error("403", `Can't access page ${page}, user don't have access right`);
             throw new Meteor.Error("403", `Can't access page ${page}, user don't have access right`);
+        }
     }
 
 }
