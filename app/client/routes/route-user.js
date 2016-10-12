@@ -49,12 +49,8 @@ Router.route('/user', function () {
  */
 Router.route('/register', function () {
         console.info("routing", "/register");
-
-        this.render('register', {
-            to: 'mainContent'
-        });
     },
-    {name: 'user.register'}
+    {name: 'user.register',layoutTemplate:"register"}
 );
 
 /**

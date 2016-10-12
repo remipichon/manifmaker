@@ -23,6 +23,9 @@ export class ServerService {
      *  See collection server service to have details about hooks
      */
     static addCollectionHooks(){
+        //create user when Account register a new one
+        Meteor.users.after.insert(ServerUserService.createCustomUser);
+
         //propagate assignment update
         //Assignments.before.insert( /*if we need to add user and task data to assignments*/);
         Assignments.after.insert(ServerAssignmentService.propagateAssignment);

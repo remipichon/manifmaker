@@ -5,6 +5,16 @@ import {ServerTaskService} from "../../server/service/ServerTaskService"
 export class ServerUserService {
 
     /**
+     * @summary Create a custom user from doc.username
+     * @param userId (will be always null)
+     * @param doc
+     * @locus server
+     */
+    static createCustomUser(userId, doc) {
+        console.info("create custom user with",doc.username);
+    }
+
+    /**
      * @summary GroupRoles.after.update hook
      * @description
      * If group roles' roles are updated user roles are update as well.
