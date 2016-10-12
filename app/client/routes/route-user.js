@@ -33,16 +33,28 @@ Router.route('/user', function () {
 
         console.info("routing", "/user");
 
-        if (this.ready()) {
-            this.render('insertUserForm', {
-                to: 'mainContent'
-            });
-        } else {
-            console.log("Route /user : waiting team data"); //TODO add a spinner
-        }
+        this.render('insertUserForm', {
+            to: 'mainContent'
+        });
 
     },
     {controller: ManifMakerRouterController,name: 'user.create'}
+);
+
+/**
+ * @memberOf Route.User
+ * @summary Display register form
+ * @locus client
+ * @name 'user.register'  /user
+ */
+Router.route('/register', function () {
+        console.info("routing", "/register");
+
+        this.render('register', {
+            to: 'mainContent'
+        });
+    },
+    {name: 'user.register'}
 );
 
 /**

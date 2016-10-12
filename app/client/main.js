@@ -21,6 +21,10 @@ AccountsTemplates.addField({
     errStr: 'At least 1 digit, 1 lower-case and 1 upper-case',
 });
 
+AccountsTemplates.configure({
+    hideSignInLink: true
+});
+
 beforeLogginRoute = null;
 
 Meteor.startup(function () {
