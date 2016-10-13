@@ -28,6 +28,20 @@
                         <div class="col-md-3">
 
                             <div>
+                                {{> afQuickField name='firstName'}}
+                            </div>
+                            <div>
+                                {{> afQuickField name='familyName'}}
+                            </div>
+                            <div>
+                                {{> afQuickField name='phoneNumber'}}
+                            </div>
+                            <div>
+                                <label>User Birth date</label>
+                                {{>DateTimePickerComponent date=birthDate updateDateCallback=updateBirthDate}}
+                            </div>
+
+                            <div>
                                 {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
                                 optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                                 updateCollection="Users" updateItemId=this._id updateItemPath="teams"
@@ -51,6 +65,15 @@
                             </div>
                         </div>
                     {{/if}}
+                </div>
+
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Skills</div>
+
+                <div class="panel-body">
+                    TODO Skills
                 </div>
 
             </div>

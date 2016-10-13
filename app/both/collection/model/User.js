@@ -69,9 +69,9 @@ Schemas.Users = new SimpleSchema({
         optional: true,
         defaultValue: null
     },
-    nickName: {
+    familyName: {
         type: String,
-        label: "User nickName",
+        label: "User family name",
         max: 100,
         optional: true,
         defaultValue: null

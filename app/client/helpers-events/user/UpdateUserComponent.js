@@ -9,6 +9,17 @@ class UpdateUserComponent extends BlazeComponent {
         return "updateUserComponent";
     }
 
+
+    updateBirthDate() {
+        return _.bind(function (birthDate) {
+            Users.update(this.data()._id,{
+                $set : {
+                    birthDate: birthDate.toDate()
+                }
+            });
+        }, this);
+    }
+
     onDeleteSuccess() {
         return function () {
             sAlert.info("User has been successfully deleted");
