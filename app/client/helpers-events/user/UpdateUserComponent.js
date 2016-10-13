@@ -9,6 +9,33 @@ class UpdateUserComponent extends BlazeComponent {
         return "updateUserComponent";
     }
 
+    events() {
+        return [{
+            'change .update-skill': this.updateSkill
+        }];
+    }
+
+    updateSkill(event) {
+        var skill = this.currentData();
+        var user = this.data();
+        if ($(event.target).prop('checked')) {
+           //add skill
+            Users.update(user._id,{
+                $push : {
+                    skills: skill._id
+                }
+            });
+        } else {
+            //remove skill
+            Users.update(user._id,{
+                $pull : {
+                    skills: skill._id
+                }
+            });
+        }
+
+    }
+
 
     updateBirthDate() {
         return _.bind(function (birthDate) {
@@ -18,6 +45,11 @@ class UpdateUserComponent extends BlazeComponent {
                 }
             });
         }, this);
+    }
+
+    isChecked(skillId){
+        if(_.contains(this.data().skills,skillId))
+            return "checked"
     }
 
     onDeleteSuccess() {

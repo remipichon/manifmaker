@@ -73,7 +73,15 @@
                 <div class="panel-heading">Skills</div>
 
                 <div class="panel-body">
-                    TODO Skills
+                    <label>Select one or more skills</label>
+                    <div class="row">
+                        {{#each allSkills}}
+                            <div class="col-md-3">
+                                <input type="checkbox" class="update-skill" {{isChecked _id}}>
+                                {{label}}
+                            </div>
+                        {{/each}}
+                    </div>
                 </div>
 
             </div>

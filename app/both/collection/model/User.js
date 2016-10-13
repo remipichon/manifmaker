@@ -142,6 +142,7 @@ Schemas.Users = new SimpleSchema({
         label: "User Skills",
         type: [SimpleSchema.RegEx.Id],
         optional: true,
+        defaultValue: [],
         custom: function () {
             this.value = _.compact(this.value);
             if(Skills.find({_id:{$in:this.value}}).fetch().length !== this.value.length)

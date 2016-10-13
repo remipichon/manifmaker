@@ -12,8 +12,15 @@ export class ServerUserService {
      */
     static createCustomUser(userId, doc) {
         //user is not log in yet, userId is null, we bypass security with .direct and propagate role with direct call to method
+        var defaultGroupRole = "minimal";
+        var minimalGroup = GroupRoles.findOne({name:defaultGroupRole});
 
-        var minimalId = GroupRoles.findOne({name:"minimal"})._id
+        if(!minimalGroup){
+            console.error(`Are you injecting data pragmatically ? If so, ignore this message. GroupRoles with name '${defaultGroupRole}' doesn't exists, user '${doc.name}' will not be created as a custom user as it won't have any roles. `)
+            return;
+        }
+
+        var minimalId = minimalGroup._id;
         var _id = Users.direct.insert({
             name: doc.username,
             loginUserId: Meteor.users.findOne({username: doc.username})._id,

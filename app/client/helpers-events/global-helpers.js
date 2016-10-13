@@ -43,7 +43,7 @@ Template.registerHelper(
 );
 
 Template.registerHelper(
-    "allOptionsSkills", function () {
+    "allSkills", function () {
         return Skills.find({});
     }
 );
