@@ -713,10 +713,7 @@ export class InjectDataServerService {
             email: email,
             password: password
         });
-        var _id = Users.insert({
-            name: username,
-            loginUserId: Meteor.users.findOne({username: username})._id
-        });
+        var _id = Users.findOne({name:username})._id;
 
         this._setGroupRolesToUsers(_id, groupRoleId);
 
