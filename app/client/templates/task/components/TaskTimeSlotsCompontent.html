@@ -7,7 +7,7 @@
     </div>
 
     <div class="col-md-8">
-        {{> EditTimeSlotCalendarComponent task=taskData parentInstance=self timeSlotTemplate="updateTimeSlotCalendar"}}
+        {{> EditTimeSlotCalendarComponent task=taskData parentInstance=self timeSlotTemplate="updateTimeSlotCalendar" class="updateTimeSlotCalendar"}}
     </div>
 
     <div class="col-md-4">
@@ -194,39 +194,54 @@
 <template name="updateTimeSlotCalendar">
     <div class="creneau {{state}}" data-timeslotdid="{{this._id}}" style="height: {{height}};">
 
-        <div class="wrapper on-calendar">
+        <div class="on-calendar">
+            <div class="col-xs-10 no-padding creneau-to-affect">
+                <div class="col-md-12 no-padding creneau-header">
+                    {{#each getPeopleNeededMerged _id}}
 
-            {{#each getPeopleNeededMerged _id}}
-                <!--<div class="peopleNeed" style="height: {{../height}};">-->
-                <!--<div class="">-->
-
-                <div class="col-md-1 people-need">
-                    {{#unless userId}}{{count}}{{/unless}}
-                    {{#if userId }}
-                        <div class="user">
-                            <i class="mdi mdi-account mdi-inline"></i>
-                        </div>{{/if}}
-                    {{#if teamId}}
-                        <div class="team">
-                            <i class="mdi mdi-account-multiple mdi-inline"></i>
-                        </div>{{/if}}
-                        <!--{{#ifNotEmpty skills}}-->
-                    <div>
-                        {{#each skills}}
-                            <div class="skill">
-                                <i class="mdi mdi-android-studio mdi-inline"></i>
-                            </div>
-                        {{/each}}
-                    </div>
-                        <!--{{/ifNotEmpty}}-->
+                        <div class="col-md-2 no-padding people-need">
+                            {{#if isMore 5 @index}}
+                                {{#unless userId}}{{count}}{{/unless}}
+                            {{/if}}
+                        </div>
+                    {{/each}}
                 </div>
-                <!--</div>-->
-            {{/each}}
 
-            <div class="col-md-1 people-need">
-                <div>{{getAlreadyAssignedPeopleNeedCount _id}}</div>
-                <div>people need already assigned</div>
+                {{#each getPeopleNeededMerged _id}}
+
+                    <div class="col-md-2 no-padding people-need">
+                        {{#if equals @index 5}}
+                            <b>...</b>
+                        {{else}}
+                            {{#if isMore 5 @index}}
+                                {{#if userId }}
+                                    <i class="mdi mdi-account"></i>
+                                    <br>{{/if}}
+                                {{#if teamId}}
+                                    <i class="mdi mdi-account-multiple"></i>
+                                    <br>{{/if}}
+                                    <!--{{#ifNotEmpty skills}}-->
+                                {{#each skills}}
+                                    <i class="mdi mdi-android-studio"></i>
+                                    <br>
+                                {{/each}}
+                                    <!--{{/ifNotEmpty}}-->
+                            {{/if}}
+                        {{/if}}
+
+                    </div>
+                {{/each}}
+
             </div>
+            <div class="col-xs-2 no-padding creneau-affected">
+                <div class="no-padding creneau-header">
+                    <div>{{getAlreadyAssignedPeopleNeedCount _id}}</div>
+                </div>
+                <div class="col-md-12   no-padding people-need">
+                    <i class="mdi mdi-calendar-check"></i>
+                </div>
+            </div>
+
 
 
         </div>
