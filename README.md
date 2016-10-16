@@ -1,7 +1,39 @@
-demo : http://assomaker.leomartinez.fr/
-doc : http://assomaker.leomartinez.fr:8080/
+# ManifMaker
+
+What is for ?
+
+ManifMaker is a single page webapp aimed to plan and organize events where volunteers take a great part. 
+
+In a few words, users create _tasks_ describing the job to be done, add _time slot_ defining when the task has to be done and specify _people needs_ to explicit how many and what kind of volunteers are needed to perform the task.
+
+Volunteers register on the app and add a few availabilites and skills to detail when they want to work and what can they do.  
+
+Once needs are validated, users assign volunteers to tasks according to both time slots/availabilites and people needs/skills. 
+
+# Live Demo
+You can find a live demo [here](http://151.80.59.178:32783/). 
+login: superadmin
+password: superadmin
+
+### Table of Contents
+* [Installation](#installation)
+* [Dev tools](#dev-tools)
+  * [Quality](#quality)
+    * [Auto generated Doc](#doc)
+    * [Testing](#testing)
+    * [Continuous Deployment](#cd)
+    * [Production](#production)
+  * [Design and UI tools](#ui-tools)
+    * [Material design icon](#mdi)
+    * [Alert](#alert)
+    * [Confirm](#confirm)
+    * [Custom Select](#custom-select)
+  * [Data management](#data)
+    * [Add a reference collection](#reference)
 
 
+
+<a id="installation" name="installation"></a>
 # Installation
 
 * install meteor itself : https://www.meteor.com/install
@@ -11,7 +43,7 @@ git clone https://github.com/assomaker/manifmaker.git
 ```
 * go into the folder with a .meteor directory in it (this is the app)
 ```bash
-cd PATH_TO_REPO/manifmaker
+cd PATH_TO_REPO/app
 ```
 * launch the framework who will first download all the dependencies (once for all), run MongoDB and run the app itself
 ```bash
@@ -27,9 +59,22 @@ meteor
 >[Edit Windows path](http://www.computerhope.com/issues/ch000549.htm)
 
 
-# JSDoc
+<a id="dev-tools" name="dev-tools"></a>
+# Dev tools 
+Dev tools installed and to be used when implementing cool features.
 
-## HTML
+<a id="quality" name="quality"></a>
+## Quality
+
+<a id="doc" name="doc"></a>
+### Auto generated Doc 
+
+[JSDoc](http://usejsdoc.org/) is used generate doc from annotations on code. The generated doc is available as Markdown in the repo [/doc/markdown](https://github.com/assomaker/manifmaker/tree/master/doc/markdown) or as HTML in the [stagging machine](http://151.80.59.178/doc).
+
+The HTML doc is automatically build and deployed, see Continuous Deployment section. The Markdown doc has to be build and commit/push when it's relevant. 
+
+
+#### HTML
 [JSDoc Github](https://github.com/jsdoc3/jsdoc)
 
 ```bash
@@ -40,7 +85,7 @@ npm run doc:html
 Open doc/html/index.html in a browser. 
 
 
-## Markdown
+#### Markdown
 
 [doc jsdoc-to-markdown](https://www.npmjs.com/package/jsdoc-to-markdown)
 
@@ -51,77 +96,263 @@ npm run doc:md
 
 Generated in /doc/markdown
 
-# Testing
+<a id="testing" name="testing"></a>
+### Testing
+There is no test frameworks.
 
-## Writing test
+<a id="cd" name="cd"></a>
+### Continuous Deployment
+[Travis CI](https://travis-ci.org/assomaker/manifmaker) is used to achieve Continuous Deployment. When a push occurs on branch _deploy_ : 
+* ManifMaker app is builded as a Docker image and push to our [Docker hub repo](https://hub.docker.com/r/assomaker/manifmaker/).
+* the new app is started in the stagging machine
+* the HTML doc is build and deployed (available [here](http://151.80.59.178/doc))
 
-Tests are located in three directories named "test" in /both, /client and /server. Tests in /both contains "B : " in their description. 
+#### Version management
+app/package.json version is used to tag Docker image. On the stagging machine there can be only one instance per version but several version can run at the same time. The [stagging index page](http://151.80.59.178/) provide links to all deployed version. 
 
-They are based on Mocha (testing) and Chai (asserting) and user full app mode meaning that you can do whatever you want without mocking anything. 
-The BDD is up as well as everything else. 
+Each version uses different Mongo user meaning that while using the same Mongo instance, data are not shared and can be altered by each version without disturbing the others. 
 
-## Browser report
-
-``` bash
-npm run test:watch 
-```
-
-Visit localhost:3020 to run tests and see the test report. The test are automatically re-run if code changes. 
-
-
-## CLI report (CI usage)
-dispatch:mocha-phantomjs et practicalmeteor:mocha ne peuvent pas bosser ensemble, en attente qu'ils resolvent ca pour faire la CI
-
-"test:ci": "SERVER_TEST_REPORTER='list' CLIENT_TEST_REPORTER='list' meteor test --once --full-app --driver-package dispatch:mocha-phantomjs",
-
-
-# Staging 
-
-Coming soon : whenever a merge request is made against branch deploy, a Docker somewhere runs automatic tests and gives feedback to allow or not the MR
-
-# Deploy
-
-Using Webhooks, each push on branch deploy triggers a _git pull_ on a machine where Meteor is run in dev mode (auto-restart if server code changes, auto refresh is client code changes)
-
-[http://assomaker.leomartinez.fr](http://assomaker.leomartinez.fr)
-
-(ask[Rémi](https://github.com/remipichon)or[Léo](https://github.com/martinezleoml)to gain access on the machine, only with key auth)
-
+<a id="production" name="production"></a>
+### Production
+Not yet implemented, it will be on another machine. 
 
 use ENV ISPROD to prevent using inject-data in prod
 
-# Contribution
+<a id="ui-tools" name="ui-tools"></a>
+## Design and UI tools  
 
-Usual merge request stuff
+<a id="mdi" name="mdi"></a>
+### Material design icon
 
-Coming soon : branch deploy is locked, only MR can push to it
+``` html
+<i class="mdi mdi-home"></i>
+```
 
-# Teckos Documentation
+Icon definition can be found here : [https://materialdesignicons.com/](https://materialdesignicons.com/). 
 
-## Data test
+<a id="alert" name="alert"></a>
+### Alert
+
+User friendly alerting use [s-alert](https://github.com/juliancwirko/meteor-s-alert). You basically only need 
+##### Error
+
+    sAlert.error('Your message');
+
+##### Warning
+
+    sAlert.warning('Your message');
+
+##### Info
+
+    sAlert.info('Your message');
+
+##### Success
+
+    sAlert.success('Your message');
+    
+
+Alert box will be displayed 2.5 seconds, if 'Your message' if too long to be read in 2.5 seconds you can override it with (in ms) :
+
+##### Error
+
+    sAlert.error('Your message',{ timeout : 60000 });
+
+
+<a id="confirm" name="confirm"></a>
+### Confirm and Prompt
+
+[BootBox](http://bootboxjs.com/) has to be used to display a confirmation or a prompt box. 
+
+```
+ bootbox.confirm("Are you sure ?", function(result){
+                if(result){
+                    //user was sure
+                }
+            });
+```
+
+Do not use alert or custom dialog features as S-Alert is the preferred way. 
+
+
+<a id="custom-select" name="custom-select"></a>
+### CustomSelect
+A powerfull custom selector is available. It is largely inspired by Github selector and provides following features :
+* text search filter on options
+* mandatory or not
+* single or multiple select
+* directly save in a field in database or
+* call one of your callback when selection changes
+
+You can refer to the auto-generated doc [select-component.md](https://github.com/assomaker/manifmaker/blob/master/doc/markdown/select-component.md) and the live demo : [/demo-select](http://151.80.59.178:32783/demo-select)
+
+<a id="data" name="data"></a>
+## Data management 
+
+<a id="reference" name="reference"></a>
+### Add a reference collection
+
+#### What is a reference collection ?
+
+Reference collection are used when the user as a choice between a set of editable values. Typically, you will need a reference collection with form field using a Custom Select. All reference collection are editable in a page (/conf-maker) linkied to a role _CONFMAKER_. 
+
+Each reference collection provides a set of features : 
+* list all items from the page /conf-maker
+  * create button
+  * text search on one field 
+* create form (with your specific fields)
+* update form (with your specific fields, can be different that the create form)
+* optionnaly add a reference to another collection 
+
+
+
+#### define a schema
+
+Add the schema to /both/collection/schema/CollectionReference.js. I will create Schema and Mongo Collection and generatares every needed routes)
+
+* PLURAL_REFERENCE_URL : url for the list (GET)
+* REFERENCE_URL: url to create (POST), update and delete
+* REFERENCE_COLLECTION_NAME: Mongo Variable Collection name
+* REFERENCE_MONGO_COLLECTION_NAME: Collection Name in MongoDb
+* REFERENCE_LABEL: How the collection will be named in html
+* TEMPLATE_ROW: the template to render one row of the list
+
+
+See Schemas.references.Teams for a minimal collection reference example. 
+
+Let's say you want a collection (eg: Equipment) to reference another reference collection (eg: EquipmentCategory) to allow a link between the two (eg : Equipement refers to a EquipmentCategory)
+```
+CollectionName_Id  : eg  EquipmentCategories_Id 
+```
+It will display the "name" field of the reference collection (eg: EquipmentCategory) in the insert/uptate form (eg:Equipment).
+
+Basic references field with custom verification that the _id actually exists and autoform to generate the dropdown
+```
+# eg: EquipmentCategory contains a list of Equipment
+EquipmentCategories_Id: {
+        type: SimpleSchema.RegEx.Id,
+        label: "Equipment Category",
+        custom: function () {
+            if (!EquipmentCategories.findOne(this.value))
+                return "unknownId";
+            return 1
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allEquipmentCategoriesOptions
+            }
+        },
+    },
+```
+
+#### some magic conf
+
+ 
+Please note that you need to add the following fields to have the "update" button working (sorry...)
+```
+baseUrl: { 
+        type: String,
+        label: "Team base URL",
+        defaultValue: "team"
+}
+```
+
+Please note that you need to add the following fields to have the "remove" button working (sorry...)
+```
+ type: { 
+        type: String,
+        label: "Teams type",
+        defaultValue: "Teams"
+    },
+```
+
+#### configure routes
+
+Add the newly created Mongo Collection to the AllCollections array in /client/routes/config/route-collection-references.js. 
+
+#### some templates 
+
+Add your specific template in /client/templates/references/ (just copy/paste and update the existing templates to your needs. Be careful with singular and plural to have everything correctly generated)
+
+* insert.html : template to create a new reference document
+* update.html :  template to update a reference document
+
+
+#### publish and subscribe
+
+and add your new Collection to publish/subscribe policy
+
+
+You should follow the current populate/clean policy
+
+
+#### tests
+If everything went well :
+* go to /conf-maker (with a user with _CONFMAKER_ role) : the list render and your new reference collection is here
+* click on "create" or go to its REST POST route : insert form render
+  * fill the form and submit it : submit works and you are redirected somewhere
+  * the newly created iteam appears on your reference collection list (expand it from /conf-maker)
+  * try to update an item : it should works
+
+Keep on eye on the consoles (server and client) and fix all errors. 
+
+
+
+#### Troubleshootings
+
+Carefully check singular and plural and that your naming is similar to the existing (use Team as an example). 
+
+
+<a id="data-test" name="data-test"></a>
+### Data test
+
 In dev mode, from the home page you can inject data or use URL to do so :
 * /inject-data : delete everything and inject auth profiles to log in as well as some conf and data.
 
 Details regarding authentication data can be found here :
 
 * role : \both\collection\model\enum\RolesEnum.js
-* groupRole : see InjectDataServerService._injectGroupRoles
-* user : see InjectDataServerService.initAccessRightData
+* groupRole : see app/server/services/InjectDataServerService._injectGroupRoles
+* user : see app/server/services/InjectDataServerService.initAccessRightData
   * admin/admin
   * hard/hard
   * user1/user1
 
+#### Prod
 
-## Security
+use ENV ISPROD to prevent using inject-data in prod
 
-Access Right verification : 
+#### Super Admin user
 
-* client side : Iron.Router routes
+A super admin user (superadmin/superadmin) is created at startup no matter what. This user has all existing roles, it can't be updated or removed and doesn't have to be used for anything else that injecting data (stagging) or create user with roles (production, at least one admin user with _ROLE_ role to add roles to other users). 
+
+<a id="security" name="security"></a>
+### Security
+
+Access Right Security uses [alanning:roles](https://github.com/alanning/meteor-roles). 
+
+Thw following verifications are done (and every new features should uses all these verifications) : 
+
+* client side : Iron.Router routes 
+``` Javascript
+    SecurityServiceClient.grantAccessToPage(RolesEnum.TASKREAD);
+```
 * server side :
   * read : for each collection, in publish method : /server/server-collection
-  * write : for each collection, in allow/deny that (insert/update/delete) : /server/main.js see "allow/deny policies"
+``` Javascript
+    SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"users")
+```
+  * write : for each collection, in allow/deny that insert/update/delete : /server/service/ServerService.js
+``` Javascript
+    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERWRITE, doc, 'user udpate');
+```
 
-## Data integrity
+
+# Data integrity
+
+
+_Following is a long pamphlet about data, you don't normally want to read it_
+
+
 
 Data validation is done inside the schemas (both/collection/model). Simple Schema provides common validations like date, string, int. Other 
 validation can be done in custom methods with custom code to validate dates overlapping, fields updates according to validation state...
@@ -162,142 +393,6 @@ When assigning, either you firstly check everything (user is available, task is 
 When choosing what to do you have to keep in mind that Meteor is real time, if you update something on the DB, it will be broadcasted to everyone subscribed. If you update something
 and revert it right away, you will unefficiently use DDP, the clients will compute the data and probably display something for a short amount of time before the sytem reverts the changes.
 It can lead the GUI to flickr. That is why it is probably better **to check everything BEFORE** database operations **if you need more than one database update** to perform one operation/action).
-
-## Material design icon
-
-
-``` html
-<i class="mdi mdi-home"></i>
-```
-
-Icon definition can be found here : [https://materialdesignicons.com/](https://materialdesignicons.com/). 
-
-## Alert
-
-User friendly alerting use [s-alert](https://github.com/juliancwirko/meteor-s-alert). You basically only need 
-##### Error
-
-    sAlert.error('Your message');
-
-##### Warning
-
-    sAlert.warning('Your message');
-
-##### Info
-
-    sAlert.info('Your message');
-
-##### Success
-
-    sAlert.success('Your message');
-    
-
-Alert box will be displayed 2.5 seconds, if 'Your message' if too long to be read in 2.5 seconds you can override it with (in ms) :
-
-##### Error
-
-    sAlert.error('Your message',{ timeout : 60000 });
-    
-
-## Confirm and Prompt
-[BootBox](http://bootboxjs.com/) has to be used to display a confirmation or a prompt box. 
-
-```
- bootbox.confirm("Are you sure ?", function(result){
-                if(result){
-                    //user was sure
-                }
-            });
-```
-
-Do not use alert or custom dialog features as S-Alert is the preferred way. 
-
-
-
-## How to use home-made stuff
-
-### CustomSelect
-
-Refer to the auto-generated doc : [select-component.md](https://github.com/assomaker/manifmaker/blob/bye_bye_materializecss/doc/markdown/select-component.md)
-
-and the live demo : [/demo-select](localhost:3000/demo-select)
-
-
-### Add a reference collection
-
-Add the schema to /both/collection/schema/schema-references.js (to create Schema and Mongo Collection and generatares every needed routes)
-
-* PLURAL_REFERENCE_URL : url for the list (GET)
-* REFERENCE_URL: url to create (POST), update and delete
-* REFERENCE_COLLECTION_NAME: Mongo Variable Collection name
-* REFERENCE_MONGO_COLLECTION_NAME: Collection Name in MongoDb
-* REFERENCE_LABEL: How the collection will be named in html
-* TEMPLATE_ROW: the template to render one row of the list
-
-
-See Schemas.references.Teams for a minimal collection reference example. 
-
-
-If you want to reference one of the users references collections, you should add a field like name as :
-
-CollectionName_Id  : eg  EquipmentCategories_Id 
-
-It will display the "name" field of the references collection in the list
-
-Basic references field with custom verification that the _id actually exists and autoform to generate the dropdown
-
-EquipmentCategories_Id: {
-        type: SimpleSchema.RegEx.Id,
-        label: "Equipment Category",
-        custom: function () {
-            if (!EquipmentCategories.findOne(this.value))
-                return "unknownId";
-            return 1
-        },
-        autoform: {
-            afFieldInput: {
-                options: Schemas.helpers.allEquipmentCategoriesOptions
-            }
-        },
-    },
-
-
-
- 
-Please note that you need to add the following fields to have the "update" button working (sorry...)
-
-baseUrl: { 
-        type: String,
-        label: "Team base URL",
-        defaultValue: "team"
-}
-
-
-Please note that you need to add the following fields to have the "remove" button working (sorry...)
-
- type: { 
-        type: String,
-        label: "Teams type",
-        defaultValue: "Teams"
-    },
-
-
-Add the newly created Mongo Collection to the AllCollections array in /client/routes/config/route-collection-references.js
-(can't be put in another place as this project don't have any dependency manager)
-
-
-Add your specific template to each of the files in /client/templates/references/ (just copy/paste and update the existing templates to your needs. Be careful with
-singular and plural to have everything correctly generated)
-
-* insert.html : template to create a new reference document
-* update.html :  template to update a reference document
-
-
-and add your new Collection to publish/subscribe policy
-
-
-You should follow the current populate/clean policy
-
 
 
 
