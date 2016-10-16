@@ -1,19 +1,23 @@
 # ManifMaker
 
-What is for ?
+##### What is for ?
 
-ManifMaker is a single page webapp aimed to plan and organize events where volunteers take a great part. 
+ManifMaker is a single page web app aimed to plan and organize events where volunteers take a great part. 
 
-In a few words, users create _tasks_ describing the job to be done, add _time slot_ defining when the task has to be done and specify _people needs_ to explicit how many and what kind of volunteers are needed to perform the task.
+In a few words, users create _tasks_ describing the job to be done, add _time slot_ defining when the _task_ has to be done and specify _people needs_ to explicit how many and what kind of volunteers are needed to perform the _task_.
 
-Volunteers register on the app and add a few availabilites and skills to detail when they want to work and what can they do.  
+Volunteers register on the app and add a few _availabilities_ and _skills_ to detail when they want to work and what can they do.  
 
-Once needs are validated, users assign volunteers to tasks according to both time slots/availabilites and people needs/skills. 
+Once tasks and their needs are validated, users assign volunteers to tasks according :
 
-# Live Demo
+* match between  _task's time slots_ and _user's availabilities_ 
+* match between _time slot's people needs_ and _user's skills_. 
+
+## Live Demo
 You can find a live demo [here](http://151.80.59.178:32783/). 
-login: superadmin
-password: superadmin
+
+* login: superadmin
+* password: superadmin
 
 ### Table of Contents
 * [Installation](#installation)
@@ -36,6 +40,8 @@ password: superadmin
 <a id="installation" name="installation"></a>
 # Installation
 
+The project relies on [Meteor](https://www.meteor.com/), a full stack single page app framework with real time capabilities.
+
 * install meteor itself : https://www.meteor.com/install
 * fetch this repo
 ```bash
@@ -52,7 +58,7 @@ meteor
 * once Meteor started, you can visit the app : localhost:3000
 * click on "inject data" on the main page or visit localhost:3000/inject-data
 
-> Windows User : you need to install[Git](https://git-scm.com/)if you don't already have it
+> Windows User : you need to install [Git](https://git-scm.com/) if you don't already have it
 
 > Windows User : if Meteor is not a known command, add meteor to your path. Meteor binary can be found here C:\Users\YOU\AppData\Local\.meteor
 >
@@ -61,7 +67,7 @@ meteor
 
 <a id="dev-tools" name="dev-tools"></a>
 # Dev tools 
-Dev tools installed and to be used when implementing cool features.
+Dev tools already installed and to be used when implementing cool features.
 
 <a id="quality" name="quality"></a>
 ## Quality
@@ -71,7 +77,7 @@ Dev tools installed and to be used when implementing cool features.
 
 [JSDoc](http://usejsdoc.org/) is used generate doc from annotations on code. The generated doc is available as Markdown in the repo [/doc/markdown](https://github.com/assomaker/manifmaker/tree/master/doc/markdown) or as HTML in the [stagging machine](http://151.80.59.178/doc).
 
-The HTML doc is automatically build and deployed, see Continuous Deployment section. The Markdown doc has to be build and commit/push when it's relevant. 
+The HTML doc is automatically build and deployed, see [Continuous Deployment](#cd) section. The Markdown doc has to be build and commit/push when it's relevant. 
 
 
 #### HTML
@@ -81,6 +87,8 @@ The HTML doc is automatically build and deployed, see Continuous Deployment sect
 npm install jsdoc -g
 npm run doc:html
 ```
+
+> If you don't have npm globally installed, you can use the one provided by meteor. Add 'meteor' before npm command to do so.
 
 Open doc/html/index.html in a browser. 
 
@@ -93,6 +101,9 @@ Open doc/html/index.html in a browser.
 npm install jsdoc-to-markdown --save-dev
 npm run doc:md
 ```
+
+> If you don't have npm globally installed, you can use the one provided by meteor. Add 'meteor' before npm command to do so.
+
 
 Generated in /doc/markdown
 
@@ -108,9 +119,9 @@ There is no test frameworks.
 * the HTML doc is build and deployed (available [here](http://151.80.59.178/doc))
 
 #### Version management
-app/package.json version is used to tag Docker image. On the stagging machine there can be only one instance per version but several version can run at the same time. The [stagging index page](http://151.80.59.178/) provide links to all deployed version. 
+app/package.json version is used to tag the Docker image. On the stagging machine there can be only one instance per version but several version can run at the same time. The [stagging index page](http://151.80.59.178/) provide links to all deployed version. 
 
-Each version uses different Mongo user meaning that while using the same Mongo instance, data are not shared and can be altered by each version without disturbing the others. 
+Each version uses different Mongo user meaning that, while using the same Mongo instance, data are not shared and can be altered by each instance without disturbing the others. 
 
 <a id="production" name="production"></a>
 ### Production
@@ -183,7 +194,7 @@ A powerfull custom selector is available. It is largely inspired by Github selec
 * directly save in a field in database or
 * call one of your callback when selection changes
 
-You can refer to the auto-generated doc [select-component.md](https://github.com/assomaker/manifmaker/blob/master/doc/markdown/select-component.md) and the live demo : [/demo-select](http://151.80.59.178:32783/demo-select)
+You can refer to the auto-generated doc [select-component.md](https://github.com/assomaker/manifmaker/blob/master/doc/markdown/select-component.md) and the live demo : [/demo-select](http://151.80.59.178:32783/demo-select), or [localhost /demo-select](localhost:3000/demo-select)
 
 <a id="data" name="data"></a>
 ## Data management 
@@ -347,7 +358,7 @@ Thw following verifications are done (and every new features should uses all the
 ```
 
 
-# Data integrity
+### Data integrity
 
 
 _Following is a long pamphlet about data, you don't normally want to read it_
