@@ -26,7 +26,6 @@ You can find a live demo [here](http://151.80.59.178:32783/).
     * [Auto generated Doc](#doc)
     * [Testing](#testing)
     * [Continuous Deployment](#cd)
-    * [Production](#production)
   * [Design and UI tools](#ui-tools)
     * [Material design icon](#mdi)
     * [Alert](#alert)
@@ -34,6 +33,9 @@ You can find a live demo [here](http://151.80.59.178:32783/).
     * [Custom Select](#custom-select)
   * [Data management](#data)
     * [Add a reference collection](#reference)
+* [Project Management](#project)
+* [Production](#production)
+
 
 
 
@@ -122,12 +124,6 @@ There is no test frameworks.
 app/package.json version is used to tag the Docker image. On the stagging machine there can be only one instance per version but several version can run at the same time. The [stagging index page](http://151.80.59.178/) provide links to all deployed version. 
 
 Each version uses different Mongo user meaning that, while using the same Mongo instance, data are not shared and can be altered by each instance without disturbing the others. 
-
-<a id="production" name="production"></a>
-### Production
-Not yet implemented, it will be on another machine. 
-
-use ENV ISPROD to prevent using inject-data in prod
 
 <a id="ui-tools" name="ui-tools"></a>
 ## Design and UI tools  
@@ -406,4 +402,16 @@ and revert it right away, you will unefficiently use DDP, the clients will compu
 It can lead the GUI to flickr. That is why it is probably better **to check everything BEFORE** database operations **if you need more than one database update** to perform one operation/action).
 
 
+<a id="production" name="production"></a>
+# Production
+Not yet implemented, it will be on another machine. 
 
+use ENV ISPROD to prevent using inject-data in prod
+
+
+<a id="project" name="project"></a>
+# Project Management
+
+We are using the Github issues enhanced with [Zenhub product](https://www.zenhub.com/) which I recommend to install. 
+
+Our specs are written in a GDoc, ask me if you want access to it. 
