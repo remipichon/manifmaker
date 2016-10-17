@@ -310,10 +310,11 @@ class TaskTimeSlotsComponent extends BlazeComponent{
             });
         }
 
-        //group by identical people need
+        //group by identical Id / or people need
         var peopleNeededGroupBy = _.groupBy(peopleNeeded, function (peopleNeed) {
-            return peopleNeed.userId + peopleNeed.skills + peopleNeed.teamId
+            return peopleNeed.skills + peopleNeed.teamId
         });
+
 
         var bulkIds = {};
 

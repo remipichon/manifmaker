@@ -13,6 +13,7 @@
     <div class="col-md-4">
         <div class="col-md-12 add-time-slot">
             <div class="row">
+
                 {{#unless isTimeSlotsReadOnly}}
                     {{#if isTimeSlotUpdated.get}}
                         <label>Update time slot</label><i class="duplicate-button">copy</i><i class="material-icons delete-button">delete</i> | <i class="material-icons add-button">add</i>
@@ -192,54 +193,54 @@
 </template>
 
 <template name="updateTimeSlotCalendar">
-    <div class="creneau {{state}}" data-timeslotdid="{{this._id}}" style="height: {{height}};">
-
+    <div class="creneau {{state}} {{#if equals currentTimeSlot._id this._id}}currentTimeSlot{{/if}}" data-timeslotdid="{{this._id}}" style="height: {{height}};">
         <div class="on-calendar">
             <div class="col-xs-10 no-padding creneau-to-affect">
-                <div class="col-md-12 no-padding creneau-header">
-                    {{#each getPeopleNeededMerged _id}}
-
-                        <div class="col-md-2 no-padding people-need">
-                            {{#if isMore 5 @index}}
-                                {{#unless userId}}{{count}}{{/unless}}
-                            {{/if}}
-                        </div>
-                    {{/each}}
-                </div>
 
                 {{#each getPeopleNeededMerged _id}}
-
-                    <div class="col-md-2 no-padding people-need">
-                        {{#if equals @index 5}}
-                            <b>...</b>
+                    <p class="col-md-2 no-padding people-need" title="
+                        {{#if userId}}
+                        {{count}} particular {{#if equals count 1}}person is{{else}}people are{{/if}} needed
                         {{else}}
+                        {{count}} need{{#unless equals count 1}}s{{/unless}} of :{{#if teamId}} a particular team{{#if skills}}, {{/if}}{{/if}}{{#each skills}}{{#unless equals @index 0}}and {{/unless}} {{skillLabel}} (skill) {{/each}}
+                    {{/if}}">
+
+                        <p class="col-md-12 no-padding creneau-header">
                             {{#if isMore 5 @index}}
-                                {{#if userId }}
-                                    <i class="mdi mdi-account"></i>
-                                    <br>{{/if}}
-                                {{#if teamId}}
-                                    <i class="mdi mdi-account-multiple"></i>
-                                    <br>{{/if}}
-                                    <!--{{#ifNotEmpty skills}}-->
-                                {{#each skills}}
-                                    <i class="mdi mdi-android-studio"></i>
-                                    <br>
-                                {{/each}}
-                                    <!--{{/ifNotEmpty}}-->
+                                {{count}}
+                            {{/if}}
+                        </p>
+
+                        {{#if isMore 5 @index}}
+                            {{#if userId }}
+                                <i class="mdi mdi-account"></i>
+                                <br>{{/if}}
+                            {{#if teamId}}
+                                <i class="mdi mdi-account-multiple"></i>
+                                <br>{{/if}}
+                            {{#each skills}}
+                                <i class="mdi mdi-android-studio"></i>
+                                <br>
+                            {{/each}}
+                        {{else}}
+                            {{#if equals @index 5}}
+                                <b>...</b>
                             {{/if}}
                         {{/if}}
 
-                    </div>
+                    </p>
                 {{/each}}
 
             </div>
-            <div class="col-xs-2 no-padding creneau-affected">
-                <div class="no-padding creneau-header">
+            <div class="col-xs-2 no-padding creneau-affected" title="
+                {{getAlreadyAssignedPeopleNeedCount _id}} {{#if isMore getAlreadyAssignedPeopleNeedCount _id 1}}people{{else}}person{{/if}} already affected
+                ">
+                <p class="no-padding creneau-header">
                     <div>{{getAlreadyAssignedPeopleNeedCount _id}}</div>
-                </div>
-                <div class="col-md-12   no-padding people-need">
+                </p>
+                <p class="col-md-12 no-padding people-need">
                     <i class="mdi mdi-calendar-check"></i>
-                </div>
+                </p>
             </div>
 
 

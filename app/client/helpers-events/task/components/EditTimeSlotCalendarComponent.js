@@ -46,6 +46,10 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
     getAlreadyAssignedPeopleNeedCount(timeSlotId){
         return this.data().parentInstance.getAlreadyAssignedPeopleNeedCount(timeSlotId);
     }
+
+    currentTimeSlot() {
+        return this.data().parentInstance.currentTimeSlot();
+    }
 }
 
 EditTimeSlotCalendarComponent.register("EditTimeSlotCalendarComponent");

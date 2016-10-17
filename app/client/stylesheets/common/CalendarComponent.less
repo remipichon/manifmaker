@@ -101,7 +101,7 @@
     }
   }
   .jours {
-    height: 960px;
+    height: 964px;
     width: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -124,7 +124,7 @@
       left: 0;
       width: 40px;
       overflow: hidden;
-      height: 961px;
+      height: 962px;
       border: 1px solid #d6d6d6;
       margin-bottom: 1px;
 
@@ -152,6 +152,7 @@
     .jour {
       height: 960px;
       border-right: 1px solid #d6d6d6;;
+      border-bottom: 1px solid #d6d6d6;
 
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
@@ -192,7 +193,7 @@
           .creneau {
             height:100%;
             color: white;
-            background: #26ca1e;
+            background: @green1;
             opacity: 0.9;
             width: 100%;
             //            padding: 5px 0;
@@ -206,6 +207,17 @@
             //            -webkit-box-sizing: border-box;
             //            -moz-box-sizing: border-box;
             //            box-sizing: border-box;
+
+            .creneau-affected{
+              background-color:@green2;
+            }
+
+            &.currentTimeSlot{
+              background : @green3;
+              .creneau-affected{
+                background-color:@green1;
+              }
+            }
 
             &.usedByTask {
               font-size: 0.8em;
@@ -278,20 +290,12 @@
       }
       .on-calendar {
         width:100%;
-        .people-need { //seperate people need on time slot on calendar view
-          height: 100%;
-          display: table-cell;
-          vertical-align: middle;
-        }
-        .creneau-affected{
-          background-color:@green2;
+        .creneau-header{
+          height:20px;
+          margin:0;
         }
       }
 
     }
   }
-}
-
-.updateTimeSlotCalendar{
-
 }
