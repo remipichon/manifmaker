@@ -10,6 +10,46 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
 
      */
 
+    events() {
+        return super.events().concat({
+            'mousedown .heure, .quart_heure"': this.startSelectAvailability,
+            'mouseenter .heure, .quart_heure"': this.selectAvailability,
+            'mouseup .heure, .quart_heure"': this.endSelectAvailability,
+            'mouseleave .jours': this.resetSelect,
+        });
+    }
+
+    startSelectAvailability(event){
+        var date = new moment($(event.target).parent().attr("hours"));
+        this.startDate = date;
+
+    }
+
+    selectAvailability(event){
+        if(!this.startDate) return;
+        var date = new moment($(event.target).parent().attr("hours"));
+        this.hasDragged = true;
+        console.log(this.startDate,date);
+    }
+
+    endSelectAvailability(event){
+        if(!this.startDate || !this.hasDragged) return;
+        var date = new moment($(event.target).parent().attr("hours"));
+        console.log("end at",this.startDate,date);
+        var user = this.parentComponent().parentComponent().data();
+        var temp = this.startDate;
+        this.startDate = null;
+        this.hasDragged = null;
+        console.log("add avail",temp,date);
+        AvailabilityService.addAvailabilities(user,temp.toDate(),date.toDate())
+    }
+
+    resetSelect(){
+        this.startDate = null;
+        this.hasDragged = null;
+        console.log("reset select");
+    }
+
     creanOnClick() {
         //to implement
         console.log("creanOnClick");
@@ -17,6 +57,11 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
 
     quartHeureOnClick(event) {
         //to implement
+
+        sAlert.info('Add availabilities by selecting slots with your mouse pressed.');
+        return;
+
+        //TODO proposer de switcher sur ce mode si besoin, default sur mobile
         var date = new moment($(event.target).parent().attr("hours"));
 
         if(!this.startDate)
