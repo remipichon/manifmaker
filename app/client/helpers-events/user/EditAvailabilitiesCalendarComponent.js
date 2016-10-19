@@ -2,7 +2,7 @@ import {BaseCalendarComponent} from "../common/BaseCalendarComponent"
 import {AssignmentService} from "../../../both/service/AssignmentService"
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AvailabilityService} from "../../../both/service/AvailabilityService"
-import {TimeSlotCalendarServiceClient} from "../../../client/service/TimeSlotCalendarServiceClient"
+import {CalendarServiceClient} from "../../../client/service/CalendarServiceClient"
 
 class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
     /* available in data
@@ -36,7 +36,7 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
         var user = this.data().user;
         if (!user) return [];
 
-        var data = TimeSlotCalendarServiceClient.computeAvailabilitiesData(user,startCalendarTimeSlot);
+        var data = CalendarServiceClient.computeAvailabilitiesData(user,startCalendarTimeSlot);
         if(!data) return [];
         return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
     }

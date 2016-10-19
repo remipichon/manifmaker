@@ -1,7 +1,7 @@
 import {TimeSlotService} from "../../both/service/TimeSlotService"
 
-/** @class TimeSlotCalendarServiceClient*/
-export class TimeSlotCalendarServiceClient {
+/** @class CalendarServiceClient*/
+export class CalendarServiceClient {
 
 
     static computeAvailabilitiesData(user, startCalendarTimeSlot){

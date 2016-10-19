@@ -4,7 +4,7 @@ import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
-import {TimeSlotCalendarServiceClient} from "../../../client/service/TimeSlotCalendarServiceClient"
+import {CalendarServiceClient} from "../../../client/service/CalendarServiceClient"
 
 
 class AssignmentCalendarComponent extends BaseCalendarComponent {
@@ -78,14 +78,14 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 }
 
                 _.extend(data, founded);
-                data.height = TimeSlotCalendarServiceClient.computeTimeSlotAvailabilityHeight(founded,startCalendarTimeSlot) + "px";
+                data.height = CalendarServiceClient.computeTimeSlotAvailabilityHeight(founded,startCalendarTimeSlot) + "px";
 
                 break;
             case AssignmentType.TASKTOUSER:
                 var task = AssignmentReactiveVars.SelectedTask.get() == null ? null : Tasks.findOne(AssignmentReactiveVars.SelectedTask.get());
                 if (!task) return [];
 
-                var result = TimeSlotCalendarServiceClient.computeTimeSlotData(task,startCalendarTimeSlot);
+                var result = CalendarServiceClient.computeTimeSlotData(task,startCalendarTimeSlot);
                 if(!result) return [];
                 else data = result;
 
