@@ -4,36 +4,21 @@ import {TimeSlotService} from "../../both/service/TimeSlotService"
 export class TimeSlotCalendarServiceClient {
 
 
-    static computeTimeSlotData(task, startCalendarTimeSlot){
+    static computeAvailabilitiesData(user, startCalendarTimeSlot){
         var data = {},baseOneHourHeight,accuracy,end,start,duration,height,founded;
 
-        var timeSlotFound = TimeSlotService.getTimeSlotByStart(task.timeSlots, startCalendarTimeSlot);
-        if (timeSlotFound === null) return null;
+        var availabilitiesFound = TimeSlotService.getTimeSlotByStart(user.availabilities, startCalendarTimeSlot);
+        if (availabilitiesFound === null) return null;
 
-        if (timeSlotFound !== null) {
-            data.state = "available";
-            //data.name = task.name;
+        if (availabilitiesFound !== null) {
             //Template.parentData() doesn't work so we use a trick
-            data.taskId = task._id;
+            data.userId = user._id;
 
-            //people need
-            data.peopleNeeded = timeSlotFound.peopleNeeded;;
         }
 
-        //var assignmentsFound = AssignmentService.getAssignmentByStart(task.assignments, startCalendarTimeSlot, true);
-        //if (assignmentsFound.length !== 0) { //at least one assignment TODO code couleur d'avancement en fonction des peoples needed
-        //    data.name = assignmentsFound[0].taskName; //idem, la meme task
-        //    data.state = "in-progress";
-        //    data.taskId = task._id;
-        //
-        //
-        //    founded = assignmentsFound[0]; //normalement ils ont tous les memes date, TODO controler ca
-        //}
+        _.extend(data, availabilitiesFound);
 
-
-        _.extend(data, timeSlotFound);
-
-        data.height = this.computeTimeSlotData() + "px";
+        data.height = this.computeTimeSlotAvailabilityHeight(availabilitiesFound,startCalendarTimeSlot) + "px";
 
         return data;
     }

@@ -144,6 +144,19 @@ export class AvailabilityService {
          * @param {Date}start
          * @param {Date} end
          */
+        static addAvailabilities(user, start, end) {
+            //TODO faire "disparaitre" les dispo qui sont englobées par la nouvelle (merge plus poussé que le restore)
+            AvailabilityService.restoreAvailabilities(user,start,end);
+        }
+
+        /**
+         * @memberOf AvailabilityService
+         * @summary For a giver user add and merge availabilities in order to make him available between start and end params.
+         * @locus Anywhere
+         * @param {User} user
+         * @param {Date}start
+         * @param {Date} end
+         */
         static restoreAvailabilities(user, start, end) {
             console.info("AvailabilityService.restoreAvailabilities for user", user, " from", start, "to", end);
             var availabilities = user.availabilities;

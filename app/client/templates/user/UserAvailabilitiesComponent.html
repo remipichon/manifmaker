@@ -13,41 +13,11 @@
 </template>
 
 <template name="updateAvailabilitiesCalendar">
-    <div class="creneau {{state}}" data-timeslotdid="{{this._id}}" style="height: {{height}};">
+    <div class="creneau" style="height: {{height}};">
 
         <div class="wrapper on-calendar">
 
-            {{#each getPeopleNeededMerged _id}}
-                <!--<div class="peopleNeed" style="height: {{../height}};">-->
-                <!--<div class="">-->
 
-                <div class="col-md-1 people-need">
-                    {{#unless userId}}{{count}}{{/unless}}
-                    {{#if userId }}
-                        <div class="user">
-                            <i class="mdi mdi-account mdi-inline"></i>
-                        </div>{{/if}}
-                    {{#if teamId}}
-                        <div class="team">
-                            <i class="mdi mdi-account-multiple mdi-inline"></i>
-                        </div>{{/if}}
-                        <!--{{#ifNotEmpty skills}}-->
-                    <div>
-                        {{#each skills}}
-                            <div class="skill">
-                                <i class="mdi mdi-android-studio mdi-inline"></i>
-                            </div>
-                        {{/each}}
-                    </div>
-                        <!--{{/ifNotEmpty}}-->
-                </div>
-                <!--</div>-->
-            {{/each}}
-
-            <div class="col-md-1 people-need">
-                <div>{{getAlreadyAssignedPeopleNeedCount _id}}</div>
-                <div>people need already assigned</div>
-            </div>
 
 
         </div>
