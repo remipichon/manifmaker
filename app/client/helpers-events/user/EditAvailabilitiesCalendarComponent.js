@@ -21,38 +21,34 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
 
     startSelectAvailability(event){
         var date = new moment($(event.target).parent().attr("hours"));
-        this.startDate = date;
+        this.startDate.set(date);
 
     }
 
     selectAvailability(event){
-        if(!this.startDate) return;
-        var date = new moment($(event.target).parent().attr("hours"));
+        if(!this.startDate.get()) return;
+        var date = new moment($(event.target).attr("hours"));
         this.hasDragged = true;
-        console.log(this.startDate,date);
+        this.tempEndDate.set(date);
     }
 
     endSelectAvailability(event){
-        if(!this.startDate || !this.hasDragged) return;
+        if(!this.startDate.get() || !this.hasDragged) return;
         var date = new moment($(event.target).parent().attr("hours"));
-        console.log("end at",this.startDate,date);
         var user = this.parentComponent().parentComponent().data();
-        var temp = this.startDate;
-        this.startDate = null;
-        this.hasDragged = null;
-        console.log("add avail",temp,date);
+        var temp = this.startDate.get();
+        this.resetSelect();
         AvailabilityService.addAvailabilities(user,temp.toDate(),date.toDate())
     }
 
     resetSelect(){
-        this.startDate = null;
-        this.hasDragged = null;
-        console.log("reset select");
+        this.startDate.set(null);
+        this.hasDragged = false;
+        this.tempEndDate.set(null);
     }
 
     creanOnClick() {
         //to implement
-        console.log("creanOnClick");
     }
 
     quartHeureOnClick(event) {
@@ -64,17 +60,29 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
         //TODO proposer de switcher sur ce mode si besoin, default sur mobile
         var date = new moment($(event.target).parent().attr("hours"));
 
-        if(!this.startDate)
-            this.startDate = date;
+        if(!this.startDate.get())
+            this.startDate.set(date);
         else {
             var endDate = date;
-            console.log("new availabilties ",this.startDate.toDate(),endDate.toDate());
+            //console.log("new availabilties ",this.startDate.get().toDate(),endDate.toDate());
             var user = this.parentComponent().parentComponent().data();
-            AvailabilityService.addAvailabilities(user,this.startDate.toDate(),endDate.toDate())
-            this.startDate = null;
+            AvailabilityService.addAvailabilities(user,this.startDate.get().toDate(),endDate.toDate())
+            this.startDate.set(null);
         }
 
     }
+
+    //works for .heure et .quart d'heure
+    isSelected(date, timeHours) {
+        if(!this.startDate.get() || !this.tempEndDate.get()) return;
+        var current = this.getCalendarDateTime(date, timeHours, 0);
+        var start = this.startDate.get();
+        var end = this.tempEndDate.get();
+        if(current.isBetween(start,end) || current.isSame(start))
+            return "selected";
+        return ""
+    }
+
 
     timeSlot(date, timeHours, idTask) {
         var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
@@ -89,7 +97,8 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
     constructor() {
         super();
 
-        this.startDate = null;
+        this.startDate = new ReactiveVar(null);
+        this.tempEndDate = new ReactiveVar(null);
     }
 }
 
