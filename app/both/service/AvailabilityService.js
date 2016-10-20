@@ -138,20 +138,44 @@ export class AvailabilityService {
 
         /**
          * @memberOf AvailabilityService
-         * @summary For a giver user add and merge availabilities in order to make him available between start and end params.
+         * @summary For a giver user add and merge availabilities in order to make him available between start and end params
+         * @description If existing availabilities will be overlapped by start-end, they are deleted, if existing availabilities starts
+         * when end param is or ends when start param is, existing availability will be merged with start-date. 
          * @locus Anywhere
          * @param {User} user
          * @param {Date}start
          * @param {Date} end
          */
         static addAvailabilities(user, start, end) {
-            //TODO faire "disparaitre" les dispo qui sont englobées par la nouvelle (merge plus poussé que le restore)
-            AvailabilityService.restoreAvailabilities(user,start,end);
+
+            //clean availabilities that will be include between start and end
+            var availabilities = Users.findOne(user._id).availabilities;
+            var availabilityToRemove = []; //will store all indexes to remove
+            availabilities.forEach((availability, index) => {
+                if(TimeSlotService.isOverlapping(availability.start, availability.end,start,end)){
+                    availabilityToRemove.push(index);
+                }
+            });
+
+            while(availabilityToRemove.length !== 0){
+                var lastIndex = _.last(availabilityToRemove); //we need to iterate in reverse to delete higher index firsts
+                availabilityToRemove.pop();
+                availabilities.splice(lastIndex,1);
+            }
+
+
+            Users.update({_id: user._id}, {$set: {availabilities: availabilities}});
+
+
+            AvailabilityService.restoreAvailabilities(Users.findOne(user._id),start,end);
         }
 
         /**
          * @memberOf AvailabilityService
-         * @summary For a giver user add and merge availabilities in order to make him available between start and end params.
+         * @summary For a giver user add and merge availabilities in order to make him available between start and end params (un-assignment workflow)
+         * @description if an existing availability starts when end param is or ends when start param is, existing availability will
+         * be merge with start-end params. This function does not manage overlapping availability. See AvailabilityService.addAvailabilities
+         * if needed.
          * @locus Anywhere
          * @param {User} user
          * @param {Date}start

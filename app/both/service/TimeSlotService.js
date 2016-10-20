@@ -142,6 +142,14 @@ export class TimeSlotService {
             };
         }
 
+        static isOverlapping(startA, endA, startB, endB){
+            //overlapp (StartA <= EndB) and (EndA >= StartB)
+            //proof http://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+
+            return new moment(startA).isBefore(endB) &&
+                new moment(endA).isAfter(startB)
+        }
+
 
         static areTimeSlotOverlappingWithQuery(timeSlots,start,end,queryTimeSlotId){
             var okGod = true;
@@ -149,10 +157,7 @@ export class TimeSlotService {
                 if (!okGod || timeSlot._id === queryTimeSlotId)
                     return;
 
-                //overlapp (StartA <= EndB) and (EndA >= StartB)
-                //proof http://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
-                if (new moment(start).isBefore(timeSlot.end) &&
-                    new moment(end).isAfter(timeSlot.start))
+                if (TimeSlotService.isOverlapping(start,end,timeSlot.start, timeSlot.end))
                     okGod = false;
 
             }, this));
