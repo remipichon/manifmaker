@@ -15,7 +15,7 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
             'mousedown .heure, .quart_heure"': this.startSelectAvailability,
             'mouseenter .heure, .quart_heure"': this.selectAvailability,
             'mouseup .heure, .quart_heure"': this.endSelectAvailability,
-            'mouseleave .jours': this.resetSelect,
+            'mouseleave .jours': this.resetSelect
         });
     }
 
@@ -34,7 +34,11 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
 
     endSelectAvailability(event){
         if(!this.startDate.get() || !this.hasDragged) return;
-        var date = new moment($(event.target).parent().attr("hours"));
+        var date;
+        if($(event.target).hasClass("creneau")) //user end selecting on an existing availabilities
+            date = new moment($(event.target).parent().parent().attr("hours"));
+        else
+            date = new moment($(event.target).parent().attr("hours"));
         var user = this.parentComponent().parentComponent().data();
         var temp = this.startDate.get();
         this.resetSelect();
@@ -64,12 +68,10 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
             this.startDate.set(date);
         else {
             var endDate = date;
-            //console.log("new availabilties ",this.startDate.get().toDate(),endDate.toDate());
             var user = this.parentComponent().parentComponent().data();
             AvailabilityService.addAvailabilities(user,this.startDate.get().toDate(),endDate.toDate())
             this.startDate.set(null);
         }
-
     }
 
     //works for .heure et .quart d'heure
