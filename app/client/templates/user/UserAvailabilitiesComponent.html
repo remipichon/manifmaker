@@ -6,19 +6,16 @@
         {{>AssignmentTermSelectComponent}}
     </div>
 
-    <div class="col-md-8">
+    <div class="col-md-12">
         {{> EditAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
     </div>
 
 </template>
 
 <template name="updateAvailabilitiesCalendar">
-    <div class="creneau" style="height: {{height}};">
+    <div class="creneau non-clickable" style="height: {{height}};">
 
         <div class="wrapper on-calendar">
-
-
-
 
         </div>
     </div>

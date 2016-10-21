@@ -15,17 +15,20 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
             'mousedown .heure, .quart_heure"': this.startSelectAvailability,
             'mouseenter .heure, .quart_heure"': this.selectAvailability,
             'mouseup .heure, .quart_heure"': this.endSelectAvailability,
-            'mouseleave .jours': this.resetSelect
+            'mouseleave .jours': this.resetSelect,
+            'dblclick .heure': this.removeAvailability
         });
     }
 
     startSelectAvailability(event){
+        event.stopPropagation();
         var date = new moment($(event.target).parent().attr("hours"));
         this.startDate.set(date);
 
     }
 
     selectAvailability(event){
+        event.stopPropagation();
         if(!this.startDate.get()) return;
         var date = new moment($(event.target).attr("hours"));
         this.hasDragged = true;
@@ -33,6 +36,7 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
     }
 
     endSelectAvailability(event){
+        event.stopPropagation();
         if(!this.startDate.get() || !this.hasDragged) return;
         var date;
         if($(event.target).hasClass("creneau")) //user end selecting on an existing availabilities
@@ -51,6 +55,16 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
         this.tempEndDate.set(null);
     }
 
+    removeAvailability(event){
+        this.resetSelect();
+        sAlert.closeAll();
+        event.stopPropagation();
+        var start = new moment($(event.target).parent().attr("hours"));
+        var user = this.parentComponent().parentComponent().data();
+        var end = new moment(start).add(1,"hour");
+        AvailabilityService.removeAvailabilities(user,start.toDate(),end.toDate());
+    }
+
     creanOnClick() {
         //to implement
     }
@@ -58,7 +72,7 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
     quartHeureOnClick(event) {
         //to implement
 
-        sAlert.info('Add availabilities by selecting slots with your mouse pressed.');
+        sAlert.info('Add availabilities by selecting slots with your mouse pressed or double click to remove one slot.');
         return;
 
         //TODO proposer de switcher sur ce mode si besoin, default sur mobile
