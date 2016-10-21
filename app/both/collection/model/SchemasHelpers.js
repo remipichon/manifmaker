@@ -6,6 +6,7 @@ SimpleSchema.messages({
     endBeforeStart: `[label] must be after start date`,
     startAfterEnd: `[label] must be before end date`,
     timeSlotConflictDate: `Time slot can't overlap. Check time slot start and end date conflicts with all others time slots`,
+    assignmentTermPeriodsConflictDate: `Assignment term periods can't overlap. Check assignment term period start and end date conflicts with all others periods for this assignment term`,
     skillsNotFound: 'Skills not found',
     taskAssignmentNotMatching: "Task assignment do not match real assignment",
     userAssignmentNotMatching: "User assignment do not match real assignment",

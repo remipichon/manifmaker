@@ -1,4 +1,5 @@
 import {Schemas} from './SchemasHelpers'
+import {TimeSlotService} from "../../../both/service/TimeSlotService"
 
 import "/both/collection/model/enum/EquipementTargetUsage.js"
 
@@ -153,6 +154,106 @@ Schemas.references.options.AssignmentTerms = {
     REFERENCE_MONGO_COLLECTION_NAME: "assignment-terms",
     REFERENCE_LABEL: "Assignment Term"
 };
+AssignmentTermPeriod = new SimpleSchema({
+    start: {
+        type: Date,
+        label: "Assignment Term Period Start Date",
+        custom: function () {
+            var start, end, currentId, terms;
+
+            //if (this.isUpdate) {
+            //    var task = AssignmentTerms.findOne(this.docId);
+            //    if (this.operator !== "$push") {
+            //        var termIndex = parseInt(this.key.replace("assignmentTermPeriods.", "").replace(".start", ""));
+            //        var item = task.timeSlots[termIndex];
+            //        currentId = item._id;
+            //    }
+            //}
+
+            //if (!this.field("assignmentTermPeriods").isSet || this.field("assignmentTermPeriods").operator === "$push") {
+            //    terms = task.timeSlots;
+            //} else
+                terms = this.field("assignmentTermPeriods").value;
+
+
+            //if (!this.field(this.key.replace("start", "") + 'end').isSet) {
+            //    end = new moment(item.end);
+            //} else
+                end = new moment(this.field(this.key.replace("start", "") + 'end').value);
+
+
+            if (!currentId)
+                currentId = this.field(this.key.replace("start", "") + '_id').value;
+
+            start = new moment(this.value);
+
+            if (start.isAfter(end)) {
+                return "startAfterEnd";
+            }
+
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(terms, start, end, currentId))
+                return "assignmentTermPeriodsConflictDate";
+        },
+        autoform: {
+            type: "datetime-local",
+        }
+    },
+    end: {
+        type: Date,
+        label: "Assignment Term Period End Date",
+        custom: function () {
+            var start, end, currentId, terms;
+
+            //if (this.isUpdate) {
+            //    var task = AssignmentTerms.findOne(this.docId);
+            //    if (this.operator !== "$push") {
+            //        var termIndex = parseInt(this.key.replace("assignmentTermPeriods.", "").replace(".end", ""));
+            //        var item = task.timeSlots[termIndex];
+            //        currentId = item._id;
+            //    }
+            //}
+            //
+            //if (!this.field("assignmentTermPeriods").isSet || this.field("assignmentTermPeriods").operator === "$push") {
+            //    terms = task.timeSlots;
+            //} else
+                terms = this.field("assignmentTermPeriods").value;
+
+
+            //if (!this.field(this.key.replace("end", "") + 'start').isSet) {
+            //    start = new moment(item.start);
+            //} else
+                start = new moment(this.field(this.key.replace("end", "") + 'start').value);
+
+
+            if (!currentId)
+                currentId = this.field(this.key.replace("end", "") + '_id').value;
+
+            end = new moment(this.value);
+
+            if (end.isBefore(start)) {
+                return "endBeforeStart";
+            }
+
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(terms, start, end, currentId))
+                return "assignmentTermPeriodsConflictDate";
+        },
+        autoform: {
+            type: "datetime-local",
+        }
+    },
+    _id: {
+        type: SimpleSchema.RegEx.Id,
+        label: "TimeSlot _id",
+        autoValue: function () {
+            if(!this.isSet)
+                return new Meteor.Collection.ObjectID()._str;
+        },
+        autoform: {
+            type: "hidden",
+        }
+        // denyUpdate: true
+    }
+});
 Schemas.references.AssignmentTerms = new SimpleSchema({
     name: {
         type: String,
@@ -165,6 +266,12 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
         autoform: {
             type: "datetime-local"
         }
+    },
+    assignmentTermPeriods: {
+        type: [AssignmentTermPeriod],
+        label: "Assignment periods",
+        defaultValue: [],
+        optional: true
     },
     end: {
         type: Date,
