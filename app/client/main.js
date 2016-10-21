@@ -48,6 +48,21 @@ Meteor.startup(function () {
         }
     });
 
+
+    AutoForm.addHooks(null, {
+        before: {
+            update: function(doc) {
+                _.each(doc.$set, function(value, setter) {
+                    if (_.isArray(value)) {
+                        var newValue = _.compact(value);
+                        doc.$set[setter] = newValue;
+                    }
+                });
+                return doc;
+            }
+        }
+    });
+
     var accuracy = CalendarAccuracyEnum["1"];
     AssignmentServiceClient.setCalendarAccuracy(accuracy);
 

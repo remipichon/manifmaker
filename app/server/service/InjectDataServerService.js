@@ -418,8 +418,26 @@ export class InjectDataServerService {
         });
         AssignmentTerms.insert({
             name: "Terms 3",
-            start: this._getDateFromDate(15, 5 - 1),
-            end: this._getDateFromDate(27, 5 - 1)
+            start: this._getDateFromDateAndHourMinute(2016,3,10, 0,0),
+            end: this._getDateFromDateAndHourMinute(2016,3,20, 0,0),
+            assignmentTermPeriods: [
+                {
+                    start: this._getDateFromDateAndHourMinute(2016,3,10, 6,0),
+                    end:this._getDateFromDateAndHourMinute(2016,3,10, 10,0),
+                },
+                {
+                    start: this._getDateFromDateAndHourMinute(2016,3,11, 6,0),
+                    end:this._getDateFromDateAndHourMinute(2016,3,11, 10,0),
+                },
+                {
+                    start: this._getDateFromDateAndHourMinute(2016,3,12, 6,0),
+                    end:this._getDateFromDateAndHourMinute(2016,3,12, 10,0),
+                },
+                {
+                    start: this._getDateFromDateAndHourMinute(2016,3,13, 12,0),
+                    end:this._getDateFromDateAndHourMinute(2016,3,19, 12,0),
+                }
+            ]
         });
 
         console.info("inject Tasks");
@@ -756,6 +774,13 @@ export class InjectDataServerService {
         year = year || now.getYear();
         month = month || now.getMonth();
         return new Date(year, month, day, 0, 0, 0);
+    }
+
+    static _getDateFromDateAndHourMinute(year, month, day,hour = 0, minute = 0) {
+        var now = new Date();
+        year = year || now.getYear();
+        month = month || now.getMonth();
+        return new Date(year, month, day, hour, minute, 0);
     }
 
     static _updateTaskEquipmentQuantity(taskId, equipmentId, quantity) {

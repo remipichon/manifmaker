@@ -161,31 +161,16 @@ AssignmentTermPeriod = new SimpleSchema({
         custom: function () {
             var start, end, currentId, terms;
 
-            //if (this.isUpdate) {
-            //    var task = AssignmentTerms.findOne(this.docId);
-            //    if (this.operator !== "$push") {
-            //        var termIndex = parseInt(this.key.replace("assignmentTermPeriods.", "").replace(".start", ""));
-            //        var item = task.timeSlots[termIndex];
-            //        currentId = item._id;
-            //    }
-            //}
-
-            //if (!this.field("assignmentTermPeriods").isSet || this.field("assignmentTermPeriods").operator === "$push") {
-            //    terms = task.timeSlots;
-            //} else
-                terms = this.field("assignmentTermPeriods").value;
-
-
-            //if (!this.field(this.key.replace("start", "") + 'end').isSet) {
-            //    end = new moment(item.end);
-            //} else
-                end = new moment(this.field(this.key.replace("start", "") + 'end').value);
-
+            terms = _.compact(this.field("assignmentTermPeriods").value);
+            end = new moment(this.field(this.key.replace("start", "") + 'end').value);
 
             if (!currentId)
                 currentId = this.field(this.key.replace("start", "") + '_id').value;
 
             start = new moment(this.value);
+            var termStart = this.field("start").value;
+            if(new moment(start).isBefore(termStart))
+                return "periodStartBeforeTerm";
 
             if (start.isAfter(end)) {
                 return "startAfterEnd";
@@ -204,31 +189,16 @@ AssignmentTermPeriod = new SimpleSchema({
         custom: function () {
             var start, end, currentId, terms;
 
-            //if (this.isUpdate) {
-            //    var task = AssignmentTerms.findOne(this.docId);
-            //    if (this.operator !== "$push") {
-            //        var termIndex = parseInt(this.key.replace("assignmentTermPeriods.", "").replace(".end", ""));
-            //        var item = task.timeSlots[termIndex];
-            //        currentId = item._id;
-            //    }
-            //}
-            //
-            //if (!this.field("assignmentTermPeriods").isSet || this.field("assignmentTermPeriods").operator === "$push") {
-            //    terms = task.timeSlots;
-            //} else
-                terms = this.field("assignmentTermPeriods").value;
-
-
-            //if (!this.field(this.key.replace("end", "") + 'start').isSet) {
-            //    start = new moment(item.start);
-            //} else
-                start = new moment(this.field(this.key.replace("end", "") + 'start').value);
-
+            terms = _.compact(this.field("assignmentTermPeriods").value);
+            start = new moment(this.field(this.key.replace("end", "") + 'start').value);
 
             if (!currentId)
                 currentId = this.field(this.key.replace("end", "") + '_id').value;
 
             end = new moment(this.value);
+            var termEnd = this.field("end").value;
+            if(new moment(end).isAfter(termEnd))
+                return "periodEndAfterTerm";
 
             if (end.isBefore(start)) {
                 return "endBeforeStart";
