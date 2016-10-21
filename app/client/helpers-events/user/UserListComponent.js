@@ -1,4 +1,5 @@
 import {TeamService} from "../../../both/service/TeamService"
+import {UserServiceClient} from "../../../client/service/UserServiceClient"
 
 class UserListComponent extends BlazeComponent {
     template() {
@@ -27,6 +28,14 @@ class UserListComponent extends BlazeComponent {
         var _id = $(event.target).val();
         this.userListNameFilter.set(_id);
     }
+
+    beforeRemove() {
+        var user = this.currentData();
+        return function () {
+            UserServiceClient.beforeRemoveHook(user);
+        }
+    }
+
 
     onCreated() {
         this.userListTeamFilter = new ReactiveTable.Filter("user-list-team-filter", ["teams"]);

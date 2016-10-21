@@ -1,3 +1,5 @@
+import {UserServiceClient} from "../../../client/service/UserServiceClient"
+
 class UpdateUserComponent extends BlazeComponent {
 
     self() {
@@ -68,27 +70,7 @@ class UpdateUserComponent extends BlazeComponent {
     beforeRemove() {
         var user = this.currentData();
         return function () {
-            var assignmentsCount = user.assignments.length;
-            if (assignmentsCount === 0)
-                bootbox.confirm("You are about to delete a user, are you sure ?",_.bind(function (result) {
-                            if (result) {
-                                Router.go("/users");
-                                this.remove();
-                            }
-                        }, this)
-                );
-            else
-                bootbox.alert({
-                        title: `You can not delete this user`,
-                        message: `The users has already ${assignmentsCount} assignments and can not be deleted. You must first remove each of his assignments`,
-                        callback: _.bind(function (result) {
-                            if (result) {
-                                Router.go("/users");
-                                this.remove();
-                            }
-                        }, this)
-                    }
-                );
+            UserServiceClient.beforeRemoveHook(user);
         }
     }
 
