@@ -25,10 +25,16 @@ export class UserServiceClient {
                         }
                     }, this)
                 );
-            else
+            else {
+                var _id = Meteor.userId();
+                var hasAssignmentRole = Roles.userIsInRole(_id, RolesEnum.ASSIGNMENTTASKUSER);
+
+                var linkMessage = `<a href="/assignment/userToTask/${user._id}">Access assignment page to remove assignment</a>`;
+
                 bootbox.alert({
                         title: `You can not delete this user`,
-                        message: `The users has already ${assignmentsCount} assignments and can not be deleted. You must first remove each of his assignments`,
+                        message: `<p>The users has already ${assignmentsCount} assignments and can not be deleted. You must first remove each of his assignments</p>
+                        <p>${(hasAssignmentRole)? linkMessage: "You do not have access right to remove assignments. User can not be deleted."}</p>`,
                         callback: _.bind(function (result) {
                             if (result) {
                                 Router.go("/users");
@@ -37,5 +43,6 @@ export class UserServiceClient {
                         }, this)
                     }
                 );
+            }
     }
 }
