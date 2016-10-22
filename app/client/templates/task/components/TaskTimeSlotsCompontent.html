@@ -222,8 +222,7 @@
     <div class="creneau {{state}} {{#if equals currentTimeSlot._id this._id}}currentTimeSlot{{/if}}" data-timeslotdid="{{this._id}}" style="height: {{height}};">
         <div class="on-calendar">
 
-            <div class="col-xs-2 no-padding creneau-userId" title="
-                {{getUserIdNeedCount _id}} particular {{#if isMore (getUserIdNeedCount _id) 1}}people are{{else}}person is{{/if}} needed">
+            <div class="col-xs-2 no-padding creneau-userId" title="{{getUserIdNeedCount _id}} particular {{#if isMore (getUserIdNeedCount _id) 1}}people are{{else}}person is{{/if}} needed">
                 <p class="no-padding creneau-header">
                 <div>{{getUserIdNeedCount _id}}</div>
                 </p>
@@ -235,8 +234,7 @@
             <div class="col-xs-8 no-padding creneau-to-affect">
                 {{#each getPeopleNeededMergedWithoutUserId _id}}
                     {{#unless userId}}
-                        <p class="col-xs-2 no-padding people-need" title="
-                            {{count}} need{{#unless equals count 1}}s{{/unless}} of :{{#if teamId}} a particular team{{#if skills}}, {{/if}}{{/if}}{{#each skills}}{{#unless equals @index 0}}and {{/unless}} {{skillLabel}} (skill) {{/each}}">
+                        <p class="col-xs-2 no-padding people-need" title="{{count}} need{{#unless equals count 1}}s{{/unless}} of{{#if teamId}} a team{{#if skills}} and{{/if}}{{/if}}{{#if skills}}{{#if equals skills.length 1}} a skill{{else}} {{skills.length}} skills{{/if}}{{/if}}">
 
                             <p class="col-xs-12 no-padding creneau-header">
                                 {{#if isMore 5 @index}}
@@ -263,9 +261,7 @@
                 {{/each}}
 
             </div>
-            <div class="col-xs-2 no-padding creneau-affected" title="
-                {{getAlreadyAssignedPeopleNeedCount _id}} {{#if isMore (getAlreadyAssignedPeopleNeedCount _id) 1}}people{{else}}person{{/if}} already affected
-                ">
+            <div class="col-xs-2 no-padding creneau-affected" title="{{getAlreadyAssignedPeopleNeedCount _id}} {{#if isMore (getAlreadyAssignedPeopleNeedCount _id) 1}}people{{else}}person{{/if}} already affected">
                 <p class="no-padding creneau-header">
                     <div>{{getAlreadyAssignedPeopleNeedCount _id}}</div>
                 </p>

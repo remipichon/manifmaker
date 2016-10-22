@@ -32,12 +32,12 @@
                 </div>
                 <div class="row">
                     {{#each equipments this}}
-                        <div class="col-md-6">
-                            <div class="col-md-4">
+                        <div class="col-lg-6">
+                            <div class="col-lg-5 input-min-4-digits">
                                 {{> afQuickField name=autoformNameForQuantity disabled=isEquipmentsReadOnly}}
                                 {{> afQuickField name=autoformNameForEquipmentId disabled=isEquipmentsReadOnly}}
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-lg-7">
                                 {{name}}
                             </div>
                         </div>
