@@ -55,7 +55,7 @@ class TaskTimeSlotsComponent extends BlazeComponent{
                 "click .add-time-slot .add-button": this.addTimeSlot,
                 "click .add-time-slot .clear-button": this.clearTimeSlot,
                 "click .add-time-slot .done-button": this.submitNewTimeSlot,
-                "click .add-time-slot .delete-button": this.deleteTimeSlot,
+                "click .add-time-slot .delete-button": this.beforeDeleteTimeSlot,
                 "click .add-time-slot .duplicate-button": this.duplicateTimeSlot,
 
                 //ADD PEOPLENEED SECTION
@@ -147,6 +147,14 @@ class TaskTimeSlotsComponent extends BlazeComponent{
 
     isTimeSlotsReadOnly() {
         return this.data().readOnly || !this._isTimeSlotsUpdateAllowed();
+    }
+
+    beforeDeleteTimeSlot(){
+        bootbox.confirm("You are about to delete a time slot, are you sure ?", _.bind(function(result){
+            if(result){
+                this.deleteTimeSlot();
+            }
+        },this));
     }
 
     deleteTimeSlot() {
