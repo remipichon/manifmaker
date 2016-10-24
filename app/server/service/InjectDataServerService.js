@@ -484,8 +484,8 @@ export class InjectDataServerService {
                     ],
                 },
                 {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(14),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 10,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,13, 14,0),
                     peopleNeeded: [
                         {
                             userId: user2Id
@@ -576,8 +576,8 @@ export class InjectDataServerService {
             masterId: user2Id,
             timeSlots: [
                 {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(12),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 10,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,13, 12,0),
                     peopleNeeded: [
                         {
                             teamId: team2Id,
@@ -634,8 +634,8 @@ export class InjectDataServerService {
             masterId: user2Id,
             timeSlots: [
                 {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(12),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 10,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,13, 12,0),
                     peopleNeeded: [
                         {
                             teamId: team1Id,
@@ -693,8 +693,8 @@ export class InjectDataServerService {
             taskGroupId : taskGroup1,
             timeSlots: [
                 {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(12),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 10,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,13, 12,0),
                     peopleNeeded: [
                         {
                             teamId: team1Id,
@@ -703,8 +703,8 @@ export class InjectDataServerService {
                     ]
                 },
                 {
-                    start: this._getDateFromDateAndTime(13,22),
-                    end: this._getDateFromDateAndTime(14,2),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 22,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,14, 2,0),
                     peopleNeeded: [
                         {
                             skills: [skill1Id]
@@ -712,8 +712,8 @@ export class InjectDataServerService {
                     ]
                 },
                 {
-                    start: this._getDateFromDateAndTime(20,22),
-                    end: this._getDateFromDateAndTime(22,2),
+                    start: this._getDateFromDateAndHourMinute(2016,5,20, 22,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,22, 2,0),
                     peopleNeeded: [
                         {
                             skills: [skill1Id]

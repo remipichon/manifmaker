@@ -10,5 +10,18 @@ Template.commonTeamListDropdown.events({
     }
 });
 
+Template.collectionReferenceButtons.helpers({
+    onError: function(){
+        return function(error){
+            sAlert.error("An error occurred : "+error);
+        }
+    },
+    onSuccess: function(){
+        return function(){
+            sAlert.info("Delete succeed");
+        }
+    }
+});
+
 
 
