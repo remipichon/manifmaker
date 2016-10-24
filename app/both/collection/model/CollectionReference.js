@@ -233,6 +233,23 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     start: {
         type: Date,
         label: "Assignment terms Start",
+        custom: function () {
+            var start, end, currentId, terms;
+
+            terms = AssignmentTerms.find().fetch();
+            end = new moment(this.field(this.key.replace("start", "") + 'end').value);
+
+            currentId = this.docId;
+
+            start = new moment(this.value);
+
+            if (start.isAfter(end)) {
+                return "startAfterEnd";
+            }
+
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(terms, start, end, currentId))
+                return "assignmentTermsConflictDate";
+        },
         autoform: {
             type: "datetime-local"
         }
@@ -246,6 +263,23 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     end: {
         type: Date,
         label: "Assignment terms  End (not include)",
+        custom: function () {
+            var start, end, currentId, terms;
+
+            terms = AssignmentTerms.find().fetch();
+            start = new moment(this.field(this.key.replace("end", "") + 'start').value);
+
+            currentId = this.docId;
+
+            end = new moment(this.value);
+
+            if (end.isBefore(start)) {
+                return "endBeforeStart";
+            }
+
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(terms, start, end, currentId))
+                return "assignmentTermsConflictDate";
+        },
         autoform: {
             type: "datetime-local"
         }
