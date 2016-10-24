@@ -336,90 +336,26 @@ export class InjectDataServerService {
         //task groups
         var taskGroup1 = TaskGroups.insert({name: "taskGroup1", teamId: team1Id});
 
-        //users
-        console.info("inject Users");
-        var softGroupRoleId = GroupRoles.findOne({name: "soft"})._id;
-        var user1Id = this.createAccountAndUser("user1", "user1@yopmail.com", "user1", softGroupRoleId);
-        var user2Id = this.createAccountAndUser("user2", "user2@yopmail.com", "user2", softGroupRoleId);
-        var user3Id = this.createAccountAndUser("user3", "user3@yopmail.com", "user3", softGroupRoleId);
-        var user4Id = this.createAccountAndUser("user4", "user4@yopmail.com", "user4", softGroupRoleId);
-        Users.update(user1Id, {
-            $set: {
-                teams: [team1Id],
-                skills: [skill1Id],
-                availabilities: [
-                    {
-                        start: this._getDateFromTime(2),
-                        end: this._getDateFromTime(14)
-                    }
-                ]
-            }
-        });
-        Users.update(user2Id, {
-            $set: {
-                teams: [team2Id, team3Id],
-                skills: [skill2Id],
-                availabilities: [
-                    {
-                        start: this._getDateFromTime(2),
-                        end: this._getDateFromTime(16)
-                    }
-                ]
-            }
-        });
-        Users.update(user3Id, {
-            $set: {
-                //teams: [team3Id],
-                skills: [skill2Id, skill3Id],
-                availabilities: [
-                    {
-                        start: this._getDateFromTime(10),
-                        end: this._getDateFromTime(14)
-                    },
-                    {
-                        start: this._getDateFromTime(14),
-                        end: this._getDateFromTime(18)
-                    }
-                ]
-            }
-        });
-        Users.update(user4Id, {
-            $set: {
-                //teams: [team3Id],
-                skills: [skill2Id, skill3Id, skill1Id, skill4Id],
-                availabilities: [
-                    {
-                        start: this._getDateFromTime(10),
-                        end: this._getDateFromTime(14)
-                    },
-                    {
-                        start: this._getDateFromDateAndTime(13,16),
-                        end: this._getDateFromDateAndTime(14,10)
-                    },
-                    {
-                        start: this._getDateFromDateAndTime(20,12),
-                        end: this._getDateFromDateAndTime(23,12)
-                    }
-                ]
-            }
-        });
 
         //assignmentCalendarDay
         console.info("inject AssignmentTerms");
         AssignmentTerms.insert({
             name: "Terms 1",
-            start: this._getDateFromDate(13, 5 - 1),
-            end: this._getDateFromDate(15, 5 - 1)
+            start: this._getDateFromDateAndHourMinute(2016,5,13, 0,0),
+            end: this._getDateFromDateAndHourMinute(2016,5,15, 0,0),
+            teams: [team1Id,team2Id,team3Id]
         });
         AssignmentTerms.insert({
             name: "Terms 2",
-            start: this._getDateFromDate(10, 5 - 1),
-            end: this._getDateFromDate(11, 5 - 1)
+            start: this._getDateFromDateAndHourMinute(2016,5,10, 0,0),
+            end: this._getDateFromDateAndHourMinute(2016,5,11, 0,0),
+            teams: [team2Id]
         });
         AssignmentTerms.insert({
             name: "Terms 3",
             start: this._getDateFromDateAndHourMinute(2016,3,10, 0,0),
             end: this._getDateFromDateAndHourMinute(2016,3,20, 0,0),
+            teams: [team3Id,team2Id],
             assignmentTermPeriods: [
                 {
                     start: this._getDateFromDateAndHourMinute(2016,3,10, 6,0),
@@ -439,6 +375,93 @@ export class InjectDataServerService {
                 }
             ]
         });
+
+        //users
+        console.info("inject Users");
+        var softGroupRoleId = GroupRoles.findOne({name: "soft"})._id;
+        var user1Id = this.createAccountAndUser("user1", "user1@yopmail.com", "user1", softGroupRoleId);
+        var user2Id = this.createAccountAndUser("user2", "user2@yopmail.com", "user2", softGroupRoleId);
+        var user3Id = this.createAccountAndUser("user3", "user3@yopmail.com", "user3", softGroupRoleId);
+        var user4Id = this.createAccountAndUser("user4", "user4@yopmail.com", "user4", softGroupRoleId);
+
+        Users.update(user1Id, {
+            $set: {
+                teams: [team1Id],
+                skills: [skill1Id]
+            }
+        });
+        Users.update(user1Id, {
+            $set: {
+                availabilities: [
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016, 5, 13, 2, 0),
+                        end: this._getDateFromDateAndHourMinute(2016, 5, 13, 14, 0),
+                    }
+                ]
+            }
+        });
+        Users.update(user2Id, {
+            $set: {
+                teams: [team2Id, team3Id],
+                skills: [skill2Id]
+            }
+        });
+        Users.update(user2Id, {
+            $set: {
+                availabilities: [
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,5,10, 2,0),
+                        end: this._getDateFromDateAndHourMinute(2016,5,10, 16,0)
+                    }
+                ]
+            }
+        });
+        Users.update(user3Id, {
+            $set: {
+                teams: [team3Id],
+                skills: [skill2Id, skill3Id]
+            }
+        });
+        Users.update(user3Id, {
+            $set: {
+                availabilities: [
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,3,10, 10,0),
+                        end: this._getDateFromDateAndHourMinute(2016,3,10, 14,0)
+                    },
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,5,13, 15,0),
+                        end: this._getDateFromDateAndHourMinute(2016,5,13, 18,0)
+                    }
+                ]
+            }
+        });
+        Users.update(user4Id, {
+            $set: {
+                teams: [team3Id],
+                skills: [skill2Id, skill3Id, skill1Id, skill4Id]
+            }
+        });
+        Users.update(user4Id, {
+            $set: {
+                availabilities: [
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,3,10, 6,0),
+                        end:this._getDateFromDateAndHourMinute(2016,3,10, 10,0),
+                    },
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,3,11, 6,0),
+                        end:this._getDateFromDateAndHourMinute(2016,3,11, 10,0),
+                    },
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,3,12, 6,0),
+                        end:this._getDateFromDateAndHourMinute(2016,3,12, 10,0),
+                    }
+                ]
+            }
+        });
+
+
 
         console.info("inject Tasks");
         var now = new Date();

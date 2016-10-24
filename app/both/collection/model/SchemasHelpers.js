@@ -18,7 +18,8 @@ SimpleSchema.messages({
     onePeopleNeedUserIdPerTimeSlot: "A time slot can not have more than once the same need for a user id",
     updateNotAllowed: "[label] can not be updated as it has is being validated or has already been validated",
     peopleNeededUpdateNotAllowed: "[label] can not be update as task time slots are not ready for assignment",
-    peopleNeedUserIdUnique: "There can ba only one people need requiring a specific user by time slot"
+    peopleNeedUserIdUnique: "There can ba only one people need requiring a specific user by time slot",
+    availabilitiesNoInTerm: "User does not have access to any assignment terms enclosing given availability."
 });
 
 Schemas.helpers = {};

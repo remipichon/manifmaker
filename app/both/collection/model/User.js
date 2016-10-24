@@ -9,6 +9,23 @@ Schemas.UserAvailabilities = new SimpleSchema({
         custom: function () {
             if (new moment(this.value).isAfter(new moment(this.field(this.key.replace("start", "") + "end").value)))
                 return "startAfterEnd";
+
+            var userTeams = Users.findOne(this.docId).teams;
+            var start = this.value;
+
+            if (!AssignmentTerms.findOne({
+                    teams: {
+                        $elemMatch: {
+                            $in: userTeams
+                        }
+                    },
+                        start: {
+                            $lte: start
+                        }
+                })
+            )
+                return "availabilitiesNoInTerm"
+
         },
         autoform: {
             type: "datetime-local",
@@ -20,6 +37,22 @@ Schemas.UserAvailabilities = new SimpleSchema({
         custom: function () {
             if (new moment(this.value).isSame(new moment(this.field(this.key.replace("end", "") + "start").value)))
                 return "endBeforeStart"
+
+            var userTeams = Users.findOne(this.docId).teams;
+            var end = this.value;
+
+            if (!AssignmentTerms.findOne({
+                    teams: {
+                        $elemMatch: {
+                            $in: userTeams
+                        }
+                    },
+                    end: {
+                        $gte: end
+                    }
+                })
+            )
+                return "availabilitiesNoInTerm"
         },
         autoform: {
             type: "datetime-local",
