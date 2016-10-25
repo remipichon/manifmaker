@@ -250,6 +250,8 @@ Schemas.TimeSlot = new SimpleSchema({
 
             if (!TimeSlotService.areTimeSlotOverlappingWithQuery(timeSlots, start, end, currentId))
                 return "timeSlotConflictDate";
+
+            return TimeSlotService.timeSlotIsWithinAssignmentTerm(start,end);
         },
         autoform: {
             type: "datetime-local",
@@ -296,6 +298,8 @@ Schemas.TimeSlot = new SimpleSchema({
 
             if (!TimeSlotService.areTimeSlotOverlappingWithQuery(timeSlots,start,end,currentId))
                 return "timeSlotConflictDate";
+
+            return TimeSlotService.timeSlotIsWithinAssignmentTerm(start,end);
         },
         autoform: {
             type: "datetime-local",

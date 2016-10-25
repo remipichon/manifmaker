@@ -175,4 +175,48 @@ export class TimeSlotService {
             }
 
         }
+
+        static timeSlotIsWithinAssignmentTerm(start, end){
+            if (!AssignmentTerms.findOne({
+                    $and:[
+                        {
+                            start: {
+                                $lte: start.toDate()
+                            }
+                        },
+                        {
+                            end: {
+                                $gte: start.toDate()
+                            }
+                        }
+                    ],
+                    $or: [
+                        {
+                            assignmentTermPeriods: {
+                                $size: 0
+                            }
+                        },
+                        {
+                            assignmentTermPeriods: {
+                                $elemMatch: {
+                                    $and: [
+                                        {
+                                            start: {
+                                                $lte: start.toDate()
+                                            }
+                                        },
+                                        {
+                                            end: {
+                                                $gte: end.toDate()
+                                            }
+                                        }
+                                    ],
+                                }
+                            }
+                        }
+                    ]
+                })
+            )
+                return "timeSlotNotWithinTerms"
+        }
     }
