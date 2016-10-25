@@ -13,8 +13,8 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
     events() {
         return super.events().concat({
             'mousedown .quart_heure:not(.no-action)': this.startSelectAvailability,
-            'mouseenter .quart_heure:not(.no-action)': this.selectAvailability,
-            'mouseup .quart_heure:not(.no-action)': this.endSelectAvailability,
+            'mouseenter .quart_heure': this.selectAvailability,
+            'mouseup .quart_heure': this.endSelectAvailability,
             'mouseleave .jours': this.resetSelect,
             'dblclick .heure': this.removeAvailability,
         });
@@ -30,7 +30,7 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
     selectAvailability(event){
         event.stopPropagation();
         if(!this.startDate.get()) return;
-        var date = new moment($(event.target).attr("hours"));
+        var date = new moment($(event.target).parent().attr("hours"));
         this.hasDragged = true;
         this.tempEndDate.set(date);
     }
@@ -97,6 +97,61 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
         if(current.isBetween(start,end) || current.isSame(start))
             return "selected";
         return ""
+    }
+
+    enableAction(date, timeHours){
+
+        var user = this.parentComponent().parentComponent().data();
+        var userTeams = user.teams;
+
+        var endDate;
+
+        var startDate = this.getCalendarDateTime(date, timeHours, 0);
+
+        endDate = new moment(startDate).add(1,"hour");
+        console.log(startDate.toDate(),endDate.toDate())
+
+
+        if (AssignmentTerms.findOne({
+                teams: {
+                    $elemMatch: {
+                        $in: userTeams
+                    }
+                },
+                $and:[
+                    {
+                        start: {
+                            $lte: startDate.toDate()
+                        }
+                    },
+                    {
+                        end: {
+                            $gte: endDate.toDate()
+                        }
+                    }
+                ],
+                assignmentTermPeriods: {
+                    $elemMatch:{
+                        $and:[
+                            {
+                                start: {
+                                    $lte: startDate.toDate()
+                                }
+                            },
+                            {
+                                end: {
+                                    $gte: endDate.toDate()
+                                }
+                            }
+                        ],
+                    }
+                }
+            })
+        )
+            return true;
+
+        return false;
+
     }
 
 

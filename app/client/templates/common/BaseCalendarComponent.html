@@ -17,7 +17,7 @@
                     {{#each hours}}
                         <div class="heure {{isSelected ../date date}}" hours="{{hoursDate ../date}}">
                             {{#each quarter}}
-                                <div class="quart_heure {{quarterHeight}} no-action"
+                                <div class="quart_heure {{quarterHeight}} {{#unless enableAction ../../date ../date}}no-action{{/unless}}"
                                      quarter="{{quarterDate ../../date ../date}}">
                                     {{#each timeSlot  ../../date ../date this}}
                                         {{>Template.dynamic template=../../../../timeSlotTemplate}}

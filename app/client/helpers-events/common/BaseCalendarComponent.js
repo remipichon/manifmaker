@@ -2,6 +2,11 @@ import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/
 
 export class BaseCalendarComponent extends BlazeComponent{
 
+    enableAction(){
+        //to implement
+        return true;
+    }
+
     creanOnClick() {
         //to implement
     }
