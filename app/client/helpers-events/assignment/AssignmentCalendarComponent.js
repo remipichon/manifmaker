@@ -39,6 +39,56 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         return Teams.findOne({_id: this.currentData().teamId}).name;
     }
 
+    enableAction(date, timeHours){
+        var startDate = this.getCalendarDateTime(date, timeHours, 0);
+        var endDate = new moment(startDate).add(1,"hour");
+
+        if (AssignmentTerms.findOne({
+                $and:[
+                    {
+                        start: {
+                            $lte: startDate.toDate()
+                        }
+                    },
+                    {
+                        end: {
+                            $gte: endDate.toDate()
+                        }
+                    }
+                ],
+                $or: [
+                    {
+                        assignmentTermPeriods: {
+                            $size: 0
+                        }
+                    },
+                    {
+                        assignmentTermPeriods: {
+                            $elemMatch: {
+                                $and: [
+                                    {
+                                        start: {
+                                            $lte: startDate.toDate()
+                                        }
+                                    },
+                                    {
+                                        end: {
+                                            $gte: endDate.toDate()
+                                        }
+                                    }
+                                ],
+                            }
+                        }
+                    }
+                ]
+            })
+        )
+            return true;
+
+        return false;
+
+    }
+
     //works for .heure et .quart d'heure
     isSelected(date, timeHours) {
         if (this.getCalendarDateTime(date, timeHours, 0).isSame(AssignmentReactiveVars.SelectedDate.get())) {

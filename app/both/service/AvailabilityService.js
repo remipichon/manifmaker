@@ -166,6 +166,7 @@ export class AvailabilityService {
 
             Users.update({_id: user._id}, {$set: {availabilities: availabilities}});
 
+            //TODO remove availability parts that are not part of an assignment term periods
 
             AvailabilityService.restoreAvailabilities(Users.findOne(user._id),start,end);
         }

@@ -100,17 +100,11 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
     }
 
     enableAction(date, timeHours){
-
         var user = this.parentComponent().parentComponent().data();
         var userTeams = user.teams;
 
-        var endDate;
-
         var startDate = this.getCalendarDateTime(date, timeHours, 0);
-
-        endDate = new moment(startDate).add(1,"hour");
-        console.log(startDate.toDate(),endDate.toDate())
-
+        var endDate = new moment(startDate).add(1,"hour");
 
         if (AssignmentTerms.findOne({
                 teams: {
@@ -118,7 +112,7 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
                         $in: userTeams
                     }
                 },
-                $and:[
+                $and: [
                     {
                         start: {
                             $lte: startDate.toDate()
@@ -130,28 +124,36 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
                         }
                     }
                 ],
-                assignmentTermPeriods: {
-                    $elemMatch:{
-                        $and:[
-                            {
-                                start: {
-                                    $lte: startDate.toDate()
-                                }
-                            },
-                            {
-                                end: {
-                                    $gte: endDate.toDate()
-                                }
+                $or: [
+                    {
+                        assignmentTermPeriods: {
+                            $size: 0
+                        }
+                    },
+                    {
+                        assignmentTermPeriods: {
+                            $elemMatch: {
+                                $and: [
+                                    {
+                                        start: {
+                                            $lte: startDate.toDate()
+                                        }
+                                    },
+                                    {
+                                        end: {
+                                            $gte: endDate.toDate()
+                                        }
+                                    }
+                                ],
                             }
-                        ],
+                        }
                     }
-                }
+                ]
             })
         )
             return true;
 
         return false;
-
     }
 
 

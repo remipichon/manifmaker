@@ -9,6 +9,56 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
      */
 
+    enableAction(date, timeHours){
+        var startDate = this.getCalendarDateTime(date, timeHours, 0);
+        var endDate = new moment(startDate).add(1,"hour");
+
+        if (AssignmentTerms.findOne({
+                $and:[
+                    {
+                        start: {
+                            $lte: startDate.toDate()
+                        }
+                    },
+                    {
+                        end: {
+                            $gte: endDate.toDate()
+                        }
+                    }
+                ],
+                $or: [
+                    {
+                        assignmentTermPeriods: {
+                            $size: 0
+                        }
+                    },
+                    {
+                        assignmentTermPeriods: {
+                            $elemMatch: {
+                                $and: [
+                                    {
+                                        start: {
+                                            $lte: startDate.toDate()
+                                        }
+                                    },
+                                    {
+                                        end: {
+                                            $gte: endDate.toDate()
+                                        }
+                                    }
+                                ],
+                            }
+                        }
+                    }
+                ]
+            })
+        )
+            return true;
+
+        return false;
+
+    }
+
     creanOnClick(e) {
         //to implement
         var _id = $(e.currentTarget).data("timeslotdid");
