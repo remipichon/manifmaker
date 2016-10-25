@@ -12,11 +12,11 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
 
     events() {
         return super.events().concat({
-            'mousedown .heure, .quart_heure"': this.startSelectAvailability,
-            'mouseenter .heure, .quart_heure"': this.selectAvailability,
-            'mouseup .heure, .quart_heure"': this.endSelectAvailability,
+            'mousedown .quart_heure:not(.no-action)': this.startSelectAvailability,
+            'mouseenter .quart_heure:not(.no-action)': this.selectAvailability,
+            'mouseup .quart_heure:not(.no-action)': this.endSelectAvailability,
             'mouseleave .jours': this.resetSelect,
-            'dblclick .heure': this.removeAvailability
+            'dblclick .heure': this.removeAvailability,
         });
     }
 

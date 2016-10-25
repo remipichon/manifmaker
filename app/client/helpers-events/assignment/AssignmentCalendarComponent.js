@@ -14,6 +14,15 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
 
+    events() {
+        return super.events().concat({
+            "click .on-calendar .peopleNeed": this.peopleNeedOnClick,
+            "click .on-calendar .peopleNeed.assigned": this.peopleNeedAssignedOnClick,
+        })
+    }
+
+
+
     labelSkills() {
         return Skills.findOne({_id: this.currentData().toString()}).label;
     }
@@ -147,6 +156,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 break;
         }
     }
+
 
     //userToTask (we click on a creneau, not on the entire availability)
     quartHeureOnClick(event) {

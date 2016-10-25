@@ -1,17 +1,6 @@
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
 export class BaseCalendarComponent extends BlazeComponent{
-    peopleNeedOnClick() {
-        //to implement
-    }
-
-    peopleNeedAssignedOnClick(event) {
-        //to implement
-    }
-
-    peopleNeedOnClick(event){
-        //to implement
-    }
 
     creanOnClick() {
         //to implement
@@ -19,6 +8,10 @@ export class BaseCalendarComponent extends BlazeComponent{
 
     quartHeureOnClick(event) {
         //to implement
+    }
+
+    quartHeureNoActionOnClick(event) {
+            sAlert.info("There is no action at this date, please select another one")
     }
 
     timeSlot(date, timeHours, idTask) {
@@ -36,10 +29,8 @@ export class BaseCalendarComponent extends BlazeComponent{
     events() {
         return [
             {
-                "click .on-calendar .peopleNeed": this.peopleNeedOnClick,
-                "click .heure, .quart_heure": this.quartHeureOnClick,
-                "click .on-calendar .peopleNeed.assigned": this.peopleNeedAssignedOnClick,
-                "click .on-calendar .peopleNeed": this.peopleNeedOnClick,
+                "click  .quart_heure:not(.no-action)": this.quartHeureOnClick,
+                "click  .quart_heure.no-action": this.quartHeureNoActionOnClick,
                 "click .creneau": this.creanOnClick
             }
         ]

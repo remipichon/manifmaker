@@ -9,25 +9,12 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
      */
 
-    peopleNeedOnClick() {
-        //to implement
-    }
-
-    peopleNeedAssignedOnClick(event) {
-        //to implement
-    }
-
     creanOnClick(e) {
         //to implement
         var _id = $(e.currentTarget).data("timeslotdid");
         this.data().parentInstance.updatedTimeSlotId.set(_id);
         this.data().parentInstance.isTimeSlotUpdated.set(true);
     }
-
-    quartHeureOnClick(event) {
-        //to implement
-    }
-
 
     timeSlot(date, timeHours, idTask) {
         var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
