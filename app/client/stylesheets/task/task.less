@@ -58,25 +58,6 @@
     }
   }
 
-  .timeslots {
-    .calendar {
-      .creneau {
-        &hover {
-        }
-        .on-calendar {
-          height: 100%;
-          .people-need { //seperate people need on time slot on calendar view
-            border-right: solid black 1px;
-            height: 100%;
-          }
-          .people-need-assigned { //seperate people need on time slot on calendar view
-            border-right: solid black 1px;
-            height: 100%;
-          }
-        }
-      }
-    }
-  }
 }
 
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
@@ -84,7 +65,9 @@
   vertical-align : middle;
 }
 
-
+.input-min-4-digits .form-group{
+  min-width : 75px;
+}
 
 .task-list-filter-wrapper && .task-group-list-filter-wrapper{
   margin-bottom:20px;

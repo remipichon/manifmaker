@@ -42,9 +42,19 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
     getPeopleNeededMerged(timeSlotId){
         return this.data().parentInstance.getPeopleNeededMerged(timeSlotId);
     }
+    getPeopleNeededMergedWithoutUserId(timeSlotId){
+        return this.data().parentInstance.getPeopleNeededMergedWithoutUserId(timeSlotId);
+    }
 
     getAlreadyAssignedPeopleNeedCount(timeSlotId){
         return this.data().parentInstance.getAlreadyAssignedPeopleNeedCount(timeSlotId);
+    }
+    getUserIdNeedCount(timeSlotId){
+        return this.data().parentInstance.getUserIdNeedCount(timeSlotId);
+    }
+
+    currentTimeSlot() {
+        return this.data().parentInstance.currentTimeSlot();
     }
 }
 

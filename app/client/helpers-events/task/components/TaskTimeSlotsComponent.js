@@ -55,7 +55,7 @@ class TaskTimeSlotsComponent extends BlazeComponent{
                 "click .add-time-slot .add-button": this.addTimeSlot,
                 "click .add-time-slot .clear-button": this.clearTimeSlot,
                 "click .add-time-slot .done-button": this.submitNewTimeSlot,
-                "click .add-time-slot .delete-button": this.deleteTimeSlot,
+                "click .add-time-slot .delete-button": this.beforeDeleteTimeSlot,
                 "click .add-time-slot .duplicate-button": this.duplicateTimeSlot,
 
                 //ADD PEOPLENEED SECTION
@@ -147,6 +147,14 @@ class TaskTimeSlotsComponent extends BlazeComponent{
 
     isTimeSlotsReadOnly() {
         return this.data().readOnly || !this._isTimeSlotsUpdateAllowed();
+    }
+
+    beforeDeleteTimeSlot(){
+        bootbox.confirm("You are about to delete a time slot, are you sure ?", _.bind(function(result){
+            if(result){
+                this.deleteTimeSlot();
+            }
+        },this));
     }
 
     deleteTimeSlot() {
@@ -295,6 +303,18 @@ class TaskTimeSlotsComponent extends BlazeComponent{
         return peopleNeeded.length;
     }
 
+    getUserIdNeedCount(timeSlotId) {
+        var peopleNeeded = _.findWhere(this.taskData().timeSlots, {
+            _id: timeSlotId
+        }).peopleNeeded;
+
+        peopleNeeded = _.reject(peopleNeeded, (peopleNeed) => {
+            return peopleNeed.userId === null;
+        });
+
+        return peopleNeeded.length;
+    }
+
     getPeopleNeededMerged(timeSlotId, fetchAlreadyAssigned) {
         var peopleNeeded = _.findWhere(this.taskData().timeSlots, {
             _id: timeSlotId
@@ -314,6 +334,50 @@ class TaskTimeSlotsComponent extends BlazeComponent{
         var peopleNeededGroupBy = _.groupBy(peopleNeeded, function (peopleNeed) {
             return peopleNeed.userId + peopleNeed.skills + peopleNeed.teamId
         });
+
+        var bulkIds = {};
+
+        //take only the first one, doesn't really matter as their are identical
+        var peopleNeededMerged = _.map(peopleNeededGroupBy, function (groupBy) {
+            //use first one as a key for the bulk ids
+            bulkIds[groupBy[0]._id] = _.map(groupBy, function (peopleNeed) {
+                return peopleNeed._id
+            });
+            return _.extend(groupBy[0], {count: groupBy.length});
+        });
+
+        if (fetchAlreadyAssigned)
+            this.bulkAssignedIds = bulkIds;
+        else
+            this.bulkIds = bulkIds;
+
+        return peopleNeededMerged;
+
+    }
+    getPeopleNeededMergedWithoutUserId(timeSlotId, fetchAlreadyAssigned) {
+        var peopleNeeded = _.findWhere(this.taskData().timeSlots, {
+            _id: timeSlotId
+        }).peopleNeeded;
+
+        if(fetchAlreadyAssigned){
+            peopleNeeded = _.reject(peopleNeeded, (peopleNeed) => {
+                return peopleNeed.assignedUserId === null;
+            });
+        } else {
+            peopleNeeded  = _.reject(peopleNeeded, (peopleNeed) => {
+                return peopleNeed.assignedUserId !== null;
+            });
+        }
+
+        peopleNeeded = _.reject(peopleNeeded, (peopleNeed) => {
+            return peopleNeed.userId !== null;
+        });
+
+        //group by identical people need
+        var peopleNeededGroupBy = _.groupBy(peopleNeeded, function (peopleNeed) {
+            return peopleNeed.userId + peopleNeed.skills + peopleNeed.teamId
+        });
+
 
         var bulkIds = {};
 
