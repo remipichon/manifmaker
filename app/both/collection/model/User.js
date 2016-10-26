@@ -175,6 +175,79 @@ Schemas.Users = new SimpleSchema({
                     this.value.push(assignmentReadyTeam._id);
                 return this.value;
             }
+
+            if(this.isUpdate){
+                if(this.field("teams").isSet){
+                    if(this.field("teams").operator === "$pull"){
+                        var teamRemoved = this.field("teams").value;
+
+                        var user = Users.findOne(this.docId);
+                        console.log(teamRemoved, "has been removed from",user);
+
+                        var userTeams = user.teams;
+                        userTeams.splice(userTeams.indexOf(teamRemoved),1);
+
+                        //assignmentTerms that the user will actually lose (because he doesn't have another team covering it)
+                        var assignmentTerms = AssignmentTerms.find({
+                            $and : [
+                                {
+                                    teams: teamRemoved
+                                },
+                                {
+                                    teams: {
+                                        $not: {$in: userTeams}
+                                    }
+                                }
+                            ]
+                        }).fetch();
+
+                        //all periods that the user will lose
+                        var allPeriods = [];
+                        assignmentTerms.forEach(assignmentTerm => {
+                            if(assignmentTerm.assignmentTermPeriods.length !== 0){
+                                allPeriods.concat(assignmentTerm.assignmentTermPeriods);
+                            } else {
+                                allPeriods.push({
+                                    start: assignmentTerm.start,
+                                    end: assignmentTerm.end
+                                })
+                            }
+                        });
+
+                        //check if user has one availability included in one of the periods he will lose
+                        var availabilities = user.availabilities;
+                        var oneAvailabilityIsIncluded = false;
+                        user.availabilities.forEach(availability => {
+                            if(oneAvailabilityIsIncluded) return; //break
+                            var includeInAPeriod = false;
+                            allPeriods.forEach(period => {
+                                if(includeInAPeriod)
+                                    return; //breack
+
+                                if(TimeSlotService.isOverlapping(availability.start,availability.end,period.start,period.end)){
+                                    includeInAPeriod = true;
+                                }
+                            });
+
+                            if(includeInAPeriod){
+                                oneAvailabilityIsIncluded = true;
+                            }
+
+                        });
+
+                        if(oneAvailabilityIsIncluded){
+                            if(Meteor.isClient)
+                                sAlert.error(`You can not remove this team, user has already add availabilities in one a the team assignment term.
+                                You can try to add another team whose assignment terms cover the existing user's availabilities.`,{timeout:7000});
+
+                            throw new Meteor.Error("403", `Forbidden, user still have availability in at least one term that he will lose if team is removed`);
+                            this.unset();
+                        }
+
+                    }
+                }
+
+            }
         },
     },
     'teams.$': {
