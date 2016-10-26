@@ -94,6 +94,12 @@ Template.registerHelper(
 );
 
 Template.registerHelper(
+    "isCurrentUserTheOneLogged", function(currentUserId){
+        return currentUserId === Users.findOne({loginUserId: Meteor.userId()})._id;
+    }
+)
+
+Template.registerHelper(
     "currentUserIdObject", function () {
         return {
             _id: Users.findOne({loginUserId: Meteor.userId()})._id

@@ -19,10 +19,12 @@
                 </div>
             </div>
 
-            {{#if isReadyForAssignment}}
+            {{#if isCurrentUserTheOneLogged this._id}}
+                {{#if isReadyForAssignment}}
                     <div class="alert alert-info" role="alert">You have been validated, you will be assigned to tasks according to your availabilities and your skills.</div>
-            {{else}}
-                <div class="alert alert-warning" role="alert">You are not validated yet. You can not be assigned until you are validated.</div>
+                {{else}}
+                    <div class="alert alert-warning" role="alert">You are not validated yet. You can not be assigned until you are validated.</div>
+                {{/if}}
             {{/if}}
 
 
@@ -47,13 +49,15 @@
                                 {{>DateTimePickerComponent date=birthDate updateDateCallback=updateBirthDate}}
                             </div>
 
-                            <div>
-                                {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
-                                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                                updateCollection="Users" updateItemId=this._id updateItemPath="teams"
-                                nothingSelectedLabel="None yet"
-                                }}
-                            </div>
+                            {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+                                <div>
+                                    {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
+                                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                    updateCollection="Users" updateItemId=this._id updateItemPath="teams"
+                                    nothingSelectedLabel="None yet"
+                                    }}
+                                </div>
+                            {{/if}}
 
                         </div>
 
@@ -79,10 +83,12 @@
                 <div class="panel-heading">Skills</div>
 
                 <div class="panel-body">
-                     {{#if isReadyForAssignment}}
-                        <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your skills</div>
-                    {{else}}
-                        <label>Select one or more skills</label>
+                    {{#if isCurrentUserTheOneLogged this._id}}
+                        {{#if isReadyForAssignment}}
+                            <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your skills</div>
+                        {{else}}
+                            <label>Select one or more skills</label>
+                        {{/if}}
                     {{/if}}
                     <div class="row">
                         {{#each allSkills}}
@@ -107,22 +113,24 @@
 
         {{/autoForm}}
 
+        {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+            <div class="panel panel-info">
+                <div class="panel-heading">User validation</div>
+                <div class="panel-body">
+                    <div class="row">
 
-        <div class="panel panel-info">
-            <div class="panel-heading">User validation</div>
-            <div class="panel-body">
-                <div class="row">
-
-                    {{#if this.isReadyForAssignment}}
-                        <div class="alert alert-info" role="alert">User has been validated, it can't be undone as the user is now ready for assignment</div>
-                    {{else}}
-                        <div class="alert alert-warning" role="alert">Once validated, user will be ready for assignment and will not be able to update its skills and availabilities. <strong>It can't be undode</strong></div>
-                        <button id="make-user-ready" type="button" class="col-md-offset-4 col-md-4 btn btn-success">Make user ready for assignment</button>
-                    {{/if}}
+                        {{#if this.isReadyForAssignment}}
+                            <div class="alert alert-info" role="alert">User has been validated, it can't be undone as the user is now ready for assignment</div>
+                        {{else}}
+                            <div class="alert alert-warning" role="alert">Once validated, user will be ready for assignment and will not be able to update its skills and availabilities. <strong>It can't be undode</strong></div>
+                            <button id="make-user-ready" type="button" class="col-md-offset-4 col-md-4 btn btn-success">Make user ready for assignment</button>
+                        {{/if}}
+                    </div>
                 </div>
+
             </div>
 
-        </div>
+        {{/if}}
 
     </div>
 
