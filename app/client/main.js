@@ -63,10 +63,6 @@ Meteor.startup(function () {
         }
     });
 
-    var accuracy = CalendarAccuracyEnum["1"];
-    AssignmentServiceClient.setCalendarAccuracy(accuracy);
-
-
     //hide custom select popover when click outside popover
     $('body').on('click', function (e) {
         $('.custom-select-label-wrapper[data-toggle="popover"]').each(function () {
