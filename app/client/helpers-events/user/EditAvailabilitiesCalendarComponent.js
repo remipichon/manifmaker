@@ -100,7 +100,9 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
     //works for .heure et .quart d'heure
     isSelected(date, timeHours) {
         if(!this.startDate.get() || !this.tempEndDate.get()) return;
-        var current = this.getCalendarDateTime(date, timeHours, 0);
+
+        var quarter = this.currentData().quarter;
+        var current = this.getCalendarDateTime(date, timeHours, quarter);
         var start = this.startDate.get();
         var end = this.tempEndDate.get();
         if(current.isBetween(start,end) || current.isSame(start))
