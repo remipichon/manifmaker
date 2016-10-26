@@ -13,8 +13,21 @@ class UpdateUserComponent extends BlazeComponent {
 
     events() {
         return [{
-            'change .update-skill': this.updateSkill
+            'change .update-skill': this.updateSkill,
+            'click #make-user-ready': this.makeUserReady
         }];
+    }
+
+    makeUserReady(){
+        bootbox.confirm("You are about to validate a user, it can't be undone. Are you sure ?", _.bind(function(result){
+            if(result){
+                Users.update(this.data()._id,{
+                    $set: {
+                        isReadyForAssignment: true
+                    }
+                })
+            }
+        },this));
     }
 
     updateSkill(event) {

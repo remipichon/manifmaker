@@ -105,8 +105,24 @@
 
             </div>
 
-
         {{/autoForm}}
+
+
+        <div class="panel panel-info">
+            <div class="panel-heading">User validation</div>
+            <div class="panel-body">
+                <div class="row">
+
+                    {{#if this.isReadyForAssignment}}
+                        <div class="alert alert-info" role="alert">User has been validated, it can't be undone as the user is now ready for assignment</div>
+                    {{else}}
+                        <div class="alert alert-warning" role="alert">Once validated, user will be ready for assignment and will not be able to update its skills and availabilities. <strong>It can't be undode</strong></div>
+                        <button id="make-user-ready" type="button" class="col-md-offset-4 col-md-4 btn btn-success">Make user ready for assignment</button>
+                    {{/if}}
+                </div>
+            </div>
+
+        </div>
 
     </div>
 

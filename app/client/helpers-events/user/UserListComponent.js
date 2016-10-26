@@ -62,6 +62,13 @@ class UserListComponent extends BlazeComponent {
                 fn: function (teams, Task) {
                     return Teams.findOne(teams[0]).name; //user.teams : on n'utilsie que la premiere ici
                 }
+            },
+            {
+                key: "isReadyForAssignment",
+                label: 'Validated',
+                cellClass: 'col-sm-2',
+                headerClass: 'col-sm-2',
+                tmpl: Template.isReadyForAssignment,
             }
         ];
 
