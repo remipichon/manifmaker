@@ -126,6 +126,19 @@ Schemas.Users = new SimpleSchema({
         type: SimpleSchema.RegEx.Id,
         optional: true
     },
+    isReadyForAssignment: {
+        label: "User assignment ready state",
+        type: Boolean,
+        defaultValue: false,
+        custom: function () {
+            if(this.isUpdate)
+            if(this.value === false){
+                if(Users.findOne(this.docId).assignments && Users.findOne(this.docId).assignments.length !== 0){
+                    return "userHasAssignments"
+                }
+            }
+        }
+    },
     groupRoles: {
         label: "User roles to gain a set of less or more data and features",
         type: [SimpleSchema.RegEx.Id],
@@ -180,6 +193,9 @@ Schemas.Users = new SimpleSchema({
             this.value = _.compact(this.value);
             if(Skills.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
                 return "unknownIdOrDuplicateId"
+
+            if(this.isUpdate && Users.findOne(this.docId).isReadyForAssignment && Users.findOne(this.docId).isReadyForAssignment === true)
+                return "userHasBeenValidatedNoSkillsUpdate"
         }
     },
     'skills.$': {

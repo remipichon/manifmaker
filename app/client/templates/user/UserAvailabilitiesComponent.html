@@ -7,13 +7,18 @@
     </div>
 
     <div class="col-md-12">
-        {{> EditAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
+        {{#if readOnly}}
+            <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your availabilities</div>
+            {{> ReadAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
+        {{else}}
+            {{> EditAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
+        {{/if}}
     </div>
 
 </template>
 
 <template name="updateAvailabilitiesCalendar">
-    <div class="creneau non-clickable" style="height: {{height}};">
+    <div class="creneau non-clickable {{#if assigned}}affecte{{/if}}" style="height: {{height}};">
 
         <div class="wrapper on-calendar">
 

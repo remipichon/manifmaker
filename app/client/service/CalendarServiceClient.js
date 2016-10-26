@@ -23,6 +23,27 @@ export class CalendarServiceClient {
         return data;
     }
 
+    static computeAssignmentData(user, startCalendarTimeSlot){
+        var data = {},baseOneHourHeight,accuracy,end,start,duration,height,founded;
+
+        var assignmentsFound = TimeSlotService.getTimeSlotByStart(user.assignments, startCalendarTimeSlot);
+        if (assignmentsFound === null) return null;
+
+        if (assignmentsFound !== null) {
+            //Template.parentData() doesn't work so we use a trick
+            data.userId = user._id;
+            data.assigned = true;
+
+        }
+
+        _.extend(data, assignmentsFound);
+
+        data.height = this.computeTimeSlotAvailabilityHeight(assignmentsFound,startCalendarTimeSlot) + "px";
+
+        return data;
+    }
+
+
     static computeTimeSlotData(task, startCalendarTimeSlot){
         var data = {},baseOneHourHeight,accuracy,end,start,duration,height,founded;
 

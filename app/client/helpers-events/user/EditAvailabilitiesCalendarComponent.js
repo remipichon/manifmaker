@@ -3,8 +3,9 @@ import {AssignmentService} from "../../../both/service/AssignmentService"
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {CalendarServiceClient} from "../../../client/service/CalendarServiceClient"
+import {ReadAvailabilitiesCalendarComponent} from "./ReadAvailabilitiesCalendarComponent"
 
-class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
+class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComponent {
     /* available in data
      this.data().parentInstance
 
@@ -97,63 +98,6 @@ class EditAvailabilitiesCalendarComponent extends BaseCalendarComponent {
         if(current.isBetween(start,end) || current.isSame(start))
             return "selected";
         return ""
-    }
-
-    enableAction(date, timeHours){
-        var user = this.parentComponent().parentComponent().data();
-        var userTeams = user.teams;
-
-        var startDate = this.getCalendarDateTime(date, timeHours, 0);
-        var endDate = new moment(startDate).add(1,"hour");
-
-        if (AssignmentTerms.findOne({
-                teams: {
-                    $elemMatch: {
-                        $in: userTeams
-                    }
-                },
-                $and: [
-                    {
-                        start: {
-                            $lte: startDate.toDate()
-                        }
-                    },
-                    {
-                        end: {
-                            $gte: endDate.toDate()
-                        }
-                    }
-                ],
-                $or: [
-                    {
-                        assignmentTermPeriods: {
-                            $size: 0
-                        }
-                    },
-                    {
-                        assignmentTermPeriods: {
-                            $elemMatch: {
-                                $and: [
-                                    {
-                                        start: {
-                                            $lte: startDate.toDate()
-                                        }
-                                    },
-                                    {
-                                        end: {
-                                            $gte: endDate.toDate()
-                                        }
-                                    }
-                                ],
-                            }
-                        }
-                    }
-                ]
-            })
-        )
-            return true;
-
-        return false;
     }
 
 

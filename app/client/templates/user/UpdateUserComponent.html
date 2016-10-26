@@ -19,6 +19,12 @@
                 </div>
             </div>
 
+            {{#if isReadyForAssignment}}
+                    <div class="alert alert-info" role="alert">You have been validated, you will be assigned to tasks according to your availabilities and your skills.</div>
+            {{else}}
+                <div class="alert alert-warning" role="alert">You are not validated yet. You can not be assigned until you are validated.</div>
+            {{/if}}
+
 
             <div class="panel panel-info">
                 <div class="panel-heading">General information</div>
@@ -73,11 +79,15 @@
                 <div class="panel-heading">Skills</div>
 
                 <div class="panel-body">
-                    <label>Select one or more skills</label>
+                     {{#if isReadyForAssignment}}
+                        <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your skills</div>
+                    {{else}}
+                        <label>Select one or more skills</label>
+                    {{/if}}
                     <div class="row">
                         {{#each allSkills}}
                             <div class="col-md-3">
-                                <input type="checkbox" class="update-skill" {{isChecked _id}}>
+                                <input type="checkbox" class="update-skill" {{isChecked _id}} disabled="{{../isReadyForAssignment}}" >
                                 {{label}}
                             </div>
                         {{/each}}
@@ -90,7 +100,7 @@
                 <div class="panel-heading">Availabilities</div>
 
                 <div class="panel-body">
-                    {{>UserAvailabilitiesComponent  parentInstance=self}}
+                    {{>UserAvailabilitiesComponent readOnly=isReadyForAssignment parentInstance=self}}
                 </div>
 
             </div>

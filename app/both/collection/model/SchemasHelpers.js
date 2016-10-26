@@ -20,7 +20,9 @@ SimpleSchema.messages({
     peopleNeededUpdateNotAllowed: "[label] can not be update as task time slots are not ready for assignment",
     peopleNeedUserIdUnique: "There can ba only one people need requiring a specific user by time slot",
     availabilitiesNoInTerm: "User does not have access to any assignment terms enclosing given availability.",
-    timeSlotNotWithinTerms: "Time slot dates are not within a assignment term's periods"
+    timeSlotNotWithinTerms: "Time slot dates are not within a assignment term's periods",
+    userHasAssignments: "Cannot perform this action as user already has assignments.",
+    userHasBeenValidatedNoSkillsUpdate: "User has been validated therefore its skills cannot be update"
 });
 
 Schemas.helpers = {};
