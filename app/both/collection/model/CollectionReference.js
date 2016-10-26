@@ -284,6 +284,14 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
             type: "datetime-local"
         }
     },
+    addAvailabilitiesDeadline: {
+        type: Date,
+        label: "Assignment add availabilities deadline",
+        optional: true,
+        autoform: {
+            type: "datetime-local"
+        }
+    },
     teams: {
         label: "Assignment Term Teams",
         type: [SimpleSchema.RegEx.Id],

@@ -343,13 +343,16 @@ export class InjectDataServerService {
             name: "Terms 1",
             start: this._getDateFromDateAndHourMinute(2016,5,13, 0,0),
             end: this._getDateFromDateAndHourMinute(2016,5,15, 0,0),
-            teams: [team1Id,team2Id,team3Id]
+            teams: [team1Id,team2Id,team3Id],
+            addAvailabilitiesDeadline: this._getDateFromNowPlusHours(10)
         });
         AssignmentTerms.insert({
             name: "Terms 2",
             start: this._getDateFromDateAndHourMinute(2016,5,10, 0,0),
             end: this._getDateFromDateAndHourMinute(2016,5,11, 0,0),
-            teams: [team2Id]
+            teams: [team2Id],
+            addAvailabilitiesDeadline: this._getDateFromNowPlusHours(-10)
+
         });
         AssignmentTerms.insert({
             name: "Terms 3",
@@ -780,6 +783,11 @@ export class InjectDataServerService {
     static _insertAndFetch(Collection, data) {
         var _id = Collection.insert(data);
         return Collection.findOne({_id: _id});
+    }
+
+    static _getDateFromNowPlusHours(hours){
+        var now = new Date();
+        return new Date(now.getYear(), now.getMonth(), now.getDate(), now.getHours() + hours, now.getMinutes(), 0);
     }
 
     static _getDateFromTime(hours, minutes = 0) {
