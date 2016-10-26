@@ -487,6 +487,9 @@ export class SelectComponent extends BlazeComponent {
      * @param newOptions
      */
     updateOption(newOptions) {
+        var isMultiple = false;
+        if(Array.isArray(newOptions))
+            isMultiple = true;
         var previousOptions = this.optionsToUpdate();
         if (previousOptions === newOptions) {
             console.info("single select, nothing to update");
@@ -533,12 +536,35 @@ export class SelectComponent extends BlazeComponent {
             updateCallbackOptions = newOptions;
         }
 
-
-        window[this.updateCollection].update(this.updateItemId, {
+        var updateQuery;
+        if (isMultiple) {
+            var addedOptions = _.difference(newOptions, previousOptions);
+            var removedOptions  = _.difference(previousOptions, newOptions);
+            if (removedOptions.length !== 0) {
+                updateQuery = {
+                    $pull: {
+                        [pathOrPathWithIndex]: removedOptions[0]
+                    }
+                };
+            } else if (addedOptions.length !== 0) {
+                updateQuery = {
+                    $push: {
+                        [pathOrPathWithIndex]: {$each: addedOptions}
+                    }
+                };
+            } else {
+                return;
+            }
+        } else
+            updateQuery = {
                 $set: {
                     [pathOrPathWithIndex]: newOptions
                 }
-            }, _.bind(function (error, numberAffected) {
+            };
+
+        window[this.updateCollection].update(this.updateItemId,
+                updateQuery
+            , _.bind(function (error, numberAffected) {
                 if (this.updateCallback)
                     this.updateCallback(error, numberAffected, updateCallbackOptions);
             }, this)
