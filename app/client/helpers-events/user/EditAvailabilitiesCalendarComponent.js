@@ -17,23 +17,27 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
             'mouseenter .quart_heure': this.selectAvailability,
             'mouseup .quart_heure': this.endSelectAvailability,
             'mouseleave .jours': this.resetSelect,
-            'dblclick .heure': this.removeAvailability,
+            'dblclick .quart_heure': this.removeAvailability,
         });
     }
 
     startSelectAvailability(event){
         event.stopPropagation();
-        var date = new moment($(event.target).parent().attr("hours"));
+        var date = new moment($(event.target).attr("quarter"));
         this.startDate.set(date);
+        //this.hasDragged = true;
+        this.tempEndDate.set(date);
+        console.log("start",this.startDate.get().toDate(),this.tempEndDate.get().toDate());
 
     }
 
     selectAvailability(event){
         event.stopPropagation();
         if(!this.startDate.get()) return;
-        var date = new moment($(event.target).parent().attr("hours"));
+        var date = new moment($(event.target).attr("quarter")).add(this.addHourAccordingToAccuracy(),"hour");
         this.hasDragged = true;
         this.tempEndDate.set(date);
+        console.log("select",this.startDate.get().toDate(),this.tempEndDate.get().toDate());
     }
 
     endSelectAvailability(event){
@@ -41,9 +45,9 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         if(!this.startDate.get() || !this.hasDragged) return;
         var date;
         if($(event.target).hasClass("creneau")) //user end selecting on an existing availabilities
-            date = new moment($(event.target).parent().parent().attr("hours"));
+            date = new moment($(event.target).parent().attr("quarter"));
         else
-            date = new moment($(event.target).parent().attr("hours"));
+            date = new moment($(event.target).attr("quarter")).add(this.addHourAccordingToAccuracy(),"hour");;
         var user = this.parentComponent().parentComponent().data();
         var temp = this.startDate.get();
         this.resetSelect();
@@ -60,10 +64,14 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         this.resetSelect();
         sAlert.closeAll();
         event.stopPropagation();
-        var start = new moment($(event.target).parent().attr("hours"));
+        var start = new moment($(event.target).attr("quarter"));
         var user = this.parentComponent().parentComponent().data();
-        var end = new moment(start).add(1,"hour");
+        var end = new moment(start).add(this.addHourAccordingToAccuracy(),"hour");
         AvailabilityService.removeAvailabilities(user,start.toDate(),end.toDate());
+    }
+
+    addHourAccordingToAccuracy(){
+        return AssignmentCalendarDisplayedAccuracy.findOne().accuracy
     }
 
     creanOnClick() {
@@ -77,7 +85,7 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         return;
 
         //TODO proposer de switcher sur ce mode si besoin, default sur mobile
-        var date = new moment($(event.target).parent().attr("hours"));
+        var date = new moment($(event.target).attr("quarter"));
 
         if(!this.startDate.get())
             this.startDate.set(date);
@@ -102,7 +110,9 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
 
 
     timeSlot(date, timeHours, idTask) {
-        var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
+        var quarter = this.currentData().quarter;
+
+        var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours,quarter);
         var user = this.data().user;
         if (!user) return [];
 

@@ -80,7 +80,6 @@ export class CalendarServiceClient {
 
     static computeTimeSlotAvailabilityHeight(timeSlotAvailability,startCalendarTimeSlot){
         var baseOneHourHeight = 40, start, end, duration;
-        var accuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy;
         var startDate = new moment(new Date(startCalendarTimeSlot));
         if(startDate.hour() === 0){//midnight
             start = startDate;
@@ -91,6 +90,6 @@ export class CalendarServiceClient {
         }
         duration = end.diff(start) / (3600 * 1000);
 
-        return accuracy * baseOneHourHeight * duration;
+        return  baseOneHourHeight * duration;
     }
 }

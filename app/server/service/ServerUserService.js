@@ -1,5 +1,7 @@
 import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
 import {ServerTaskService} from "../../server/service/ServerTaskService"
+import {TimeSlotService} from "../../both/service/TimeSlotService"
+
 
 /** @class ServerUserService */
 export class ServerUserService {
@@ -136,6 +138,29 @@ export class ServerUserService {
         if (_.contains(fieldNames, "groupRoles"))
             if (modifier.$set.groupRoles)
                 SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ROLE, doc, 'user');
+
+        if (_.contains(fieldNames, "isReadyForAssignment"))
+            if (modifier.$set.isReadyForAssignment)
+                SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+
+        if (_.contains(fieldNames, "teams")) {
+            if (modifier.$pull)
+                if (modifier.$pull.teams) {
+                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+
+
+
+
+
+                }
+            if (modifier.$set) //TODO a virer
+                if (modifier.$set.teams)
+                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+            if (modifier.$push)
+                if (modifier.$push.teams) {
+                    SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+                }
+        }
 
         if (_.contains(fieldNames, "assignments")) {
             if (modifier.$pull)

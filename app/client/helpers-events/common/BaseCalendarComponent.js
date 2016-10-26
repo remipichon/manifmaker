@@ -66,7 +66,7 @@ export class BaseCalendarComponent extends BlazeComponent{
     }
 
     quarterDate(date, timeHours) {
-        return this.getCalendarDateTime(date, timeHours, this.quarter);
+        return this.getCalendarDateTime(date, timeHours, this.currentData().quarter);
     }
 
     //labelSkills() {
@@ -128,7 +128,7 @@ export class BaseCalendarComponent extends BlazeComponent{
     getCalendarDateTime(date, timeHours, timeMinutes) {
         var dateWithHours = this.getCalendarDateHours(date, timeHours);
         var date = new moment(dateWithHours);
-        date.minutes(timeMinutes);
+        date.add(timeMinutes,"minute");
         return date;
     }
 
