@@ -292,6 +292,16 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
             type: "datetime-local"
         }
     },
+    calendarAccuracy: {
+        type: Number,
+        decimal: true,
+        label: "Assignment calendar accuracy",
+        custom: function(){
+            if(!CalendarAccuracyEnum[this.value])
+                return "accuracyNotFound"
+        }
+
+    },
     teams: {
         label: "Assignment Term Teams",
         type: [SimpleSchema.RegEx.Id],

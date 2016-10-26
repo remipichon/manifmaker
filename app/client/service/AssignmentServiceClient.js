@@ -173,6 +173,7 @@ export class AssignmentServiceClient {
             displayedTerm = AssignmentTerms.findOne(_idTerms)
         }
 
+        AssignmentServiceClient.setCalendarAccuracy(displayedTerm.calendarAccuracy);
 
         var start = new moment(displayedTerm.start);
         var end = new moment(displayedTerm.end);

@@ -344,14 +344,16 @@ export class InjectDataServerService {
             start: this._getDateFromDateAndHourMinute(2016,5,13, 0,0),
             end: this._getDateFromDateAndHourMinute(2016,5,15, 0,0),
             teams: [team1Id,team2Id,team3Id],
-            addAvailabilitiesDeadline: this._getDateFromNowPlusHours(10)
+            addAvailabilitiesDeadline: this._getDateFromNowPlusHours(10),
+            calendarAccuracy: 1,
         });
         AssignmentTerms.insert({
             name: "Terms 2",
             start: this._getDateFromDateAndHourMinute(2016,5,10, 0,0),
             end: this._getDateFromDateAndHourMinute(2016,5,11, 0,0),
             teams: [team2Id],
-            addAvailabilitiesDeadline: this._getDateFromNowPlusHours(-10)
+            addAvailabilitiesDeadline: this._getDateFromNowPlusHours(-10),
+            calendarAccuracy: 2
 
         });
         AssignmentTerms.insert({
@@ -376,7 +378,8 @@ export class InjectDataServerService {
                     start: this._getDateFromDateAndHourMinute(2016,3,13, 12,0),
                     end:this._getDateFromDateAndHourMinute(2016,3,19, 12,0),
                 }
-            ]
+            ],
+            calendarAccuracy: 0.5
         });
 
         //users
