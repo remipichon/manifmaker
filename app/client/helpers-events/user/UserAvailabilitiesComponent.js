@@ -1,3 +1,5 @@
+import {SecurityServiceClient} from "../../service/SecurityServiceClient"
+
 class UserAvailabilitiesComponent extends BlazeComponent {
 
     reactiveConstructor() {
@@ -32,6 +34,7 @@ class UserAvailabilitiesComponent extends BlazeComponent {
     }
 
     readOnly() {
+        if(SecurityServiceClient.softGrantAccessToPage(RolesEnum.ASSIGNMENTTASKUSER)) return false;
         var isReadyForAssignment = this.data().isReadyForAssignment;
         if (isReadyForAssignment) return true;
 
