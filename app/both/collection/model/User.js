@@ -1,5 +1,6 @@
 import {Schemas} from './SchemasHelpers'
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
+import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
 
 //order matters !
 Schemas.UserAvailabilities = new SimpleSchema({
@@ -181,6 +182,26 @@ Schemas.Users = new SimpleSchema({
                     if(this.field("teams").operator === "$pull"){
                         var teamRemoved = this.field("teams").value;
 
+                        //check if the user has one assignment that needed the deleted team
+                        var userAssignments = Assignments.find({
+                            userId:this.docId
+                        }).fetch();
+
+                        userAssignments.forEach(userAssignment => {
+                            var peopleNeedAssigned = PeopleNeedService.getPeopleNeedByIdAndTask(userAssignment.peopleNeedId,Tasks.findOne(userAssignment.taskId)).peopleNeed;
+
+                            if(peopleNeedAssigned.teamId === teamRemoved){
+                                if(Meteor.isClient)
+                                    sAlert.error(`You can not remove this team, user has already assignments that needed the removed team.
+                                You can try to add remove user's assignment that need the deleted team`,{timeout:7000});
+
+                                this.unset();
+                                throw new Meteor.Error("403", `Forbidden, user has already assignments that needed the removed team.`);
+                            }
+                        });
+
+
+                        //check if the user has one availability that are within the deleted team's assignment term
                         var user = Users.findOne(this.docId);
                         console.log(teamRemoved, "has been removed from",user);
 
@@ -216,34 +237,19 @@ Schemas.Users = new SimpleSchema({
 
                         //check if user has one availability included in one of the periods he will lose
                         var availabilities = user.availabilities;
-                        var oneAvailabilityIsIncluded = false;
                         user.availabilities.forEach(availability => {
-                            if(oneAvailabilityIsIncluded) return; //break
-                            var includeInAPeriod = false;
                             allPeriods.forEach(period => {
-                                if(includeInAPeriod)
-                                    return; //breack
-
                                 if(TimeSlotService.isOverlapping(availability.start,availability.end,period.start,period.end)){
-                                    includeInAPeriod = true;
-                                }
-                            });
-
-                            if(includeInAPeriod){
-                                oneAvailabilityIsIncluded = true;
-                            }
-
-                        });
-
-                        if(oneAvailabilityIsIncluded){
-                            if(Meteor.isClient)
-                                sAlert.error(`You can not remove this team, user has already add availabilities in one a the team assignment term.
+                                    //includeInAPeriod = true;
+                                    if(Meteor.isClient)
+                                        sAlert.error(`You can not remove this team, user has already add availabilities in one a the team assignment term.
                                 You can try to add another team whose assignment terms cover the existing user's availabilities.`,{timeout:7000});
 
-                            throw new Meteor.Error("403", `Forbidden, user still have availability in at least one term that he will lose if team is removed`);
-                            this.unset();
-                        }
-
+                                    this.unset();
+                                    throw new Meteor.Error("403", `Forbidden, user still have availability in at least one term that he will lose if team is removed`);
+                                }
+                            });
+                        });
                     }
                 }
 
