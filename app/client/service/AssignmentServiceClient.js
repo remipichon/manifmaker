@@ -179,7 +179,8 @@ export class AssignmentServiceClient {
 
         while (start.isBefore(end)) {
             AssignmentCalendarDisplayedDays.insert({
-                date: start
+                date: start,
+                assignmentTermId: displayedTerm._id
             });
             start.add(1, 'days');
         }

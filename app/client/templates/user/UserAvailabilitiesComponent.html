@@ -10,6 +10,9 @@
         {{#if readOnly}}
             {{#if isCurrentUserTheOneLogged userData._id}}
                     <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your availabilities</div>
+                {{#if assignmentTermDeadlineIsOver}}
+                    <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add availabilities</div>
+                {{/if}}
             {{/if}}
             {{> ReadAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
         {{else}}

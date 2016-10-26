@@ -786,32 +786,12 @@ export class InjectDataServerService {
     }
 
     static _getDateFromNowPlusHours(hours){
-        var now = new Date();
-        return new Date(now.getYear(), now.getMonth(), now.getDate(), now.getHours() + hours, now.getMinutes(), 0);
-    }
-
-    static _getDateFromTime(hours, minutes = 0) {
-        var now = new Date();
-        return new Date(now.getYear(), 5 - 1 /*now.getMonth()*/, 13 /*now.getDate()*/, hours, minutes, 0);
-    }
-
-    static _getDateFromDateAndTime(date,hours){
-        var now = new Date();
-        return new Date(now.getYear(), 5 - 1 /*now.getMonth()*/, date /*now.getDate()*/, hours, 0, 0);
-    }
-
-
-    static _getDateFromDate(day, month, year) {
-        var now = new Date();
-        year = year || now.getYear();
-        month = month || now.getMonth();
-        return new Date(year, month, day, 0, 0, 0);
+        var now = new moment();
+        now.add(hours,"hour");
+        return now.toDate();
     }
 
     static _getDateFromDateAndHourMinute(year, month, day,hour = 0, minute = 0) {
-        var now = new Date();
-        year = year || now.getYear();
-        month = month || now.getMonth();
         return new Date(year, month, day, hour, minute, 0);
     }
 
