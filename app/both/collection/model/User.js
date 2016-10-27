@@ -111,8 +111,16 @@ Schemas.Users = new SimpleSchema({
         defaultValue: null
     },
     phoneNumber:{
-        type: SimpleSchema.RegEx.Phone,
+        type: String,//SimpleSchema.RegEx.Phone,
         label: "User phone",
+        optional: true,
+        defaultValue: null,
+        regEx: /^0{1}\d{10}$/
+    },
+    email:{
+        type: String,
+        regEx: SimpleSchema.RegEx.Email,
+        label: "User email",
         optional: true,
         defaultValue: null
     },
@@ -121,6 +129,13 @@ Schemas.Users = new SimpleSchema({
         label: "User birth date",
         optional: true,
         defaultValue: null
+    },
+    nickName: {
+        type: String,
+        label: "User nickname",
+        optional: true,
+        defaultValue: null,
+        unique: true
     },
     loginUserId: {
         label: "User login link to collection managed by Account package",
