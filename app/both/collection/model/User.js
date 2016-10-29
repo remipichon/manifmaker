@@ -137,6 +137,37 @@ Schemas.Users = new SimpleSchema({
         defaultValue: null,
         unique: true
     },
+    //24h specific, will see later how to parametrize that
+
+    departement: {
+        type: String,
+        label: "Department Insa",
+        optional: true,
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allDepartementOptions
+            }
+        }
+    },
+
+    annee: {
+        type: String,
+        label: "Annnée Insa",
+        optional: true,
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allAnneesOptions
+            }
+        }
+    },
+
+    comment: {
+        type: String,
+        label: "Comment",
+        optional: true,
+    },
+
+    //end specific
     loginUserId: {
         label: "User login link to collection managed by Account package",
         type: SimpleSchema.RegEx.Id,

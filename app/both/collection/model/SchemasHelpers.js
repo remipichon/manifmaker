@@ -179,3 +179,30 @@ Schemas.helpers.allGroupRolesOptions = function () {
 
     return result;
 };
+
+Schemas.helpers.allDepartementOptions = function () {
+    var items =   ["PC","TC","IF","GE","GM","GI","BIM","GCU","These"];
+    var result = [];
+    _.each(items, function (item) {
+        result.push({
+            label: item,
+            value: item
+        });
+    });
+
+    return result;
+};
+
+
+Schemas.helpers.allAnneesOptions = function () {
+    var items =   ["1","2","3","4","5","doc"];
+    var result = [];
+    _.each(items, function (item) {
+        result.push({
+            label: item,
+            value: item
+        });
+    });
+
+    return result;
+};

@@ -32,56 +32,102 @@
                 <div class="panel-heading">General information</div>
 
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-3">
-
-                            <div>
-                                {{> afQuickField name='firstName'}}
-                            </div>
-                            <div>
-                                {{> afQuickField name='familyName'}}
-                            </div>
-                            <div>
-                                {{> afQuickField name='nickName'}}
-                            </div>
-                            <div>
-                                {{> afQuickField name='email'}}
-                            </div>
-                            <div>
-                                {{> afQuickField name='phoneNumber'}}
-                            </div>
-                            <div>
-                                <label>User Birth date</label>
-                                {{>DateTimePickerComponent date=birthDate updateDateCallback=updateBirthDate}}
-                            </div>
-
-                            {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+                    <div class="">
+                        <div class="row">
+                            <div class="col-md-4">
                                 <div>
-                                    {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
-                                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                                    updateCollection="Users" updateItemId=this._id updateItemPath="teams"
-                                    nothingSelectedLabel="None yet"
-                                    }}
+                                    {{> afQuickField name='firstName'}}
                                 </div>
-                            {{/if}}
+                            </div>
+
+                            <div class="col-md-4">
+                                <div>
+                                    {{> afQuickField name='familyName'}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div>
+                                    {{> afQuickField name='nickName'}}
+                                </div>
+                            </div>
 
                         </div>
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div>
+                                    {{> afQuickField name='email'}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div>
+                                    {{> afQuickField name='phoneNumber'}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div>
+                                    <label>User Birth date</label>
+                                    {{>DateTimePickerComponent date=birthDate updateDateCallback=updateBirthDate}}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    <label>Es tu à l'INSA ?</label>
+
+                                    <div class="col-md-6">
+                                        {{> afQuickField name='departement'}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{> afQuickField name='annee'}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+                                    <div>
+                                        {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
+                                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                        updateCollection="Users" updateItemId=this._id updateItemPath="teams"
+                                        nothingSelectedLabel="None yet"
+                                        }}
+                                    </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div>
+                                    {{> afQuickField name='comment' rows=20}}
+                                </div>
+                            </div>
+                        </div>
+
+
+
 
                     </div>
 
-                    {{#if errors}}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="alert alert-danger">
-                                    <div><strong>Some errors remains in the form</strong></div>
-                                    {{#each errors}}
-                                        <div>{{message}}</div>
-                                    {{/each}}
-                                </div>
+                </div>
+
+                {{#if errors}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <div><strong>Some errors remains in the form</strong></div>
+                                {{#each errors}}
+                                    <div>{{message}}</div>
+                                {{/each}}
                             </div>
                         </div>
-                    {{/if}}
-                </div>
+                    </div>
+                {{/if}}
 
             </div>
 
@@ -99,7 +145,7 @@
                     <div class="row">
                         {{#each allSkills}}
                             <div class="col-md-3">
-                                <input type="checkbox" class="update-skill" {{isChecked _id}} disabled="{{../isReadyForAssignment}}" >
+                                <input type="checkbox" class="update-skill" {{isChecked _id}} disabled="{{../isReadyForAssignment}}">
                                 {{label}}
                             </div>
                         {{/each}}
