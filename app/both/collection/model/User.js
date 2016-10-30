@@ -227,6 +227,7 @@ Schemas.Users = new SimpleSchema({
                 if(this.field("teams").isSet){
                     if(this.field("teams").operator === "$pull"){
                         var teamRemoved = this.field("teams").value;
+                        //TODO check if the user has skills that he will loose
 
                         //check if the user has one assignment that needed the deleted team
                         var userAssignments = Assignments.find({
