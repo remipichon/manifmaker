@@ -103,7 +103,21 @@ Schemas.references.options.Skills = {
     REFERENCE_URL: "skill",
     REFERENCE_COLLECTION_NAME: "Skills",
     REFERENCE_MONGO_COLLECTION_NAME: "skills",
-    REFERENCE_LABEL: "Skill"
+    REFERENCE_LABEL: "Skill",
+    REACTIVE_TABLE_FIELDS: [
+        {
+            key: "label",
+            label: "Skill label",
+            cellClass: "-"
+        },
+        {
+            key: "teams",
+            label: "Teams accessing skill",
+            fn: function(teams) {
+                return teams.length + " teams"
+            }
+        }
+    ]
 };
 Schemas.references.Skills = new SimpleSchema({
     key: {
@@ -169,7 +183,41 @@ Schemas.references.options.AssignmentTerms = {
     REFERENCE_URL: "assignment-term",
     REFERENCE_COLLECTION_NAME: "AssignmentTerms",
     REFERENCE_MONGO_COLLECTION_NAME: "assignment-terms",
-    REFERENCE_LABEL: "Assignment Term"
+    REFERENCE_LABEL: "Assignment Term",
+    REACTIVE_TABLE_FIELDS: [
+        {
+            key: "name",
+            label: "Name",
+        },
+        {
+            key: "start",
+            label: "Start",
+            fn: function(date){
+                return new moment(date).format("ddd DD MMM HH[h]mm");
+            }
+        },
+        {
+            key: "start",
+            label: "Start",
+            fn: function(date){
+                return new moment(date).format("ddd DD MMM HH[h]mm");
+            }
+        },
+        {
+            key: "addAvailabilitiesDeadline",
+            label: "Deadlines to add availabilities",
+            fn: function(date){
+                return new moment(date).format("ddd DD MMM HH[h]mm");
+            }
+        },
+        {
+            key: "teams",
+            label: "Teams accessing skill",
+            fn: function(teams) {
+                return teams.length + " teams"
+            }
+        }
+    ]
 };
 AssignmentTermPeriod = new SimpleSchema({
     start: {
@@ -370,7 +418,26 @@ Schemas.references.options.GroupRoles = {
     REFERENCE_URL: "group-role",
     REFERENCE_COLLECTION_NAME: "GroupRoles",
     REFERENCE_MONGO_COLLECTION_NAME: "group_roles",
-    REFERENCE_LABEL: "Group Role"
+    REFERENCE_LABEL: "Group Role",
+    REACTIVE_TABLE_FIELDS: [
+        {
+            key: "name",
+            label: "Group Role Name",
+        },
+        {
+            key: "roles",
+            label: "Roles in group",
+            fn: function(roles){
+                var res = "";
+                roles.forEach(role => {
+                    res += role;
+                    res += ", "
+                });
+                res.split(0,res.length-4);
+                return res;
+            }
+        }
+    ]
 };
 Schemas.references.GroupRoles = new SimpleSchema({
     name: {
