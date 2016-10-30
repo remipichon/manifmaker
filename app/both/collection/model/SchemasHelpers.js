@@ -24,7 +24,8 @@ SimpleSchema.messages({
     userHasAssignments: "Cannot perform this action as user already has assignments.",
     userHasBeenValidatedNoSkillsUpdate: "User has been validated therefore its skills cannot be update",
     accuracyNotFound: "Accuracy value is not a valide one.",
-    moreThanOneSettings: "There can be only one doc in Settings collection"
+    moreThanOneSettings: "There can be only one doc in Settings collection",
+    userAccessToSkills: "User does not have access to this skills"
 });
 
 Schemas.helpers = {};

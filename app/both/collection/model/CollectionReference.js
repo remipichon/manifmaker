@@ -118,6 +118,23 @@ Schemas.references.Skills = new SimpleSchema({
         label: "Skill Name",
         max: 100
     },
+    teams: {
+        label: "Teams that will access Skill",
+        type: [SimpleSchema.RegEx.Id],
+        optional: true,
+        custom: function () {
+            this.value = _.compact(this.value);
+            if(Teams.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
+                return "unknownIdOrDuplicateId"
+        },
+    },
+    'teams.$': {
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allTeamsOptions
+            }
+        }
+    },
     type: {   
         type: String,
         label: "Skills type",
@@ -303,7 +320,7 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
 
     },
     teams: {
-        label: "Assignment Term Teams",
+        label: "Teams that will access Assignment Term ",
         type: [SimpleSchema.RegEx.Id],
         optional: true,
         custom: function () {

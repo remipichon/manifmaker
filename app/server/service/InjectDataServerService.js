@@ -328,19 +328,23 @@ export class InjectDataServerService {
         console.info("inject Skills");
         var skill1Id = Skills.insert({
             key: "RESP_TASK_1",
-            label: "Responsable tache 1"
+            label: "Responsable tache 1",
+            teams:[team1Id]
         });
         var skill2Id = Skills.insert({
             key: "RESP_TASK_2",
-            label: "Responsable tache 2"
+            label: "Responsable tache 2",
+            teams:[team2Id]
         });
         var skill3Id = Skills.insert({
             key: "RESP_TASK_3",
-            label: "Responsable tache 3"
+            label: "Responsable tache 3",
+            teams:[team3Id]
         });
         var skill4Id = Skills.insert({
             key: "RESP_TASK_4",
-            label: "Responsable tache 4"
+            label: "Responsable tache 4",
+            teams:[team3Id,team1Id,team2Id]
         });
 
         //task groups
@@ -436,7 +440,7 @@ export class InjectDataServerService {
         Users.update(user3Id, {
             $set: {
                 teams: [team3Id],
-                skills: [skill2Id, skill3Id]
+                skills: [skill3Id]
             }
         });
         Users.update(user3Id, {
@@ -456,7 +460,7 @@ export class InjectDataServerService {
         Users.update(user4Id, {
             $set: {
                 teams: [team3Id],
-                skills: [skill2Id, skill3Id, skill1Id, skill4Id]
+                skills: [skill3Id, skill4Id]
             }
         });
         Users.update(user4Id, {

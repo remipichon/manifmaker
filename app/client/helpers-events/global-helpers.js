@@ -44,7 +44,12 @@ Template.registerHelper(
 
 Template.registerHelper(
     "allSkills", function () {
-        return Skills.find({});
+        var userTeams = Users.findOne({loginUserId:Meteor.userId()}).teams;
+        return Skills.find({
+            teams: {
+                $in: userTeams
+            }
+        });
     }
 );
 

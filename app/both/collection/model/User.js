@@ -319,11 +319,19 @@ Schemas.Users = new SimpleSchema({
             if(Skills.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
                 return "unknownIdOrDuplicateId"
 
-            if(this.isUpdate && Users.findOne(this.docId).isReadyForAssignment && Users.findOne(this.docId).isReadyForAssignment === true)
+            var user = Users.findOne(this.docId);
+            if(this.isUpdate && user.isReadyForAssignment && user.isReadyForAssignment === true)
                 return "userHasBeenValidatedNoSkillsUpdate"
+
+
         }
     },
     'skills.$': {
+        custom: function(){
+            var user = Users.findOne(this.docId);
+            if(_.intersect(user.teams,Skills.findOne(this.value).teams).length === 0)
+                return "userAccessToSkills"
+        },
         autoform: {
             afFieldInput: {
                 options: Schemas.helpers.allSkillsOptions
