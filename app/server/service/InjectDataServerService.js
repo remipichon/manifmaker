@@ -15,6 +15,9 @@ export class InjectDataServerService {
         this.injectUsers();
         console.info("injectUsers done");
         this.populateData();
+        this.addSettings();
+        console.info("addSettings done");
+
 
         console.info("**** Data init success ****");
         console.info("Here are some infos what have been added");
@@ -30,6 +33,12 @@ export class InjectDataServerService {
         console.info("GroupRoles collection size is " + GroupRoles.find().fetch().length);
     }
 
+    static addSettings(){
+        Settings.insert({
+            createAccountDefaultTeam: Teams.findOne()._id
+        })
+    }
+
     /**
      * @summmary delete all data
      */
@@ -43,6 +52,7 @@ export class InjectDataServerService {
 
         Assignments.direct.remove({});
         Tasks.remove({});
+        Settings.remove({});
         Places.remove({});
         Teams.remove({});
         TaskGroups.remove({});

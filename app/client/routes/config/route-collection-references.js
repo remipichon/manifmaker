@@ -151,7 +151,8 @@ Router.route('/conf-maker', function () {
         SecurityServiceClient.grantAccessToPage( RolesEnum.CONFMAKER);
         this.render('confMaker', {
             data: {
-                confMakerReactiveTables : confMakerReactiveTables
+                confMakerReactiveTables : confMakerReactiveTables,
+                settings: Settings.findOne()
             },
             to: 'mainContent'
         });

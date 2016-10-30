@@ -37,6 +37,13 @@ Assignments = new Mongo.Collection("assignment");
  */
 TaskGroups = new Mongo.Collection("task_groups"); //TODO group activity
 
+/**
+ * @memberOf Collection
+ * @summary Settings collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+Settings = new Mongo.Collection("settings");
 
 
 //using schema
@@ -44,6 +51,7 @@ Tasks.attachSchema(Schemas.Tasks);
 TaskGroups.attachSchema(Schemas.TaskGroups);
 Assignments.attachSchema(Schemas.Assignments);
 Users.attachSchema(Schemas.Users);
+Settings.attachSchema(Schemas.Settings);
 
 /**
  * @namespace Enum 

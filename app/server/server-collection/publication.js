@@ -194,4 +194,14 @@ Meteor.startup(function () {
         return EquipmentStorages.find({});
     });
 
+    /**
+     * @memberOf Meteor_Publish
+     * @locus server
+     * @summary Settings publication. No query, publish all but only one item is allowed
+     * @returns {Collection}
+     */
+    Meteor.publish("settings", function () {
+        return Settings.find({});
+    });
+
 });
