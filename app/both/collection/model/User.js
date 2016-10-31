@@ -8,8 +8,22 @@ Schemas.UserAvailabilities = new SimpleSchema({
         type: Date,
         label: "User Availabilities Start Date",
         custom: function () {
-            if (new moment(this.value).isAfter(new moment(this.field(this.key.replace("start", "") + "end").value)))
+            var start = new moment(this.value);
+            var end = new moment(this.field(this.key.replace("start", "") + "end").value);
+            if (start.isAfter(end))
                 return "startAfterEnd";
+
+            //check if new availability is overlapping with an assignment
+            var userAssignment = Users.findOne(this.docId).assignments;
+
+            console.log(userAssignment.length);
+            console.log(start.toDate());
+            console.log(end.toDate());
+
+            if(TimeSlotService.areArrayStartEndOverlappingStartDate(userAssignment,start,end,"none")){
+                return "availabilityOverlapAssignment";
+            }
+
 
             var userTeams = Users.findOne(this.docId).teams;
             var start = this.value;

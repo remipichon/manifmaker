@@ -99,28 +99,15 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
 
     //works for .heure et .quart d'heure
     isSelected(date, timeHours) {
-        if(!this.startDate.get() || !this.tempEndDate.get()) return;
+        if (!this.startDate.get() || !this.tempEndDate.get()) return;
 
         var quarter = this.currentData().quarter;
         var current = this.getCalendarDateTime(date, timeHours, quarter);
         var start = this.startDate.get();
         var end = this.tempEndDate.get();
-        if(current.isBetween(start,end) || current.isSame(start))
+        if (current.isBetween(start, end) || current.isSame(start))
             return "selected";
         return ""
-    }
-
-
-    timeSlot(date, timeHours, idTask) {
-        var quarter = this.currentData().quarter;
-
-        var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours,quarter);
-        var user = this.data().user;
-        if (!user) return [];
-
-        var data = CalendarServiceClient.computeAvailabilitiesData(user,startCalendarTimeSlot);
-        if(!data) return [];
-        return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
     }
 
     constructor() {

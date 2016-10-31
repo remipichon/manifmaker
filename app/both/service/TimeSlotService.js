@@ -165,6 +165,20 @@ export class TimeSlotService {
             return okGod
         }
 
+    static areArrayStartEndOverlappingStartDate(arrayOfStartEnd,start,end){
+        var areOverlapping = false;
+        arrayOfStartEnd.forEach(_.bind(function (startEnd) {
+            if (areOverlapping)
+                return;
+
+            if (TimeSlotService.isOverlapping(start,end,startEnd.start, startEnd.end))
+                areOverlapping = true;
+
+        }, this));
+
+        return areOverlapping
+    }
+
         static schemaCustomTimeSlot(schemaContext){
             //TODO $pull request doesn't use schema.custom...
             if (schemaContext.isUpdate) {

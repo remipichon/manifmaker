@@ -404,12 +404,7 @@ export class InjectDataServerService {
         var user3Id = this.createAccountAndUser("user3", "user3@yopmail.com", "user3", softGroupRoleId);
         var user4Id = this.createAccountAndUser("user4", "user4@yopmail.com", "user4", softGroupRoleId);
 
-        Users.update(user1Id, {
-            $set: {
-                teams: [team1Id],
-                skills: [skill1Id]
-            }
-        });
+        this._setTeamsAndSkills(user1Id, [team1Id], [skill1Id]);
         Users.update(user1Id, {
             $set: {
                 availabilities: [
@@ -421,12 +416,7 @@ export class InjectDataServerService {
                 isReadyForAssignment: true
             }
         });
-        Users.update(user2Id, {
-            $set: {
-                teams: [team2Id, team3Id],
-                skills: [skill2Id]
-            }
-        });
+        this._setTeamsAndSkills(user2Id, [team2Id, team3Id], [skill2Id]);
         Users.update(user2Id, {
             $set: {
                 availabilities: [
@@ -437,12 +427,7 @@ export class InjectDataServerService {
                 ]
             }
         });
-        Users.update(user3Id, {
-            $set: {
-                teams: [team3Id],
-                skills: [skill3Id]
-            }
-        });
+        this._setTeamsAndSkills(user3Id, [team3Id], [skill3Id]);
         Users.update(user3Id, {
             $set: {
                 availabilities: [
@@ -457,12 +442,7 @@ export class InjectDataServerService {
                 ]
             }
         });
-        Users.update(user4Id, {
-            $set: {
-                teams: [team3Id],
-                skills: [skill3Id, skill4Id]
-            }
-        });
+        this._setTeamsAndSkills(user4Id, [team3Id], [skill3Id, skill4Id]);
         Users.update(user4Id, {
             $set: {
                 availabilities: [
@@ -759,7 +739,51 @@ export class InjectDataServerService {
             }
 
         });
+
+
+        //assignment user1 to task1
+
+
+        //prerequisite
+        Tasks.update({name: "task 1"},{
+            $set:{
+                timeSlotValidation: {
+                    currentState: ValidationState.TOBEVALIDATED
+                }
+            }
+        })
+        Tasks.update({name: "task 1"},{
+            $set:{
+                timeSlotValidation: {
+                    currentState: ValidationState.READY
+                }
+            }
+        })
+        var task1 = Tasks.findOne({name: "task 1"});
+        var user1 = Users.findOne({name: "user1"});
+        var timeslot2h4h = task1.timeSlots[0];
+        var peopleNeedNoSkillsTeam1 = timeslot2h4h.peopleNeeded[0];
+
+        //test
+        Meteor.call("assignUserToTaskTimeSlot", peopleNeedNoSkillsTeam1._id, user1._id, _.bind(function (error, result) {
+            if(error){
+                console.error(error)
+            }
+        },this));
     };
+
+    static _setTeamsAndSkills(userId, teams, skills) {
+        Users.update(userId, {
+            $set: {
+                teams: teams,
+            }
+        });
+        Users.update(userId, {
+            $set: {
+                skills: skills
+            }
+        });
+    }
 
     /**
      * @summary insert a User and an Account

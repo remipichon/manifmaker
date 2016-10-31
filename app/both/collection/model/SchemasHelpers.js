@@ -25,7 +25,8 @@ SimpleSchema.messages({
     userHasBeenValidatedNoSkillsUpdate: "User has been validated therefore its skills cannot be update",
     accuracyNotFound: "Accuracy value is not a valide one.",
     moreThanOneSettings: "There can be only one doc in Settings collection",
-    userAccessToSkills: "User does not have access to this skills"
+    userAccessToSkills: "User does not have access to this skills",
+    availabilityOverlapAssignment: "Availability can not overlap an assignment"
 });
 
 Schemas.helpers = {};
