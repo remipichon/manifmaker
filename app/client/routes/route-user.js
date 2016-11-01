@@ -33,6 +33,8 @@ Router.route('/user', function () {
 
         console.info("routing", "/user");
 
+    sAlert.error("NOT YET IMPLEMENTED, will not work at all go to /register to create a new user",{timeout:100000,stack: true})
+
         this.render('insertUserForm', {
             to: 'mainContent'
         });
