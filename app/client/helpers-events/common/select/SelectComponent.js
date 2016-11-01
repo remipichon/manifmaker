@@ -122,7 +122,10 @@ export class SelectComponent extends BlazeComponent {
         this.optionValueName = this.data().optionValueName;
 
         if (this.data().optionCollection){
-            if(window[this.data().optionCollection]){
+            if(this.data().optionCollection === "Meteor.users"){
+                this.optionCollection = Meteor.users;
+                this.optionQuery = this.data().optionQuery || null;
+            } else if(window[this.data().optionCollection]){
                 this.optionCollection = window[this.data().optionCollection];
                 this.optionQuery = this.data().optionQuery || null;
             } else if(Array.isArray(this.data().optionCollection)){
@@ -210,7 +213,14 @@ export class SelectComponent extends BlazeComponent {
          */
         this.updateCallback;
 
-        if (!this.data().updateCollection || !window[this.data().updateCollection]) {
+        if (this.data().updateCollection && (!window[this.data().updateCollection] || this.data().updateCollection !== "Meteor.users")) {
+            //mode update collection + optional callback
+            this.updateCollection = this.data().updateCollection;
+            this.updateItemId = this.data().updateItemId;
+            this.updateItemPath = this.data().updateItemPath; //path to an array
+            this.pathWithArray = this.data().pathWithArray || null;
+            this.updateCallback = this.data().updateCallback;
+        } else {
             if (!this.data().updateCallback) {
                 throw new Meteor.Error(this.constructor.name + " : updateCollection should be Collection instance in the window scope or you should provide a updateCallback to handle the update by yourself." +
                     "The updateCallback should return a function (read the doc)");
@@ -222,16 +232,9 @@ export class SelectComponent extends BlazeComponent {
                 //TODO  nOC : insert an empty array instead of null if this is MultipleSelectComponent
                 //TODO nOC : comment faire pour prendre aussi en compte les filles de MultipleSelectComponent
                 // => si pas de moyen propre avec Javascript, le array se fera juste ecrasé par le premier update du single select
-                this.updateItemId = window[this.updateCollection].insert({"selectedOption": []});
+                this.updateItemId = this._getObjectUpdateCollection().insert({"selectedOption": []});
                 this.updateItemPath = "selectedOption"; //path to an array
             }
-        } else {
-            //mode update collection + optional callback
-            this.updateCollection = this.data().updateCollection;
-            this.updateItemId = this.data().updateItemId;
-            this.updateItemPath = this.data().updateItemPath; //path to an array
-            this.pathWithArray = this.data().pathWithArray || null;
-            this.updateCallback = this.data().updateCallback;
         }
 
         /**
@@ -329,6 +332,16 @@ export class SelectComponent extends BlazeComponent {
 
         this.checkItemPath();
     }
+
+    /** @ignore */
+    _getObjectUpdateCollection() {
+        if (this.updateCollection === "Meteor.users") {
+            return Meteor.users
+        }
+        return window[this.updateCollection]
+    }
+
+
 
     /** @ignore */
     constructor() {
@@ -451,14 +464,14 @@ export class SelectComponent extends BlazeComponent {
      */
     optionsToUpdate() {
         if (this.pathWithArray) {
-            var leaf = window[this.updateCollection].findOne(this.updateItemId);
+            var leaf = this._getObjectUpdateCollection().findOne(this.updateItemId);
             _.each(this.pathWithArray, function (pathObj) {
                 leaf = _.findWhere(Leaf(leaf, pathObj.path), {_id: pathObj._id});
             });
             return leaf[this.updateItemPath];
 
         } else {
-            var leaf = Leaf(window[this.updateCollection].findOne(this.updateItemId), this.updateItemPath);
+            var leaf = Leaf(this._getObjectUpdateCollection().findOne(this.updateItemId), this.updateItemPath);
             return leaf;
         }
 
@@ -562,7 +575,7 @@ export class SelectComponent extends BlazeComponent {
                 }
             };
 
-        window[this.updateCollection].update(this.updateItemId,
+        this._getObjectUpdateCollection().update(this.updateItemId,
                 updateQuery
             , _.bind(function (error, numberAffected) {
                 if (this.updateCallback)

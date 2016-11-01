@@ -812,7 +812,7 @@ export class InjectDataServerService {
         });
         var _id = Meteor.users.findOne({name:username})._id;
 
-        this._setGroupRolesToUsers(_id, groupRoleId);
+       // this._setGroupRolesToUsers(_id, groupRoleId);
 
         return _id;
     }

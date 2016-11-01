@@ -99,6 +99,16 @@
                                     </div>
                                 {{/if}}
                             </div>
+                            <div class="col-md-4">
+                                {{#if isInRole RolesEnum.ROLE}}
+                                    <div>
+                                        {{> MultipleNonMandatorySelectComponent selectLabel="Group Roles" title="Update group roles"
+                                        optionCollection="GroupRoles" optionValueName="name"
+                                        updateCollection="Meteor.users" updateItemId=this._id updateItemPath="groupRoles"
+                                        }}
+                                    </div>
+                                {{/if}}
+                            </div>
                         </div>
                         <div class="row">
 

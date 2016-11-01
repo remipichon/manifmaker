@@ -23,7 +23,7 @@ export class ServerUserService {
         }
 
         var minimalId = minimalGroup._id;
-        var _id = Meteor.users.update(doc._id, {
+        var _id = Meteor.users.direct.update(doc._id, {
             $set: {
                 name: doc.username,
                 loginUserId: Meteor.users.findOne({username: doc.username})._id,
@@ -57,7 +57,7 @@ export class ServerUserService {
                     $set: {groupRoles: user.groupRoles}
                 };
                 //will fire the Meteor.users after hook and call propagateRoles
-                Meteor.users.update(user._id, modifier);
+                Meteor.users.direct.update(user._id, modifier);
             });
         }
     }
@@ -75,14 +75,17 @@ export class ServerUserService {
      * @param options
      */
     static propagateRoles(userId, doc, fieldNames, modifier) {
+        var allGroupRolesMerged;
         if (fieldNames) { //update
             if (_.contains(fieldNames, "groupRoles")) {
-                if (modifier.$set.groupRoles) {
+                if (modifier.$set) {
                     //we have to merge roles and roles from groups
-                    var allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(modifier.$set.groupRoles);
+                    allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(modifier.$set.groupRoles);
+                } else if(modifier.$push){
+                    allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(modifier.$push.groupRoles.$each);
                 } else {
                     //we have to remove all roles
-                    var allGroupRolesMerged = [];
+                    allGroupRolesMerged = [];
                 }
                 console.info("Roles.setUserRoles"+ doc.loginUserId,allGroupRolesMerged);
                 console.log(doc._id,allGroupRolesMerged);
@@ -116,6 +119,10 @@ export class ServerUserService {
      * - Needed role : USERWRITE
      */
     static allowInsert(userId, doc) {
+        if(!userId){
+            console.info("allow insert user because userId is undefined, meaning a new user should be created with username "+doc.userName);
+            return true;
+        }
         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERWRITE, doc, 'user');
     }
 
@@ -130,7 +137,6 @@ export class ServerUserService {
      * if userId is the doc being updated, no need of USERWRITE (a user can update itself)
      */
     static allowUpdate(userId, doc, fieldNames, modifier, options) {
-
         if(_.contains(fieldNames, "services")) //Meteor account doing its bizness
             return true;
 
@@ -138,7 +144,6 @@ export class ServerUserService {
             SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERWRITE, doc, 'user');
 
         if (_.contains(fieldNames, "groupRoles"))
-            if (modifier.$set.groupRoles)
                 SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ROLE, doc, 'user');
 
         if (_.contains(fieldNames, "isReadyForAssignment"))
@@ -149,11 +154,6 @@ export class ServerUserService {
             if (modifier.$pull)
                 if (modifier.$pull.teams) {
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
-
-
-
-
-
                 }
             if (modifier.$set) //TODO a virer
                 if (modifier.$set.teams)
