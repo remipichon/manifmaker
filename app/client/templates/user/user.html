@@ -2,7 +2,7 @@
 
 <template name="updateUserFormXXX">
 
-    {{# autoForm collection="Users" doc=this id="updateUserForm" type="update"}}
+    {{# autoForm collection="Meteor.users" doc=this id="updateUserForm" type="update"}}
         <fieldset>
             <legend>Update User {{this.name}}</legend>
             {{> afQuickField name='name'}}
@@ -18,14 +18,14 @@
         </fieldset>
         <button type="submit" class="btn btn-primary">Update</button>
         {{#if isInRole RolesEnum.USERDELETE}}
-            {{#quickRemoveButton class="btn btn-default" collection="Users" _id=this._id}}Delete{{/quickRemoveButton}}
+            {{#quickRemoveButton class="btn btn-default" collection="Meteor.users" _id=this._id}}Delete{{/quickRemoveButton}}
         {{/if}}
     {{/autoForm}}
 </template>
 
 <template name="readUserForm">
 
-    {{# autoForm collection="Users" doc=this id="readUserForm" type="readonly"}}
+    {{# autoForm collection="Meteor.users" doc=this id="readUserForm" type="readonly"}}
         <fieldset>
             <legend>Update User {{this.name}}</legend>
             {{> afQuickField name='name'}}

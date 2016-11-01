@@ -21,7 +21,7 @@ class UpdateUserComponent extends BlazeComponent {
     makeUserReady(){
         bootbox.confirm("You are about to validate a user, it can't be undone. Are you sure ?", _.bind(function(result){
             if(result){
-                Users.update(this.data()._id,{
+                Meteor.users.update(this.data()._id,{
                     $set: {
                         isReadyForAssignment: true
                     }
@@ -35,14 +35,14 @@ class UpdateUserComponent extends BlazeComponent {
         var user = this.data();
         if ($(event.target).prop('checked')) {
            //add skill
-            Users.update(user._id,{
+            Meteor.users.update(user._id,{
                 $push : {
                     skills: skill._id
                 }
             });
         } else {
             //remove skill
-            Users.update(user._id,{
+            Meteor.users.update(user._id,{
                 $pull : {
                     skills: skill._id
                 }
@@ -54,7 +54,7 @@ class UpdateUserComponent extends BlazeComponent {
 
     updateBirthDate() {
         return _.bind(function (birthDate) {
-            Users.update(this.data()._id,{
+            Meteor.users.update(this.data()._id,{
                 $set : {
                     birthDate: birthDate.toDate()
                 }

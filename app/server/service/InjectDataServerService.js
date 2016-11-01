@@ -1,5 +1,6 @@
 import {ServerService} from "./ServerService";
 import {SecurityServiceServer} from "./SecurityServiceServer";
+import {ServerUserService} from "./ServerUserService";
 
 /** @class InjectDataServerService */
 export class InjectDataServerService {
@@ -21,8 +22,8 @@ export class InjectDataServerService {
 
         console.info("**** Data init success ****");
         console.info("Here are some infos what have been added");
-        console.info("Accounts Users collection size is " + Meteor.users.find().fetch().length);
-        console.info("Customs Users collection size is " + Users.find().fetch().length);
+        console.info("Accounts Meteor.users collection size is " + Meteor.users.find().fetch().length);
+        console.info("Customs Meteor.users collection size is " + Meteor.users.find().fetch().length);
         console.info("Tasks collection size is " + Tasks.find().fetch().length);
         console.info("Assignments collection size is " + Assignments.find().fetch().length);
         console.info("Task Groups collection size is " + TaskGroups.find().fetch().length);
@@ -44,10 +45,10 @@ export class InjectDataServerService {
      */
     static deleteAll() {
         SecurityServiceServer.isItProd();
-        Meteor.roles.remove({});
+        Meteor.roles.direct.remove({});
         GroupRoles.direct.remove({});
 
-        Users.direct.remove({});
+        Meteor.users.direct.remove({});
 
         Assignments.direct.remove({});
         Tasks.remove({});
@@ -65,7 +66,6 @@ export class InjectDataServerService {
         EquipmentStorages.remove({});
 
         AssignmentTerms.remove({});
-
     }
 
     static _injectRoles() {
@@ -132,7 +132,7 @@ export class InjectDataServerService {
      * @summary Initialize Roles and superadmin profil
      */
     static initAccessRightData() {
-        if(Users.findOne({name:SUPERADMIN})){
+        if(Meteor.users.findOne({name:SUPERADMIN})){
             return;
         }
         console.info(SUPERADMIN+" user not found, now injecting roles and superadmin user");
@@ -162,13 +162,22 @@ export class InjectDataServerService {
         });
         console.log("ID",id);
 
-        Users.update(id, {
+        Meteor.users.update(id, {
             $set: {
                 name: username,
                 loginUserId:id,
                 groupRoles: groupArray
             }
         });
+
+
+        //propage role by hand because we need to use .direct to skip security control (superadmin can never be updated)
+        //ServerUserService.propagateRoles(null,{
+        //    groupRoles: groupArray,
+        //    loginUserId: id
+        //});
+
+
 
     }
 
@@ -399,7 +408,7 @@ export class InjectDataServerService {
         });
 
         //users
-        console.info("inject Users");
+        console.info("inject Meteor.users");
         var softGroupRoleId = GroupRoles.findOne({name: "soft"})._id;
         var user1Id = this.createAccountAndUser("user1", "user1@yopmail.com", "user1", softGroupRoleId);
         var user2Id = this.createAccountAndUser("user2", "user2@yopmail.com", "user2", softGroupRoleId);
@@ -407,7 +416,7 @@ export class InjectDataServerService {
         var user4Id = this.createAccountAndUser("user4", "user4@yopmail.com", "user4", softGroupRoleId);
 
         this._setTeamsAndSkills(user1Id, [team1Id], [skill1Id]);
-        Users.update(user1Id, {
+        Meteor.users.update(user1Id, {
             $set: {
                 availabilities: [
                     {
@@ -419,7 +428,7 @@ export class InjectDataServerService {
             }
         });
         this._setTeamsAndSkills(user2Id, [team2Id, team3Id], [skill2Id]);
-        Users.update(user2Id, {
+        Meteor.users.update(user2Id, {
             $set: {
                 availabilities: [
                     {
@@ -430,7 +439,7 @@ export class InjectDataServerService {
             }
         });
         this._setTeamsAndSkills(user3Id, [team3Id], [skill3Id]);
-        Users.update(user3Id, {
+        Meteor.users.update(user3Id, {
             $set: {
                 availabilities: [
                     {
@@ -445,7 +454,7 @@ export class InjectDataServerService {
             }
         });
         this._setTeamsAndSkills(user4Id, [team3Id], [skill3Id, skill4Id]);
-        Users.update(user4Id, {
+        Meteor.users.update(user4Id, {
             $set: {
                 availabilities: [
                     {
@@ -762,7 +771,7 @@ export class InjectDataServerService {
             }
         })
         var task1 = Tasks.findOne({name: "task 1"});
-        var user1 = Users.findOne({name: "user1"});
+        var user1 = Meteor.users.findOne({name: "user1"});
         var timeslot2h4h = task1.timeSlots[0];
         var peopleNeedNoSkillsTeam1 = timeslot2h4h.peopleNeeded[0];
 
@@ -775,12 +784,12 @@ export class InjectDataServerService {
     };
 
     static _setTeamsAndSkills(userId, teams, skills) {
-        Users.update(userId, {
+        Meteor.users.update(userId, {
             $set: {
                 teams: teams,
             }
         });
-        Users.update(userId, {
+        Meteor.users.update(userId, {
             $set: {
                 skills: skills
             }
@@ -801,7 +810,7 @@ export class InjectDataServerService {
             email: email,
             password: password
         });
-        var _id = Users.findOne({name:username})._id;
+        var _id = Meteor.users.findOne({name:username})._id;
 
         this._setGroupRolesToUsers(_id, groupRoleId);
 
@@ -816,7 +825,7 @@ export class InjectDataServerService {
         else
             groupArray = [groupId];
 
-        Users.update(userId, {
+        Meteor.users.update(userId, {
             $set: {
                 groupRoles: groupArray
             }

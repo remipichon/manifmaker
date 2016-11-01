@@ -117,7 +117,7 @@ Schemas.helpers.allEquipmentStoragesOptions  = function () {
 
 
 Schemas.helpers.allUsersOptions = function () {
-    var users = Users.find({}).fetch();
+    var users = Meteor.users.find({}).fetch();
     var result = [];
     _.each(users, function (user) {
         result.push({

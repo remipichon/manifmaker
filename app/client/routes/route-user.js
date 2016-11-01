@@ -61,18 +61,18 @@ Router.route('/register', function () {
  * @name 'user.read'  /user/:_id
  */
 Router.route('/user/:_id', function () {
-    if(!Users.findOne(this.params._id)){
+    if(!Meteor.users.findOne(this.params._id)){
         throw new Meteor.Error("404","User not found");
         return;
     }
-        if(Users.findOne(this.params._id).loginUserId !== Meteor.userId())
+        if(Meteor.users.findOne(this.params._id).loginUserId !== Meteor.userId())
             SecurityServiceClient.grantAccessToPage( RolesEnum.USERWRITE);
 
         console.info("routing", "/user/" + this.params._id);
         this.render('updateUserForm', {
             data: function () {
                 var currentUser = this.params._id;
-                return Users.findOne({_id: currentUser});
+                return Meteor.users.findOne({_id: currentUser});
             }, to: 'mainContent'
         });
     },
@@ -87,17 +87,17 @@ Router.route('/user/:_id', function () {
  * @name 'user.read'  /user/:_id
  */
 Router.route('/user/:_id/read', function () {
-        if(!Users.findOne({_id: this.params._id})){
+        if(!Meteor.users.findOne({_id: this.params._id})){
             throw new Meteor.Error("404","User not found");
         }
-        if(Users.findOne(this.params._id).loginUserId !== Meteor.userId())
+        if(Meteor.users.findOne(this.params._id).loginUserId !== Meteor.userId())
             SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
 
         console.info("routing", "/user/" + this.params._id);
         this.render('readUserForm', {
             data: function () {
                 var currentUser = this.params._id;
-                return Users.findOne({_id: currentUser});
+                return Meteor.users.findOne({_id: currentUser});
             }, to: 'mainContent'
         });
     },

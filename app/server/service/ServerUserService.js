@@ -7,12 +7,12 @@ import {TimeSlotService} from "../../both/service/TimeSlotService"
 export class ServerUserService {
 
     /**
-     * @summary Create a custom user from doc.username
+     * @summary Update a user to add specific fields not handled by Meteor Accounts
      * @param userId (will be always null)
      * @param doc
      * @locus server
      */
-    static createCustomUser(userId, doc) {
+    static updateUser(userId, doc) {
         //user is not log in yet, userId is null, we bypass security with .direct and propagate role with direct call to method
         var defaultGroupRole = "minimal";
         var minimalGroup = GroupRoles.findOne({name:defaultGroupRole});
@@ -23,18 +23,16 @@ export class ServerUserService {
         }
 
         var minimalId = minimalGroup._id;
-        var _id = Users.direct.insert({
-            name: doc.username,
-            loginUserId: Meteor.users.findOne({username: doc.username})._id,
-            groupRoles: [minimalId]
+        var _id = Meteor.users.update(doc._id, {
+            $set: {
+                name: doc.username,
+                loginUserId: Meteor.users.findOne({username: doc.username})._id,
+                groupRoles: [minimalId],
+                //nickName: doc.username
+            }
         });
 
-        ServerUserService.propagateRoles(null,{
-            groupRoles: [minimalId],
-            loginUserId: Meteor.users.findOne({username: doc.username})._id
-        },null,null);
-        
-        console.info("A new user has been added to app :"+doc.username+" whith _id :"+_id+" and 'minimal' group roles");
+        console.info("A new user has been update :"+doc.username+" whith _id :"+_id+" and 'minimal' group roles");
     }
 
     /**
@@ -52,22 +50,22 @@ export class ServerUserService {
         if (_.contains(fieldNames, "roles")) {
 
             //users having the updated groupRole
-            var users = Users.find({groupRoles: doc._id}).fetch();
+            var users = Meteor.users.find({groupRoles: doc._id}).fetch();
             users.forEach(user => {
                 //update user roles, Account roles will be update by hooks
                 var modifier = {
                     $set: {groupRoles: user.groupRoles}
                 };
-                //will fire the Users after hook and call propagateRoles
-                Users.update(user._id, modifier);
+                //will fire the Meteor.users after hook and call propagateRoles
+                Meteor.users.update(user._id, modifier);
             });
         }
     }
 
     /**
-     * @summary Users.after.update hook.
+     * @summary Meteor.users.after.update hook.
      * @description
-     * About roles, we only add roles to the custom Users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
+     * About roles, we only add roles to the custom Meteor.users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
      * Meteor.users linked account.
      * @locus server
      * @param userId
@@ -87,7 +85,8 @@ export class ServerUserService {
                     var allGroupRolesMerged = [];
                 }
                 console.info("Roles.setUserRoles"+ doc.loginUserId,allGroupRolesMerged);
-                Roles.setUserRoles(doc.loginUserId, allGroupRolesMerged); //add to Account package
+                console.log(doc._id,allGroupRolesMerged);
+                Roles.setUserRoles(doc._id, allGroupRolesMerged); //add to Account package
             }
         } else {//insert
             if(doc.groupRoles){
@@ -111,9 +110,9 @@ export class ServerUserService {
 
 
     /**
-     * @summary  Users.before.insert
+     * @summary  Meteor.users.before.insert
      * @description
-     * - Collection Hooks :  Users.before.insert
+     * - Collection Hooks :  Meteor.users.before.insert
      * - Needed role : USERWRITE
      */
     static allowInsert(userId, doc) {
@@ -121,9 +120,9 @@ export class ServerUserService {
     }
 
     /**
-     * @summary  Users.before.update
+     * @summary  Meteor.users.before.update
      * @description
-     * - Collection Hooks :  Users.before.update
+     * - Collection Hooks :  Meteor.users.before.update
      * - Needed role : USERWRITE
      *    - ROLE
      *    - ASSIGNMENTTASKUSER
@@ -131,6 +130,9 @@ export class ServerUserService {
      * if userId is the doc being updated, no need of USERWRITE (a user can update itself)
      */
     static allowUpdate(userId, doc, fieldNames, modifier, options) {
+
+        if(_.contains(fieldNames, "services")) //Meteor account doing its bizness
+            return true;
 
         if (userId !== doc.loginUserId)
             SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERWRITE, doc, 'user');
@@ -174,25 +176,29 @@ export class ServerUserService {
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
         }
 
-        if(Users.findOne(doc._id).name === SUPERADMIN){
-            throw new Meteor.Error("403","User superadmin can not be updated");
+        var user = Meteor.users.findOne(doc._id);
+        if(user.name === SUPERADMIN){
+            if (_.contains(fieldNames, "groupRoles"))
+                if (modifier.$set.groupRoles)
+                    if(user.groupRoles.length !== 0)
+                        throw new Meteor.Error("403","User superadmin can not be updated");
         }
     }
 
     /**
-     * @summary  Users.before.remove
+     * @summary  Meteor.users.before.remove
      * @description
-     * - Collection Hooks :  Users.before.remove
+     * - Collection Hooks :  Meteor.users.before.remove
      * - Needed role : USERDELETE
      */
     static allowDelete(userId, doc) {
         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERDELETE, doc, 'task');
 
-        if(Users.findOne(doc._id).name === SUPERADMIN){
+        if(Meteor.users.findOne(doc._id).name === SUPERADMIN){
             throw new Meteor.Error("403","User superadmin can not be deleted");
         }
 
-        if(doc.assignments.length !== 0 ){
+        if(doc.assingments && doc.assignments.length !== 0 ){
             throw new Meteor.Error("403", "Can't delete user with assignments");
         }
     }

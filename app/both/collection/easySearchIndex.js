@@ -32,7 +32,7 @@ TaskGroupsIndex = new EasySearch.Index({
  * @instancename object
  */
 UsersIndex = new EasySearch.Index({
-    collection: Users,
+    collection: Meteor.users,
     fields: ['name'],
     engine: new EasySearch.Minimongo()
 });

@@ -7,14 +7,11 @@ import {Schemas} from './model/SchemasHelpers'
 
 /**
  * @memberOf Collection
- * @summary Users collection
+ * @summary Meteor.users collection
  * @locus Anywhere
  * @instancename collection
  */
-Users = Meteor.users;
-//UsersCustom = Users;
-Users.attachSchema(Schemas.Users);
-Meteor.users = Users;
+
 
 /**
  * @memberOf Collection
@@ -52,7 +49,7 @@ Settings = new Mongo.Collection("settings");
 Tasks.attachSchema(Schemas.Tasks);
 TaskGroups.attachSchema(Schemas.TaskGroups);
 Assignments.attachSchema(Schemas.Assignments);
-
+Meteor.users.attachSchema(Schemas.User);
 Settings.attachSchema(Schemas.Settings);
 
 /**

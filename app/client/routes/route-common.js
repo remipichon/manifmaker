@@ -117,8 +117,8 @@ Router.route('/demo-select', function () {
         if (this.ready()) {
             this.render('demoSelect', {to: 'mainContent',
             data:{
-                user1Id : Users.findOne({name:"user1"})._id,
-                user2Id : Users.findOne({name:"user2"})._id,
+                user1Id : Meteor.users.findOne({name:"user1"})._id,
+                user2Id : Meteor.users.findOne({name:"user2"})._id,
                 task2Id : Tasks.findOne({name:"task 2"})._id,
                 team1Id : Teams.findOne({name:"team1"})._id,
                 team1Idteam2Id: [Teams.findOne({name:"team1"})._id, Teams.findOne({name:"team2"})._id],

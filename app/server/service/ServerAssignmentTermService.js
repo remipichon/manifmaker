@@ -10,7 +10,7 @@ export class ServerAssignmentTermService {
         var end = assignmentTerm.end;
 
         //has availabilities
-        if (Users.find({
+        if (Meteor.users.find({
                 "availabilities": {
                     $elemMatch: {
                         start: {

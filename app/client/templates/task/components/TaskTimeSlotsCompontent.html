@@ -58,7 +58,7 @@
                                     <div class="col-md-9">
                                         {{#if userId}}
                                             {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
-                                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                            optionCollection="Meteor.users" optionValueName="name" optionCollectionIndex="UsersIndex"
                                             updateCollection="Tasks" updateItemId=taskData._id
                                             updateItemPath="userId"
                                             pathWithArray=pathWithArrayPeopleNeeded
@@ -105,7 +105,7 @@
                                     <div class="col-md-9">
                                         {{#if userId}}
                                             {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
-                                            optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                            optionCollection="Meteor.users" optionValueName="name" optionCollectionIndex="UsersIndex"
                                             updateCollection="Tasks" updateItemId=taskData._id
                                             updateItemPath="userId"
                                             pathWithArray=pathWithArrayPeopleNeeded
@@ -175,7 +175,7 @@
                             </div>
                             <div class="col-md-6">
                                 {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
-                                optionCollection="Users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                optionCollection="Meteor.users" optionValueName="name" optionCollectionIndex="UsersIndex"
                                 updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
                                 nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
                                 }}

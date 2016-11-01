@@ -83,7 +83,7 @@ class UserListComponent extends BlazeComponent {
         });
 
         return {
-            collection: Users,
+            collection: Meteor.users,
             rowsPerPage: 10,
             showFilter: false,
             showRowCount: true,

@@ -86,7 +86,7 @@ export class AvailabilityService {
                     end: availability.end
                 });
 
-            Users.update({_id: user._id}, {$set: {availabilities: availabilities}});
+            Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
 
         }
 
@@ -149,7 +149,7 @@ export class AvailabilityService {
         static addAvailabilities(user, start, end) {
 
             //clean availabilities that will be include between start and end
-            var availabilities = Users.findOne(user._id).availabilities;
+            var availabilities = Meteor.users.findOne(user._id).availabilities;
             var availabilityToRemove = []; //will store all indexes to remove
             availabilities.forEach((availability, index) => {
                 if(TimeSlotService.isOverlapping(availability.start, availability.end,start,end)){
@@ -164,11 +164,11 @@ export class AvailabilityService {
             }
 
 
-            Users.update({_id: user._id}, {$set: {availabilities: availabilities}});
+            Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
 
             //TODO remove availability parts that are not part of an assignment term periods
 
-            AvailabilityService.restoreAvailabilities(Users.findOne(user._id),start,end);
+            AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),start,end);
         }
 
         /**
@@ -220,7 +220,7 @@ export class AvailabilityService {
 
             availabilities.push(newAvailability);
 
-            Users.update({_id: user._id}, {$set: {availabilities: availabilities}});
+            Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
 
         }
 

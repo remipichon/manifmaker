@@ -8,13 +8,13 @@
 
         {{reactiveConstructor}}
 
-        {{# autoForm collection="Users" doc=this id="updateUserForm" type="update" autosave=true}}
+        {{# autoForm collection="Meteor.users" doc=this id="updateUserForm" type="update" autosave=true}}
 
             <div class="row">
                 <div class="col-md-12">
-                    {{>EditNameComponent collection="Users" name=name _id=_id}}
+                    {{>EditNameComponent collection="Meteor.users" name=name _id=_id}}
                     {{#if isInRole RolesEnum.USERDELETE}}
-                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
                     {{/if}}
                 </div>
             </div>
@@ -93,7 +93,7 @@
                                     <div>
                                         {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
                                         optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                                        updateCollection="Users" updateItemId=this._id updateItemPath="teams"
+                                        updateCollection="Meteor.users" updateItemId=this._id updateItemPath="teams"
                                         nothingSelectedLabel="None yet"
                                         }}
                                     </div>

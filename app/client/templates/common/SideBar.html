@@ -65,7 +65,7 @@
                     </li>
                 {{/if}}
                 {{#if isInRole RolesEnum.USERREAD}}
-                    <li><a href="{{pathFor route='user.list'}}"><i class="sidebar-icon mdi mdi-account-multiple"></i> Users</a></li>
+                    <li><a href="{{pathFor route='user.list'}}"><i class="sidebar-icon mdi mdi-account-multiple"></i> Meteor.users</a></li>
                 {{/if}}
                 {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
                     <li><a href="{{pathFor route='assignment.calendar'}}"><i class="sidebar-icon mdi mdi-calendar-multiple-check"></i> Assignment</a></li>

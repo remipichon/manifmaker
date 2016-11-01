@@ -9,7 +9,7 @@ class CreateUserComponent extends BlazeComponent {
             phoneNumber: null,
             birthDate: null
         });
-        this.insertUserContext = Users.simpleSchema().namedContext("insertUser");
+        this.insertUserContext = Meteor.users.simpleSchema().namedContext("insertUser");
         this.errorsArray = new ReactiveVar([]);
         this.hasBeenSubmitted = new ReactiveVar(false);
 
@@ -48,7 +48,7 @@ class CreateUserComponent extends BlazeComponent {
 
         if (this.validateForm()) {
             var temp = TempCollection.findOne({_id: this.tempItemId});
-            var _id = Users.insert(temp);
+            var _id = Meteor.users.insert(temp);
             Router.go("/user/" + _id);
         }
     }
@@ -57,7 +57,7 @@ class CreateUserComponent extends BlazeComponent {
         //validating
         var temp = TempCollection.findOne({_id: this.tempItemId});
         delete temp._id; //cleaning
-        var isValid = Users.simpleSchema().namedContext("insertUser").validate(temp, {modifier: false});
+        var isValid = Meteor.users.simpleSchema().namedContext("insertUser").validate(temp, {modifier: false});
 
         //managing error
         if (!isValid) {

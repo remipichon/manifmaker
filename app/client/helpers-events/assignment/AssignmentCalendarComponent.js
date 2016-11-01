@@ -28,11 +28,11 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
     userName() {
-        return Users.findOne({_id: this.currentData().userId}).name;
+        return Meteor.users.findOne({_id: this.currentData().userId}).name;
     }
 
     displayAssignedUser() {
-        return Users.findOne({_id: this.currentData().assignedUserId}).name;
+        return Meteor.users.findOne({_id: this.currentData().assignedUserId}).name;
     }
 
     teamName() {
@@ -106,7 +106,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK:
-                var user = AssignmentReactiveVars.SelectedUser.get() == null ? null : Users.findOne(AssignmentReactiveVars.SelectedUser.get());
+                var user = AssignmentReactiveVars.SelectedUser.get() == null ? null : Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get());
                 if (user === null) return [];
 
 
@@ -230,7 +230,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
 
                 var userId = AssignmentReactiveVars.SelectedUser.get()._id;
-                var user = Users.findOne({_id: userId});
+                var user = Meteor.users.findOne({_id: userId});
                 var availability = AvailabilityService.getSurroundingAvailability(user, selectedDate);
 
                 if (typeof availability === "undefined") {

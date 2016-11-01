@@ -16,7 +16,7 @@ export class ServerService {
      * @description
      * Add hooks to the following collection
      *  - Assignments
-     *  - Users
+     *  - Meteor.users
      *  - GroupRoles
      *  - Tasks
      *  - all ReferenceCollection
@@ -25,7 +25,7 @@ export class ServerService {
      */
     static addCollectionHooks(){
         //create user when Account register a new one
-        Meteor.users.after.insert(ServerUserService.createCustomUser);
+        Meteor.users.after.insert(ServerUserService.updateUser);
 
         //propagate assignment update
         //Assignments.before.insert( /*if we need to add user and task data to assignments*/);
@@ -34,8 +34,8 @@ export class ServerService {
         Assignments.after.remove(ServerAssignmentService.removeAssignment);
 
         //propagate roles update
-        Users.after.insert(ServerUserService.propagateRoles); //Users hooks are bypassed with .direct when registering a new user
-        Users.after.update(ServerUserService.propagateRoles);
+        Meteor.users.after.insert(ServerUserService.propagateRoles); //Meteor.users hooks are bypassed with .direct when registering a new user
+        Meteor.users.after.update(ServerUserService.propagateRoles);
         GroupRoles.after.update(ServerUserService.propagateGroupRoles);
 
         //allow/deny policy
@@ -48,9 +48,9 @@ export class ServerService {
         TaskGroups.before.remove(ServerTaskGroupService.allowDelete);
         TaskGroups.after.remove(ServerTaskGroupService.afterRemove);
 
-        Users.before.insert(ServerUserService.allowInsert); //Users hooks are bypassed with .direct when registering a new user
-        Users.before.update(ServerUserService.allowUpdate); //Users hooks are bypassed with .direct when registering a new user
-        Users.before.remove(ServerUserService.allowDelete); //Users hooks are bypassed with .direct when registering a new user
+        Meteor.users.before.insert(ServerUserService.allowInsert); //Meteor.users hooks are bypassed with .direct when registering a new user
+        Meteor.users.before.update(ServerUserService.allowUpdate); //Meteor.users hooks are bypassed with .direct when registering a new user
+        Meteor.users.before.remove(ServerUserService.allowDelete); //Meteor.users hooks are bypassed with .direct when registering a new user
 
         Assignments.before.insert(ServerAssignmentService.allowInsert);
         Assignments.before.update(ServerAssignmentService.allowUpdate);

@@ -10,7 +10,7 @@ Meteor.startup(function () {
     /**
      * @memberOf Meteor_Publish
      * @locus server
-     * @summary Users publication. Publish all Users data if role associated or only current user data
+     * @summary Meteor.users publication. Publish all Meteor.users data if role associated or only current user data
      * @description
      * Role required : USERREAD ou ASSIGNMENTTASKUSER
      *
@@ -20,9 +20,9 @@ Meteor.startup(function () {
     Meteor.publish("users", function () {
         if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"users")
         || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"users"))
-            return Users.find({});
+            return Meteor.users.find({});
         else
-            return Users.find({loginUserId : this.userId});
+            return Meteor.users.find({loginUserId : this.userId});
         //TODO ne pas envoyer les roles des users si pas le role 'user'
     });
 

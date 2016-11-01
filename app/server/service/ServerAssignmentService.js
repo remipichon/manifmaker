@@ -15,7 +15,7 @@ export class ServerAssignmentService {
     static propagateAssignment(assignmentId, assignment, fieldNames) {
         console.log("propagateAssignment for", assignment);
         var assignment = assignment;
-        var user = Users.findOne(assignment.userId),
+        var user = Meteor.users.findOne(assignment.userId),
             task = Tasks.findOne(assignment.taskId);
 
         var timeSlot = TimeSlotService.getTimeSlot(task, assignment.timeSlotId);
@@ -26,7 +26,7 @@ export class ServerAssignmentService {
             end: timeSlot.end,
             assignmentId: assignment._id
         };
-        Users.update(assignment.userId, {
+        Meteor.users.update(assignment.userId, {
             $push: {assignments: userAssignment}
         });
 
@@ -54,7 +54,7 @@ export class ServerAssignmentService {
         var assignment = assignment;
         var updateUser = {},
             updateTask = {},
-            user = Users.findOne(assignment.userId),//Meteor.users.findOne(review.userId),
+            user = Meteor.users.findOne(assignment.userId),//Meteor.users.findOne(review.userId),
             task = Tasks.findOne(assignment.taskId);
 
         //TODO use $pull
@@ -66,7 +66,7 @@ export class ServerAssignmentService {
                 )
             )
         );
-        Users.update(assignment.userId, {$set: updateUser});
+        Meteor.users.update(assignment.userId, {$set: updateUser});
 
         updateTask.assignments = task.assignments;
         updateTask.assignments.pop(

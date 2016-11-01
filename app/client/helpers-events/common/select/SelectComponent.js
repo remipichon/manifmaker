@@ -57,7 +57,7 @@ export class SelectComponent extends BlazeComponent {
      * ``` html
      *  {{> MultipleSelectComponent selectLabel="Multiple select with mininum params to update an item in a collection"
      *           optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-     *           updateCollection="Users" updateItemId=user1Id updateItemPath="teams"
+     *           updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
      *   }}
      *```
      *

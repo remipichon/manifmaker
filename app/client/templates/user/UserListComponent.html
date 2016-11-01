@@ -57,7 +57,7 @@
         {{/if}}
     {{/if}}
     {{#if isInRole RolesEnum.USERDELETE}}
-        {{#quickRemoveButton class="btn btn-default" collection="Users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}
+        {{#quickRemoveButton class="btn btn-default" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}
             <span title="Delete">
                 <i class="mdi mdi-delete"></i>
             </span>
