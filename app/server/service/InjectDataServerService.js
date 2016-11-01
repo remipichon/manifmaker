@@ -46,7 +46,6 @@ export class InjectDataServerService {
         SecurityServiceServer.isItProd();
         Meteor.roles.remove({});
         GroupRoles.direct.remove({});
-        Meteor.users.remove({});
 
         Users.direct.remove({});
 
@@ -156,16 +155,19 @@ export class InjectDataServerService {
         else
             groupArray = [superAdmin];
 
-        Accounts.createUser({
+        var id = Accounts.createUser({
             username: username,
             email: email,
             password: password
         });
+        console.log("ID",id);
 
-        Users.insert({
-            name: username,
-            loginUserId: Meteor.users.findOne({username: username})._id,
-            groupRoles: groupArray
+        Users.update(id, {
+            $set: {
+                name: username,
+                loginUserId:id,
+                groupRoles: groupArray
+            }
         });
 
     }
