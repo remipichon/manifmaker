@@ -43,8 +43,8 @@ Template.registerHelper(
 );
 
 Template.registerHelper(
-    "allSkills", function () {
-        var userTeams = Meteor.users.findOne({_id:Meteor.userId()}).teams;
+    "allSkills", function (userId) {
+        var userTeams = Meteor.users.findOne({_id:userId}).teams;
         return Skills.find({
             teams: {
                 $in: userTeams

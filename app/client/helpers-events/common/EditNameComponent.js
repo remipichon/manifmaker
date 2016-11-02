@@ -11,7 +11,10 @@ class EditNameComponent extends BlazeComponent{
     }
 
     initializeData() {
-        this.collection = window[this.data().collection];
+        if(this.data().collection === "Meteor.users")
+            this.collection = Meteor.users
+        else
+            this.collection = window[this.data().collection];
 
         this.name = this.data().name;
     }

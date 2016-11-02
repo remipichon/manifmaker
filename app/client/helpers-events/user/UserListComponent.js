@@ -39,7 +39,7 @@ class UserListComponent extends BlazeComponent {
 
     onCreated() {
         this.userListTeamFilter = new ReactiveTable.Filter("user-list-team-filter", ["teams"]);
-        this.userListNameFilter = new ReactiveTable.Filter('search-user-name-filter', ['name']);
+        this.userListNameFilter = new ReactiveTable.Filter('search-user-name-filter', ['username']);
 
     }
 
@@ -47,8 +47,8 @@ class UserListComponent extends BlazeComponent {
     usersList() {
         var fields = [
             {
-                key: 'name',
-                label: 'Name',
+                key: 'username',
+                label: 'Username',
                 cellClass: 'col-sm-3',
                 headerClass: 'col-sm-3',
                 fnAdjustColumnSizing: true

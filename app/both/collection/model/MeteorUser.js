@@ -118,7 +118,7 @@ Schemas.UserProfile = new SimpleSchema({
 
     familyName: {
         type: String,
-        label: "Meteor.users Name",
+        label: "Users Family Name",
         max: 100,
         optional: true
     },
@@ -174,7 +174,6 @@ Schemas.UserProfile = new SimpleSchema({
         type: Date,
         optional: true,
         label: "User birth date",
-        defaultValue: null
     },
     gender: {
         type: String,

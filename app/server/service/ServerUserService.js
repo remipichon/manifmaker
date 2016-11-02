@@ -149,6 +149,24 @@ export class ServerUserService {
             return true;
         }
 
+        if(user.username === SUPERADMIN){
+            if (_.contains(fieldNames, "groupRoles"))
+                if (modifier.$set.groupRoles)
+                    if(user.groupRoles.length !== 0)
+                        throw new Meteor.Error("403","User superadmin can not be updated");
+
+            //when superadmin is created, there is just superadmin group roles
+            if (_.contains(fieldNames, "roles")) {
+                var superadminGroupRoles = GroupRoles.findOne({name:"superadmin"});
+                if (modifier.$set && modifier.$set.roles
+                    && modifier.$set.roles.length === superadminGroupRoles.roles.length
+                    && _.difference(modifier.$set.roles, superadminGroupRoles.roles).length === 0) {
+                    console.info("Users.allowUpdate : authorizing setting superadmin roles because superadmin group role has been used")
+                    return true;
+                }
+            }
+        }
+
         //when inserting new user, its default group role have to be propagated even if default group role doesn't provide any roles
         var defaultGroupRole = "minimal";
         var minimalGroup = GroupRoles.findOne({name: defaultGroupRole});
@@ -158,7 +176,7 @@ export class ServerUserService {
             if (modifier.$set && modifier.$set.groupRoles
                 && modifier.$set.groupRoles.length === 1
                 && modifier.$set.groupRoles[0] === minimalGroup._id) {
-                console.info("Users.allowUpdate : authorizing setting user group roles because default group has been used")
+                console.info("Users.allowUpdate : authorizing setting user group roles because default group role has been used")
                 return true;
             }
 
@@ -210,12 +228,6 @@ export class ServerUserService {
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
         }
 
-        if(user.username === SUPERADMIN){
-            if (_.contains(fieldNames, "groupRoles"))
-                if (modifier.$set.groupRoles)
-                    if(user.groupRoles.length !== 0)
-                        throw new Meteor.Error("403","User superadmin can not be updated");
-        }
     }
 
     /**

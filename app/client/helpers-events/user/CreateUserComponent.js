@@ -5,9 +5,9 @@ class CreateUserComponent extends BlazeComponent {
         this.tempItemId = TempCollection.insert({
             name: null,
             firstName: null,
-            nickName: null,
+            username: null,
             phoneNumber: null,
-            birthDate: null
+            birthday: null
         });
         this.insertUserContext = Meteor.users.simpleSchema().namedContext("insertUser");
         this.errorsArray = new ReactiveVar([]);

@@ -12,7 +12,8 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    {{>EditNameComponent collection="Meteor.users" name=name _id=_id}}
+                    TODO edit first name and family name [ username : {{this.username}}]
+                    <!--{{>EditNameComponent collection="Meteor.users" name=username _id=_id}}-->
                     {{#if isInRole RolesEnum.USERDELETE}}
                         {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
                     {{/if}}
@@ -36,13 +37,13 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div>
-                                    {{> afQuickField name='profile.firstName'}}
+                                    <!--{{> afQuickField name='profile.firstName'}}-->
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div>
-                                    {{> afQuickField name=''}}
+                                    <!--{{> afQuickField name='profile.familyName'}}-->
                                 </div>
                             </div>
 
@@ -54,21 +55,21 @@
                         <div class="row">
 
                             <div class="col-md-4">
-                                <div>
-                                    {{> afQuickField name=''}} email ?
-                                </div>
+                                TODO email
                             </div>
 
                             <div class="col-md-4">
                                 <div>
-                                    {{> afQuickField name='profile.phoneNumber'}}
+                                    <!--{{> afQuickField name='profile.phoneNumber'}}-->
+                                    TODO
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div>
                                     <label>User Birth date</label>
-                                    {{>DateTimePickerComponent date=birthday updateDateCallback=updateBirthDate}}
+                                    TODO
+                                    <!--{{>DateTimePickerComponent date=birthday updateDateCallback=updateBirthDate}}-->
                                 </div>
                             </div>
 
@@ -151,7 +152,7 @@
                         {{/if}}
                     {{/if}}
                     <div class="row">
-                        {{#each allSkills}}
+                        {{#each allSkills this._id}}
                             <div class="col-md-3">
                                 <input type="checkbox" class="update-skill" {{isChecked _id}} disabled="{{../isReadyForAssignment}}">
                                 {{label}}
