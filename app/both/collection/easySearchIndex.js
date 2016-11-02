@@ -33,7 +33,7 @@ TaskGroupsIndex = new EasySearch.Index({
  */
 UsersIndex = new EasySearch.Index({
     collection: Meteor.users,
-    fields: ['name'],
+    fields: ['familyName','firstName','username'],
     engine: new EasySearch.Minimongo()
 });
 /**

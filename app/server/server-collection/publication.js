@@ -22,7 +22,7 @@ Meteor.startup(function () {
         || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"users"))
             return Meteor.users.find({});
         else
-            return Meteor.users.find({loginUserId : this.userId});
+            return Meteor.users.find({_id : this.userId});
         //TODO ne pas envoyer les roles des users si pas le role 'user'
     });
 

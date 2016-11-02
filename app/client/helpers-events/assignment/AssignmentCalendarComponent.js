@@ -28,15 +28,15 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
     userName() {
-        return Meteor.users.findOne({_id: this.currentData().userId}).name;
+        return Meteor.users.findOne({_id: this.currentData().userId}).username;
     }
 
     displayAssignedUser() {
-        return Meteor.users.findOne({_id: this.currentData().assignedUserId}).name;
+        return Meteor.users.findOne({_id: this.currentData().assignedUserId}).username;
     }
 
     teamName() {
-        return Teams.findOne({_id: this.currentData().teamId}).name;
+        return Teams.findOne({_id: this.currentData().teamId}).username;
     }
 
     enableAction(date, timeHours){
@@ -124,7 +124,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
                 if (availabilityFound !== null) {
                     data.state = "available";
-                    data.name = user.name;
+                    data.name = user.username;
 
                     founded = availabilityFound;
                 } else if (assignmentFound !== null) {

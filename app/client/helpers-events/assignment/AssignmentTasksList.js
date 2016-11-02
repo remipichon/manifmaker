@@ -254,7 +254,7 @@ class AssignmentTasksList extends BlazeComponent {
     }
 
     user() {
-        return Meteor.users.findOne({_id: this.currentData().userId}).name;
+        return Meteor.users.findOne({_id: this.currentData().userId}).username;
     }
 
     timeSlotsInfo() {

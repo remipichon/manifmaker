@@ -121,7 +121,7 @@ Schemas.helpers.allUsersOptions = function () {
     var result = [];
     _.each(users, function (user) {
         result.push({
-            label: user.name,
+            label: `${user.firstName} ${user.familyName} (${user.username}`,
             value: user._id
         });
     });

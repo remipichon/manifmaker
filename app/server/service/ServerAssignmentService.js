@@ -31,7 +31,7 @@ export class ServerAssignmentService {
         });
 
         var taskAssignment = {
-            userName: user.name,
+            userName: user.username,
             start: timeSlot.start,
             end: timeSlot.end,
             assignmentId: assignment._id

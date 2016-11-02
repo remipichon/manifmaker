@@ -16,7 +16,7 @@ export class ValidationService {
 
             var now = new Date();
             validationState.comments.unshift({
-                author: Meteor.users.findOne(Meteor.userId).name,
+                author: Meteor.users.findOne(Meteor.userId).username,
                 content: comment,
                 creationDate: now,
                 stateBefore: validationState.currentState,

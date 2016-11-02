@@ -9,7 +9,7 @@
             {{> afQuickField name="teams"}}
             {{> afQuickField name="skills"}}
             {{#if isInRole RolesEnum.ROLE}}
-                {{#if this.loginUserId}}
+                {{#if this._id}}
                     {{> afQuickField name="groupRoles"}}
                 {{else}}
                     User don't have a associated login account, can't add roles.
@@ -32,7 +32,7 @@
             {{> afQuickField name="teams"}}
             {{> afQuickField name="skills"}}
             {{#if isInRole RolesEnum.ROLE}}
-                {{#if this.loginUserId}}
+                {{#if this._id}}
                     {{> afQuickField name="groupRoles"}}
                 {{else}}
                     User don't have a associated login account, can't add roles.

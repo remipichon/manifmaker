@@ -132,7 +132,7 @@ export class InjectDataServerService {
      * @summary Initialize Roles and superadmin profil
      */
     static initAccessRightData() {
-        if(Meteor.users.findOne({name:SUPERADMIN})){
+        if(Meteor.users.findOne({username:SUPERADMIN})){
             return;
         }
         console.info(SUPERADMIN+" user not found, now injecting roles and superadmin user");
@@ -160,22 +160,21 @@ export class InjectDataServerService {
             email: email,
             password: password
         });
-        console.log("ID",id);
 
-        Meteor.users.update(id, {
+        Meteor.users.direct.update(id, {
             $set: {
-                name: username,
-                loginUserId:id,
+                username: username,
+                _id:id,
                 groupRoles: groupArray
             }
         });
 
 
         //propage role by hand because we need to use .direct to skip security control (superadmin can never be updated)
-        //ServerUserService.propagateRoles(null,{
-        //    groupRoles: groupArray,
-        //    loginUserId: id
-        //});
+        ServerUserService.propagateRoles(null,{
+            groupRoles: groupArray,
+            _id: id
+        });
 
 
 
@@ -771,7 +770,7 @@ export class InjectDataServerService {
             }
         })
         var task1 = Tasks.findOne({name: "task 1"});
-        var user1 = Meteor.users.findOne({name: "user1"});
+        var user1 = Meteor.users.findOne({username: "user1"});
         var timeslot2h4h = task1.timeSlots[0];
         var peopleNeedNoSkillsTeam1 = timeslot2h4h.peopleNeeded[0];
 
@@ -805,16 +804,11 @@ export class InjectDataServerService {
      * @returns {*}
      */
     static createAccountAndUser(username, email, password, groupRoleId) {
-        Accounts.createUser({
+       return Accounts.createUser({
             username: username,
             email: email,
             password: password
         });
-        var _id = Meteor.users.findOne({name:username})._id;
-
-       // this._setGroupRolesToUsers(_id, groupRoleId);
-
-        return _id;
     }
 
     static _setGroupRolesToUsers(userId, groupId) {

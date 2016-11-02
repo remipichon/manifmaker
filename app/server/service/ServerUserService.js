@@ -23,12 +23,9 @@ export class ServerUserService {
         }
 
         var minimalId = minimalGroup._id;
-        var _id = Meteor.users.direct.update(doc._id, {
+        var _id = Meteor.users.update(doc._id, {
             $set: {
-                name: doc.username,
-                loginUserId: Meteor.users.findOne({username: doc.username})._id,
                 groupRoles: [minimalId],
-                //nickName: doc.username
             }
         });
 
@@ -87,15 +84,15 @@ export class ServerUserService {
                     //we have to remove all roles
                     allGroupRolesMerged = [];
                 }
-                console.info("Roles.setUserRoles"+ doc.loginUserId,allGroupRolesMerged);
+                console.info("Roles.setUserRoles "+ doc._id,allGroupRolesMerged);
                 console.log(doc._id,allGroupRolesMerged);
                 Roles.setUserRoles(doc._id, allGroupRolesMerged); //add to Account package
             }
         } else {//insert
             if(doc.groupRoles){
                 var allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(doc.groupRoles);
-                console.info("Roles.setUserRoles"+ doc.loginUserId,allGroupRolesMerged);
-                Roles.setUserRoles(doc.loginUserId, allGroupRolesMerged); //add to Account package
+                console.info("Roles.setUserRoles "+ doc._id,allGroupRolesMerged);
+                Roles.setUserRoles(doc._id, allGroupRolesMerged); //add to Account package
             }
         }
 
@@ -137,14 +134,51 @@ export class ServerUserService {
      * if userId is the doc being updated, no need of USERWRITE (a user can update itself)
      */
     static allowUpdate(userId, doc, fieldNames, modifier, options) {
-        if(_.contains(fieldNames, "services")) //Meteor account doing its bizness
+        console.log(fieldNames)
+        console.log(modifier)
+        console.log("userId",userId);
+
+        var user = Meteor.users.findOne(doc._id);
+
+
+        //we are skipping some security test
+
+        //Meteor account doing its bizness
+        if(_.contains(fieldNames, "services") && fieldNames.length === 1){
+            console.info("Users.allowUpdate : authorizing updating user services because default its Meteor.account bizness")
             return true;
+        }
 
-        if (userId !== doc.loginUserId)
-            SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERWRITE, doc, 'user');
+        //when inserting new user, its default group role have to be propagated even if default group role doesn't provide any roles
+        var defaultGroupRole = "minimal";
+        var minimalGroup = GroupRoles.findOne({name: defaultGroupRole});
 
-        if (_.contains(fieldNames, "groupRoles"))
-                SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ROLE, doc, 'user');
+        //we authorize to $SET DEFAULT group role without any security check
+        if (_.contains(fieldNames, "groupRoles") && fieldNames.length === 1)
+            if (modifier.$set && modifier.$set.groupRoles
+                && modifier.$set.groupRoles.length === 1
+                && modifier.$set.groupRoles[0] === minimalGroup._id) {
+                console.info("Users.allowUpdate : authorizing setting user group roles because default group has been used")
+                return true;
+            }
+
+        //we authorize Meteor.account to update user roles to DEFAULT without any security check
+        if (_.contains(fieldNames, "roles"))
+            if (modifier.$set && modifier.$set.roles
+                && modifier.$set.roles.length === minimalGroup.roles.length
+                && _.difference(modifier.$set.roles, minimalGroup.roles).length === 0) {
+                console.info("Users.allowUpdate : authorizing setting user roles because default group has been used")
+                return true;
+            }
+
+
+        //back to classic security check
+        if (userId !== doc._id)
+                SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERWRITE, doc, 'user');
+
+        if (_.contains(fieldNames, "groupRoles") ){
+            SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ROLE, doc, 'user');
+        }
 
         if (_.contains(fieldNames, "isReadyForAssignment"))
             if (modifier.$set.isReadyForAssignment)
@@ -176,8 +210,7 @@ export class ServerUserService {
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
         }
 
-        var user = Meteor.users.findOne(doc._id);
-        if(user.name === SUPERADMIN){
+        if(user.username === SUPERADMIN){
             if (_.contains(fieldNames, "groupRoles"))
                 if (modifier.$set.groupRoles)
                     if(user.groupRoles.length !== 0)

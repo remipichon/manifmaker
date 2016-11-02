@@ -67,7 +67,7 @@ Router.route('/user/:_id', function () {
         throw new Meteor.Error("404","User not found");
         return;
     }
-        if(Meteor.users.findOne(this.params._id).loginUserId !== Meteor.userId())
+        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
             SecurityServiceClient.grantAccessToPage( RolesEnum.USERWRITE);
 
         console.info("routing", "/user/" + this.params._id);
@@ -92,7 +92,7 @@ Router.route('/user/:_id/read', function () {
         if(!Meteor.users.findOne({_id: this.params._id})){
             throw new Meteor.Error("404","User not found");
         }
-        if(Meteor.users.findOne(this.params._id).loginUserId !== Meteor.userId())
+        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
             SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
 
         console.info("routing", "/user/" + this.params._id);

@@ -7,7 +7,7 @@ export class UserServiceClient {
      */
     static onSubmitHook(error, state){
         if(!error && state === "signUp"){
-            Router.go("/user/"+Meteor.users.findOne({loginUserId:Meteor.userId()})._id);
+            Router.go("/user/"+Meteor.users.findOne({_id:Meteor.userId()})._id);
         }
     }
 

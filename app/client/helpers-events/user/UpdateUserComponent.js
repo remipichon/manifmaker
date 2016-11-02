@@ -53,10 +53,10 @@ class UpdateUserComponent extends BlazeComponent {
 
 
     updateBirthDate() {
-        return _.bind(function (birthDate) {
+        return _.bind(function (birthday) {
             Meteor.users.update(this.data()._id,{
                 $set : {
-                    birthDate: birthDate.toDate()
+                    birthday: birthday.toDate()
                 }
             });
         }, this);

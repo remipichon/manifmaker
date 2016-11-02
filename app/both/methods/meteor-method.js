@@ -85,12 +85,12 @@ Meteor.methods({
         var user = Meteor.users.findOne({_id: userId});
 
         if (!AvailabilityService.checkUserAvailabilty(user, timeSlot.start, timeSlot.end)) {
-            throw new Meteor.Error(500, `User ${user.name} is not available from ${timeSlot.start} to ${timeSlot.end}`);
+            throw new Meteor.Error(500, `User ${user.username} is not available from ${timeSlot.start} to ${timeSlot.end}`);
         }
 
         if (!PeopleNeedService.checkPeopleNeedForUser(task, timeSlot, peopleNeed, user)) {
             var skillsToString = user.skills.toString();
-            throw new Meteor.Error(500, `User ${user.name} with skills ${skillsToString} can't be assigned to peopleNeed userId ${peopleNeed.userId} teamId ${peopleNeed.teamId} skills ${peopleNeed.skills.toString()}`);
+            throw new Meteor.Error(500, `User ${user.username} with skills ${skillsToString} can't be assigned to peopleNeed userId ${peopleNeed.userId} teamId ${peopleNeed.teamId} skills ${peopleNeed.skills.toString()}`);
         }
 
         var assignmentId = Assignments.insert({

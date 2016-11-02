@@ -36,20 +36,18 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div>
-                                    {{> afQuickField name='firstName'}}
+                                    {{> afQuickField name='profile.firstName'}}
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div>
-                                    {{> afQuickField name='familyName'}}
+                                    {{> afQuickField name=''}}
                                 </div>
                             </div>
 
                             <div class="col-md-4">
-                                <div>
-                                    {{> afQuickField name='nickName'}}
-                                </div>
+                               TODO username
                             </div>
 
                         </div>
@@ -57,20 +55,20 @@
 
                             <div class="col-md-4">
                                 <div>
-                                    {{> afQuickField name='email'}}
+                                    {{> afQuickField name=''}} email ?
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div>
-                                    {{> afQuickField name='phoneNumber'}}
+                                    {{> afQuickField name='profile.phoneNumber'}}
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div>
                                     <label>User Birth date</label>
-                                    {{>DateTimePickerComponent date=birthDate updateDateCallback=updateBirthDate}}
+                                    {{>DateTimePickerComponent date=birthday updateDateCallback=updateBirthDate}}
                                 </div>
                             </div>
 
@@ -81,10 +79,10 @@
                                     <label>Es tu à l'INSA ?</label>
 
                                     <div class="col-md-6">
-                                        {{> afQuickField name='departement'}}
+                                        {{> afQuickField name='profile.departement'}}
                                     </div>
                                     <div class="col-md-6">
-                                        {{> afQuickField name='annee'}}
+                                        {{> afQuickField name='profile.annee'}}
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +112,7 @@
 
                             <div class="col-md-12">
                                 <div>
-                                    {{> afQuickField name='comment' rows=20}}
+                                    {{> afQuickField name='profile.comment' rows=20}}
                                 </div>
                             </div>
                         </div>
