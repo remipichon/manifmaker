@@ -26,7 +26,7 @@
 
         <div>
             {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
-            optionCollection="Meteor.users" optionValueName="name" optionCollectionIndex="UsersIndex"
+            optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
             updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId" readOnly=readOnly
             }}
         </div>
@@ -34,7 +34,7 @@
         <div>
             <div>
                 {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
-                optionCollection="Meteor.users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
                 updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId" readOnly=readOnly
                 }}
             </div>

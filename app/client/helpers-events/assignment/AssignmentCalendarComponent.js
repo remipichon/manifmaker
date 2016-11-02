@@ -36,7 +36,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
     teamName() {
-        return Teams.findOne({_id: this.currentData().teamId}).username;
+        return Teams.findOne({_id: this.currentData().teamId}).name;
     }
 
     enableAction(date, timeHours){

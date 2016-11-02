@@ -757,17 +757,13 @@ export class InjectDataServerService {
         //prerequisite
         Tasks.update({name: "task 1"},{
             $set:{
-                timeSlotValidation: {
-                    currentState: ValidationState.TOBEVALIDATED
+                "timeSlotValidation.currentState": ValidationState.TOBEVALIDATED
                 }
-            }
         })
         Tasks.update({name: "task 1"},{
             $set:{
-                timeSlotValidation: {
-                    currentState: ValidationState.READY
+                "timeSlotValidation.currentState": ValidationState.READY
                 }
-            }
         })
         var task1 = Tasks.findOne({name: "task 1"});
         var user1 = Meteor.users.findOne({username: "user1"});
