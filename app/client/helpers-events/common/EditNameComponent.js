@@ -21,6 +21,11 @@ class EditNameComponent extends BlazeComponent{
         else
             this.pathToUpdate = "name";
 
+        if(this.data().placeholder)
+            this.placeholder = this.data().placeholder;
+        else
+            this.placeholder = "Type name";
+
         this.name = this.data().name;
     }
 
@@ -30,7 +35,7 @@ class EditNameComponent extends BlazeComponent{
             {
                 "input .header-limited-to-text": this.displayDoneButton,//TODO more precise selector
                 "click #done-name": this.updateName,//TODO more precise selector
-                "click #edit-name": this.focusName,//TODO more precise selector,
+                "click .edit-name": this.focusName,//TODO more precise selector,
                 "keydown #edit-task-name-content": this.enterKeydown
             }
         ];
@@ -47,7 +52,7 @@ class EditNameComponent extends BlazeComponent{
             this.updateName();
             e.preventDefault();
             e.stopPropagation();
-            this.$("#edit-name-content").blur();
+            this.$(".edit-name-content").blur();
             return false;
         }
     }
@@ -57,7 +62,7 @@ class EditNameComponent extends BlazeComponent{
     }
 
     focusName() {
-        $("[data-key=name]").focus();
+        this.$("[data-key=name]").focus();
         this.nameIsEditingReactive.set(true);
     }
 
@@ -66,7 +71,7 @@ class EditNameComponent extends BlazeComponent{
 
         var pathToUpdate = this.pathToUpdate;
 
-        var name = $("[data-key=name]").html();
+        var name = this.$("[data-key=name]").html();
         //if (this.collection.simpleSchema().namedContext("update"+pathToUpdate).validateOne({pathToUpdate: name}, pathToUpdate)) {
             this.collection.update({_id: this.data()._id}, {
                 $set: {

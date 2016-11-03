@@ -12,11 +12,11 @@
 
             <div class="row">
                 <div class="col-md-5">
-                    {{>EditNameComponent collection="Meteor.users" name=profile.firstName pathToUpdate="profile.firstName" _id=_id}}
+                    {{>EditNameComponent collection="Meteor.users" placeholder="First name..." name=profile.firstName pathToUpdate="profile.firstName" _id=_id}}
                 </div>
 
                 <div class="col-md-5">
-                    {{>EditNameComponent collection="Meteor.users" name=profile.familyName pathToUpdate="profile.familyName" _id=_id}}
+                    {{>EditNameComponent collection="Meteor.users" placeholder="Family name..." name=profile.familyName pathToUpdate="profile.familyName" _id=_id}}
                 </div>
                 <div class="col-md-2">
                     {{#if isInRole RolesEnum.USERDELETE}}

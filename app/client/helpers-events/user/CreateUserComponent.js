@@ -37,7 +37,7 @@ class CreateUserComponent extends BlazeComponent {
         TempCollection.update({_id: this.tempItemId},
             {
                 $set: {
-                    name: $("[data-key=name]").val()
+                    username: $("[data-key=name]").val()
                 }
             }
         );
