@@ -16,6 +16,11 @@ class EditNameComponent extends BlazeComponent{
         else
             this.collection = window[this.data().collection];
 
+        if(this.data().pathToUpdate)
+            this.pathToUpdate = this.data().pathToUpdate;
+        else
+            this.pathToUpdate = "name";
+
         this.name = this.data().name;
     }
 
@@ -59,16 +64,18 @@ class EditNameComponent extends BlazeComponent{
     updateName(e) {
         this.nameIsEditingReactive.set(false);
 
+        var pathToUpdate = this.pathToUpdate;
+
         var name = $("[data-key=name]").html();
-        if (this.collection.simpleSchema().namedContext("updateTask").validateOne({name: name}, "name")) {
+        //if (this.collection.simpleSchema().namedContext("update"+pathToUpdate).validateOne({pathToUpdate: name}, pathToUpdate)) {
             this.collection.update({_id: this.data()._id}, {
                 $set: {
-                    name: name
+                    [pathToUpdate] : name
                 }
             })
-        } else {
-            //TODO add error ?
-        }
+        //} else {
+        //    TODO add error ?
+        //}
     }
 
 }

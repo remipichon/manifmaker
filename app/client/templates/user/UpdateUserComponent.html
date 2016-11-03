@@ -11,9 +11,14 @@
         {{# autoForm collection="Meteor.users" doc=this id="updateUserForm" type="update" autosave=true}}
 
             <div class="row">
-                <div class="col-md-12">
-                    TODO edit first name and family name [ username : {{this.username}}]
-                    <!--{{>EditNameComponent collection="Meteor.users" name=username _id=_id}}-->
+                <div class="col-md-5">
+                    {{>EditNameComponent collection="Meteor.users" name=profile.firstName pathToUpdate="profile.firstName" _id=_id}}
+                </div>
+
+                <div class="col-md-5">
+                    {{>EditNameComponent collection="Meteor.users" name=profile.familyName pathToUpdate="profile.familyName" _id=_id}}
+                </div>
+                <div class="col-md-2">
                     {{#if isInRole RolesEnum.USERDELETE}}
                         {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
                     {{/if}}
@@ -35,40 +40,18 @@
                 <div class="panel-body">
                     <div class="">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div>
-                                    <!--{{> afQuickField name='profile.firstName'}}-->
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div>
-                                    <!--{{> afQuickField name='profile.familyName'}}-->
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                               TODO username
-                            </div>
-
-                        </div>
-                        <div class="row">
-
-                            <div class="col-md-4">
-                                TODO email
-                            </div>
 
                             <div class="col-md-4">
                                 <div>
                                     <!--{{> afQuickField name='profile.phoneNumber'}}-->
-                                    TODO
+                                    TODO phone number
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div>
-                                    <label>User Birth date</label>
-                                    TODO
+                                    <!--<label>User Birth date</label>-->
+                                    TODO birth date
                                     <!--{{>DateTimePickerComponent date=birthday updateDateCallback=updateBirthDate}}-->
                                 </div>
                             </div>
