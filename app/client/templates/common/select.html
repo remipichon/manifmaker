@@ -14,19 +14,16 @@
                  data-toggle="popover" title="{{title}}"
                  data-content='
                     {{#if optionCollectionIndex}}
-                        <div class="row">
+                        <div >
                             <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
                         </div>
                     {{/if}}
-                    <div class="row">
-                        <div class="custom-select-options">
-                            <ul class="list-group">
-                                {{#each sortedCollectionItems}}
-                                    <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
-                                {{/each}}
-                            </ul>
-                        </div>
-
+                    <div class="custom-select-options">
+                        <ul class="list-group">
+                            {{#each sortedCollectionItems}}
+                                <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
+                            {{/each}}
+                        </ul>
                     </div>
              '>
                 {{#unless withoutLabel}}
@@ -78,21 +75,18 @@
             <div class="custom-select-label-wrapper hasPopover" data-popover="true"
                  data-toggle="popover" title="{{title}}"
                  data-content='
-                 <div class="row">
+                 <div>
                     <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
                 </div>
-                <div class="row">
-                    <div class="custom-select-options">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                               <div class="clear">{{clearMessage}} <i class="custom-select-icon mdi mdi-delete"></i></div>
-                            </li>
-                            {{#each sortedCollectionItems}}
-                                <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-
+                <div class="custom-select-options">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                           <div class="clear">{{clearMessage}} <i class="custom-select-icon mdi mdi-delete"></i></div>
+                        </li>
+                        {{#each sortedCollectionItems}}
+                            <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
+                        {{/each}}
+                    </ul>
                 </div>
          '>
                 {{#unless withoutLabel}}
