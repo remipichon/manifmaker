@@ -476,7 +476,6 @@ export class InjectDataServerService {
 
         console.info("inject Tasks");
         var now = new Date();
-        var aDayAgo = new moment().add("days", -1).toDate();
         //tasks
         var task1d = Tasks.insert({
             name: "task 1",
@@ -834,7 +833,7 @@ export class InjectDataServerService {
     }
 
     static _getDateFromDateAndHourMinute(year, month, day,hour = 0, minute = 0) {
-        return new Date(year, month, day, hour, minute, 0);
+        return new moment().year(year).month(month).date(day).hour(hour).minute(minute).second(0).millisecond(0).toDate();
     }
 
     static _updateTaskEquipmentQuantity(taskId, equipmentId, quantity) {
