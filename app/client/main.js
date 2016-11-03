@@ -40,6 +40,12 @@ Meteor.startup(function () {
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
             console.log("AutoForm.addHooks : "+name + " error:", error);
+
+            //TODO je sais pas ou faire ca de plus proprement (User Update username)
+            if(error.message.indexOf("duplicate key error") !== -1){
+                var userNameDuplicated = error.message.split("{ :")[1].split("}")[0];
+                sAlert.error(`Username ${userNameDuplicated} already exists`);
+            }
         },
         onSuccess: function(formType, result) {
             if(beforeLogginRoute){

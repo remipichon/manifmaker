@@ -43,7 +43,7 @@
 
                             <div class="col-md-4">
                                 <div>
-                                    <!--{{> afQuickField name='profile.phoneNumber'}}-->
+                                    {{> afQuickField name='profile.phoneNumber'}}
                                     TODO phone number
                                 </div>
                             </div>
@@ -122,6 +122,47 @@
                 {{/if}}
 
             </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Authentication information</div>
+
+                <div class="panel-body">
+                            <div class="alert alert-warning" role="alert">Following information are used to authenticate you.</div>
+
+                            <div class="col-md-5">
+                                {{> afQuickField name='username'}}
+
+                            </div>
+
+                            <div class="col-md-5">
+                                <div>
+                                    TODO email
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div>
+                                    TODO send confirmation mail
+                                </div>
+                            </div>
+                </div>
+
+                {{#if errors}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <div><strong>Some errors remains in the form</strong></div>
+                                {{#each errors}}
+                                    <div>{{message}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+
+            </div>
+
 
             <div class="panel panel-info">
                 <div class="panel-heading">Skills</div>
