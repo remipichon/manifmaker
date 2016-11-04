@@ -1,10 +1,16 @@
 import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
 import {ServerTaskService} from "../../server/service/ServerTaskService"
 import {TimeSlotService} from "../../both/service/TimeSlotService"
+import { Accounts } from 'meteor/accounts-base'
 
 
 /** @class ServerUserService */
 export class ServerUserService {
+
+    static updateUserName(userId,newUsername){
+        console.log("updateUsername",newUsername,"userId",userId);
+        Accounts.setUsername(userId, newUsername)
+    }
 
     /**
      * @summary Update a user to add specific fields not handled by Meteor Accounts

@@ -6,6 +6,12 @@ class UpdateUserComponent extends BlazeComponent {
         return this;
     }
 
+    constructor(){
+        super();
+
+        this.userNameErrorVar = new ReactiveVar("");
+    }
+
 
     template() {
         return "updateUserComponent";
@@ -14,8 +20,25 @@ class UpdateUserComponent extends BlazeComponent {
     events() {
         return [{
             'change .update-skill': this.updateSkill,
-            'click #make-user-ready': this.makeUserReady
+            'click #make-user-ready': this.makeUserReady,
+            'change #username': this.updateUserName
         }];
+    }
+
+    updateUserName(event){
+        var  newUsername = $(event.target).val();
+        var userId = this.currentData()._id;
+        Meteor.call("updateUserName",userId,newUsername,_.bind(function(error, result){
+            if(error){
+                this.userNameErrorVar.set(error.reason);
+            } else {
+                this.userNameErrorVar.set("");
+            }
+        },this));
+    }
+
+    userNameError(){
+        return this.userNameErrorVar.get();
     }
 
     makeUserReady(){

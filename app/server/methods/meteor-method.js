@@ -1,5 +1,6 @@
 import {InjectDataServerService} from "../service/InjectDataServerService"
 import {SecurityServiceServer} from "../service/SecurityServiceServer"
+import {ServerUserService} from "../service/ServerUserService"
 
 
 Meteor.methods({
@@ -10,6 +11,9 @@ Meteor.methods({
          InjectDataServerService.initAccessRightData();
          InjectDataServerService.injectAllData();
          Meteor.isStartingUp = false;
-     }
+     },
+    updateUserName: function(userId,newUsername){
+        ServerUserService.updateUserName(userId,newUsername)
+    }
 });
 
