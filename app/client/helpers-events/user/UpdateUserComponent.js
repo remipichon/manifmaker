@@ -23,12 +23,26 @@ class UpdateUserComponent extends BlazeComponent {
             'change .update-skill': this.updateSkill,
             'click #make-user-ready': this.makeUserReady,
             'change #username': this.updateUserName,
-            'change #useremail': this.updateUserEmail
+            'change #useremail': this.updateUserEmail,
+            'click #send-confirmation-email': this.sendVerificationEmail
         }];
+    }
+
+    sendVerificationEmail(){
+        var userId = this.currentData()._id;
+        Meteor.call("sendVerificationEmail",userId,_.bind(function(error, result){
+            if(error){
+                console.error("sendVerificationEmail",error.reason);
+            }
+        },this));
     }
 
     userEmail(){
         return this.currentData().emails[0].address;
+    }
+
+    emailValid(){
+        return this.currentData().emails[0].verified;
     }
 
     updateUserEmail(event){

@@ -10,6 +10,15 @@ AccountsTemplates.configure({
 
 beforeLogginRoute = null;
 
+
+Accounts.onEmailVerificationLink(function(token,done){
+    console.info("onEmailVerification with token",token);
+    Accounts.verifyEmail(token,function(error){
+        if(error) console.log(error);
+    });
+
+});
+
 Meteor.startup(function () {
 
     Meteor.subscribe("skills");

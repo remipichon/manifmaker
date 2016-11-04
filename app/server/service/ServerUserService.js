@@ -8,7 +8,7 @@ import { Accounts } from 'meteor/accounts-base'
 export class ServerUserService {
 
     static updateUserName(userId,newUsername){
-        Accounts.setUsername(userId, newUsername)
+        Accounts.setUsername(userId, newUsername);
     }
 
 
@@ -20,6 +20,10 @@ export class ServerUserService {
             Accounts.removeEmail(userId, oldEmail);
         }
         Accounts.addEmail(userId, newEmail);
+    }
+
+    static sendVerificationEmail(userId){
+        Accounts.sendVerificationEmail(userId);
     }
 
     /**
@@ -160,7 +164,7 @@ export class ServerUserService {
         //we are skipping some security test
 
         //Meteor account doing its bizness
-        if(_.contains(fieldNames, "services") && fieldNames.length === 1){
+        if(_.contains(fieldNames, "services") && ( fieldNames.length === 1 || fieldNames.length === 2 && _.contains(fieldNames, "emails")) ){
             console.info("Users.allowUpdate : authorizing updating user services because default its Meteor.account bizness")
             return true;
         }

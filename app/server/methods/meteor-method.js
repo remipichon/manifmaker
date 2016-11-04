@@ -17,6 +17,9 @@ Meteor.methods({
     },
     updateUserEmail: function(userId,newUserEmail){
         ServerUserService.updateUserEmail(userId,newUserEmail)
+    },
+    sendVerificationEmail: function(userId){
+        ServerUserService.sendVerificationEmail(userId)
     }
 });
 

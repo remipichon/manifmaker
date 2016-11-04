@@ -157,8 +157,13 @@
                             </div>
 
                             <div class="col-md-2">
-                                <div>
-                                    TODO send confirmation mail
+                                <div class="text-align-center">
+                                    <label class="control-label">Email validation</label>
+                                    {{#unless emailValid}}
+                                        <button id="send-confirmation-email" type="button" class="btn btn-info">Send confirmation email</button>
+                                    {{else}}
+                                        <p><i class="mdi mdi-checkbox-marked-circle-outline"></i></p>
+                                    {{/unless}}
                                 </div>
                             </div>
                 </div>
