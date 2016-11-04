@@ -254,7 +254,7 @@ class AssignmentTasksList extends BlazeComponent {
     }
 
     user() {
-        return Users.findOne({_id: this.currentData().userId}).name;
+        return Meteor.users.findOne({_id: this.currentData().userId}).username;
     }
 
     timeSlotsInfo() {
@@ -309,7 +309,7 @@ class AssignmentTasksList extends BlazeComponent {
             var result = [];
 
             _.each(peopleNeeded, (peopleNeed) => {
-                var selectedUser = Users.findOne(AssignmentReactiveVars.SelectedUser.get());
+                var selectedUser = Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get());
 
                 //userId : if existing, selected user must be the one
                 if (peopleNeed.userId) {

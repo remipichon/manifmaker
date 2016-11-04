@@ -43,8 +43,13 @@ Template.registerHelper(
 );
 
 Template.registerHelper(
-    "allOptionsSkills", function () {
-        return Skills.find({});
+    "allSkills", function (userId) {
+        var userTeams = Meteor.users.findOne({_id:userId}).teams;
+        return Skills.find({
+            teams: {
+                $in: userTeams
+            }
+        });
     }
 );
 
@@ -89,21 +94,27 @@ Template.registerHelper("RolesEnum",function(){
 
 Template.registerHelper(
     "currentUserId", function () {
-        return Users.findOne({loginUserId: Meteor.userId()})._id;
+        return Meteor.users.findOne({_id: Meteor.userId()})._id;
     }
 );
 
 Template.registerHelper(
+    "isCurrentUserTheOneLogged", function(currentUserId){
+        return currentUserId === Meteor.users.findOne({_id: Meteor.userId()})._id;
+    }
+)
+
+Template.registerHelper(
     "currentUserIdObject", function () {
         return {
-            _id: Users.findOne({loginUserId: Meteor.userId()})._id
+            _id: Meteor.users.findOne({_id: Meteor.userId()})._id
         }
     }
 );
 
 Template.registerHelper(
     "currentUserTeamId", function () {
-        return Users.findOne({loginUserId: Meteor.userId()}).teams[0]; //TODO which team to choose ?
+        return Meteor.users.findOne({_id: Meteor.userId()}).teams[0]; //TODO which team to choose ?
     }
 );
 

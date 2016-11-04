@@ -116,6 +116,9 @@ class AssignmentUserList extends BlazeComponent {
         var filterIndex = AssignmentReactiveVars.UserIndexFilter.get();
         var teamFilter = this.userTeamFilter.get();
         var skillsFilter = this.userSkillsFilter.get();
+        var isReadyForAssignmentFilter = {
+            isReadyForAssignment: true
+        };
 
         var hasAvailabilitiesFilter = {$or: []};
         var daysDisplayed = AssignmentCalendarDisplayedDays.find().fetch();
@@ -146,12 +149,13 @@ class AssignmentUserList extends BlazeComponent {
         var searchResult;
         var filterResult;
 
-        filterResult = Users.find({
+        filterResult = Meteor.users.find({
             $and: [
                 filter,
                 teamFilter,
                 skillsFilter,
-                hasAvailabilitiesFilter
+                hasAvailabilitiesFilter,
+                isReadyForAssignmentFilter
             ]
         }, {limit: 20}).fetch();
         searchResult = UsersIndex.search(filterIndex, {limit: 20}).fetch();

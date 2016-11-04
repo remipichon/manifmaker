@@ -1,4 +1,4 @@
 <template name="nameEdit">
     {{initializeData}}
-    <h3 id="edit-name-content" contenteditable="true" data-key="name" class="header-limited-to-text">{{name}}</h3>{{#if nameIsEditing}}<i class="material-icons medium" id="done-name">done</i>{{else}}<i class="material-icons medium" id="edit-name">mode_edit</i>{{/if}}
+    <h3 placeholder="{{placeholder}}" contenteditable="true" data-key="name" class="edit-name-content header-limited-to-text">{{name}}</h3>{{#if nameIsEditing}}<i class="material-icons medium" id="done-name">done</i>{{else}}<i class="material-icons medium edit-name">mode_edit</i>{{/if}}
 </template>

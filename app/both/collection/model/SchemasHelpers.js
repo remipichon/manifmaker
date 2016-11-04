@@ -3,9 +3,13 @@ SimpleSchema.messages({
     unknownId: `[label] could not be found in database`,
     unknownIdOrDuplicateId: `[label] could not be found in database or is duplicated`,
     duplicate: `[label] is duplicated`,
-    endBeforeStart: `[label] must be after start date`,
-    startAfterEnd: `[label] must be before end date`,
+    endBeforeStart: `[label] must be after its start date`,
+    startAfterEnd: `[label] must be before its end date`,
     timeSlotConflictDate: `Time slot can't overlap. Check time slot start and end date conflicts with all others time slots`,
+    assignmentTermPeriodsConflictDate: `Assignment term periods can't overlap. Check assignment term period start and end date conflicts with all others periods for this assignment term`,
+    assignmentTermsConflictDate: `Assignment terms can't overlap. Check assignment term start and end date conflicts with all others assignment terms`,
+    periodStartBeforeTerm: `Period can not start before its term`,
+    periodEndAfterTerm: `Period can not end after its term`,
     skillsNotFound: 'Skills not found',
     taskAssignmentNotMatching: "Task assignment do not match real assignment",
     userAssignmentNotMatching: "User assignment do not match real assignment",
@@ -14,7 +18,15 @@ SimpleSchema.messages({
     onePeopleNeedUserIdPerTimeSlot: "A time slot can not have more than once the same need for a user id",
     updateNotAllowed: "[label] can not be updated as it has is being validated or has already been validated",
     peopleNeededUpdateNotAllowed: "[label] can not be update as task time slots are not ready for assignment",
-    peopleNeedUserIdUnique: "There can ba only one people need requiring a specific user by time slot"
+    peopleNeedUserIdUnique: "There can ba only one people need requiring a specific user by time slot",
+    availabilitiesNoInTerm: "User does not have access to any assignment terms enclosing given availability.",
+    timeSlotNotWithinTerms: "Time slot dates are not within a assignment term's periods",
+    userHasAssignments: "Cannot perform this action as user already has assignments.",
+    userHasBeenValidatedNoSkillsUpdate: "User has been validated therefore its skills cannot be update",
+    accuracyNotFound: "Accuracy value is not a valide one.",
+    moreThanOneSettings: "There can be only one doc in Settings collection",
+    userAccessToSkills: "User does not have access to this skills",
+    availabilityOverlapAssignment: "Availability can not overlap an assignment"
 });
 
 Schemas.helpers = {};
@@ -105,11 +117,11 @@ Schemas.helpers.allEquipmentStoragesOptions  = function () {
 
 
 Schemas.helpers.allUsersOptions = function () {
-    var users = Users.find({}).fetch();
+    var users = Meteor.users.find({}).fetch();
     var result = [];
     _.each(users, function (user) {
         result.push({
-            label: user.name,
+            label: `${user.firstName} ${user.familyName} (${user.username}`,
             value: user._id
         });
     });
@@ -165,6 +177,33 @@ Schemas.helpers.allGroupRolesOptions = function () {
         result.push({
             label: groupRole.name + " : " +groupRole.roles,
             value: groupRole._id
+        });
+    });
+
+    return result;
+};
+
+Schemas.helpers.allDepartementOptions = function () {
+    var items =   ["PC","TC","IF","GE","GM","GI","BIM","GCU","These"];
+    var result = [];
+    _.each(items, function (item) {
+        result.push({
+            label: item,
+            value: item
+        });
+    });
+
+    return result;
+};
+
+
+Schemas.helpers.allAnneesOptions = function () {
+    var items =   ["1","2","3","4","5","doc"];
+    var result = [];
+    _.each(items, function (item) {
+        result.push({
+            label: item,
+            value: item
         });
     });
 

@@ -1,27 +1,23 @@
 import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
 import { AutoForm } from 'meteor/aldeed:autoform'
+import {UserServiceClient} from "../client/service/UserServiceClient";
 
-AccountsTemplates.removeField('email');
-AccountsTemplates.removeField('password');
-AccountsTemplates.addFields([
-    {
-        _id: "username",
-        type: "text",
-        displayName: "username",
-        required: true,
-        minLength: 5,
-    }
-]);
-AccountsTemplates.addField({
-    _id: 'password',
-    type: 'password',
-    required: true,
-    minLength: 6,
-    re: /(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
-    errStr: 'At least 1 digit, 1 lower-case and 1 upper-case',
+
+AccountsTemplates.configure({
+    hideSignInLink: true,
+    onSubmitHook: UserServiceClient.onSubmitHook,
 });
 
 beforeLogginRoute = null;
+
+
+Accounts.onEmailVerificationLink(function(token,done){
+    console.info("onEmailVerification with token",token);
+    Accounts.verifyEmail(token,function(error){
+        if(error) console.log(error);
+    });
+
+});
 
 Meteor.startup(function () {
 
@@ -40,6 +36,7 @@ Meteor.startup(function () {
     Meteor.subscribe("water-supplies");
     Meteor.subscribe("water-disposals");
     Meteor.subscribe("power-supplies");
+    Meteor.subscribe("settings");
     Meteor.subscribe("assignment-terms", function () {
         AssignmentServiceClient.setCalendarTerms();
     });
@@ -52,6 +49,12 @@ Meteor.startup(function () {
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
             console.log("AutoForm.addHooks : "+name + " error:", error);
+
+            //TODO je sais pas ou faire ca de plus proprement (User Update username)
+            if(error.message.indexOf("duplicate key error") !== -1){
+                var userNameDuplicated = error.message.split("{ :")[1].split("}")[0];
+                sAlert.error(`Username ${userNameDuplicated} already exists`);
+            }
         },
         onSuccess: function(formType, result) {
             if(beforeLogginRoute){
@@ -61,9 +64,20 @@ Meteor.startup(function () {
         }
     });
 
-    var accuracy = CalendarAccuracyEnum["1"];
-    AssignmentServiceClient.setCalendarAccuracy(accuracy);
 
+    AutoForm.addHooks(null, {
+        before: {
+            update: function(doc) {
+                _.each(doc.$set, function(value, setter) {
+                    if (_.isArray(value)) {
+                        var newValue = _.compact(value);
+                        doc.$set[setter] = newValue;
+                    }
+                });
+                return doc;
+            }
+        }
+    });
 
     //hide custom select popover when click outside popover
     $('body').on('click', function (e) {

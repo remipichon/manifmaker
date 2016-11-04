@@ -4,7 +4,7 @@ import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
-import {TimeSlotCalendarServiceClient} from "../../../client/service/TimeSlotCalendarServiceClient"
+import {CalendarServiceClient} from "../../../client/service/CalendarServiceClient"
 
 
 class AssignmentCalendarComponent extends BaseCalendarComponent {
@@ -14,20 +14,79 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
 
+    events() {
+        return super.events().concat({
+            "click .on-calendar .peopleNeed": this.peopleNeedOnClick,
+            "click .on-calendar .peopleNeed.assigned": this.peopleNeedAssignedOnClick,
+        })
+    }
+
+
+
     labelSkills() {
         return Skills.findOne({_id: this.currentData().toString()}).label;
     }
 
     userName() {
-        return Users.findOne({_id: this.currentData().userId}).name;
+        return Meteor.users.findOne({_id: this.currentData().userId}).username;
     }
 
     displayAssignedUser() {
-        return Users.findOne({_id: this.currentData().assignedUserId}).name;
+        return Meteor.users.findOne({_id: this.currentData().assignedUserId}).username;
     }
 
     teamName() {
         return Teams.findOne({_id: this.currentData().teamId}).name;
+    }
+
+    enableAction(date, timeHours){
+        var startDate = this.getCalendarDateTime(date, timeHours, 0);
+        var endDate = new moment(startDate).add(1,"hour");
+
+        if (AssignmentTerms.findOne({
+                $and:[
+                    {
+                        start: {
+                            $lte: startDate.toDate()
+                        }
+                    },
+                    {
+                        end: {
+                            $gte: endDate.toDate()
+                        }
+                    }
+                ],
+                $or: [
+                    {
+                        assignmentTermPeriods: {
+                            $size: 0
+                        }
+                    },
+                    {
+                        assignmentTermPeriods: {
+                            $elemMatch: {
+                                $and: [
+                                    {
+                                        start: {
+                                            $lte: startDate.toDate()
+                                        }
+                                    },
+                                    {
+                                        end: {
+                                            $gte: endDate.toDate()
+                                        }
+                                    }
+                                ],
+                            }
+                        }
+                    }
+                ]
+            })
+        )
+            return true;
+
+        return false;
+
     }
 
     //works for .heure et .quart d'heure
@@ -47,7 +106,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK:
-                var user = AssignmentReactiveVars.SelectedUser.get() == null ? null : Users.findOne(AssignmentReactiveVars.SelectedUser.get());
+                var user = AssignmentReactiveVars.SelectedUser.get() == null ? null : Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get());
                 if (user === null) return [];
 
 
@@ -65,7 +124,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
                 if (availabilityFound !== null) {
                     data.state = "available";
-                    data.name = user.name;
+                    data.name = user.username;
 
                     founded = availabilityFound;
                 } else if (assignmentFound !== null) {
@@ -78,14 +137,14 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 }
 
                 _.extend(data, founded);
-                data.height = TimeSlotCalendarServiceClient.computeTimeSlotAvailabilityHeight(founded,startCalendarTimeSlot) + "px";
+                data.height = CalendarServiceClient.computeTimeSlotAvailabilityHeight(founded,startCalendarTimeSlot) + "px";
 
                 break;
             case AssignmentType.TASKTOUSER:
                 var task = AssignmentReactiveVars.SelectedTask.get() == null ? null : Tasks.findOne(AssignmentReactiveVars.SelectedTask.get());
                 if (!task) return [];
 
-                var result = TimeSlotCalendarServiceClient.computeTimeSlotData(task,startCalendarTimeSlot);
+                var result = CalendarServiceClient.computeTimeSlotData(task,startCalendarTimeSlot);
                 if(!result) return [];
                 else data = result;
 
@@ -148,6 +207,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         }
     }
 
+
     //userToTask (we click on a creneau, not on the entire availability)
     quartHeureOnClick(event) {
         //TODO gerer le double click pour la desaffectation
@@ -170,7 +230,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
 
                 var userId = AssignmentReactiveVars.SelectedUser.get()._id;
-                var user = Users.findOne({_id: userId});
+                var user = Meteor.users.findOne({_id: userId});
                 var availability = AvailabilityService.getSurroundingAvailability(user, selectedDate);
 
                 if (typeof availability === "undefined") {

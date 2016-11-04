@@ -5,9 +5,9 @@ export class SingleSelectComponent extends SelectComponent {
         checkItemPath() {
             //in another method to have a context alone for reactivity
 
-            var item = window[this.updateCollection].findOne(this.updateItemId);
+            var item = this._getObjectUpdateCollection().findOne(this.updateItemId);
             if (!item)
-                throw new Meteor.Error(`${this.constructor.name} : could not find ${this.updateItemId} in collection ${this.updateCollection}`);
+                throw new Meteor.Error(400,`${this.constructor.name} : could not find ${this.updateItemId} in collection ${this.updateCollection}`);
 
             //is it a MongoDB id type ?
             //try {

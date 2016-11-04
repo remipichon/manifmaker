@@ -1,5 +1,6 @@
 import {ServerService} from "./ServerService";
 import {SecurityServiceServer} from "./SecurityServiceServer";
+import {ServerUserService} from "./ServerUserService";
 
 /** @class InjectDataServerService */
 export class InjectDataServerService {
@@ -9,17 +10,24 @@ export class InjectDataServerService {
      */
     static injectAllData() {
         SecurityServiceServer.isItProd("InjectDataServerService.injectAllData");
+        Settings.insert({one:1})
         console.info("inject data starts");
         this._injectGroupRoles();
+        Settings.update(Settings.findOne()._id,{
+            $set:{defaultGroupRoles: GroupRoles.findOne({name:"minimal"})._id}
+        });
         console.info("injectGroupRoles done");
         this.injectUsers();
         console.info("injectUsers done");
         this.populateData();
+        this.addSettings();
+        console.info("addSettings done");
+
 
         console.info("**** Data init success ****");
         console.info("Here are some infos what have been added");
-        console.info("Accounts Users collection size is " + Meteor.users.find().fetch().length);
-        console.info("Customs Users collection size is " + Users.find().fetch().length);
+        console.info("Accounts Meteor.users collection size is " + Meteor.users.find().fetch().length);
+        console.info("Customs Meteor.users collection size is " + Meteor.users.find().fetch().length);
         console.info("Tasks collection size is " + Tasks.find().fetch().length);
         console.info("Assignments collection size is " + Assignments.find().fetch().length);
         console.info("Task Groups collection size is " + TaskGroups.find().fetch().length);
@@ -30,19 +38,26 @@ export class InjectDataServerService {
         console.info("GroupRoles collection size is " + GroupRoles.find().fetch().length);
     }
 
+    static addSettings(){
+        Settings.update(Settings.findOne()._id,{
+            $set:{createAccountDefaultTeam: Teams.findOne()._id}
+        })
+
+    }
+
     /**
      * @summmary delete all data
      */
     static deleteAll() {
         SecurityServiceServer.isItProd();
-        Meteor.roles.remove({});
+        Meteor.roles.direct.remove({});
         GroupRoles.direct.remove({});
-        Meteor.users.remove({});
 
-        Users.direct.remove({});
+        Meteor.users.direct.remove({});
 
         Assignments.direct.remove({});
         Tasks.remove({});
+        Settings.remove({});
         Places.remove({});
         Teams.remove({});
         TaskGroups.remove({});
@@ -56,7 +71,6 @@ export class InjectDataServerService {
         EquipmentStorages.remove({});
 
         AssignmentTerms.remove({});
-
     }
 
     static _injectRoles() {
@@ -123,7 +137,7 @@ export class InjectDataServerService {
      * @summary Initialize Roles and superadmin profil
      */
     static initAccessRightData() {
-        if(Users.findOne({name:SUPERADMIN})){
+        if(Meteor.users.findOne({username:SUPERADMIN})){
             return;
         }
         console.info(SUPERADMIN+" user not found, now injecting roles and superadmin user");
@@ -146,17 +160,28 @@ export class InjectDataServerService {
         else
             groupArray = [superAdmin];
 
-        Accounts.createUser({
+        var id = Accounts.createUser({
             username: username,
             email: email,
             password: password
         });
 
-        Users.insert({
-            name: username,
-            loginUserId: Meteor.users.findOne({username: username})._id,
-            groupRoles: groupArray
+        Meteor.users.direct.update(id, {
+            $set: {
+                username: username,
+                _id:id,
+                groupRoles: groupArray
+            }
         });
+
+
+        //propage role by hand because we need to use .direct to skip security control (superadmin can never be updated)
+        ServerUserService.propagateRoles(null,{
+            groupRoles: groupArray,
+            _id: id
+        });
+
+
 
     }
 
@@ -318,113 +343,144 @@ export class InjectDataServerService {
         console.info("inject Skills");
         var skill1Id = Skills.insert({
             key: "RESP_TASK_1",
-            label: "Responsable tache 1"
+            label: "Responsable tache 1",
+            teams:[team1Id]
         });
         var skill2Id = Skills.insert({
             key: "RESP_TASK_2",
-            label: "Responsable tache 2"
+            label: "Responsable tache 2",
+            teams:[team2Id]
         });
         var skill3Id = Skills.insert({
             key: "RESP_TASK_3",
-            label: "Responsable tache 3"
+            label: "Responsable tache 3",
+            teams:[team3Id]
         });
         var skill4Id = Skills.insert({
             key: "RESP_TASK_4",
-            label: "Responsable tache 4"
+            label: "Responsable tache 4",
+            teams:[team3Id,team1Id,team2Id]
         });
 
         //task groups
         var taskGroup1 = TaskGroups.insert({name: "taskGroup1", teamId: team1Id});
 
-        //users
-        console.info("inject Users");
-        var softGroupRoleId = GroupRoles.findOne({name: "soft"})._id;
-        var user1Id = this.createAccountAndUser("user1", "user1@yopmail.com", "user1", softGroupRoleId);
-        var user2Id = this.createAccountAndUser("user2", "user2@yopmail.com", "user2", softGroupRoleId);
-        var user3Id = this.createAccountAndUser("user3", "user3@yopmail.com", "user3", softGroupRoleId);
-        var user4Id = this.createAccountAndUser("user4", "user4@yopmail.com", "user4", softGroupRoleId);
-        Users.update(user1Id, {
-            $set: {
-                teams: [team1Id],
-                skills: [skill1Id],
-                availabilities: [
-                    {
-                        start: this._getDateFromTime(2),
-                        end: this._getDateFromTime(14)
-                    }
-                ]
-            }
-        });
-        Users.update(user2Id, {
-            $set: {
-                teams: [team2Id, team3Id],
-                skills: [skill2Id],
-                availabilities: [
-                    {
-                        start: this._getDateFromTime(2),
-                        end: this._getDateFromTime(16)
-                    }
-                ]
-            }
-        });
-        Users.update(user3Id, {
-            $set: {
-                //teams: [team3Id],
-                skills: [skill2Id, skill3Id],
-                availabilities: [
-                    {
-                        start: this._getDateFromTime(10),
-                        end: this._getDateFromTime(14)
-                    },
-                    {
-                        start: this._getDateFromTime(14),
-                        end: this._getDateFromTime(18)
-                    }
-                ]
-            }
-        });
-        Users.update(user4Id, {
-            $set: {
-                //teams: [team3Id],
-                skills: [skill2Id, skill3Id, skill1Id, skill4Id],
-                availabilities: [
-                    {
-                        start: this._getDateFromTime(10),
-                        end: this._getDateFromTime(14)
-                    },
-                    {
-                        start: this._getDateFromDateAndTime(13,16),
-                        end: this._getDateFromDateAndTime(14,10)
-                    },
-                    {
-                        start: this._getDateFromDateAndTime(20,12),
-                        end: this._getDateFromDateAndTime(23,12)
-                    }
-                ]
-            }
-        });
 
         //assignmentCalendarDay
         console.info("inject AssignmentTerms");
         AssignmentTerms.insert({
             name: "Terms 1",
-            start: this._getDateFromDate(13, 5 - 1),
-            end: this._getDateFromDate(15, 5 - 1)
+            start: this._getDateFromDateAndHourMinute(2016,5,13, 0,0),
+            end: this._getDateFromDateAndHourMinute(2016,5,15, 0,0),
+            teams: [team1Id,team2Id,team3Id],
+            addAvailabilitiesDeadline: this._getDateFromNowPlusHours(10),
+            calendarAccuracy: 1,
         });
         AssignmentTerms.insert({
             name: "Terms 2",
-            start: this._getDateFromDate(10, 5 - 1),
-            end: this._getDateFromDate(11, 5 - 1)
+            start: this._getDateFromDateAndHourMinute(2016,5,10, 0,0),
+            end: this._getDateFromDateAndHourMinute(2016,5,11, 0,0),
+            teams: [team2Id],
+            addAvailabilitiesDeadline: this._getDateFromNowPlusHours(-10),
+            calendarAccuracy: 2
+
         });
         AssignmentTerms.insert({
             name: "Terms 3",
-            start: this._getDateFromDate(15, 5 - 1),
-            end: this._getDateFromDate(27, 5 - 1)
+            start: this._getDateFromDateAndHourMinute(2016,3,10, 0,0),
+            end: this._getDateFromDateAndHourMinute(2016,3,20, 0,0),
+            teams: [team3Id,team2Id],
+            assignmentTermPeriods: [
+                {
+                    start: this._getDateFromDateAndHourMinute(2016,3,10, 6,0),
+                    end:this._getDateFromDateAndHourMinute(2016,3,10, 10,0),
+                },
+                {
+                    start: this._getDateFromDateAndHourMinute(2016,3,11, 6,0),
+                    end:this._getDateFromDateAndHourMinute(2016,3,11, 10,0),
+                },
+                {
+                    start: this._getDateFromDateAndHourMinute(2016,3,12, 6,0),
+                    end:this._getDateFromDateAndHourMinute(2016,3,12, 10,0),
+                },
+                {
+                    start: this._getDateFromDateAndHourMinute(2016,3,13, 12,0),
+                    end:this._getDateFromDateAndHourMinute(2016,3,19, 12,0),
+                }
+            ],
+            calendarAccuracy: 0.5
         });
+
+        //users
+        console.info("inject Meteor.users");
+        var softGroupRoleId = GroupRoles.findOne({name: "soft"})._id;
+        var user1Id = this.createAccountAndUser("user1", "user1@yopmail.com", "user1", softGroupRoleId);
+        var user2Id = this.createAccountAndUser("user2", "user2@yopmail.com", "user2", softGroupRoleId);
+        var user3Id = this.createAccountAndUser("user3", "user3@yopmail.com", "user3", softGroupRoleId);
+        var user4Id = this.createAccountAndUser("user4", "user4@yopmail.com", "user4", softGroupRoleId);
+
+        this._setTeamsAndSkills(user1Id, [team1Id], [skill1Id]);
+        Meteor.users.update(user1Id, {
+            $set: {
+                availabilities: [
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016, 5, 13, 2, 0),
+                        end: this._getDateFromDateAndHourMinute(2016, 5, 13, 14, 0),
+                    }
+                ],
+                isReadyForAssignment: true
+            }
+        });
+        this._setTeamsAndSkills(user2Id, [team2Id, team3Id], [skill2Id]);
+        Meteor.users.update(user2Id, {
+            $set: {
+                availabilities: [
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,5,10, 2,0),
+                        end: this._getDateFromDateAndHourMinute(2016,5,10, 16,0)
+                    }
+                ]
+            }
+        });
+        this._setTeamsAndSkills(user3Id, [team3Id], [skill3Id]);
+        Meteor.users.update(user3Id, {
+            $set: {
+                availabilities: [
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,3,10, 10,0),
+                        end: this._getDateFromDateAndHourMinute(2016,3,10, 14,0)
+                    },
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,5,13, 15,0),
+                        end: this._getDateFromDateAndHourMinute(2016,5,13, 18,0)
+                    }
+                ]
+            }
+        });
+        this._setTeamsAndSkills(user4Id, [team3Id], [skill3Id, skill4Id]);
+        Meteor.users.update(user4Id, {
+            $set: {
+                availabilities: [
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,3,10, 6,0),
+                        end:this._getDateFromDateAndHourMinute(2016,3,10, 10,0),
+                    },
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,3,11, 6,0),
+                        end:this._getDateFromDateAndHourMinute(2016,3,11, 10,0),
+                    },
+                    {
+                        start: this._getDateFromDateAndHourMinute(2016,3,12, 6,0),
+                        end:this._getDateFromDateAndHourMinute(2016,3,12, 10,0),
+                    }
+                ]
+            }
+        });
+
+
 
         console.info("inject Tasks");
         var now = new Date();
-        var aDayAgo = new moment().add("days", -1).toDate();
         //tasks
         var task1d = Tasks.insert({
             name: "task 1",
@@ -434,8 +490,8 @@ export class InjectDataServerService {
             masterId: user1Id,
             timeSlots: [
                 {
-                    start: this._getDateFromTime(2),
-                    end: this._getDateFromTime(4),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 2,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,13, 4,0),
                     peopleNeeded: [
                         {
                             teamId: team1Id
@@ -443,8 +499,8 @@ export class InjectDataServerService {
                     ],
                 },
                 {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(14),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 10,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,13, 14,0),
                     peopleNeeded: [
                         {
                             userId: user2Id
@@ -535,8 +591,8 @@ export class InjectDataServerService {
             masterId: user2Id,
             timeSlots: [
                 {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(12),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 10,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,13, 12,0),
                     peopleNeeded: [
                         {
                             teamId: team2Id,
@@ -593,8 +649,8 @@ export class InjectDataServerService {
             masterId: user2Id,
             timeSlots: [
                 {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(12),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 10,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,13, 12,0),
                     peopleNeeded: [
                         {
                             teamId: team1Id,
@@ -652,8 +708,8 @@ export class InjectDataServerService {
             taskGroupId : taskGroup1,
             timeSlots: [
                 {
-                    start: this._getDateFromTime(10),
-                    end: this._getDateFromTime(12),
+                    start: this._getDateFromDateAndHourMinute(2016,5,13, 8,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,13, 10,0),
                     peopleNeeded: [
                         {
                             teamId: team1Id,
@@ -662,8 +718,8 @@ export class InjectDataServerService {
                     ]
                 },
                 {
-                    start: this._getDateFromDateAndTime(13,22),
-                    end: this._getDateFromDateAndTime(14,2),
+                    start: this._getDateFromDateAndHourMinute(2016,5,14, 6,0),
+                    end: this._getDateFromDateAndHourMinute(2016,5,14, 10,0),
                     peopleNeeded: [
                         {
                             skills: [skill1Id]
@@ -671,8 +727,8 @@ export class InjectDataServerService {
                     ]
                 },
                 {
-                    start: this._getDateFromDateAndTime(20,22),
-                    end: this._getDateFromDateAndTime(22,2),
+                    start: this._getDateFromDateAndHourMinute(2016,3,16, 22,0),
+                    end: this._getDateFromDateAndHourMinute(2016,3,19, 2,0),
                     peopleNeeded: [
                         {
                             skills: [skill1Id]
@@ -697,7 +753,47 @@ export class InjectDataServerService {
             }
 
         });
+
+
+        //assignment user1 to task1
+
+
+        //prerequisite
+        Tasks.update({name: "task 1"},{
+            $set:{
+                "timeSlotValidation.currentState": ValidationState.TOBEVALIDATED
+                }
+        })
+        Tasks.update({name: "task 1"},{
+            $set:{
+                "timeSlotValidation.currentState": ValidationState.READY
+                }
+        })
+        var task1 = Tasks.findOne({name: "task 1"});
+        var user1 = Meteor.users.findOne({username: "user1"});
+        var timeslot2h4h = task1.timeSlots[0];
+        var peopleNeedNoSkillsTeam1 = timeslot2h4h.peopleNeeded[0];
+
+        //test
+        Meteor.call("assignUserToTaskTimeSlot", peopleNeedNoSkillsTeam1._id, user1._id, _.bind(function (error, result) {
+            if(error){
+                console.error(error)
+            }
+        },this));
     };
+
+    static _setTeamsAndSkills(userId, teams, skills) {
+        Meteor.users.update(userId, {
+            $set: {
+                teams: teams,
+            }
+        });
+        Meteor.users.update(userId, {
+            $set: {
+                skills: skills
+            }
+        });
+    }
 
     /**
      * @summary insert a User and an Account
@@ -708,19 +804,11 @@ export class InjectDataServerService {
      * @returns {*}
      */
     static createAccountAndUser(username, email, password, groupRoleId) {
-        Accounts.createUser({
+       return Accounts.createUser({
             username: username,
             email: email,
             password: password
         });
-        var _id = Users.insert({
-            name: username,
-            loginUserId: Meteor.users.findOne({username: username})._id
-        });
-
-        this._setGroupRolesToUsers(_id, groupRoleId);
-
-        return _id;
     }
 
     static _setGroupRolesToUsers(userId, groupId) {
@@ -731,7 +819,7 @@ export class InjectDataServerService {
         else
             groupArray = [groupId];
 
-        Users.update(userId, {
+        Meteor.users.update(userId, {
             $set: {
                 groupRoles: groupArray
             }
@@ -743,22 +831,14 @@ export class InjectDataServerService {
         return Collection.findOne({_id: _id});
     }
 
-    static _getDateFromTime(hours, minutes = 0) {
-        var now = new Date();
-        return new Date(now.getYear(), 5 - 1 /*now.getMonth()*/, 13 /*now.getDate()*/, hours, minutes, 0);
+    static _getDateFromNowPlusHours(hours){
+        var now = new moment();
+        now.add(hours,"hour");
+        return now.toDate();
     }
 
-    static _getDateFromDateAndTime(date,hours){
-        var now = new Date();
-        return new Date(now.getYear(), 5 - 1 /*now.getMonth()*/, date /*now.getDate()*/, hours, 0, 0);
-    }
-
-
-    static _getDateFromDate(day, month, year) {
-        var now = new Date();
-        year = year || now.getYear();
-        month = month || now.getMonth();
-        return new Date(year, month, day, 0, 0, 0);
+    static _getDateFromDateAndHourMinute(year, month, day,hour = 0, minute = 0) {
+        return new moment().year(year).month(month).date(day).hour(hour).minute(minute).second(0).millisecond(0).toDate();
     }
 
     static _updateTaskEquipmentQuantity(taskId, equipmentId, quantity) {

@@ -15,5 +15,31 @@
                 </div>
             </div>
         {{/each}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title" data-toggle="collapse" data-parent="#conf-maker-wrapper"
+                    data-target="#settings">
+                    Settings
+                </h4>
+            </div>
+            <div id="settings" class="panel-collapse collapse">
+                <div class="panel-body">
+                    {{# autoForm collection="Settings" doc=settings id="updateSettingsForm" type="update" autosave=true}}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    {{> afQuickField name='createAccountDefaultTeam'}}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    {{> afQuickField name='defaultGroupRoles'}}
+                                </div>
+                            </div>
+                        </div>
+                    {{/autoForm}}
+                </div>
+            </div>
+        </div>
     </div>
 </template>

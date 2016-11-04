@@ -1,4 +1,5 @@
 import {Schemas} from './SchemasHelpers'
+import {TimeSlotService} from "../../../both/service/TimeSlotService"
 
 import "/both/collection/model/enum/EquipementTargetUsage.js"
 
@@ -102,7 +103,21 @@ Schemas.references.options.Skills = {
     REFERENCE_URL: "skill",
     REFERENCE_COLLECTION_NAME: "Skills",
     REFERENCE_MONGO_COLLECTION_NAME: "skills",
-    REFERENCE_LABEL: "Skill"
+    REFERENCE_LABEL: "Skill",
+    REACTIVE_TABLE_FIELDS: [
+        {
+            key: "label",
+            label: "Skill label",
+            cellClass: "-"
+        },
+        {
+            key: "teams",
+            label: "Teams accessing skill",
+            fn: function(teams) {
+                return teams.length + " teams"
+            }
+        }
+    ]
 };
 Schemas.references.Skills = new SimpleSchema({
     key: {
@@ -116,6 +131,23 @@ Schemas.references.Skills = new SimpleSchema({
         type: String,
         label: "Skill Name",
         max: 100
+    },
+    teams: {
+        label: "Teams that will access Skill",
+        type: [SimpleSchema.RegEx.Id],
+        optional: true,
+        custom: function () {
+            this.value = _.compact(this.value);
+            if(Teams.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
+                return "unknownIdOrDuplicateId"
+        },
+    },
+    'teams.$': {
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allTeamsOptions
+            }
+        }
     },
     type: {   
         type: String,
@@ -151,8 +183,112 @@ Schemas.references.options.AssignmentTerms = {
     REFERENCE_URL: "assignment-term",
     REFERENCE_COLLECTION_NAME: "AssignmentTerms",
     REFERENCE_MONGO_COLLECTION_NAME: "assignment-terms",
-    REFERENCE_LABEL: "Assignment Term"
+    REFERENCE_LABEL: "Assignment Term",
+    REACTIVE_TABLE_FIELDS: [
+        {
+            key: "name",
+            label: "Name",
+        },
+        {
+            key: "start",
+            label: "Start",
+            fn: function(date){
+                return new moment(date).format("ddd DD MMM HH[h]mm");
+            }
+        },
+        {
+            key: "start",
+            label: "Start",
+            fn: function(date){
+                return new moment(date).format("ddd DD MMM HH[h]mm");
+            }
+        },
+        {
+            key: "addAvailabilitiesDeadline",
+            label: "Deadlines to add availabilities",
+            fn: function(date){
+                return new moment(date).format("ddd DD MMM HH[h]mm");
+            }
+        },
+        {
+            key: "teams",
+            label: "Teams accessing skill",
+            fn: function(teams) {
+                return teams.length + " teams"
+            }
+        }
+    ]
 };
+AssignmentTermPeriod = new SimpleSchema({
+    start: {
+        type: Date,
+        label: "Assignment Term Period Start Date",
+        custom: function () {
+            var start, end, currentId, terms;
+
+            terms = _.compact(this.field("assignmentTermPeriods").value);
+            end = new moment(this.field(this.key.replace("start", "") + 'end').value);
+
+            if (!currentId)
+                currentId = this.field(this.key.replace("start", "") + '_id').value;
+
+            start = new moment(this.value);
+            var termStart = this.field("start").value;
+            if(new moment(start).isBefore(termStart))
+                return "periodStartBeforeTerm";
+
+            if (start.isAfter(end)) {
+                return "startAfterEnd";
+            }
+
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(terms, start, end, currentId))
+                return "assignmentTermPeriodsConflictDate";
+        },
+        autoform: {
+            type: "datetime-local",
+        }
+    },
+    end: {
+        type: Date,
+        label: "Assignment Term Period End Date",
+        custom: function () {
+            var start, end, currentId, terms;
+
+            terms = _.compact(this.field("assignmentTermPeriods").value);
+            start = new moment(this.field(this.key.replace("end", "") + 'start').value);
+
+            if (!currentId)
+                currentId = this.field(this.key.replace("end", "") + '_id').value;
+
+            end = new moment(this.value);
+            var termEnd = this.field("end").value;
+            if(new moment(end).isAfter(termEnd))
+                return "periodEndAfterTerm";
+
+            if (end.isBefore(start)) {
+                return "endBeforeStart";
+            }
+
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(terms, start, end, currentId))
+                return "assignmentTermPeriodsConflictDate";
+        },
+        autoform: {
+            type: "datetime-local",
+        }
+    },
+    _id: {
+        type: SimpleSchema.RegEx.Id,
+        label: "TimeSlot _id",
+        autoValue: function () {
+            if(!this.isSet)
+                return new Meteor.Collection.ObjectID()._str;
+        },
+        autoform: {
+            type: "hidden",
+        }
+        // denyUpdate: true
+    }
+});
 Schemas.references.AssignmentTerms = new SimpleSchema({
     name: {
         type: String,
@@ -162,15 +298,90 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     start: {
         type: Date,
         label: "Assignment terms Start",
+        custom: function () {
+            var start, end, currentId, terms;
+
+            terms = AssignmentTerms.find().fetch();
+            end = new moment(this.field(this.key.replace("start", "") + 'end').value);
+
+            currentId = this.docId;
+
+            start = new moment(this.value);
+
+            if (start.isAfter(end)) {
+                return "startAfterEnd";
+            }
+
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(terms, start, end, currentId))
+                return "assignmentTermsConflictDate";
+        },
         autoform: {
             type: "datetime-local"
         }
     },
+    assignmentTermPeriods: {
+        type: [AssignmentTermPeriod],
+        label: "Assignment periods",
+        defaultValue: [],
+        optional: true
+    },
     end: {
         type: Date,
         label: "Assignment terms  End (not include)",
+        custom: function () {
+            var start, end, currentId, terms;
+
+            terms = AssignmentTerms.find().fetch();
+            start = new moment(this.field(this.key.replace("end", "") + 'start').value);
+
+            currentId = this.docId;
+
+            end = new moment(this.value);
+
+            if (end.isBefore(start)) {
+                return "endBeforeStart";
+            }
+
+            if (!TimeSlotService.areTimeSlotOverlappingWithQuery(terms, start, end, currentId))
+                return "assignmentTermsConflictDate";
+        },
         autoform: {
             type: "datetime-local"
+        }
+    },
+    addAvailabilitiesDeadline: {
+        type: Date,
+        label: "Assignment add availabilities deadline",
+        optional: true,
+        autoform: {
+            type: "datetime-local"
+        }
+    },
+    calendarAccuracy: {
+        type: Number,
+        decimal: true,
+        label: "Assignment calendar accuracy",
+        custom: function(){
+            if(!CalendarAccuracyEnum[this.value])
+                return "accuracyNotFound"
+        }
+
+    },
+    teams: {
+        label: "Teams that will access Assignment Term ",
+        type: [SimpleSchema.RegEx.Id],
+        optional: true,
+        custom: function () {
+            this.value = _.compact(this.value);
+            if(Teams.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
+                return "unknownIdOrDuplicateId"
+        },
+    },
+    'teams.$': {
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allTeamsOptions
+            }
         }
     },
     type: {   
@@ -207,7 +418,26 @@ Schemas.references.options.GroupRoles = {
     REFERENCE_URL: "group-role",
     REFERENCE_COLLECTION_NAME: "GroupRoles",
     REFERENCE_MONGO_COLLECTION_NAME: "group_roles",
-    REFERENCE_LABEL: "Group Role"
+    REFERENCE_LABEL: "Group Role",
+    REACTIVE_TABLE_FIELDS: [
+        {
+            key: "name",
+            label: "Group Role Name",
+        },
+        {
+            key: "roles",
+            label: "Roles in group",
+            fn: function(roles){
+                var res = "";
+                roles.forEach(role => {
+                    res += role;
+                    res += ", "
+                });
+                res.split(0,res.length-4);
+                return res;
+            }
+        }
+    ]
 };
 Schemas.references.GroupRoles = new SimpleSchema({
     name: {

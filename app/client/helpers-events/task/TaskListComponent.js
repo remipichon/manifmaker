@@ -133,7 +133,7 @@ export class TaskListComponent extends BlazeComponent {
         if(_id){
             this.isAfterFilterOn.set(true);
 
-            var _date = new Date(this.$(".date-after-filter>.datetimepicker").data("DateTimePicker").date()); //get the date
+            var _date = this.$(".date-after-filter>.datetimepicker").data("DateTimePicker").date(); //get the date
             this.changeDateFilter(_date,"after");
         }else{
             this.deleteDateFilter("after");
@@ -145,7 +145,7 @@ export class TaskListComponent extends BlazeComponent {
     }
     filterAfter(newOption) {
         return _.bind(function(newOption) {
-            var _time = new Date(newOption);
+            var _time = new moment(newOption);
             this.changeDateFilter(_time,"after");
         },this);
     }
@@ -155,7 +155,7 @@ export class TaskListComponent extends BlazeComponent {
         if(_id){
             this.isBeforeFilterOn.set(true);
 
-            var _date = new Date(this.$(".date-before-filter>.datetimepicker").data("DateTimePicker").date()); //get the date
+            var _date = this.$(".date-before-filter>.datetimepicker").data("DateTimePicker").date(); //get the date
             this.changeDateFilter(_date,"before");
         }else{
             this.deleteDateFilter("before");
@@ -175,18 +175,18 @@ export class TaskListComponent extends BlazeComponent {
 
     changeDateFilter(newDate,beforeOrAfter){
         if(this.taskDateFilter.get()["$elemMatch"]){ //if a filter is already defined
-            dateQuery = this.taskDateFilter.get();
+            var dateQuery = this.taskDateFilter.get();
             if(beforeOrAfter=="before"){
-                dateQuery["$elemMatch"]["end"]={ "$lte":  newDate };
+                dateQuery["$elemMatch"]["end"]={ "$lte":  newDate.toDate() };
             }else if(beforeOrAfter=="after"){
-                dateQuery["$elemMatch"]["start"]={ "$gte":  newDate };
+                dateQuery["$elemMatch"]["start"]={ "$gte":  newDate.toDate() };
             }
             this.taskDateFilter.set(dateQuery);
         }else{
             if(beforeOrAfter=="before"){
-                this.taskDateFilter.set({ "$elemMatch": {"end": { "$lte":  newDate } } });
+                this.taskDateFilter.set({ "$elemMatch": {"end": { "$lte":  newDate.toDate() } } });
             }else if(beforeOrAfter=="after"){
-                this.taskDateFilter.set({ "$elemMatch": {"start": { "$gte":  newDate } } });
+                this.taskDateFilter.set({ "$elemMatch": {"start": { "$gte":  newDate.toDate() } } });
             }
         }
     }
@@ -219,10 +219,23 @@ export class TaskListComponent extends BlazeComponent {
         this.taskListEquipmentValidationStateFilter = new ReactiveTable.Filter('task-equipment-validation-state-filter', ['equipmentValidation.currentState']);
         this.taskDateFilter = new ReactiveTable.Filter("task-date-filter", ["timeSlots"]);
 
+        console.log("task list on onCreated")
+
+    }
+
+    constructor(){
+        super();
         this.taskListAdvancedSearch = new ReactiveVar(false);
         this.isAfterFilterOn = new ReactiveVar(false);
         this.isBeforeFilterOn = new ReactiveVar(false);
 
+        console.log("task list on constructor")
+
+
+    }
+
+    onRendered(){
+        console.log("task list on rendeerer")
     }
 
 

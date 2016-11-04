@@ -1,20 +1,34 @@
-import {BaseCalendarComponent} from "../../common/BaseCalendarComponent"
-import {AssignmentService} from "../../../../both/service/AssignmentService"
-import {TimeSlotService} from "../../../../both/service/TimeSlotService"
-import {CalendarServiceClient} from "../../../../client/service/CalendarServiceClient"
+import {BaseCalendarComponent} from "../common/BaseCalendarComponent"
+import {AssignmentService} from "../../../both/service/AssignmentService"
+import {TimeSlotService} from "../../../both/service/TimeSlotService"
+import {AvailabilityService} from "../../../both/service/AvailabilityService"
+import {CalendarServiceClient} from "../../../client/service/CalendarServiceClient"
 
-class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
+export class ReadAvailabilitiesCalendarComponent extends BaseCalendarComponent {
     /* available in data
      this.data().parentInstance
 
      */
 
+    events() {
+        return super.events().concat({
+        });
+    }
+
     enableAction(date, timeHours){
+        var user = this.parentComponent().parentComponent().data();
+        var userTeams = user.teams;
+
         var startDate = this.getCalendarDateTime(date, timeHours, 0);
         var endDate = new moment(startDate).add(1,"hour");
 
         if (AssignmentTerms.findOne({
-                $and:[
+                teams: {
+                    $elemMatch: {
+                        $in: userTeams
+                    }
+                },
+                $and: [
                     {
                         start: {
                             $lte: startDate.toDate()
@@ -56,43 +70,27 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
             return true;
 
         return false;
-
     }
 
-    creanOnClick(e) {
-        //to implement
-        var _id = $(e.currentTarget).data("timeslotdid");
-        this.data().parentInstance.updatedTimeSlotId.set(_id);
-        this.data().parentInstance.isTimeSlotUpdated.set(true);
-    }
 
     timeSlot(date, timeHours, idTask) {
         var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
-        var task = this.data().task;
-        if (!task) return [];
+        var user = this.data().user;
+        if (!user) return [];
 
-        var data = CalendarServiceClient.computeTimeSlotData(task,startCalendarTimeSlot);
-        if(!data) return [];
-        return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
-    }
+        var data = CalendarServiceClient.computeAvailabilitiesData(user,startCalendarTimeSlot);
+        var dataAssignment = CalendarServiceClient.computeAssignmentData(user,startCalendarTimeSlot);
 
-    getPeopleNeededMerged(timeSlotId){
-        return this.data().parentInstance.getPeopleNeededMerged(timeSlotId);
-    }
-    getPeopleNeededMergedWithoutUserId(timeSlotId){
-        return this.data().parentInstance.getPeopleNeededMergedWithoutUserId(timeSlotId);
+        if(!data && !dataAssignment) return [];
+
+        if(data) return [data]
+        if(dataAssignment) return [dataAssignment];
+        //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
     }
 
-    getAlreadyAssignedPeopleNeedCount(timeSlotId){
-        return this.data().parentInstance.getAlreadyAssignedPeopleNeedCount(timeSlotId);
-    }
-    getUserIdNeedCount(timeSlotId){
-        return this.data().parentInstance.getUserIdNeedCount(timeSlotId);
-    }
-
-    currentTimeSlot() {
-        return this.data().parentInstance.currentTimeSlot();
+    constructor() {
+        super();
     }
 }
 
-EditTimeSlotCalendarComponent.register("EditTimeSlotCalendarComponent");
+ReadAvailabilitiesCalendarComponent.register("ReadAvailabilitiesCalendarComponent");

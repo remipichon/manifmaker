@@ -8,6 +8,6 @@
 
 <template name="collectionReferenceButtons">
     <a class="btn btn-primary"  href="/{{baseUrl}}/{{_id}}">Update</a>
-    {{#quickRemoveButton class="btn btn-default" collection=type  _id=this._id}}Delete{{/quickRemoveButton}}
+    {{#quickRemoveButton class="btn btn-default" collection=type  _id=this._id onSuccess=onSuccess onError=onError}}Delete{{/quickRemoveButton}}
 </template>
 

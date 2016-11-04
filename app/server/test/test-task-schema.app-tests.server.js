@@ -44,7 +44,7 @@ describe("TaskSchema", () => {
             var equipmentStorage1 = EquipmentStorages.insert({name: "equipmentStorage1"});
             var team1Id = Teams.insert({name: "team1"});
             var place1Id = Places.insert({name: "place1"});
-            var user1Id =  Users.insert({name: "user1"});
+            var user1Id =  Meteor.users.insert({name: "user1"});
             var task1d = Tasks.insert({
                 name: "task 1",
                 teamId: team1Id,

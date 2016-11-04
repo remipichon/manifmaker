@@ -142,6 +142,14 @@ export class TimeSlotService {
             };
         }
 
+        static isOverlapping(startA, endA, startB, endB){
+            //overlapp (StartA <= EndB) and (EndA >= StartB)
+            //proof http://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+
+            return new moment(startA).isBefore(endB) &&
+                new moment(endA).isAfter(startB)
+        }
+
 
         static areTimeSlotOverlappingWithQuery(timeSlots,start,end,queryTimeSlotId){
             var okGod = true;
@@ -149,16 +157,27 @@ export class TimeSlotService {
                 if (!okGod || timeSlot._id === queryTimeSlotId)
                     return;
 
-                //overlapp (StartA <= EndB) and (EndA >= StartB)
-                //proof http://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
-                if (new moment(start).isBefore(timeSlot.end) &&
-                    new moment(end).isAfter(timeSlot.start))
+                if (TimeSlotService.isOverlapping(start,end,timeSlot.start, timeSlot.end))
                     okGod = false;
 
             }, this));
 
             return okGod
         }
+
+    static areArrayStartEndOverlappingStartDate(arrayOfStartEnd,start,end){
+        var areOverlapping = false;
+        arrayOfStartEnd.forEach(_.bind(function (startEnd) {
+            if (areOverlapping)
+                return;
+
+            if (TimeSlotService.isOverlapping(start,end,startEnd.start, startEnd.end))
+                areOverlapping = true;
+
+        }, this));
+
+        return areOverlapping
+    }
 
         static schemaCustomTimeSlot(schemaContext){
             //TODO $pull request doesn't use schema.custom...
@@ -169,5 +188,49 @@ export class TimeSlotService {
                 }
             }
 
+        }
+
+        static timeSlotIsWithinAssignmentTerm(start, end){
+            if (!AssignmentTerms.findOne({
+                    $and:[
+                        {
+                            start: {
+                                $lte: start.toDate()
+                            }
+                        },
+                        {
+                            end: {
+                                $gte: start.toDate()
+                            }
+                        }
+                    ],
+                    $or: [
+                        {
+                            assignmentTermPeriods: {
+                                $size: 0
+                            }
+                        },
+                        {
+                            assignmentTermPeriods: {
+                                $elemMatch: {
+                                    $and: [
+                                        {
+                                            start: {
+                                                $lte: start.toDate()
+                                            }
+                                        },
+                                        {
+                                            end: {
+                                                $gte: end.toDate()
+                                            }
+                                        }
+                                    ],
+                                }
+                            }
+                        }
+                    ]
+                })
+            )
+                return "timeSlotNotWithinTerms"
         }
     }

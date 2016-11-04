@@ -15,7 +15,10 @@ class AssignmentTermSelectComponent extends BlazeComponent{
     }
 
     assignmentTerms() {
-        return AssignmentTerms.find({});
+        if(this.data().teams)
+            return AssignmentTerms.find({teams:{$in:this.data().teams}});
+        
+        return AssignmentTerms.find();
     }
 }
 

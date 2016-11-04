@@ -24,25 +24,26 @@ Router.route('/users', function () {
 
 /**
  * @memberOf Route.User
- * @summary Display the create user form 
+ * @summary Redirect tp the register user form
  * @locus client
  * @name 'user.create'  /user
  */
 Router.route('/user', function () {
-        SecurityServiceClient.grantAccessToPage( RolesEnum.USERWRITE);
-
-        console.info("routing", "/user");
-
-        if (this.ready()) {
-            this.render('insertUserForm', {
-                to: 'mainContent'
-            });
-        } else {
-            console.log("Route /user : waiting team data"); //TODO add a spinner
-        }
-
+    Router.go("/register");
     },
-    {controller: ManifMakerRouterController,name: 'user.create'}
+    {name: 'user.create'}
+);
+
+/**
+ * @memberOf Route.User
+ * @summary Display register form
+ * @locus client
+ * @name 'user.register'  /user
+ */
+Router.route('/register', function () {
+        console.info("routing", "/register");
+    },
+    {name: 'user.register',layoutTemplate:"register"}
 );
 
 /**
@@ -53,18 +54,18 @@ Router.route('/user', function () {
  * @name 'user.read'  /user/:_id
  */
 Router.route('/user/:_id', function () {
-    if(!Users.findOne(this.params._id)){
+    if(!Meteor.users.findOne(this.params._id)){
         throw new Meteor.Error("404","User not found");
         return;
     }
-        if(Users.findOne(this.params._id).loginUserId !== Meteor.userId())
+        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
             SecurityServiceClient.grantAccessToPage( RolesEnum.USERWRITE);
 
         console.info("routing", "/user/" + this.params._id);
         this.render('updateUserForm', {
             data: function () {
                 var currentUser = this.params._id;
-                return Users.findOne({_id: currentUser});
+                return Meteor.users.findOne({_id: currentUser});
             }, to: 'mainContent'
         });
     },
@@ -79,17 +80,17 @@ Router.route('/user/:_id', function () {
  * @name 'user.read'  /user/:_id
  */
 Router.route('/user/:_id/read', function () {
-        if(!Users.findOne({_id: this.params._id})){
+        if(!Meteor.users.findOne({_id: this.params._id})){
             throw new Meteor.Error("404","User not found");
         }
-        if(Users.findOne(this.params._id).loginUserId !== Meteor.userId())
+        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
             SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
 
         console.info("routing", "/user/" + this.params._id);
         this.render('readUserForm', {
             data: function () {
                 var currentUser = this.params._id;
-                return Users.findOne({_id: currentUser});
+                return Meteor.users.findOne({_id: currentUser});
             }, to: 'mainContent'
         });
     },

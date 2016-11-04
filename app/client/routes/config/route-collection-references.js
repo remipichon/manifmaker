@@ -30,36 +30,45 @@ _.each(Schemas.references.options, function (referenceOptions) {
     var REFERENCE_COLLECTION_NAME = referenceOptions.REFERENCE_COLLECTION_NAME;
     var REFERENCE_LABEL = referenceOptions.REFERENCE_LABEL;
 
-
-    //generate fields a partir de schema-references
-    var schemaFields = Schemas.references[REFERENCE_COLLECTION_NAME]._schema;
+    var REACTIVE_TABLE_FIELDS = referenceOptions.REACTIVE_TABLE_FIELDS;
     var reactiveTableFields = [];
 
-    _.each(schemaFields,(field, key) => {
-        if (key === "baseUrl" || key === "type") //pas moyen de faire mieux, SchemasCollection n'accepte aucun attribut en trop
-            return;
-        if(key.indexOf("Id") !== -1){ //it's a reference to another collection !
-            reactiveTableFields.push(
-                {
-                    key: key,
-                    label: field.label,
-                    fnAdjustColumnSizing: true,
-                    fn: function (teamId, Task) {
-                        return AllCollections[key.split("_")[0]].findOne(teamId).name;
-                    }
-                }
-            );
-        } else {
-            reactiveTableFields.push(
-                {
-                    key: key,
-                    label: field.label,
-                    fnAdjustColumnSizing: true
-                }
-            );
-        }
+    if (REACTIVE_TABLE_FIELDS) {
+        _.each(REACTIVE_TABLE_FIELDS, (field) => {
+            field.fnAdjustColumnSizing = true;
+            reactiveTableFields.push(field);
+        });
+    } else {
+        //generate fields a partir de schema-references
+        var schemaFields = Schemas.references[REFERENCE_COLLECTION_NAME]._schema;
 
-    });
+        _.each(schemaFields, (field, key) => {
+            if (key === "baseUrl" || key === "type") //pas moyen de faire mieux, SchemasCollection n'accepte aucun attribut en trop
+                return;
+            if (key.indexOf("Id") !== -1) { //it's a reference to another collection !
+                reactiveTableFields.push(
+                    {
+                        key: key,
+                        label: field.label,
+                        fnAdjustColumnSizing: true,
+                        fn: function (teamId, Task) {
+                            return AllCollections[key.split("_")[0]].findOne(teamId).name;
+                        }
+                    }
+                );
+            } else {
+                reactiveTableFields.push(
+                    {
+                        key: key,
+                        label: field.label,
+                        fnAdjustColumnSizing: true
+                    }
+                );
+            }
+
+        });
+    }
+
 
     //last column buttons
     reactiveTableFields.push({
@@ -151,7 +160,8 @@ Router.route('/conf-maker', function () {
         SecurityServiceClient.grantAccessToPage( RolesEnum.CONFMAKER);
         this.render('confMaker', {
             data: {
-                confMakerReactiveTables : confMakerReactiveTables
+                confMakerReactiveTables : confMakerReactiveTables,
+                settings: Settings.findOne()
             },
             to: 'mainContent'
         });
