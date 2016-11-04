@@ -7,6 +7,7 @@ class UserAvailabilitiesComponent extends BlazeComponent {
 
     constructor() {
         super();
+        this.displayCalendarVar = new ReactiveVar(true)
 
     }
 
@@ -18,6 +19,16 @@ class UserAvailabilitiesComponent extends BlazeComponent {
         return [
             {}
         ];
+    }
+
+    displayCalendar(){
+        return this.displayCalendarVar.get();
+    }
+
+    callbackIfNoTerms(){
+        return _.bind(function(){
+            this.displayCalendarVar.set(false);
+        },this);
     }
 
     userData() {

@@ -3,22 +3,30 @@
     {{reactiveConstructor}}
 
     <div class="col-md-12">
-        {{>AssignmentTermSelectComponent teams=userData.teams}}
+        {{>AssignmentTermSelectComponent callbackIfNothingToDisplay=callbackIfNoTerms teams=userData.teams}}
     </div>
 
-    <div class="col-md-12">
-        {{#if readOnly}}
-            {{#if isCurrentUserTheOneLogged userData._id}}
+    {{#if displayCalendar}}
+
+        <div class="col-md-12">
+            {{#if readOnly}}
+                {{#if isCurrentUserTheOneLogged userData._id}}
                     <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your availabilities</div>
-                {{#if assignmentTermDeadlineIsOver}}
-                    <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add availabilities</div>
+                    {{#if assignmentTermDeadlineIsOver}}
+                        <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add availabilities</div>
+                    {{/if}}
                 {{/if}}
+                {{> ReadAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
+            {{else}}
+                {{> EditAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{/if}}
-            {{> ReadAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
-        {{else}}
-            {{> EditAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
-        {{/if}}
-    </div>
+        </div>
+
+    {{else}}
+        <div class="col-md-12">
+            <div class="alert alert-info" role="alert">You do not have any periods to add availabilities yet.</div>
+        </div>
+    {{/if}}
 
 </template>
 

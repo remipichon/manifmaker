@@ -14,11 +14,19 @@ class AssignmentTermSelectComponent extends BlazeComponent{
         }]
     }
 
+    
     assignmentTerms() {
+        var terms;
         if(this.data().teams)
-            return AssignmentTerms.find({teams:{$in:this.data().teams}});
-        
-        return AssignmentTerms.find();
+            terms =  AssignmentTerms.find({teams:{$in:this.data().teams}});
+        else
+            terms = AssignmentTerms.find();
+
+        if(terms.fetch().length === 0 && this.data().callbackIfNothingToDisplay)
+            this.data().callbackIfNothingToDisplay();
+
+        return terms;
+
     }
 }
 
