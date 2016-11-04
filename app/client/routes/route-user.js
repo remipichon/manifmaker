@@ -24,23 +24,14 @@ Router.route('/users', function () {
 
 /**
  * @memberOf Route.User
- * @summary Display the create user form 
+ * @summary Redirect tp the register user form
  * @locus client
  * @name 'user.create'  /user
  */
 Router.route('/user', function () {
-        SecurityServiceClient.grantAccessToPage( RolesEnum.USERWRITE);
-
-        console.info("routing", "/user");
-
-    sAlert.error("NOT YET IMPLEMENTED, will not work at all go to /register to create a new user",{timeout:100000,stack: true})
-
-        this.render('insertUserForm', {
-            to: 'mainContent'
-        });
-
+    Router.go("/register");
     },
-    {controller: ManifMakerRouterController,name: 'user.create'}
+    {name: 'user.create'}
 );
 
 /**
