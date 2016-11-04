@@ -34,22 +34,21 @@ export class ServerUserService {
      */
     static updateUser(userId, doc) {
         //user is not log in yet, userId is null, we bypass security with .direct and propagate role with direct call to method
-        var defaultGroupRole = "minimal";
-        var minimalGroup = GroupRoles.findOne({name:defaultGroupRole});
+        var defaultGroupRoles = GroupRoles.findOne(Settings.findOne().defaultGroupRoles);
 
-        if(!minimalGroup){
-            console.error(`Are you injecting data pragmatically ? If so, ignore this message. GroupRoles with name '${defaultGroupRole}' doesn't exists, user '${doc.name}' will not be created as a custom user as it won't have any roles. `)
+        if(!defaultGroupRoles){
+            console.error(`Are you injecting data pragmatically ? If so, ignore this message. GroupRoles with name '${defaultGroupRoles.name}' doesn't exists, user '${doc.name}' will not be created as a custom user as it won't have any roles. `)
             return;
         }
 
-        var minimalId = minimalGroup._id;
+        var defaultGroupRolesId = defaultGroupRoles._id;
         var _id = Meteor.users.update(doc._id, {
             $set: {
-                groupRoles: [minimalId],
+                groupRoles: [defaultGroupRolesId],
             }
         });
 
-        console.info("A new user has been update :"+doc.username+" whith _id :"+_id+" and 'minimal' group roles");
+        console.info("A new user has been update :"+doc.username+" whith _id :"+_id+" and '"+defaultGroupRoles.name+"' group roles");
     }
 
     /**
@@ -188,14 +187,12 @@ export class ServerUserService {
         }
 
         //when inserting new user, its default group role have to be propagated even if default group role doesn't provide any roles
-        var defaultGroupRole = "minimal";
-        var minimalGroup = GroupRoles.findOne({name: defaultGroupRole});
+        var defaultGroupRoles = GroupRoles.findOne(Settings.findOne().defaultGroupRoles);
 
         //we authorize to $SET DEFAULT group role without any security check
         if (_.contains(fieldNames, "groupRoles") && fieldNames.length === 1)
             if (modifier.$set && modifier.$set.groupRoles
-                && modifier.$set.groupRoles.length === 1
-                && modifier.$set.groupRoles[0] === minimalGroup._id) {
+                && modifier.$set.groupRoles.length === 1) {
                 console.info("Users.allowUpdate : authorizing setting user group roles because default group role has been used")
                 return true;
             }
@@ -203,8 +200,8 @@ export class ServerUserService {
         //we authorize Meteor.account to update user roles to DEFAULT without any security check
         if (_.contains(fieldNames, "roles"))
             if (modifier.$set && modifier.$set.roles
-                && modifier.$set.roles.length === minimalGroup.roles.length
-                && _.difference(modifier.$set.roles, minimalGroup.roles).length === 0) {
+                && modifier.$set.roles.length === defaultGroupRoles.roles.length
+                && _.difference(modifier.$set.roles, defaultGroupRoles.roles).length === 0) {
                 console.info("Users.allowUpdate : authorizing setting user roles because default group has been used")
                 return true;
             }

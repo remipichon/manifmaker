@@ -38,6 +38,9 @@ export class InjectDataServerService {
         Settings.insert({
             createAccountDefaultTeam: Teams.findOne()._id
         })
+        Settings.insert({
+            defaultGroupRoles: GroupRoles.findOne({name:"minimal"})._id
+        })
     }
 
     /**
