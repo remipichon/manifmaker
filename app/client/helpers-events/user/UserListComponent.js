@@ -60,7 +60,11 @@ class UserListComponent extends BlazeComponent {
                 headerClass: 'col-sm-2',
                 fnAdjustColumnSizing: true,
                 fn: function (teams, Task) {
-                    return Teams.findOne(teams[0]).name; //user.teams : on n'utilsie que la premiere ici
+                    var res = "";
+                    teams.forEach(team => {
+                        res += `${Teams.findOne(team).name}, `
+                    });
+                    return res.substring(0,res.length-2);
                 }
             },
             {
