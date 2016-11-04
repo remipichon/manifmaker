@@ -8,8 +8,18 @@ import { Accounts } from 'meteor/accounts-base'
 export class ServerUserService {
 
     static updateUserName(userId,newUsername){
-        console.log("updateUsername",newUsername,"userId",userId);
         Accounts.setUsername(userId, newUsername)
+    }
+
+
+    static updateUserEmail(userId,newEmail) {
+
+        var email = Meteor.users.findOne(userId).emails[0];
+        if (email) {
+            var oldEmail = email.address;
+            Accounts.removeEmail(userId, oldEmail);
+        }
+        Accounts.addEmail(userId, newEmail);
     }
 
     /**

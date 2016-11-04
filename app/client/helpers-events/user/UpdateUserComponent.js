@@ -8,8 +8,9 @@ class UpdateUserComponent extends BlazeComponent {
 
     constructor(){
         super();
-
         this.userNameErrorVar = new ReactiveVar("");
+        this.userEmailErrorVar = new ReactiveVar("");
+        this.updateUserContext = Meteor.users.simpleSchema().namedContext("updateUser");
     }
 
 
@@ -21,8 +22,49 @@ class UpdateUserComponent extends BlazeComponent {
         return [{
             'change .update-skill': this.updateSkill,
             'click #make-user-ready': this.makeUserReady,
-            'change #username': this.updateUserName
+            'change #username': this.updateUserName,
+            'change #useremail': this.updateUserEmail
         }];
+    }
+
+    userEmail(){
+        return this.currentData().emails[0].address;
+    }
+
+    updateUserEmail(event){
+        var  newUserEmail = $(event.target).val().trim();
+        var userId = this.currentData()._id;
+        //check if email is valid
+
+        var isValid = Meteor.users.simpleSchema().namedContext("updateUser").validate({
+            $set: {
+                "emails.1.address": newUserEmail
+            }
+        }, {modifier: true});
+
+        //managing error
+        if (!isValid) {
+            var ik = this.updateUserContext.invalidKeys(); //it's reactive ! whouhou
+            ik = _.map(ik, _.bind(function (o) {
+                return _.extend({message: this.updateUserContext.keyErrorMessage(o.name)}, o);
+            }, this));
+
+            this.userEmailErrorVar.set(ik[0].message);
+        } else {
+            this.userEmailErrorVar.set("");
+
+            Meteor.call("updateUserEmail",userId,newUserEmail,_.bind(function(error, result){
+                if(error){
+                    this.userEmailErrorVar.set(error.reason);
+                } else {
+                    this.userEmailErrorVar.set("");
+                }
+            },this));
+        }
+    }
+
+    userEmailError(){
+        return this.userEmailErrorVar.get();
     }
 
     updateUserName(event){

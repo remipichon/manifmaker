@@ -14,6 +14,9 @@ Meteor.methods({
      },
     updateUserName: function(userId,newUsername){
         ServerUserService.updateUserName(userId,newUsername)
+    },
+    updateUserEmail: function(userId,newUserEmail){
+        ServerUserService.updateUserEmail(userId,newUserEmail)
     }
 });
 
