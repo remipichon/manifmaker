@@ -5,8 +5,26 @@
 <template name="updateUserComponent">
 
     <div class="update-user-wrapper-form">
-
         {{reactiveConstructor}}
+
+        {{#unless this.username}}
+            <div class="panel panel-primary">
+                <div class="panel-heading">You need a username to be identified along the app. It is a mandatory, you can not be validated is you do not have one. Pick a wonderful one...</div>
+                <div class="panel-body">
+                    <div class="col-md-5">
+                        <div>
+
+                            <div class="form-group {{#if userNameError}}has-error{{/if}}">
+                                <label for="username" class="control-label">User name</label>
+                                <input value="{{username}} " type="text" name="username" id="username" data-schema-key="username_custom_update" class="form-control">
+                                <span class="help-block">{{userNameError}}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/unless}}
 
         {{# autoForm collection="Meteor.users" doc=this id="updateUserForm" type="update" autosave=true}}
 
