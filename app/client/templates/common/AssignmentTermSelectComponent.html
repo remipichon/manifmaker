@@ -1,5 +1,5 @@
 <template name="assignmentTermSelectComponent">
-    <select id="assignments-terms-select" class="browser-default">
+    <select id="assignments-terms-select" class="form-control">
         {{#each assignmentTerms}}
             <option value="{{_id}}">{{name}} (from {{displayDateTime start}} to {{displayDateTime end}})</option>
         {{/each}}

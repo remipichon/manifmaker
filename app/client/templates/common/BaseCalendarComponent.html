@@ -1,5 +1,5 @@
 <template name="baseCalendarComponent">
-    <div class="calendar {{assignmentType}}" id="calendar">
+    <div class="calendar {{assignmentType}} {{class}}" id="calendar">
         <div id="titres" class="titres">
             {{#each days}}
                 <div class="titre_date" date="date">{{displayCalendarTitleDate date}}</div>
