@@ -88,7 +88,8 @@ Schemas.PeopleNeed = new SimpleSchema({
                 if (!Meteor.users.findOne(this.value))
                     return "unknownId";
 
-                if(this.isUpdate) {
+                //one people need user id per timeslot
+                if (this.isUpdate) {
                     var task = Tasks.findOne(this.docId);
                     var timeSlotIndex = this.key.split(".")[1];
                     var timeSlot = task.timeSlots[timeSlotIndex];
@@ -99,6 +100,23 @@ Schemas.PeopleNeed = new SimpleSchema({
                             "timeSlots.$.peopleNeeded.userId": this.value
                         }).fetch().length !== 0) {
                         return "onePeopleNeedUserIdPerTimeSlot"
+                    }
+
+                    //one people need user id per hour
+                    //overlapp (StartA <= EndB) and (EndA >= StartB)
+                    if (Tasks.find({
+                                "timeSlots": {
+                                    $elemMatch: {
+                                        "peopleNeeded.userId": this.value,
+                                        start: {$lte: timeSlot.end},
+                                        end: {$gte: timeSlot.start}
+                                    }
+                                }
+                            }
+                        ).fetch().length !== 0) {
+                        if(Meteor.isClient)
+                            return "onePeopleNeedUserIdPerDateTimeCODE"
+                        return "onePeopleNeedUserIdPerDateTime"
                     }
                 }
             }

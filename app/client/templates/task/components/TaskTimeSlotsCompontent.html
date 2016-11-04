@@ -86,7 +86,7 @@
                                             <div class="col-md-9">
                                                 {{#if userId}}
                                                     {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
-                                                    optionCollection="Meteor.users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                                    optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
                                                     updateCollection="Tasks" updateItemId=taskData._id
                                                     updateItemPath="userId"
                                                     pathWithArray=pathWithArrayPeopleNeeded
@@ -134,7 +134,7 @@
                                             <div class="col-md-9">
                                                 {{#if userId}}
                                                     {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
-                                                    optionCollection="Meteor.users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                                    optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
                                                     updateCollection="Tasks" updateItemId=taskData._id
                                                     updateItemPath="userId"
                                                     pathWithArray=pathWithArrayPeopleNeeded
@@ -158,6 +158,13 @@
                                                 {{/if}}
                                             </div>
                                         </div>
+                                        {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+                                            <div class="row">
+                                                <div class="com-md-offset col-md-10">
+                                                    <a href="/assignment/taskToUser/{{taskData._id}}">Edit task assignment</a>
+                                                </div>
+                                            </div>
+                                        {{/if}}
                                     {{/each}}
                                 </div>
                                 <div class="error-holder">
@@ -200,14 +207,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
-                                    optionCollection="Meteor.users" optionValueName="name" optionCollectionIndex="UsersIndex"
+                                    optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
                                     updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
                                     nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
                                     }}
                                 </div>
                             </div>
                             <div class="error-holder">
-                                {{createPeopleNeededError}}
+                                {{{createPeopleNeededError}}}
                             </div>
                         {{/if}}
                     </div>

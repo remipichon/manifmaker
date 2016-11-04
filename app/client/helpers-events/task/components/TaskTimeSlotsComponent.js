@@ -512,7 +512,34 @@ class TaskTimeSlotsComponent extends BlazeComponent{
             }
         }, _.bind(function (error, docAffected) {
             if (error) {
-                this.createPeopleNeededErrorArray.set([error.message]);
+                if (error.message === "onePeopleNeedUserIdPerDateTimeCODE") {
+                    var userId = data.userId;
+                    var timeSlot = this.currentTimeSlot();
+                    var message = "User is already needed in task ";
+                    var conflictTasks = Tasks.find({
+                            "timeSlots": {
+                                $elemMatch: {
+                                    "peopleNeeded.userId": userId,
+                                    start: {$lte: timeSlot.end},
+                                    end: {$gte: timeSlot.start}
+                                }
+                            }
+                        }
+                    ).fetch();
+                    conflictTasks.forEach(task => {
+                        message += `<a href="/task/${task._id}">${task.name}</a> `;
+                        var conflictTimeSlot = _.find(task.timeSlots, function (timeSlot) {
+                            var peopleNeeded = timeSlot.peopleNeeded;
+                            return _.find(peopleNeeded, function (peopleNeed) {
+                                return peopleNeed.userId === userId
+                            });
+                        });
+                        message += `from ${new moment(conflictTimeSlot.start).format("ddd DD MMM HH[h]mm")} to ${new moment(conflictTimeSlot.end).format("ddd DD MMM HH[h]mm")}`
+                    });
+                    this.createPeopleNeededErrorArray.set([message]);
+                } else {
+                    this.createPeopleNeededErrorArray.set([error.message]);
+                }
             } else {
                 this.createPeopleNeededErrorArray.set([]);
                 this.clearAddPeopleNeedForm();

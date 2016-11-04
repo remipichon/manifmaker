@@ -16,6 +16,8 @@ SimpleSchema.messages({
     peopleNeedUserId: "If a specific user is asked, team and skill are not relevant. Please either pick a user OR a team and/or some skills.",
     peopleNeedIsEmpty: "A people need requires either a user either a team and/or some skills.",
     onePeopleNeedUserIdPerTimeSlot: "A time slot can not have more than once the same need for a user id",
+    onePeopleNeedUserIdPerDateTime: "A user can not be needed more than once for the same date time",
+    onePeopleNeedUserIdPerDateTimeCODE: "onePeopleNeedUserIdPerDateTimeCODE",
     updateNotAllowed: "[label] can not be updated as it has is being validated or has already been validated",
     peopleNeededUpdateNotAllowed: "[label] can not be update as task time slots are not ready for assignment",
     peopleNeedUserIdUnique: "There can ba only one people need requiring a specific user by time slot",
