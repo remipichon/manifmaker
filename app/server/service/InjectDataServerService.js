@@ -10,8 +10,12 @@ export class InjectDataServerService {
      */
     static injectAllData() {
         SecurityServiceServer.isItProd("InjectDataServerService.injectAllData");
+        Settings.insert({one:1})
         console.info("inject data starts");
         this._injectGroupRoles();
+        Settings.update(Settings.findOne()._id,{
+            $set:{defaultGroupRoles: GroupRoles.findOne({name:"minimal"})._id}
+        });
         console.info("injectGroupRoles done");
         this.injectUsers();
         console.info("injectUsers done");
@@ -35,12 +39,10 @@ export class InjectDataServerService {
     }
 
     static addSettings(){
-        Settings.insert({
-            createAccountDefaultTeam: Teams.findOne()._id
+        Settings.update(Settings.findOne()._id,{
+            $set:{createAccountDefaultTeam: Teams.findOne()._id}
         })
-        Settings.insert({
-            defaultGroupRoles: GroupRoles.findOne({name:"minimal"})._id
-        })
+
     }
 
     /**

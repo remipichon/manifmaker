@@ -18,16 +18,16 @@ class TestAssignmentComponent extends BlazeComponent {
 
         //prerequisite
         var task1 = Tasks.findOne({name: "task 1"});
-        var user1 = Meteor.users.findOne({name: "user1"});
+        var user1 = Meteor.users.findOne({username: "user1"});
         var timeslot2h4h = task1.timeSlots[0];
         var peopleNeedNoSkillsTeam1 = timeslot2h4h.peopleNeeded[0];
 
-        this.printBeforeTest(testName,this.assignmentResultToString(user1,task1,timeslot2h4h,peopleNeedNoSkillsTeam1));
+        //this.printBeforeTest(testName,this.assignmentResultToString(user1,task1,timeslot2h4h,peopleNeedNoSkillsTeam1));
 
         //test
         Meteor.call("removeAssignUserToTaskTimeSlot", peopleNeedNoSkillsTeam1._id, user1._id, _.bind(function (error, result) {
             if(error){
-                this.printErrorTest(testName,error)
+                //this.printErrorTest(testName,error)
             }
         },this));
 

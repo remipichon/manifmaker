@@ -1,10 +1,17 @@
 import {Schemas} from './SchemasHelpers'
 
 Schemas.Settings = new SimpleSchema({
+    one:{
+      label: "one",
+        type: String
+    },
     createAccountDefaultTeam:{
         label: "Default team newly created user will be added to",
         type: SimpleSchema.RegEx.Id,
+        optional: true,
+        defaultValue: null,
         custom: function () {
+            if(!this.value) return 1;
             if (!Teams.findOne(this.value))
                 return "unknownId";
 
@@ -23,7 +30,9 @@ Schemas.Settings = new SimpleSchema({
     defaultGroupRoles:{
         label: "Default group roles created user will be added to",
         type: SimpleSchema.RegEx.Id,
+        optional: true,
         custom: function () {
+            if(!this.value) return 1;
             if (!GroupRoles.findOne(this.value))
                 return "unknownId";
 

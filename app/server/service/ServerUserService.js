@@ -34,7 +34,13 @@ export class ServerUserService {
      */
     static updateUser(userId, doc) {
         //user is not log in yet, userId is null, we bypass security with .direct and propagate role with direct call to method
-        var defaultGroupRoles = GroupRoles.findOne(Settings.findOne().defaultGroupRoles);
+        var settings = Settings.findOne();
+        if(settings)
+            var defaultGroupRoles = settings.defaultGroupRoles;
+        if(!defaultGroupRoles){
+            console.error("No default group role has been found, user will not be able to access anything");
+            return;
+        }
 
         if(!defaultGroupRoles){
             console.error(`Are you injecting data pragmatically ? If so, ignore this message. GroupRoles with name '${defaultGroupRoles.name}' doesn't exists, user '${doc.name}' will not be created as a custom user as it won't have any roles. `)
