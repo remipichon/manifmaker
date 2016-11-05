@@ -1,0 +1,136 @@
+<template name="team-insert">
+    {{# autoForm collection="Teams" id="insertTeamForm" type="insert"}}
+        <fieldset>
+            <legend>Add a Team</legend>
+            {{> afQuickField placeHolder="This team doesn't have a name yet" name='name'}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="place-insert">
+    {{# autoForm collection="Places" id="insertPlaceForm" type="insert"}}
+        <fieldset>
+            <legend>Add a Place</legend>
+            {{> afQuickField placeHolder="This place doesn't have a name yet" name='name'}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="skill-insert">
+    {{# autoForm collection="Skills" id="insertSkillForm" type="insert"}}
+        <fieldset>
+            <legend>Add a Skill</legend>
+            {{> afQuickField placeHolder="This skill doesn't have a key yet" name='key'}}
+            {{> afQuickField placeHolder="This skill doesn't have a label yet" name='label'}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="assignment-term-insert">
+    {{# autoForm collection="AssignmentTerms" id="insertAssignmentTerm" type="insert"}}
+        <fieldset>
+            <legend>Add a term</legend>
+            {{> afQuickField name="name"}}
+            {{> afQuickField name="start"}}
+            {{> afQuickField name="end"}}
+            {{> afQuickField name="teams"}}
+            {{> afQuickField name="addAvailabilitiesDeadline"}}
+            {{> afQuickField name="calendarAccuracy"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+
+<template name="group-role-insert">
+    {{# autoForm collection="GroupRoles" id="insertGroupRole" type="insert"}}
+        <fieldset>
+            <legend>Add a Group Role</legend>
+            {{> afQuickField name="name"}}
+            {{> afQuickField name="roles"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="equipment-category-insert">
+    {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
+        <fieldset>
+            <legend>Add a {{options.REFERENCE_LABEL}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+
+<template name="equipment-insert">
+    {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
+        <fieldset>
+            <legend>Add a {{options.REFERENCE_LABEL}}</legend>
+            {{> afQuickField name="name"}}
+            {{> afQuickField name="quantity"}}
+            {{> afQuickField name="targetUsage"}}
+            {{> afQuickField name="EquipmentCategories_Id"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+
+<template name="water-supply-insert">
+    {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
+        <fieldset>
+            <legend>Add a {{options.REFERENCE_LABEL}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+
+<template name="water-disposal-insert">
+    {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
+        <fieldset>
+            <legend>Add a {{options.REFERENCE_LABEL}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+
+<template name="power-supply-insert">
+    {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
+        <fieldset>
+            <legend>Add a {{options.REFERENCE_LABEL}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+
+<template name="equipment-storage-insert">
+    {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
+        <fieldset>
+            <legend>Add a {{options.REFERENCE_LABEL}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>

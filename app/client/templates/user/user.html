@@ -1,0 +1,43 @@
+
+
+<template name="updateUserFormXXX">
+
+    {{# autoForm collection="Meteor.users" doc=this id="updateUserForm" type="update"}}
+        <fieldset>
+            <legend>Update User {{this.name}}</legend>
+            {{> afQuickField name='name'}}
+            {{> afQuickField name="teams"}}
+            {{> afQuickField name="skills"}}
+            {{#if isInRole RolesEnum.ROLE}}
+                {{#if this._id}}
+                    {{> afQuickField name="groupRoles"}}
+                {{else}}
+                    User don't have a associated login account, can't add roles.
+                {{/if}}
+            {{/if}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        {{#if isInRole RolesEnum.USERDELETE}}
+            {{#quickRemoveButton class="btn btn-default" collection="Meteor.users" _id=this._id}}Delete{{/quickRemoveButton}}
+        {{/if}}
+    {{/autoForm}}
+</template>
+
+<template name="readUserForm">
+
+    {{# autoForm collection="Meteor.users" doc=this id="readUserForm" type="readonly"}}
+        <fieldset>
+            <legend>Update User {{this.name}}</legend>
+            {{> afQuickField name='name'}}
+            {{> afQuickField name="teams"}}
+            {{> afQuickField name="skills"}}
+            {{#if isInRole RolesEnum.ROLE}}
+                {{#if this._id}}
+                    {{> afQuickField name="groupRoles"}}
+                {{else}}
+                    User don't have a associated login account, can't add roles.
+                {{/if}}
+            {{/if}}
+        </fieldset>
+    {{/autoForm}}
+</template>

@@ -1,0 +1,260 @@
+<template name="updateUserForm">
+    {{>UpdateUserComponent}}
+</template>
+
+<template name="updateUserComponent">
+
+    <div class="update-user-wrapper-form">
+        {{reactiveConstructor}}
+
+        {{#unless this.username}}
+            <div class="panel panel-primary">
+                <div class="panel-heading">You need a username to be identified along the app. It is a mandatory, you can not be validated is you do not have one. Pick a wonderful one...</div>
+                <div class="panel-body">
+                    <div class="col-md-5">
+                        <div>
+
+                            <div class="form-group {{#if userNameError}}has-error{{/if}}">
+                                <label for="username" class="control-label">User name</label>
+                                <input value="{{username}} " type="text" name="username" id="username" data-schema-key="username_custom_update" class="form-control">
+                                <span class="help-block">{{userNameError}}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/unless}}
+
+        {{# autoForm collection="Meteor.users" doc=this id="updateUserForm" type="update" autosave=true}}
+
+            <div class="row">
+                <div class="col-md-5">
+                    {{>EditNameComponent collection="Meteor.users" placeholder="First name..." name=profile.firstName pathToUpdate="profile.firstName" _id=_id}}
+                </div>
+
+                <div class="col-md-5">
+                    {{>EditNameComponent collection="Meteor.users" placeholder="Family name..." name=profile.familyName pathToUpdate="profile.familyName" _id=_id}}
+                </div>
+                <div class="col-md-2">
+                    {{#if isInRole RolesEnum.USERDELETE}}
+                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                    {{/if}}
+                </div>
+            </div>
+
+            {{#if isCurrentUserTheOneLogged this._id}}
+                {{#if isReadyForAssignment}}
+                    <div class="alert alert-info" role="alert">You have been validated, you will be assigned to tasks according to your availabilities and your skills.</div>
+                {{else}}
+                    <div class="alert alert-warning" role="alert">You are not validated yet. You can not be assigned until you are validated.</div>
+                {{/if}}
+            {{/if}}
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
+
+                <div class="panel-body">
+                    <div class="">
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div>
+                                    {{> afQuickField name='profile.phoneNumber'}}
+                                    TODO phone number
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div>
+                                    <!--<label>User Birth date</label>-->
+                                    TODO birth date
+                                    <!--{{>DateTimePickerComponent date=birthday updateDateCallback=updateBirthDate}}-->
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    <label>Es tu à l'INSA ?</label>
+
+                                    <div class="col-md-6">
+                                        {{> afQuickField name='profile.departement'}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{> afQuickField name='profile.annee'}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+                                    <div>
+                                        {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
+                                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                        updateCollection="Meteor.users" updateItemId=this._id updateItemPath="teams"
+                                        nothingSelectedLabel="None yet"
+                                        }}
+                                    </div>
+                                {{/if}}
+                            </div>
+                            <div class="col-md-4">
+                                {{#if isInRole RolesEnum.ROLE}}
+                                    <div>
+                                        {{> MultipleNonMandatorySelectComponent selectLabel="Group Roles" title="Update group roles"
+                                        optionCollection="GroupRoles" optionValueName="name"
+                                        updateCollection="Meteor.users" updateItemId=this._id updateItemPath="groupRoles"
+                                        }}
+                                    </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div>
+                                    {{> afQuickField name='profile.comment' rows=20}}
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                </div>
+
+                {{#if errors}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <div><strong>Some errors remains in the form</strong></div>
+                                {{#each errors}}
+                                    <div>{{message}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Authentication information</div>
+
+                <div class="panel-body">
+                            <div class="alert alert-warning" role="alert">Following information are used to authenticate you.</div>
+
+
+                            <div class="col-md-5">
+                                <div>
+
+                                    <div class="form-group {{#if userNameError}}has-error{{/if}}">
+                                        <label for="username" class="control-label">User name</label>
+                                        <input value="{{username}} " type="text" name="username" id="username" data-schema-key="username_custom_update" class="form-control">
+                                        <span class="help-block">{{userNameError}}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div>
+
+                                    <div class="form-group {{#if userEmailError}}has-error{{/if}}">
+                                        <label for="useremail" class="control-label">User Email</label>
+                                        <input value="{{userEmail}} " type="text" name="useremail" id="useremail" data-schema-key="useremail_custom_update" class="form-control">
+                                        <span class="help-block">{{userEmailError}}</span>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="text-align-center">
+                                    <label class="control-label">Email validation</label>
+                                    {{#unless emailValid}}
+                                        <button id="send-confirmation-email" type="button" class="btn btn-info">Send confirmation email</button>
+                                    {{else}}
+                                        <p><i class="mdi mdi-checkbox-marked-circle-outline"></i></p>
+                                    {{/unless}}
+                                </div>
+                            </div>
+                </div>
+
+                {{#if errors}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <div><strong>Some errors remains in the form</strong></div>
+                                {{#each errors}}
+                                    <div>{{message}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Skills</div>
+
+                <div class="panel-body">
+                    {{#if isCurrentUserTheOneLogged this._id}}
+                        {{#if isReadyForAssignment}}
+                            <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your skills</div>
+                        {{else}}
+                            <label>Select one or more skills</label>
+                        {{/if}}
+                    {{/if}}
+                    <div class="row">
+                        {{#each allSkills this._id}}
+                            <div class="col-md-3">
+                                <input type="checkbox" class="update-skill" {{isChecked _id}} disabled="{{../isReadyForAssignment}}">
+                                {{label}}
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Availabilities</div>
+
+                <div class="panel-body">
+                    {{>UserAvailabilitiesComponent isReadyForAssignment=isReadyForAssignment parentInstance=self}}
+                </div>
+
+            </div>
+
+        {{/autoForm}}
+
+        {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+            <div class="panel panel-info">
+                <div class="panel-heading">User validation</div>
+                <div class="panel-body">
+                    <div class="row">
+
+                        {{#if this.isReadyForAssignment}}
+                            <div class="alert alert-info" role="alert">User has been validated, it can't be undone as the user is now ready for assignment</div>
+                        {{else}}
+                            <div class="alert alert-warning" role="alert">Once validated, user will be ready for assignment and will not be able to update its skills and availabilities. <strong>It can't be undode</strong></div>
+                            <button id="make-user-ready" type="button" class="col-md-offset-4 col-md-4 btn btn-success">Make user ready for assignment</button>
+                        {{/if}}
+                    </div>
+                </div>
+
+            </div>
+
+        {{/if}}
+
+    </div>
+
+</template>

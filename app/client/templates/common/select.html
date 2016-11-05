@@ -1,0 +1,134 @@
+<template name="selectComponent">
+
+    {{initializeData}}
+
+    <div>
+        {{#if readOnly}}
+            <div class="custom-select-label-wrapper">
+                {{#unless withoutLabel}}
+                    <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>
+                {{/unless}}
+            </div>
+        {{else}}
+            <div class="custom-select-label-wrapper hasPopover" data-popover="true"
+                 data-toggle="popover" title="{{title}}"
+                 data-content='
+                    {{#if optionCollectionIndex}}
+                        <div >
+                            <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
+                        </div>
+                    {{/if}}
+                    <div class="custom-select-options">
+                        <ul class="list-group">
+                            {{#each sortedCollectionItems}}
+                                <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
+                            {{/each}}
+                        </ul>
+                    </div>
+             '>
+                {{#unless withoutLabel}}
+                    <span class="custom-select-label" data-required><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>{{#unless readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit"></i>{{/unless}}
+                {{/unless}}
+            </div>
+        {{/if}}
+
+        {{#unless readOnly}}
+            {{#if withoutLabel}}
+                <i class="custom-select-icon mdi mdi-tooltip-edit"></i>
+            {{/if}}
+        {{/unless}}
+        <div class="selected-options">
+            {{#if maxSelectedOptionDisplayed}}
+                <ul class="list-group">
+                    {{#unless maxSelectedOptionDisplayedReached}}
+                        {{#each collectionSelectedItems}}
+                            <li class="list-group-item">{{optionValue}}</li>
+                        {{else}}
+                            <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
+                        {{/each}}
+                    {{else}}
+                        <li class="list-group-item">{{cursorLength collectionSelectedItems}}{{maxSelectedOptionDisplayedLabel}}</li>
+                    {{/unless}}
+                </ul>
+            {{/if}}
+        </div>
+
+    </div>
+
+    {{cloneSearchResultInPopover}}
+
+</template>
+
+
+<template name="nonMandatorySelectComponent">
+
+    {{initializeData}}
+
+    <div>
+        {{#if readOnly}}
+            <div class="custom-select-label-wrapper">
+                {{#unless withoutLabel}}
+                    <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>
+                {{/unless}}
+            </div>
+        {{else}}
+            <div class="custom-select-label-wrapper hasPopover" data-popover="true"
+                 data-toggle="popover" title="{{title}}"
+                 data-content='
+                 {{#if optionCollectionIndex}}
+                 <div>
+                    <input class="search-input" type="text" placeholder="{{filterPlaceHolder}}">
+                </div>
+                {{/if}}
+                <div class="custom-select-options">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                           <div class="clear">{{clearMessage}} <i class="custom-select-icon mdi mdi-delete"></i></div>
+                        </li>
+                        {{#each sortedCollectionItems}}
+                            <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
+                        {{/each}}
+                    </ul>
+                </div>
+         '>
+                {{#unless withoutLabel}}
+                    <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>{{#unless readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit"></i>{{/unless}}
+                {{/unless}}
+            </div>
+        {{/if}}
+
+        <div class="selected-options">
+            {{#unless readOnly}}
+                {{#if withoutLabel}}
+                    <i class="custom-select-icon mdi mdi-tooltip-edit"></i>
+                {{/if}}
+            {{/unless}}
+            {{#if maxSelectedOptionDisplayed}}
+                <ul class="list-group">
+                    {{#unless maxSelectedOptionDisplayedReached}}
+                        {{#each collectionSelectedItems}}
+                            <li class="list-group-item">{{optionValue}}</li>
+                        {{else}}
+                            <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
+                        {{/each}}
+                    {{else}}
+                        <li class="list-group-item">{{cursorLength collectionSelectedItems}}{{maxSelectedOptionDisplayedLabel}}</li>
+                    {{/unless}}
+                </ul>
+            {{/if}}
+        </div>
+
+    </div>
+
+    {{cloneSearchResultInPopover}}
+
+</template>
+
+
+<template name="customSelectPopoverOption">
+    <ul class="list-group">
+        {{#each collectionItemsPopover}}
+            <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
+        {{/each}}
+    </ul>
+</template>

@@ -1,0 +1,284 @@
+<template name="taskTimeSlots">
+
+    {{reactiveConstructor}}
+
+    <div class="col-md-12">
+        {{> AssignmentTermSelectComponent}}
+    </div>
+
+    <div class="col-md-8">
+        {{> EditTimeSlotCalendarComponent task=taskData parentInstance=self timeSlotTemplate="updateTimeSlotCalendar" class="updateTimeSlotCalendar"}}
+    </div>
+
+    <div class="col-md-4">
+        <div class="col-md-12">
+            <div class=" add-time-slot">
+
+                {{#unless isTimeSlotsReadOnly}}
+                    {{#if isTimeSlotCreated.get}}
+                        <br>
+                        <div class="pull-right">
+                            <i class="mdi mdi-check done-button" title="validate"></i><i class="mdi mdi-close clear-button" title="Clear all"></i>
+                        </div>
+                        <h4>Create time slot</h4>
+
+                        <div id="create-time-slot-form">
+                            <div>
+                                From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=createTimeSlotDefaultStartDate.get updateDateCallback=updateTimeSlotStartDate}}
+                                to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=createTimeSlotDefaultEndDate.get updateDateCallback=updateTimeSlotEndDate}}
+                            </div>
+                            <div class="error-holder">
+                                {{updatetimeSlotDatesError}}
+                            </div>
+                        </div>
+                    {{else}}
+                        {{#unless isTimeSlotUpdated.get}}
+                            <br>
+                            <div class="pull-right">
+                                <i class="mdi mdi-plus add-button" title="Create a new time slot"></i>
+                            </div>
+                            <h4>Select or create a time slot</h4>
+
+                        {{/unless}}
+                    {{/if}}
+
+
+                    {{#if isTimeSlotUpdated.get}}
+
+                        <br>
+                        <div class="pull-right clearfix">
+                            <i class="mdi mdi-content-copy duplicate-button" title="duplicate"></i><i class="mdi mdi-delete delete-button" title="delete"></i> | <i class="mdi mdi-plus add-button" title="create a new time slot"></i>
+                        </div>
+                        <h4>Update time slot</h4>
+
+                    {{/if}}
+
+                {{else}}
+
+                    <br>
+                    <h4>Select a time slot</h4>
+                {{/unless}}
+
+                {{#if isTimeSlotUpdated.get}}
+                    <div id="add-time-slot-form">
+                        <div>
+                            From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate readOnly=isTimeSlotsReadOnly}}
+                            to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate readOnly=isTimeSlotsReadOnly}}
+                        </div>
+                        <div class="error-holder">
+                            {{updatetimeSlotDatesError}}
+                        </div>
+                        {{#if currentTimeSlotPeopleNeededMerged}}
+                            <div class="people-need">
+                                <h5>People needs :</h5>
+
+                                <div  class="people-need">
+                                    {{#each currentTimeSlotPeopleNeededMerged}}
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <span>{{count}}</span>
+                                                {{#unless isTimeSlotsReadOnly}}
+                                                    {{#unless userId}}<i class="mdi mdi-content-copy duplicate" title="Duplicate this need" data-peopleneededid="{{this._id}}"></i>{{/unless}}
+                                                    <i class="mdi mdi-delete mdi-inline delete" title="Delete this need" data-peopleneededid="{{this._id}}"></i>
+                                                {{/unless}}
+                                            </div>
+                                            <div class="col-md-9">
+                                                {{#if userId}}
+                                                    {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
+                                                    optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                                                    updateCollection="Tasks" updateItemId=taskData._id
+                                                    updateItemPath="userId"
+                                                    pathWithArray=pathWithArrayPeopleNeeded
+                                                    updateCallback=updatePeopleNeedCallback
+                                                    readOnly=isTimeSlotsReadOnly}}
+                                                {{/if}}
+                                                {{#if teamId}}
+                                                    {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
+                                                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                                    updateCollection="Tasks" updateItemId=taskData._id
+                                                    updateItemPath="teamId"
+                                                    bulkPeopleNeededIds=bulkPeopleNeededIds
+                                                    updateCallback=updatePeopleNeedCallback
+                                                    readOnly=isTimeSlotsReadOnly}}
+                                                {{/if}}
+                                                {{#if skills}}
+                                                    {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
+                                                    optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
+                                                    updateCollection="Tasks" updateItemId=taskData._id
+                                                    updateItemPath="skills"
+                                                    bulkPeopleNeededIds=bulkPeopleNeededIds
+                                                    updateCallback=updatePeopleNeedCallback
+                                                    readOnly=isTimeSlotsReadOnly}}
+                                                {{/if}}
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                                <div class="error-holder">
+                                    {{updatePeopleNeededError}}
+                                </div>
+                            </div>
+                        {{/if}}
+                        {{#if currentTimeSlotPeopleNeededMerged true}}
+                            <div class="people-need-assigned">
+                                <h5>People needs already assigned :</h5>
+
+                                <div>
+                                    {{#each currentTimeSlotPeopleNeededMerged true}}
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <span>{{count}}</span>
+                                            </div>
+                                            <div class="col-md-9">
+                                                {{#if userId}}
+                                                    {{> SingleNonMandatorySelectComponent withoutLabel=true title="Specific user need"
+                                                    optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                                                    updateCollection="Tasks" updateItemId=taskData._id
+                                                    updateItemPath="userId"
+                                                    pathWithArray=pathWithArrayPeopleNeeded
+                                                    readOnly=true}}
+                                                {{/if}}
+                                                {{#if teamId}}
+                                                    {{> SingleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific a team need"
+                                                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                                    updateCollection="Tasks" updateItemId=taskData._id
+                                                    updateItemPath="teamId"
+                                                    bulkPeopleNeededIds=bulkPeopleNeededAssignedIds
+                                                    readOnly=true}}
+                                                {{/if}}
+                                                {{#if skills}}
+                                                    {{> MultipleNonMandatoryBulkSelectComponent withoutLabel=true title="Specific some needed skills"
+                                                    optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex"
+                                                    updateCollection="Tasks" updateItemId=taskData._id
+                                                    updateItemPath="skills"
+                                                    bulkPeopleNeededIds=bulkPeopleNeededAssignedIds
+                                                    readOnly=true}}
+                                                {{/if}}
+                                            </div>
+                                        </div>
+                                        {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
+                                            <div class="row">
+                                                <div class="com-md-offset col-md-10">
+                                                    <a href="/assignment/taskToUser/{{taskData._id}}">Edit task assignment</a>
+                                                </div>
+                                            </div>
+                                        {{/if}}
+                                    {{/each}}
+                                </div>
+                                <div class="error-holder">
+                                    {{updatePeopleNeededError}}
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div>
+                {{/if}}
+
+            </div>
+
+
+            {{#unless isTimeSlotsReadOnly}}
+                {{#if isTimeSlotUpdated.get}}
+                    <div class="col-md-12 add-people-need">
+                        <div class="add-people-need">
+                            <div class="pull-right clearfix">
+                                {{#if displayAddPeopleNeedForm}}
+                                    <i class="mdi mdi-check done-button" title="validate"></i><i class="mdi mdi-close clear-button" title="Clear all"></i>
+                                {{else}}
+                                    <i class="mdi mdi-plus add-button" title="Create a new"></i>{{/if}}
+                            </div>
+                            <h5>Add a people need</h5>
+                        </div>
+                        {{#if displayAddPeopleNeedForm}}
+                            <div id="add-people-need-form" class="row">
+                                <div class="col-md-6">
+                                    {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
+                                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
+                                    updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
+                                    nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                                    }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{> MultipleNonMandatorySelectComponent selectLabel="Need of set of skills" title="Select needed skills"
+                                    optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="No skills"
+                                    updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="skills"
+                                    }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{> SingleNonMandatorySelectComponent title="Select a needed user" selectLabel="Need a specific user"
+                                    optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                                    updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="userId"
+                                    nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                                    }}
+                                </div>
+                            </div>
+                            <div class="error-holder">
+                                {{{createPeopleNeededError}}}
+                            </div>
+                        {{/if}}
+                    </div>
+                {{/if}}
+            {{/unless}}
+        </div>
+
+    </div>
+</template>
+
+<template name="updateTimeSlotCalendar">
+    <div class="creneau {{state}} {{#if equals currentTimeSlot._id this._id}}currentTimeSlot{{/if}}" data-timeslotdid="{{this._id}}" style="height: {{height}};">
+        <div class="on-calendar">
+
+            <div class="col-xs-2 no-padding creneau-userId" title="{{getUserIdNeedCount _id}} particular {{#if isMore (getUserIdNeedCount _id) 1}}people are{{else}}person is{{/if}} needed">
+                <p class="no-padding creneau-header">
+                <div>{{getUserIdNeedCount _id}}</div>
+                </p>
+                <p class="col-xs-12 no-padding people-need">
+                    <i class="mdi mdi-account"></i>
+                </p>
+            </div>
+
+            <div class="col-xs-8 no-padding creneau-to-affect">
+                {{#each getPeopleNeededMergedWithoutUserId _id}}
+                    {{#unless userId}}
+                        <p class="col-xs-2 no-padding people-need" title="{{count}} need{{#unless equals count 1}}s{{/unless}} of{{#if teamId}} a team{{#if skills}} and{{/if}}{{/if}}{{#if skills}}{{#if equals skills.length 1}} a skill{{else}} {{skills.length}} skills{{/if}}{{/if}}">
+
+                            <p class="col-xs-12 no-padding creneau-header">
+                                {{#if isMore 5 @index}}
+                                    {{count}}
+                                {{/if}}
+                            </p>
+
+                            {{#if isMore 5 @index}}
+                                {{#if teamId}}
+                                    <i class="mdi mdi-account-multiple"></i>
+                                    <br>{{/if}}
+                                {{#each skills}}
+                                    <i class="mdi mdi-android-studio"></i>
+                                    <br>
+                                {{/each}}
+                            {{else}}
+                                {{#if equals 5 @index}}
+                                    <b>...</b>
+                                {{/if}}
+                            {{/if}}
+
+                        </p>
+                        {{/unless}}
+                {{/each}}
+
+            </div>
+            <div class="col-xs-2 no-padding creneau-affected" title="{{getAlreadyAssignedPeopleNeedCount _id}} {{#if isMore (getAlreadyAssignedPeopleNeedCount _id) 1}}people{{else}}person{{/if}} already affected">
+                <p class="no-padding creneau-header">
+                    <div>{{getAlreadyAssignedPeopleNeedCount _id}}</div>
+                </p>
+                <p class="col-xs-12 no-padding people-need">
+                    <i class="mdi mdi-calendar-check"></i>
+                </p>
+            </div>
+
+
+
+        </div>
+    </div>
+</template>

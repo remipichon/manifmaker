@@ -1,0 +1,135 @@
+<template name="team-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name='name'}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="place-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name='name'}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="skill-update">
+    {{# autoForm collection=collection doc=document  id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.key}}</legend>
+            {{> afQuickField name='key'}}
+            {{> afQuickField name='label'}}
+            {{> afQuickField name="teams"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="assignment-term-update">
+    {{# autoForm collection=collection doc=document  id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.date}}</legend>
+            {{> afQuickField name="start"}}
+            {{> afQuickField name="end"}}
+            {{> afQuickField name="teams"}}
+            {{> afQuickField name="addAvailabilitiesDeadline"}}
+            {{> afQuickField name="calendarAccuracy"}}
+            <div class="alert alert-success" role="alert">
+                <p>If this assignment term is not contiguous, you can add periods (periods can not overlapp and have to be included between assignment term start and end date).</p>
+                <p>If no period are created, people will automatically be able to add availabilities and time slots during whole days between assignment term start and end date.</p>
+            </div>
+            {{> afQuickField name="assignmentTermPeriods"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="group-role-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.date}}</legend>
+            {{> afQuickField name="name"}}
+            {{> afQuickField name="roles"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="equipment-category-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="equipment-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+            {{> afQuickField name="quantity"}}
+            {{> afQuickField name="targetUsage"}}
+            {{> afQuickField name="EquipmentCategories_Id"}}        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="water-supply-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="water-disposal-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="power-supply-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+<template name="equipment-storage-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+

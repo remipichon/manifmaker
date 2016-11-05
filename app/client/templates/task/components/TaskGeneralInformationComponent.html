@@ -1,0 +1,48 @@
+<template name="taskGeneralInformation">
+    <div class="col-md-3">
+        <div>
+            <label>Linked activity</label>
+
+            <div><a href="/activity/_id">Activity name</a></div>
+            <div>
+                <div>day1 : start to end</div>
+                <div>day1 : start to end and start2 to end2</div>
+            </div>
+        </div>
+
+        <div>
+            {{> SingleNonMandatorySelectComponent selectLabel="Group" title="Update task group"
+            optionCollection="TaskGroups" optionValueName="name" optionCollectionIndex="TaskGroupsIndex"
+            updateCollection="Tasks" updateItemId=this._id updateItemPath="groupId" readOnly=readOnly
+            }}
+        </div>
+
+        <div>
+            {{> SingleSelectComponent selectLabel="Team" title="Update team"
+            optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+            updateCollection="Tasks" updateItemId=this._id updateItemPath="teamId" readOnly=readOnly
+            }}
+        </div>
+
+        <div>
+            {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
+            optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+            updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId" readOnly=readOnly
+            }}
+        </div>
+
+        <div>
+            <div>
+                {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                updateCollection="Tasks" updateItemId=this._id updateItemPath="liveEventMasterId" readOnly=readOnly
+                }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div>
+            {{> afQuickField name='description' rows=20}}
+        </div>
+    </div>
+</template>

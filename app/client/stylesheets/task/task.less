@@ -1,0 +1,152 @@
+@grey:grey;
+
+@green-light:#dbedd8;
+@green-mid:#cbe8ba;
+@green:#72bb53;
+@green-dark:#629c44;
+
+@red-mid:#ffb4b0;
+@red:#ff3823;
+@red-dark:#e61610;
+
+@orange-light:#fff5e0;
+@orange-mid:#ffe3ae;
+@orange:#ffa834;
+@orange-dark:#d39c2f;
+
+
+.update-task-wrapper-form {
+
+  .top-section {
+    position: relative;
+    margin-left: 10px;
+    margin-top: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    .task-name {
+      width: 40%;
+      padding: 0px;
+      margin-bottom: 5px;
+      height: 30px;
+      font-size: medium;
+    }
+    .informations {
+      width: 100%;
+      height: 30px;
+      margin-bottom: 5px;
+      margin-top: 5px;
+      font-size: 20px;
+    }
+  }
+
+  .description {
+    display: inline-block;
+    position: relative;
+    margin: 10px 0px 50px 10px;
+    padding: 5px;
+    border: none;
+    height: 100%;
+    width: 100%;
+    .text-description {
+      width: 100%;
+      height: 350px;
+      position: relative;
+      margin: 10px 10px 10px 0px;
+      border: 2px solid black;
+
+    }
+  }
+
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+  // correct the top-alignement made by bootstrap
+  vertical-align : middle;
+}
+
+.input-min-4-digits .form-group{
+  min-width : 75px;
+}
+
+.task-list-filter-wrapper && .task-group-list-filter-wrapper{
+  margin-bottom:20px;
+}
+
+.open{
+  color:@grey;
+}
+.ready{
+  color:@green;
+}
+.refused{
+  color:@red;
+}
+.tobevalidated,{
+  color:@orange;
+}
+
+
+
+//Task validation :
+.validation-comments-list-header{
+  margin : 0 20px 0 20px;
+}
+.validation-comments-list-body{
+  margin : 0 20px 0 40px; //left margin : same than list-header + (icone) font-size
+}
+.validation-comment-input{
+  margin : 10px 20px 10px 20px;
+}
+
+//button and their background color for each action
+.askforvalidation-button{
+  background-color: @orange-mid;
+  color:@orange-dark;
+  border-color: @orange-dark;
+}
+.refuse-button{
+  background-color: @red-mid;
+  color:@red-dark;
+  border-color: @red-dark;
+}
+.close-button{
+  background-color: @green-mid;
+  color:@green-dark;
+  border-color: @green-dark;
+}
+
+
+//custom display of disabled input because of validation in waiting
+.tobevalidated-locked-input:disabled{
+  background-color: @orange-light;
+}
+.tobevalidated-locked-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: @orange;font-style:italic;
+}
+.tobevalidated-locked-input::-moz-placeholder { /* Firefox 19+ */
+  color: @orange;font-style:italic;
+}
+.tobevalidated-locked-input:-ms-input-placeholder { /* IE 10+ */
+  color: @orange;font-style:italic;
+}
+.tobevalidated-locked-input:-moz-placeholder { /* Firefox 18- */
+  color: @orange;font-style:italic;
+}
+
+//custom display of disabled input because of validated task
+.ready-locked-input:disabled{
+  background-color: @green-light;
+}
+.ready-locked-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: @green;font-style:italic;
+}
+.ready-locked-input::-moz-placeholder { /* Firefox 19+ */
+  color: @green;font-style:italic;
+}
+.ready-locked-input:-ms-input-placeholder { /* IE 10+ */
+  color: @green;font-style:italic;
+}
+.ready-locked-input:-moz-placeholder { /* Firefox 18- */
+  color: @green;font-style:italic;
+}

@@ -1,0 +1,177 @@
+<template name="taskValidation">
+    <h4><i class="mdi mdi-wrench"></i> Equipment validation</h4>
+
+    <div class="validation-comments-list-header toggle-equipment-validation-comments-list" data-toggle="collapse" data-target="#equipment-validation-comments-list">
+        <!-- Show the expand/collapse icon if there is more than 1 validation states -->
+        <!-- comment between lines are here to avoid a white space between element, keeping a clean code with incrementations -->
+        {{#if isMore equipmentValidation.comments.length 1}}
+            <i class="mdi {{#if isEquipmentCommentsListDeveloped}}mdi-chevron-up{{else}} mdi-chevron-down{{/if}}"></i><!--
+        -->{{/if}}<!--
+        -->{{#if isMore equipmentValidation.comments.length 0}}<!--
+            --><i class="mdi mdi-wrench mdi-inline {{equipmentValidation.comments.[0].stateAfter.toLowerCase}}"></i>
+    {{/if}}
+
+        <!-- Show the first validation state or the "no comment" message -->
+        {{#if equipmentValidation.comments}}
+            <span title="{{displayDateTime equipmentValidation.comments.[0].creationDate}} : {{equipmentValidation.comments.[0].author}} updated equipment validation from {{displayValidationState equipmentValidation.comments.[0].stateBefore}} to {{displayValidationState equipmentValidation.comments.[0].stateAfter}}  {{#if equipmentValidation.comments.[0].content}}with '{{equipmentValidation.comments.[0].content}}'{{else}}without any comment{{/if}}">
+                {{displayDateTime equipmentValidation.comments.[0].creationDate}} : has been updated to <b>{{displayValidationState equipmentValidation.comments.[0].stateAfter}}</b>
+                {{#if equipmentValidation.comments.[0].content}}
+                    with "{{equipmentValidation.comments.[0].content}}"
+                {{else}}
+                    without any comment
+                {{/if}}
+            </span>
+        {{else}}
+            There are not comments right now but with luck there will be yours soon.
+        {{/if}}
+    </div>
+
+
+    <!-- Show the other validation states -->
+    {{#if isMore equipmentValidation.comments.length 1}}
+        <div class="validation-comments-list-body collapse" id="equipment-validation-comments-list">
+
+            {{#each equipmentValidation.comments}}
+                {{#unless equals @index 0}}
+                    <span title="{{displayDateTime creationDate}} : {{author}} updated equipment validation from {{displayValidationState stateBefore}} to {{displayValidationState stateAfter}}  {{#if content}}with '{{content}}'{{else}}without any comment{{/if}}">
+                        <i class="mdi mdi-wrench mdi-inline {{stateAfter.toLowerCase}}"></i>
+                        {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
+                        {{#if content}}
+                            with "{{content}}"
+                        {{else}}
+                            without any comment
+                        {{/if}}
+                        <br>
+                    </span>
+                {{/unless}}
+            {{/each}}
+        </div>
+    {{/if}}
+
+    <!-- if you have the right to type a new comment -->
+    {{#if displayTextArea 'EQUIPMENTVALIDATION' equipmentValidation.currentState}}
+        <!-- Input to add a new validation state -->
+        <div class="input-group validation-comment-input">
+            <input type="text" class="form-control" placeholder="You can type a new comment for equipment validation" id="equipment-validation-new-comment">
+
+            <!-- button to display -->
+            {{#if equals equipmentValidation.currentState "OPEN"}}
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-_id="{{this._id}}" data-type="equipment" data-state="to-be-validated">Ask for validation</span>
+            {{/if}}
+            {{#if equals equipmentValidation.currentState "REFUSED"}}
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-_id="{{this._id}}" data-type="equipment" data-state="to-be-validated">Ask for validation</span>
+            {{/if}}
+            {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
+                <span class="input-group-addon btn btn-primary refuse-button" data-_id="{{this._id}}" data-type="equipment" data-state="refuse">Refuse</span>
+                <span class="input-group-addon btn btn-primary close-button" data-_id="{{this._id}}" data-type="equipment" data-state="ready">Close</span>
+            {{/if}}
+            {{#if equals equipmentValidation.currentState "READY"}}
+                <span class="input-group-addon btn btn-primary refuse-button" data-_id="{{this._id}}" data-type="equipment" data-state="refuse">Refuse</span>
+            {{/if}}
+
+        </div>
+    {{else}}
+        <div class="validation-comment-input">
+            <!-- if you can't because it's in validation -->
+            {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
+
+                <input type="text" class="form-control tobevalidated-locked-input" placeholder="Task Equipment in validation" disabled>
+            {{/if}}
+            <!-- if you can't because it's closed -->
+            {{#if equals equipmentValidation.currentState "READY"}}
+                <input type="text" class="form-control ready-locked-input" placeholder="Task Equipment closed" disabled>
+            {{/if}}
+        </div>
+    {{/if}}
+
+
+
+
+
+
+    <h4><i class="mdi mdi-clock"></i> Time slots validation</h4>
+
+
+    <div class="validation-comments-list-header toggle-time-slots-validation-comments-list" data-toggle="collapse" data-target="#time-slots-validation-comments-list">
+        <!-- Show the expand/collapse icon if there is more than 1 validation states -->
+        <!-- comment between lines are here to avoid a white space between element, keeping a clean code with incrementations -->
+        {{#if isMore timeSlotValidation.comments.length 1}}
+            <i class="mdi {{#if isTimeSlotsCommentsListDeveloped}}mdi-chevron-up{{else}} mdi-chevron-down{{/if}}"></i><!--
+        -->{{/if}}<!--
+        -->{{#if isMore timeSlotValidation.comments.length 0}}<!--
+            --><i class="mdi mdi-clock mdi-inline {{timeSlotValidation.comments.[0].stateAfter.toLowerCase}}"></i>
+    {{/if}}
+
+        <!-- Show the first validation state or the "no comment" message -->
+        {{#if timeSlotValidation.comments}}
+            <span title="{{displayDateTime timeSlotValidation.comments.[0].creationDate}} : {{timeSlotValidation.comments.[0].author}} updated time slots validation from {{displayValidationState timeSlotValidation.comments.[0].stateBefore}} to {{displayValidationState timeSlotValidation.comments.[0].stateAfter}}  {{#if timeSlotValidation.comments.[0].content}}with '{{timeSlotValidation.comments.[0].content}}'{{else}}without any comment{{/if}}">
+                {{displayDateTime timeSlotValidation.comments.[0].creationDate}} : has been updated to <b>{{displayValidationState timeSlotValidation.comments.[0].stateAfter}}</b>
+                {{#if timeSlotValidation.comments.[0].content}}
+                    with "{{timeSlotValidation.comments.[0].content}}"
+                {{else}}
+                    without any comment
+                {{/if}}
+            </span>
+        {{else}}
+            There are not comments right now but with luck there will be yours soon.
+        {{/if}}
+    </div>
+
+
+    <!-- Show the other validation states -->
+    {{#if isMore timeSlotValidation.comments.length 1}}
+        <div class="validation-comments-list-body collapse" id="time-slots-validation-comments-list">
+
+            {{#each timeSlotValidation.comments}}
+                {{#unless equals @index 0}}
+                    <span title="{{displayDateTime creationDate}} : {{author}} updated time slots validation from {{displayValidationState stateBefore}} to {{displayValidationState stateAfter}}  {{#if content}}with '{{content}}'{{else}}without any comment{{/if}}">
+                        <i class="mdi mdi-clock mdi-inline {{stateAfter.toLowerCase}}"></i>
+                        {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
+                        {{#if content}}
+                            with "{{content}}"
+                        {{else}}
+                            without any comment
+                        {{/if}}
+                        <br>
+                    </span>
+                {{/unless}}
+            {{/each}}
+        </div>
+    {{/if}}
+
+    <!-- if you have the right to type a new comment -->
+    {{#if displayTextArea 'ASSIGNMENTVALIDATION' timeSlotValidation.currentState}}
+        <!-- Input to add a new validation state -->
+        <div class="input-group validation-comment-input">
+            <input type="text" class="form-control" placeholder="You can type a new comment for time slots validation" id="time-slot-validation-new-comment"> <!-- TODO uniformiser, time-slot ou time-slots ? -->
+
+            <!-- button to display -->
+            {{#if equals timeSlotValidation.currentState "OPEN"}}
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-_id="{{this._id}}" data-type="time-slot" data-state="to-be-validated">Ask for validation</span>
+            {{/if}}
+            {{#if equals timeSlotValidation.currentState "REFUSED"}}
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-_id="{{this._id}}" data-type="time-slot" data-state="to-be-validated">Ask for validation</span>
+            {{/if}}
+            {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
+                <span class="input-group-addon btn btn-primary refuse-button" data-_id="{{this._id}}" data-type="time-slot" data-state="refuse">Refuse</span>
+                <span class="input-group-addon btn btn-primary close-button" data-_id="{{this._id}}" data-type="time-slot" data-state="ready">Close</span>
+            {{/if}}
+            {{#if equals timeSlotValidation.currentState "READY"}}
+                <span class="input-group-addon btn btn-primary refuse-button" data-_id="{{this._id}}" data-type="time-slot" data-state="refuse">Refuse</span>
+            {{/if}}
+
+        </div>
+    {{else}}
+        <div class="validation-comment-input">
+            <!-- if you can't because it's in validation -->
+            {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
+
+                <input type="text" class="form-control tobevalidated-locked-input" placeholder="Task time slots in validation" disabled>
+            {{/if}}
+            <!-- if you can't because it's closed -->
+            {{#if equals timeSlotValidation.currentState "READY"}}
+                <input type="text" class="form-control ready-locked-input" placeholder="Task time slots closed" disabled>
+            {{/if}}
+        </div>
+    {{/if}}
+</template>

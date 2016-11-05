@@ -1,0 +1,302 @@
+@green1 : #26ca1e;
+@green2 : #1c9717;
+@green3 : #00ff00;
+
+::-webkit-scrollbar {
+  width: 8px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  background: #b4b4b4;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  display: none;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar-track-piece {
+  background: transparent none;
+  border: none;
+  margin: 4px;
+}
+
+.calendar {
+  &.userToTask {
+    .heure {
+      &:hover {
+        border-top: 2px dashed OrangeRed !important;
+      }
+      &.selected {
+        border-top: 2px solid OrangeRed !important;
+      }
+      .quart_heure {
+        pointer-events: none; //in order to allow selecting a below calendar time slot instead of the whole user availability
+      }
+    }
+  }
+
+  &.taskToUser{
+
+  }
+
+  margin-top:10px;
+  float: left;
+  width: 100%;
+  height: 100%;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+
+  .titres {
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    padding-left: 39px;
+    padding-right: 8px;
+
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    box-orient: horizontal;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    .titre_date {
+      height: 100%;
+      border: 1px solid #d6d6d6;
+      border-width: 1px 1px 0 1px;
+      text-align: center;
+      margin-right:-1px; //merging the central border
+      overflow: hidden;
+      width: 50%;
+
+      -webkit-box-flex: 1;
+      -moz-box-flex: 1;
+      box-flex: 1;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    .titre_date:last-of-type {
+      margin-right:0; //merging no merging to do on the last
+    }
+  }
+  .jours {
+    height: 964px;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-left: 40px;
+    position: relative;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    box-orient: horizontal;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+
+    .hours {
+      float: left;
+      position: absolute;
+      left: 0;
+      width: 40px;
+      overflow: hidden;
+      height: 960px;
+      border: 1px solid #d6d6d6;
+      margin-bottom: 1px;
+
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      .hour {
+        width: 100%;
+        border-bottom: 1px solid #d6d6d6;
+        //height: 40px; //TODO  si <=1 :  40      si = 2 : 80  si = 4  160
+        line-height: 40px;
+        text-align: center;
+        &.oneHour {
+          height: 40px
+        }
+        &.twoHour {
+          height: 80px
+        }
+        &.fourHour {
+          height: 160px
+        }
+
+      }
+    }
+    .jour {
+      height: 960px;
+      overflow : hidden;
+      border-right: 1px solid #d6d6d6;;
+      border-bottom: 1px solid #d6d6d6;
+
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 1px;
+      -webkit-box-flex: 1;
+      -moz-box-flex: 1;
+      box-flex: 1;
+      .heure {
+        .quart_heure {
+          width: 100%;
+          height: 10px; // TODO  si 0.25 : 10   si 05 : 20  si 1 : 40   si 2 : 80   si 4 : 160
+
+          &.quarterHour {
+            height: 10px;
+          }
+          &.halfHour {
+            height: 20px;
+          }
+          &.oneHour {
+            height: 40px;
+          }
+          &.twoHour {
+            height: 80px;
+          }
+          &.fourHour {
+            height: 160px;
+          }
+          display: flex;
+          display: -webkit-box;
+          display: -moz-box;
+          box-orient: horizontal;
+          -webkit-box-orient: horizontal;
+          -moz-box-orient: horizontal;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          .creneau {
+            height:100%;
+            color: white;
+            background: @green1;
+            opacity: 0.9;
+            width: 100%;
+            //            padding: 5px 0;
+            overflow: hidden;
+            //            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-bottom : solid 1px white;
+            text-align : center;
+            -webkit-box-flex: 1;
+            -moz-box-flex: 1;
+            box-flex: 1;
+            //            -webkit-box-sizing: border-box;
+            //            -moz-box-sizing: border-box;
+            //            box-sizing: border-box;
+
+            .creneau-affected{
+              background-color:@green2;
+            }
+
+            &.currentTimeSlot{
+              background : @green3;
+              .creneau-affected{
+                background-color:@green1;
+              }
+            }
+
+            &.usedByTask {
+              font-size: 0.8em;
+
+              width: 100%;
+              table-layout: fixed;
+
+
+              .hasPopover {
+                .peopleNeed {
+
+                }
+              }
+
+              .wrapper {
+                -webkit-transform: rotate(90deg);
+
+                .peopleNeed {
+                  //display: table-cell;
+                  border-bottom: solid 1px black;
+                  text-align: center;
+                  overflow-y: scroll;
+                  width: 100%;
+                  overflow: hidden;
+                  //height: 1%;
+
+                  &.assigned {
+                    background: rgba(158, 100, 0, 0.8);
+                  }
+
+                  div {
+                    pointer-events: none; //in order to allow selecting a below calendar time slot instead of the whole user availability
+                  }
+                }
+              }
+            }
+          }
+          .creneau.affecte {
+            background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent) !important;
+            background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent) !important;
+            background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent) !important;
+          }
+          .creneau.in-progress {
+            background: rgba(158, 100, 0, 0.8);
+          }
+        }
+        .quart_heure.free {
+          background: #fff;
+          cursor: pointer;
+        }
+        .quart_heure.current {
+          border-top: 2px solid OrangeRed !important;
+        }
+        .quart_heure{
+          border-top: 1px solid #d6d6d6;
+        }
+      }
+    }
+  }
+}
+
+
+// Task Update form
+.timeslots {
+  .calendar {
+    .creneau {
+
+      .creneau-userId, .creneau-affected, .creneau-to-affect, .on-calendar{
+        height: 100%;
+      }
+      .on-calendar {
+        width:100%;
+        .creneau-header{
+          height:20px;
+          margin:0;
+        }
+      }
+
+    }
+  }
+}

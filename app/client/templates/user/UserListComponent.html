@@ -1,0 +1,76 @@
+<template name="usersList">
+    {{> UserListComponent}}
+</template>
+
+
+<template name="userListComponent">
+
+    {{validateForm}}
+
+    <div>
+        {{#if isInRole RolesEnum.USERWRITE}}
+            <a class="btn btn-primary pull-right" href="/user">Create a new User</a>
+        {{/if}}
+
+        <h1>User List</h1>
+
+    </div>
+
+    <div class="user-list-filter-wrapper">
+        <div class="row">
+
+            <div class="col-md-3">
+                <label>
+                    User name :
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search_user_name" placeholder="Search user...">
+                    <span class="input-group-addon">
+                        <i class="mdi mdi-magnify mdi-inline"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-md-offset-1">
+                {{> SingleNonMandatorySelectComponent selectLabel="Team" title="Select a team"
+                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned
+                }}
+            </div>
+
+        </div>
+
+    </div>
+    {{> reactiveTable settings=usersList }}
+
+</template>
+
+
+
+
+<template name="userButtons">
+    {{#if isInRole RolesEnum.USERWRITE}}
+        <a class="btn btn-primary" href="/user/{{_id}}" role="button" title="Edit"> <i class="mdi mdi-pencil"></i></a>
+    {{else}}
+        {{#if isInRole RolesEnum.USERREAD}}
+            <a class="btn btn-primary" href="/user/{{_id}}/read" title="Read"> <i class="mdi mdi-chevron-right"></i></a>
+        {{/if}}
+    {{/if}}
+    {{#if isInRole RolesEnum.USERDELETE}}
+        {{#quickRemoveButton class="btn btn-default" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}
+            <span title="Delete">
+                <i class="mdi mdi-delete"></i>
+            </span>
+        {{/quickRemoveButton}}
+    {{/if}}
+</template>
+
+<template name="isReadyForAssignment">
+    {{#if this.isReadyForAssignment}}
+        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+    {{else}}
+        <i class="mdi mdi-checkbox-blank-circle-outline"></i>
+    {{/if}}
+</template>
+
+
