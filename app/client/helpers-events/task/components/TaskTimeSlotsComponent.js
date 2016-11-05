@@ -99,6 +99,11 @@ class TaskTimeSlotsComponent extends BlazeComponent{
         var peopleNeeded = [];
         if (this.isTimeSlotDuplicated) {
             peopleNeeded = this.currentTimeSlot().peopleNeeded
+
+            //remove possible assignment
+            peopleNeeded.forEach(peopleNeed => {
+                peopleNeed.assignedUserId = null;
+            });
         }
 
         var data = {
