@@ -10,15 +10,20 @@
         * [.forbidden  /login](#Route.common.forbidden  /login)
         * [.demo-select  /demo-select](#Route.common.demo-select  /demo-select)
         * [.inject-data  /inject-data](#Route.common.inject-data  /inject-data)
+    * [.TaskGroup](#Route.TaskGroup) : <code>object</code>
+        * [.home  /task-groups](#Route.TaskGroup.home  /task-groups)
+        * [.taskGroup.create  /task-group](#Route.TaskGroup.taskGroup.create  /task-group)
+        * [.taskGroup.read  /task-group/:_id](#Route.TaskGroup.taskGroup.read  /task-group/__id)
+        * [.taskGroup.read  /task-group/:_id](#Route.TaskGroup.taskGroup.read  /task-group/__id)
     * [.Task](#Route.Task) : <code>object</code>
         * [.home  /tasks](#Route.Task.home  /tasks)
         * [.task.create  /task](#Route.Task.task.create  /task)
         * [.task.read  /task/:_id](#Route.Task.task.read  /task/__id)
         * [.task.read  /task/:_id](#Route.Task.task.read  /task/__id)
-        * [.task.validation.timeSlot  /task/validation/:validationType/:_id/:state](#Route.Task.task.validation.timeSlot  /task/validation/_validationType/__id/_state)
     * [.User](#Route.User) : <code>object</code>
         * [.user.list  /users](#Route.User.user.list  /users)
         * [.user.create  /user](#Route.User.user.create  /user)
+        * [.user.register  /user](#Route.User.user.register  /user)
         * [.user.read  /user/:_id](#Route.User.user.read  /user/__id)
         * [.user.read  /user/:_id](#Route.User.user.read  /user/__id)
         * [.logout  /logout](#Route.User.logout  /logout)
@@ -65,6 +70,51 @@
 **Kind**: static property of <code>[common](#Route.common)</code>  
 **Summary**: Inject Dada (remove all before)  
 **Locus**: client  
+<a name="Route.TaskGroup"></a>
+
+### Route.TaskGroup : <code>object</code>
+**Kind**: static namespace of <code>[Route](#Route)</code>  
+
+* [.TaskGroup](#Route.TaskGroup) : <code>object</code>
+    * [.home  /task-groups](#Route.TaskGroup.home  /task-groups)
+    * [.taskGroup.create  /task-group](#Route.TaskGroup.taskGroup.create  /task-group)
+    * [.taskGroup.read  /task-group/:_id](#Route.TaskGroup.taskGroup.read  /task-group/__id)
+    * [.taskGroup.read  /task-group/:_id](#Route.TaskGroup.taskGroup.read  /task-group/__id)
+
+<a name="Route.TaskGroup.home  /task-groups"></a>
+
+#### TaskGroup.home  /task-groups
+**Kind**: static property of <code>[TaskGroup](#Route.TaskGroup)</code>  
+**Summary**: Display taskGroups list  
+**Locus**: client  
+<a name="Route.TaskGroup.taskGroup.create  /task-group"></a>
+
+#### TaskGroup.taskGroup.create  /task-group
+**Kind**: static property of <code>[TaskGroup](#Route.TaskGroup)</code>  
+**Summary**: Display the create taskGroup form without time slots and validation workflow  
+**Locus**: client  
+<a name="Route.TaskGroup.taskGroup.read  /task-group/__id"></a>
+
+#### TaskGroup.taskGroup.read  /task-group/:_id
+**Kind**: static property of <code>[TaskGroup](#Route.TaskGroup)</code>  
+**Summary**: Display the taskGroup update form by it's MongoId  
+**Locus**: client  
+
+| Param |
+| --- |
+| taskGroupId | 
+
+<a name="Route.TaskGroup.taskGroup.read  /task-group/__id"></a>
+
+#### TaskGroup.taskGroup.read  /task-group/:_id
+**Kind**: static property of <code>[TaskGroup](#Route.TaskGroup)</code>  
+**Summary**: Display the taskGroup in read mode by it's MongoId  
+**Locus**: client  
+
+| Param |
+| --- |
+| taskGroupId | 
+
 <a name="Route.Task"></a>
 
 ### Route.Task : <code>object</code>
@@ -75,7 +125,6 @@
     * [.task.create  /task](#Route.Task.task.create  /task)
     * [.task.read  /task/:_id](#Route.Task.task.read  /task/__id)
     * [.task.read  /task/:_id](#Route.Task.task.read  /task/__id)
-    * [.task.validation.timeSlot  /task/validation/:validationType/:_id/:state](#Route.Task.task.validation.timeSlot  /task/validation/_validationType/__id/_state)
 
 <a name="Route.Task.home  /tasks"></a>
 
@@ -111,19 +160,6 @@
 | --- |
 | taskId | 
 
-<a name="Route.Task.task.validation.timeSlot  /task/validation/_validationType/__id/_state"></a>
-
-#### Task.task.validation.timeSlot  /task/validation/:validationType/:_id/:state
-**Kind**: static property of <code>[Task](#Route.Task)</code>  
-**Summary**: Update validation state for one the task part  
-**Locus**: client  
-
-| Param |
-| --- |
-| validationType | 
-| taskId | 
-| validationState | 
-
 <a name="Route.User"></a>
 
 ### Route.User : <code>object</code>
@@ -132,6 +168,7 @@
 * [.User](#Route.User) : <code>object</code>
     * [.user.list  /users](#Route.User.user.list  /users)
     * [.user.create  /user](#Route.User.user.create  /user)
+    * [.user.register  /user](#Route.User.user.register  /user)
     * [.user.read  /user/:_id](#Route.User.user.read  /user/__id)
     * [.user.read  /user/:_id](#Route.User.user.read  /user/__id)
     * [.logout  /logout](#Route.User.logout  /logout)
@@ -146,7 +183,13 @@
 
 #### User.user.create  /user
 **Kind**: static property of <code>[User](#Route.User)</code>  
-**Summary**: Display the create user form  
+**Summary**: Redirect tp the register user form  
+**Locus**: client  
+<a name="Route.User.user.register  /user"></a>
+
+#### User.user.register  /user
+**Kind**: static property of <code>[User](#Route.User)</code>  
+**Summary**: Display register form  
 **Locus**: client  
 <a name="Route.User.user.read  /user/__id"></a>
 

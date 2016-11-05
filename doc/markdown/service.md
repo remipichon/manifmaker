@@ -3,7 +3,13 @@
 <dl>
 <dt><a href="#AssignmentServiceClient">AssignmentServiceClient</a></dt>
 <dd></dd>
+<dt><a href="#CalendarServiceClient">CalendarServiceClient</a></dt>
+<dd></dd>
 <dt><a href="#SecurityServiceClient">SecurityServiceClient</a></dt>
+<dd></dd>
+<dt><a href="#InjectDataServerService">InjectDataServerService</a></dt>
+<dd></dd>
+<dt><a href="#InjectDataHelperServerService">InjectDataHelperServerService</a></dt>
 <dd></dd>
 <dt><a href="#InjectDataServerService">InjectDataServerService</a></dt>
 <dd></dd>
@@ -11,11 +17,15 @@
 <dd></dd>
 <dt><a href="#ServerAssignmentService">ServerAssignmentService</a></dt>
 <dd></dd>
+<dt><a href="#ServerAssignmentTermService">ServerAssignmentTermService</a></dt>
+<dd></dd>
 <dt><a href="#ServerUserService">ServerUserService</a></dt>
 <dd></dd>
 <dt><a href="#ServerReferenceCollectionsService">ServerReferenceCollectionsService</a></dt>
 <dd></dd>
 <dt><a href="#ServerService">ServerService</a></dt>
+<dd></dd>
+<dt><a href="#ServerTaskGroupService">ServerTaskGroupService</a></dt>
 <dd></dd>
 <dt><a href="#ServerTaskService">ServerTaskService</a></dt>
 <dd></dd>
@@ -111,15 +121,36 @@ Reactive Var :
  - Set AssignmentReactiveVars.SelectedPeopleNeed
  - Set AssignmentReactiveVars.SelectedTimeSlot  
 **Locus**: Anywhere  
+<a name="CalendarServiceClient"></a>
+
+## CalendarServiceClient
+**Kind**: global class  
 <a name="SecurityServiceClient"></a>
 
 ## SecurityServiceClient
 **Kind**: global class  
+
+* [SecurityServiceClient](#SecurityServiceClient)
+    * [.grantAccessToPage(userId, neededRole, page)](#SecurityServiceClient.grantAccessToPage)
+    * [.softGrantAccessToPage(userId, neededRole, page)](#SecurityServiceClient.softGrantAccessToPage) ⇒ <code>true</code> &#124; <code>false</code>
+
 <a name="SecurityServiceClient.grantAccessToPage"></a>
 
 ### SecurityServiceClient.grantAccessToPage(userId, neededRole, page)
 **Kind**: static method of <code>[SecurityServiceClient](#SecurityServiceClient)</code>  
-**Summary**: check if userId has the neededRole  
+**Summary**: check if userId has the neededRole, throw error if not  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| userId | <code>Mongo_id</code> |  |
+| neededRole | <code>RolesEnum</code> |  |
+| page | <code>String</code> | for logging purpose only |
+
+<a name="SecurityServiceClient.softGrantAccessToPage"></a>
+
+### SecurityServiceClient.softGrantAccessToPage(userId, neededRole, page) ⇒ <code>true</code> &#124; <code>false</code>
+**Kind**: static method of <code>[SecurityServiceClient](#SecurityServiceClient)</code>  
+**Summary**: soft check if userId has the neededRole, return true or false  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -131,51 +162,24 @@ Reactive Var :
 
 ## InjectDataServerService
 **Kind**: global class  
-
-* [InjectDataServerService](#InjectDataServerService)
-    * [.injectAllData()](#InjectDataServerService.injectAllData)
-    * [.deleteAll()](#InjectDataServerService.deleteAll)
-    * [.initAccessRightData()](#InjectDataServerService.initAccessRightData)
-    * [.populateData()](#InjectDataServerService.populateData)
-    * [.createAccountAndUser(username, email, password, groupRoleId)](#InjectDataServerService.createAccountAndUser) ⇒ <code>\*</code>
-
 <a name="InjectDataServerService.injectAllData"></a>
 
 ### InjectDataServerService.injectAllData()
 **Kind**: static method of <code>[InjectDataServerService](#InjectDataServerService)</code>  
 **Summary**: perform deleteAll, initAccessRightData and populateData  
-<a name="InjectDataServerService.deleteAll"></a>
+<a name="InjectDataHelperServerService"></a>
 
-### InjectDataServerService.deleteAll()
+## InjectDataHelperServerService
+**Kind**: global class  
+<a name="InjectDataServerService"></a>
+
+## InjectDataServerService
+**Kind**: global class  
+<a name="InjectDataServerService.injectAllData"></a>
+
+### InjectDataServerService.injectAllData()
 **Kind**: static method of <code>[InjectDataServerService](#InjectDataServerService)</code>  
-**Summmary**: delete all data  
-<a name="InjectDataServerService.initAccessRightData"></a>
-
-### InjectDataServerService.initAccessRightData()
-**Kind**: static method of <code>[InjectDataServerService](#InjectDataServerService)</code>  
-**Summary**: Initialize Roles and superadmin profil  
-<a name="InjectDataServerService.populateData"></a>
-
-### InjectDataServerService.populateData()
--  conf
-  - 3 tasks
-  - 3 users with some availabilities
-
-**Kind**: static method of <code>[InjectDataServerService](#InjectDataServerService)</code>  
-**Summary**: inject test data  
-<a name="InjectDataServerService.createAccountAndUser"></a>
-
-### InjectDataServerService.createAccountAndUser(username, email, password, groupRoleId) ⇒ <code>\*</code>
-**Kind**: static method of <code>[InjectDataServerService](#InjectDataServerService)</code>  
-**Summary**: insert a User and an Account  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| username | <code>String</code> | unique |
-| email | <code>emailformat</code> | unique |
-| password |  |  |
-| groupRoleId | <code>MongoId</code> &#124; <code>Array.&lt;MongoId&gt;</code> | group role to add (at least one is needed) |
-
+**Summary**: perform deleteAll, initAccessRightData and populateData  
 <a name="SecurityServiceServer"></a>
 
 ## SecurityServiceServer
@@ -293,17 +297,64 @@ same as grantAccessToItem but return true (access granted) or false (access deni
 
 **Kind**: static method of <code>[ServerAssignmentService](#ServerAssignmentService)</code>  
 **Summary**: Assignments.before.remove  
+<a name="ServerAssignmentTermService"></a>
+
+## ServerAssignmentTermService
+**Kind**: global class  
+
+* [ServerAssignmentTermService](#ServerAssignmentTermService)
+    * [.allowInsert()](#ServerAssignmentTermService.allowInsert)
+    * [.allowUpdate()](#ServerAssignmentTermService.allowUpdate)
+    * [.allowDelete()](#ServerAssignmentTermService.allowDelete)
+
+<a name="ServerAssignmentTermService.allowInsert"></a>
+
+### ServerAssignmentTermService.allowInsert()
+- Collection Hooks :  AssignmentTerm.before.insert
+- Needed role : CONFMAKER
+
+**Kind**: static method of <code>[ServerAssignmentTermService](#ServerAssignmentTermService)</code>  
+**Summary**: AssignmentTerm.before.insert  
+<a name="ServerAssignmentTermService.allowUpdate"></a>
+
+### ServerAssignmentTermService.allowUpdate()
+- Collection Hooks :  AssignmentTerm.before.update
+- Needed role : CONFMAKER
+
+**Kind**: static method of <code>[ServerAssignmentTermService](#ServerAssignmentTermService)</code>  
+**Summary**: AssignmentTerm.before.update  
+<a name="ServerAssignmentTermService.allowDelete"></a>
+
+### ServerAssignmentTermService.allowDelete()
+- Collection Hooks :  AssignmentTerm.before.remove
+- Needed role : CONFMAKER
+
+**Kind**: static method of <code>[ServerAssignmentTermService](#ServerAssignmentTermService)</code>  
+**Summary**: AssignmentTerm.before.remove  
 <a name="ServerUserService"></a>
 
 ## ServerUserService
 **Kind**: global class  
 
 * [ServerUserService](#ServerUserService)
+    * [.updateUser(userId, doc)](#ServerUserService.updateUser)
     * [.propagateGroupRoles(userId, doc, fieldNames, modifier, options)](#ServerUserService.propagateGroupRoles)
     * [.propagateRoles(userId, doc, fieldNames, modifier, options)](#ServerUserService.propagateRoles)
     * [.allowInsert()](#ServerUserService.allowInsert)
     * [.allowUpdate()](#ServerUserService.allowUpdate)
     * [.allowDelete()](#ServerUserService.allowDelete)
+
+<a name="ServerUserService.updateUser"></a>
+
+### ServerUserService.updateUser(userId, doc)
+**Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
+**Summary**: Update a user to add specific fields not handled by Meteor Accounts  
+**Locus**: server  
+
+| Param | Description |
+| --- | --- |
+| userId | (will be always null) |
+| doc |  |
 
 <a name="ServerUserService.propagateGroupRoles"></a>
 
@@ -325,11 +376,11 @@ If group roles' roles are updated user roles are update as well.
 <a name="ServerUserService.propagateRoles"></a>
 
 ### ServerUserService.propagateRoles(userId, doc, fieldNames, modifier, options)
-About roles, we only add roles to the custom Users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
+About roles, we only add roles to the custom Meteor.users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
 Meteor.users linked account.
 
 **Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
-**Summary**: Users.after.update hook.  
+**Summary**: Meteor.users.after.update hook.  
 **Locus**: server  
 
 | Param |
@@ -343,15 +394,15 @@ Meteor.users linked account.
 <a name="ServerUserService.allowInsert"></a>
 
 ### ServerUserService.allowInsert()
-- Collection Hooks :  Users.before.insert
+- Collection Hooks :  Meteor.users.before.insert
 - Needed role : USERWRITE
 
 **Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
-**Summary**: Users.before.insert  
+**Summary**: Meteor.users.before.insert  
 <a name="ServerUserService.allowUpdate"></a>
 
 ### ServerUserService.allowUpdate()
-- Collection Hooks :  Users.before.update
+- Collection Hooks :  Meteor.users.before.update
 - Needed role : USERWRITE
    - ROLE
    - ASSIGNMENTTASKUSER
@@ -359,15 +410,15 @@ Meteor.users linked account.
 if userId is the doc being updated, no need of USERWRITE (a user can update itself)
 
 **Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
-**Summary**: Users.before.update  
+**Summary**: Meteor.users.before.update  
 <a name="ServerUserService.allowDelete"></a>
 
 ### ServerUserService.allowDelete()
-- Collection Hooks :  Users.before.remove
+- Collection Hooks :  Meteor.users.before.remove
 - Needed role : USERDELETE
 
 **Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
-**Summary**: Users.before.remove  
+**Summary**: Meteor.users.before.remove  
 <a name="ServerReferenceCollectionsService"></a>
 
 ## ServerReferenceCollectionsService
@@ -411,7 +462,7 @@ if userId is the doc being updated, no need of USERWRITE (a user can update itse
 ### ServerService.addCollectionHooks()
 Add hooks to the following collection
  - Assignments
- - Users
+ - Meteor.users
  - GroupRoles
  - Tasks
  - all ReferenceCollection
@@ -420,6 +471,48 @@ Add hooks to the following collection
 
 **Kind**: static method of <code>[ServerService](#ServerService)</code>  
 **Summary**: add collection hooks  
+<a name="ServerTaskGroupService"></a>
+
+## ServerTaskGroupService
+**Kind**: global class  
+
+* [ServerTaskGroupService](#ServerTaskGroupService)
+    * [.allowInsert()](#ServerTaskGroupService.allowInsert)
+    * [.allowUpdate()](#ServerTaskGroupService.allowUpdate)
+    * [.allowDelete()](#ServerTaskGroupService.allowDelete)
+    * [.afterRemove()](#ServerTaskGroupService.afterRemove)
+
+<a name="ServerTaskGroupService.allowInsert"></a>
+
+### ServerTaskGroupService.allowInsert()
+- Collection Hooks :  TaskGroups.before.insert
+- Needed role : TASKGROUPWRITE
+
+**Kind**: static method of <code>[ServerTaskGroupService](#ServerTaskGroupService)</code>  
+**Summary**: TaskGroups.before.insert  
+<a name="ServerTaskGroupService.allowUpdate"></a>
+
+### ServerTaskGroupService.allowUpdate()
+- Collection Hooks :  TaskGroups.before.update
+- Needed role : TASKGROUPWRITE
+
+**Kind**: static method of <code>[ServerTaskGroupService](#ServerTaskGroupService)</code>  
+**Summary**: TaskGroups.before.update  
+<a name="ServerTaskGroupService.allowDelete"></a>
+
+### ServerTaskGroupService.allowDelete()
+- Collection Hooks :  TaskGroups.before.delete
+- Needed role : TASKGROUPDELETE
+
+**Kind**: static method of <code>[ServerTaskGroupService](#ServerTaskGroupService)</code>  
+**Summary**: TaskGroups.before.delete  
+<a name="ServerTaskGroupService.afterRemove"></a>
+
+### ServerTaskGroupService.afterRemove()
+- Collection Hooks :  TaskGroups.after.delete
+
+**Kind**: static method of <code>[ServerTaskGroupService](#ServerTaskGroupService)</code>  
+**Summary**: TaskGroups.after.delete  
 <a name="ServerTaskService"></a>
 
 ## ServerTaskService
@@ -466,11 +559,24 @@ Add hooks to the following collection
 **Kind**: global class  
 
 * [ServerUserService](#ServerUserService)
+    * [.updateUser(userId, doc)](#ServerUserService.updateUser)
     * [.propagateGroupRoles(userId, doc, fieldNames, modifier, options)](#ServerUserService.propagateGroupRoles)
     * [.propagateRoles(userId, doc, fieldNames, modifier, options)](#ServerUserService.propagateRoles)
     * [.allowInsert()](#ServerUserService.allowInsert)
     * [.allowUpdate()](#ServerUserService.allowUpdate)
     * [.allowDelete()](#ServerUserService.allowDelete)
+
+<a name="ServerUserService.updateUser"></a>
+
+### ServerUserService.updateUser(userId, doc)
+**Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
+**Summary**: Update a user to add specific fields not handled by Meteor Accounts  
+**Locus**: server  
+
+| Param | Description |
+| --- | --- |
+| userId | (will be always null) |
+| doc |  |
 
 <a name="ServerUserService.propagateGroupRoles"></a>
 
@@ -492,11 +598,11 @@ If group roles' roles are updated user roles are update as well.
 <a name="ServerUserService.propagateRoles"></a>
 
 ### ServerUserService.propagateRoles(userId, doc, fieldNames, modifier, options)
-About roles, we only add roles to the custom Users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
+About roles, we only add roles to the custom Meteor.users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
 Meteor.users linked account.
 
 **Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
-**Summary**: Users.after.update hook.  
+**Summary**: Meteor.users.after.update hook.  
 **Locus**: server  
 
 | Param |
@@ -510,15 +616,15 @@ Meteor.users linked account.
 <a name="ServerUserService.allowInsert"></a>
 
 ### ServerUserService.allowInsert()
-- Collection Hooks :  Users.before.insert
+- Collection Hooks :  Meteor.users.before.insert
 - Needed role : USERWRITE
 
 **Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
-**Summary**: Users.before.insert  
+**Summary**: Meteor.users.before.insert  
 <a name="ServerUserService.allowUpdate"></a>
 
 ### ServerUserService.allowUpdate()
-- Collection Hooks :  Users.before.update
+- Collection Hooks :  Meteor.users.before.update
 - Needed role : USERWRITE
    - ROLE
    - ASSIGNMENTTASKUSER
@@ -526,12 +632,12 @@ Meteor.users linked account.
 if userId is the doc being updated, no need of USERWRITE (a user can update itself)
 
 **Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
-**Summary**: Users.before.update  
+**Summary**: Meteor.users.before.update  
 <a name="ServerUserService.allowDelete"></a>
 
 ### ServerUserService.allowDelete()
-- Collection Hooks :  Users.before.remove
+- Collection Hooks :  Meteor.users.before.remove
 - Needed role : USERDELETE
 
 **Kind**: static method of <code>[ServerUserService](#ServerUserService)</code>  
-**Summary**: Users.before.remove  
+**Summary**: Meteor.users.before.remove  

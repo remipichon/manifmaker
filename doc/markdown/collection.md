@@ -25,18 +25,11 @@ All MongoDB server collections (see [Meteor_Publish](#Meteor_Publish) to know wh
 **Kind**: global namespace  
 
 * [Collection](#Collection) : <code>object</code>
-    * [.Users](#Collection.Users)
     * [.Tasks](#Collection.Tasks)
     * [.Assignments](#Collection.Assignments)
-    * [.Groups](#Collection.Groups)
+    * [.TaskGroups](#Collection.TaskGroups)
+    * [.Settings](#Collection.Settings)
 
-<a name="Collection.Users"></a>
-
-### Collection.Users
-**Kind**: static property of <code>[Collection](#Collection)</code>  
-**Summary**: Users collection  
-**Locus**: Anywhere  
-**Instancename**: collection  
 <a name="Collection.Tasks"></a>
 
 ### Collection.Tasks
@@ -51,11 +44,18 @@ All MongoDB server collections (see [Meteor_Publish](#Meteor_Publish) to know wh
 **Summary**: Assignments collection  
 **Locus**: Anywhere  
 **Instancename**: collection  
-<a name="Collection.Groups"></a>
+<a name="Collection.TaskGroups"></a>
 
-### Collection.Groups
+### Collection.TaskGroups
 **Kind**: static property of <code>[Collection](#Collection)</code>  
 **Summary**: Groups collection  
+**Locus**: Anywhere  
+**Instancename**: collection  
+<a name="Collection.Settings"></a>
+
+### Collection.Settings
+**Kind**: static property of <code>[Collection](#Collection)</code>  
+**Summary**: Settings collection  
 **Locus**: Anywhere  
 **Instancename**: collection  
 <a name="Enum"></a>
@@ -71,6 +71,7 @@ EasySearch allow to perform smart search on any collection using a field as inde
 
 * [EasySearch](#EasySearch) : <code>object</code>
     * [.TasksIndex](#EasySearch.TasksIndex)
+    * [.TaskGroupsIndex](#EasySearch.TaskGroupsIndex)
     * [.UsersIndex](#EasySearch.UsersIndex)
     * [.TeamsIndex](#EasySearch.TeamsIndex)
     * [.SkillsIndex](#EasySearch.SkillsIndex)
@@ -84,6 +85,13 @@ EasySearch allow to perform smart search on any collection using a field as inde
 ### EasySearch.TasksIndex
 **Kind**: static property of <code>[EasySearch](#EasySearch)</code>  
 **Summary**: EasySearch settings to perform search by name on Task  
+**Locus**: Anywhere  
+**Instancename**: object  
+<a name="EasySearch.TaskGroupsIndex"></a>
+
+### EasySearch.TaskGroupsIndex
+**Kind**: static property of <code>[EasySearch](#EasySearch)</code>  
+**Summary**: EasySearch settings to perform search by name on Task Group  
 **Locus**: Anywhere  
 **Instancename**: object  
 <a name="EasySearch.UsersIndex"></a>
