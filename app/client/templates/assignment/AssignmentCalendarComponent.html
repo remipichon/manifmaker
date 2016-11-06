@@ -9,7 +9,8 @@
                     <i class="pull-right mdi mdi-inline mdi-close close-popover"></i>
                 </div>
                 <div class="popOver-body">
-                    <div>
+                    <div class="pull-left halfPopOver">
+                        <h5>To be assigned :</h5>
                         {{#each peopleNeededNonAssigned}}
                             <div class="peopleNeed" data-_id="{{_id}}">
                                 {{#if userId }}
@@ -27,8 +28,8 @@
                         {{/each}}
                     </div>
 
-                    Already Assigned
-                    <div>
+                    <div class="halfPopOver pull-right">
+                        <h5>Already Assigned :</h5>
                         {{#each peopleNeededAssigned}}
                             <div class="peopleNeed assigned" data-_id="{{_id}}">
                                 Assigned to {{displayAssignedUser}}
