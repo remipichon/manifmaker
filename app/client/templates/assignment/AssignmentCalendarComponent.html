@@ -1,7 +1,7 @@
 <template name="assignmentTimeSlotCalendar">
     {{#if popOverIsOpen}}
         {{#if equals getActiveTimeSlot _id}}
-            <div class="popOver" data-timeslotdid="{{activeTimeSlot}}">
+            <div class="popOver">
                 <div class="popOver-header">
                     {{#if taskName}}
                         <span>Task : {{taskName}} - {{displayHoursMinute start}} to {{displayHoursMinute end}}</span>
