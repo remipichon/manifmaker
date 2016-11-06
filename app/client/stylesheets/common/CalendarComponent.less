@@ -34,22 +34,23 @@
 }
 
 .calendar {
+  .assignement-timeslot{
+    position : relative;
+    padding : 5px;
+  }
+
   &.userToTask {
     .heure {
       &:hover {
-        border-top: 2px dashed OrangeRed !important;
+        background : lightgrey !important;
       }
       &.selected {
-        border-top: 2px solid OrangeRed !important;
+        background : lightgray !important;
       }
       .quart_heure {
         pointer-events: none; //in order to allow selecting a below calendar time slot instead of the whole user availability
       }
     }
-  }
-
-  &.taskToUser{
-
   }
 
   margin-top:10px;
@@ -226,24 +227,14 @@
               width: 100%;
               table-layout: fixed;
 
-
-              .hasPopover {
-                .peopleNeed {
-
-                }
-              }
-
               .wrapper {
-                -webkit-transform: rotate(90deg);
 
                 .peopleNeed {
-                  //display: table-cell;
                   border-bottom: solid 1px black;
                   text-align: center;
                   overflow-y: scroll;
                   width: 100%;
                   overflow: hidden;
-                  //height: 1%;
 
                   &.assigned {
                     background: rgba(158, 100, 0, 0.8);
@@ -256,7 +247,7 @@
               }
             }
           }
-          .creneau.affecte {
+          .creneau.affecte, .assignementProgress {
             background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent) !important;
             background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent) !important;
             background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent) !important;
@@ -276,6 +267,39 @@
           border-top: 1px solid #d6d6d6;
         }
       }
+    }
+
+    .assignementProgress{
+      height : 100%;
+      width: 50%;
+      background : @green1;
+    }
+  }
+
+  .popOver{
+    z-index : 100;
+    position:absolute;
+    top: 0;
+    left : 0;
+    background : white;
+    border : solid 1px #d6d6d6;
+    border-radius : 2px;
+    margin : 10px;
+    width : 80%;
+    height : 50%;
+
+    i{
+      color : grey;
+    }
+    i:hover{
+       color : white;
+     }
+    .popOver-header{
+      background : #d6d6d6;
+      padding-left : 10px;
+    }
+    .popOver-body{
+      padding : 10px;
     }
   }
 }

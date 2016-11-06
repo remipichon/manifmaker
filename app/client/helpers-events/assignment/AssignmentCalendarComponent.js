@@ -11,18 +11,30 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     constructor() {
         super();
         this.peopleNeedAssignedClick = 0; //to double click purpose..
+        this.isPopOverOpened = new ReactiveVar(false);
+        this.activeTimeSlot = new ReactiveVar(0);
     }
 
 
     events() {
         return super.events().concat({
-            "click .on-calendar .peopleNeed": this.peopleNeedOnClick,
-            "click .on-calendar .peopleNeed.assigned": this.peopleNeedAssignedOnClick,
+            "click .popOver .peopleNeed": this.peopleNeedOnClick,
+            "click .popOver .peopleNeed.assigned": this.peopleNeedAssignedOnClick,
+            "click .creneau": this.openPopOver,
+            "click .calendar": this.closePopOver,
+            "click .close-popover": this.closePopOver,
+            "click .popOver": this.stopPropa,
         })
     }
 
 
 
+    getActiveTimeSlot(){
+        return this.activeTimeSlot.get();
+    }
+    popOverIsOpen(){
+        return this.isPopOverOpened.get();
+    }
     labelSkills() {
         return Skills.findOne({_id: this.currentData().toString()}).label;
     }
@@ -186,6 +198,20 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
     }
 
+    openPopOver(event) {
+        event.stopPropagation();
+        this.activeTimeSlot.set(this.currentData()._id);
+        this.isPopOverOpened.set(true);
+    }
+    closePopOver(event) {
+        event.stopPropagation();
+        this.isPopOverOpened.set(false);
+    }
+
+    stopPropa(event){
+        event.stopPropagation();
+    }
+
     peopleNeedOnClick(event){
         AssignmentReactiveVars.SelectedPeopleNeed.set(this.currentData());
         AssignmentReactiveVars.SelectedTimeSlot.set(TimeSlotService.getTaskAndTimeSlotAndPeopleNeedByPeopleNeedId(this.currentData()._id).timeSlot);
@@ -329,6 +355,15 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 //we let the event bubbles to the parent
                 return [];
         }
+    }
+
+    percentAffected(){
+        var nbr_assigned = this.peopleNeededAssigned().length;
+        var nbr_total = this.currentData().peopleNeeded.length;
+        if(nbr_total > 0)
+            return 100* nbr_assigned/nbr_total;
+        else
+        return 0;
     }
 
 
