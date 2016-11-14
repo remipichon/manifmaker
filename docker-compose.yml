@@ -15,4 +15,11 @@ services:
     volumes:
     - /var/run/docker.sock:/tmp/docker.sock
     command: consul://localhost:8500
-    net: "host"
+    network_mode: "host"
+  manifmaker-nginx:
+    build: ./nginx
+    image: manifmaker-nginx
+    ports:
+      - "80:80"
+    environment:
+      - CONSUL=172.17.0.1:8500  
