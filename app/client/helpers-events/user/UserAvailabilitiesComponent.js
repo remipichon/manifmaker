@@ -1,4 +1,5 @@
 import {SecurityServiceClient} from "../../service/SecurityServiceClient"
+import {UserServiceClient} from "../../service/UserServiceClient"
 
 class UserAvailabilitiesComponent extends BlazeComponent {
 
@@ -19,6 +20,14 @@ class UserAvailabilitiesComponent extends BlazeComponent {
         return [
             {}
         ];
+    }
+
+    totalCharisma(){
+        return UserServiceClient.getCharismaCount(this.userData());
+    }
+
+    availableCharisma(){
+        return UserServiceClient.getAvailableCharismaCountForUser(this.userData());
     }
 
     displayCalendar(){

@@ -23,7 +23,7 @@
                                         {{>Template.dynamic template=../../../../timeSlotTemplate}}
                                     {{else}}
                                         {{#if enableAction ../../date ../date}}
-                                            {{#if ../../../displayCharisma}}<div class="calendar-charisma" title="{{getCharisma ../../date ../date}} pts of charisma">{{getCharisma ../../date ../date}}</div>{{/if}}
+                                            {{#if ../../../displayCharisma}}<div class="calendar-charisma noselect" title="{{getCharisma ../../date ../date}} pts of charisma">{{getCharisma ../../date ../date}}</div>{{/if}}
                                         {{/if}}
                                     {{/each}}
                                 </div>

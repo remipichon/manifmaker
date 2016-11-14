@@ -47,6 +47,32 @@ export class UserServiceClient {
             }
     }
 
+    static getCharismaCount(user){
+        var charismaTot = 0;
+        user.availabilities.forEach(availability =>{
+            var start = new moment(availability.start);
+            var end = new moment(availability.end);
+
+            charismaTot += UserServiceClient.computeCharismaBetweenDate(start,end);
+        });
+
+        return charismaTot;
+    }
+
+    static getAvailableCharismaCountForUser(user){
+        var charismaTot = 0;
+
+        var terms = AssignmentTerms.find({
+            teams: {$in: user.teams}
+        }).fetch();
+
+        terms.forEach(term => {
+            charismaTot += UserServiceClient.computeCharismaBetweenDate(new moment(term.start), new moment(term.end));
+        });
+
+        return charismaTot;
+    }
+
     static computeCharismaBetweenDate(start,end){
         var term = AssignmentTerms.findOne({
             start: {$lte: start.toDate()},
