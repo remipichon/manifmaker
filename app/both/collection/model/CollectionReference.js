@@ -276,6 +276,11 @@ AssignmentTermPeriod = new SimpleSchema({
             type: "datetime-local",
         }
     },
+    charisma: {
+        label: "Whole period charisma",
+        type: Number,
+        defaultValue: 0
+    },
     _id: {
         type: SimpleSchema.RegEx.Id,
         label: "TimeSlot _id",
@@ -383,6 +388,11 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
                 options: Schemas.helpers.allTeamsOptions
             }
         }
+    },
+    charisma: {
+        label: "Whole term charisma (0 get assignment term charisma)",
+        type: Number,
+        defaultValue: 0
     },
     type: {   
         type: String,

@@ -45,4 +45,25 @@ export class UserServiceClient {
                 );
             }
     }
+
+    static getCharismaFromDateTime(dateTime) {
+        var term = AssignmentTerms.findOne({
+            start: {$lte: dateTime.toDate()},
+            end: {$gte: dateTime.toDate()}
+        });
+
+        if(term.assignmentTermPeriods.length === 0)
+            return term.charisma;
+
+        var charismaOverride = 0;
+        term.assignmentTermPeriods.forEach(period => {
+            if ( (new moment(period.start).isBefore(dateTime) || new moment(period.start).isSame(dateTime) ) &&
+                new moment(period.end).isAfter(dateTime) ) {
+                if (period.charisma !== 0)
+                    charismaOverride = period.charisma
+            }
+        });
+
+        return charismaOverride;
+    }
 }

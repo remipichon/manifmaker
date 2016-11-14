@@ -16,9 +16,9 @@
                         <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add availabilities</div>
                     {{/if}}
                 {{/if}}
-                {{> ReadAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
+                {{> ReadAvailabilitiesCalendarComponent displayCharisma=true user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{else}}
-                {{> EditAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
+                {{> EditAvailabilitiesCalendarComponent displayCharisma=true user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{/if}}
         </div>
 
@@ -34,7 +34,7 @@
     <div class="creneau non-clickable {{#if assigned}}affecte{{/if}}" style="height: {{height}};">
 
         <div class="wrapper on-calendar">
-
+            {{charisma}}
         </div>
     </div>
 </template>

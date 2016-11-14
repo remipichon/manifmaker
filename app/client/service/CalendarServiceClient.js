@@ -1,4 +1,5 @@
 import {TimeSlotService} from "../../both/service/TimeSlotService"
+import {UserServiceClient} from "../../client/service/UserServiceClient"
 
 /** @class CalendarServiceClient*/
 export class CalendarServiceClient {
@@ -14,6 +15,14 @@ export class CalendarServiceClient {
             //Template.parentData() doesn't work so we use a trick
             data.userId = user._id;
 
+            var charisma = UserServiceClient.getCharismaFromDateTime(new moment(new Date(startCalendarTimeSlot)));
+            var duration = new moment(availabilitiesFound.end).diff(new moment(availabilitiesFound.start)) / (3600 * 1000);
+            var term = AssignmentTerms.findOne({
+                start: {$lte: startCalendarTimeSlot.toDate()},
+                end: {$gte: startCalendarTimeSlot.toDate()}
+            });
+            var accuracy = term.calendarAccuracy;
+            data.charisma = duration / accuracy * charisma;
         }
 
         _.extend(data, availabilitiesFound);
@@ -33,6 +42,15 @@ export class CalendarServiceClient {
             //Template.parentData() doesn't work so we use a trick
             data.userId = user._id;
             data.assigned = true;
+
+            var charisma = UserServiceClient.getCharismaFromDateTime(new moment(new Date(startCalendarTimeSlot)));
+            var duration = new moment(assignmentsFound.end).diff(new moment(assignmentsFound.start)) / (3600 * 1000);
+            var term = AssignmentTerms.findOne({
+                start: {$lte: startCalendarTimeSlot.toDate()},
+                end: {$gte: startCalendarTimeSlot.toDate()}
+            });
+            var accuracy = term.calendarAccuracy;
+            data.charisma = duration / accuracy * charisma;
 
         }
 
