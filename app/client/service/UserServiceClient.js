@@ -1,3 +1,4 @@
+import {TimeSlotService} from "../../both/service/TimeSlotService"
 export class UserServiceClient {
 
     /**
@@ -44,6 +45,58 @@ export class UserServiceClient {
                     }
                 );
             }
+    }
+
+    static computeCharismaBetweenDate(start,end){
+        var term = AssignmentTerms.findOne({
+            start: {$lte: start.toDate()},
+            end: {$gte: end.toDate()}
+        });
+
+        var accuracy = term.calendarAccuracy;
+        var charismaTot;
+
+        if(term.assignmentTermPeriods.length === 0){
+            var duration = end.diff(start) / (3600 * 1000);
+            charismaTot = duration / accuracy * term.charisma;
+            return charismaTot;
+        } else {
+            charismaTot = 0;
+            term.assignmentTermPeriods.forEach(period => {
+                var charisma = period.charisma || term.charisma;
+                var duration = 0; //d = f(start,end,period.start, period.end)
+
+                var periodStart = new moment(period.start);
+                var periodEnd = new moment(period.end);
+
+                var startDuration;
+                var endDuration;
+
+                if(TimeSlotService.isOverlapping(start,end,periodStart,periodEnd)){
+                    //duration will not be 0
+                    if(start.isBefore(periodStart)){
+                        startDuration = periodStart
+                    } else {
+                        startDuration = start;
+                    }
+
+                    if(end.isAfter(periodEnd)){
+                        endDuration = periodEnd
+                    } else {
+                        endDuration = end;
+                    }
+
+                    duration = endDuration.diff(startDuration) / (3600 * 1000);
+
+                    var charismaPeriod = duration / accuracy * charisma;
+                    charismaTot += charismaPeriod;
+                }
+
+            });
+
+            return charismaTot;
+        }
+
     }
 
     static getCharismaFromDateTime(dateTime) {

@@ -15,14 +15,22 @@ export class CalendarServiceClient {
             //Template.parentData() doesn't work so we use a trick
             data.userId = user._id;
 
-            var charisma = UserServiceClient.getCharismaFromDateTime(new moment(new Date(startCalendarTimeSlot)));
-            var duration = new moment(availabilitiesFound.end).diff(new moment(availabilitiesFound.start)) / (3600 * 1000);
-            var term = AssignmentTerms.findOne({
-                start: {$lte: startCalendarTimeSlot.toDate()},
-                end: {$gte: startCalendarTimeSlot.toDate()}
-            });
-            var accuracy = term.calendarAccuracy;
-            data.charisma = duration / accuracy * charisma;
+
+            var availStart = new moment(availabilitiesFound.start);
+            var availEnd = new moment(availabilitiesFound.end);
+
+            if(!availStart.isSame(startCalendarTimeSlot,"day")){
+                availStart = startCalendarTimeSlot
+            }
+
+            if(!availEnd.isSame(startCalendarTimeSlot,"day")){
+                availEnd = new moment(startCalendarTimeSlot); //until the end of the day
+                availEnd.minute(0);
+                availEnd.hour(0);
+                availEnd.add(1,'day');
+            }
+
+            data.charisma = UserServiceClient.computeCharismaBetweenDate(availStart,availEnd);
         }
 
         _.extend(data, availabilitiesFound);
@@ -43,15 +51,21 @@ export class CalendarServiceClient {
             data.userId = user._id;
             data.assigned = true;
 
-            var charisma = UserServiceClient.getCharismaFromDateTime(new moment(new Date(startCalendarTimeSlot)));
-            var duration = new moment(assignmentsFound.end).diff(new moment(assignmentsFound.start)) / (3600 * 1000);
-            var term = AssignmentTerms.findOne({
-                start: {$lte: startCalendarTimeSlot.toDate()},
-                end: {$gte: startCalendarTimeSlot.toDate()}
-            });
-            var accuracy = term.calendarAccuracy;
-            data.charisma = duration / accuracy * charisma;
+            var availStart = new moment(availabilitiesFound.start);
+            var availEnd = new moment(availabilitiesFound.end);
 
+            if(!availStart.isSame(startCalendarTimeSlot,"day")){
+                availStart = startCalendarTimeSlot
+            }
+
+            if(!availEnd.isSame(startCalendarTimeSlot,"day")){
+                availEnd = new moment(startCalendarTimeSlot); //until the end of the day
+                availEnd.minute(0);
+                availEnd.hour(0);
+                availEnd.add(1,'day');
+            }
+
+            data.charisma = UserServiceClient.computeCharismaBetweenDate(availStart,availEnd);
         }
 
         _.extend(data, assignmentsFound);
