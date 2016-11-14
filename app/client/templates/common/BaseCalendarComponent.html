@@ -22,7 +22,9 @@
                                     {{#each timeSlot  ../../date ../date this}}
                                         {{>Template.dynamic template=../../../../timeSlotTemplate}}
                                     {{else}}
-                                        {{#if ../../../displayCharisma}}{{getCharisma ../../date ../date}}{{/if}}
+                                        {{#if enableAction ../../date ../date}}
+                                            {{#if ../../../displayCharisma}}{{getCharisma ../../date ../date}}{{/if}}
+                                        {{/if}}
                                     {{/each}}
                                 </div>
                             {{/each}}

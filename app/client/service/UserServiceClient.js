@@ -55,12 +55,15 @@ export class UserServiceClient {
         if(term.assignmentTermPeriods.length === 0)
             return term.charisma;
 
-        var charismaOverride = 0;
+        var charismaOverride = null;
         term.assignmentTermPeriods.forEach(period => {
             if ( (new moment(period.start).isBefore(dateTime) || new moment(period.start).isSame(dateTime) ) &&
                 new moment(period.end).isAfter(dateTime) ) {
-                if (period.charisma !== 0)
+                if (period.charisma !== 0){
                     charismaOverride = period.charisma
+                } else {
+                    charismaOverride = term.charisma;
+                }
             }
         });
 
