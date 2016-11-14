@@ -8,7 +8,7 @@ export class InjectDataServerService {
     /**
      * @summary perform deleteAll, initAccessRightData and populateData
      */
-    static injectAllData() {
+    injectAllData() {
         SecurityServiceServer.isItProd("InjectDataServerService.injectAllData");
         Settings.insert({one:1})
         console.info("inject data starts");
@@ -38,14 +38,14 @@ export class InjectDataServerService {
         console.info("GroupRoles collection size is " + GroupRoles.find().fetch().length);
     }
 
-    static _addSettings(){
+     _addSettings(){
         Settings.update(Settings.findOne()._id,{
             $set:{createAccountDefaultTeam: Teams.findOne()._id}
         })
 
     }
 
-    static _injectGroupRoles() {
+     _injectGroupRoles() {
         var bureau = GroupRoles.insert({
             name: "bureau",
             roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ROLE]
@@ -96,7 +96,7 @@ export class InjectDataServerService {
         };
     }
 
-    static _injectUsers(){
+     _injectUsers(){
         var groupRolesArray = _.map(GroupRoles.find().fetch(),function(group){ return {name: group.name+'',_id:group._id}});
         var groupRoles = {};
         groupRolesArray.forEach(groupRole => {
@@ -112,7 +112,7 @@ export class InjectDataServerService {
         InjectDataHelperServerService.createAccountAndUser("soft", "soft@yopmail.com", "soft", groupRoles.soft);
     }
 
-    static _populateData() {
+     _populateData() {
 
         //teams
         console.info("inject Teams");
@@ -676,7 +676,7 @@ export class InjectDataServerService {
         },this));
     };
 
-    static _getDateFromNowPlusHours(hours){
+     _getDateFromNowPlusHours(hours){
         var now = new moment();
         now.add(hours,"hour");
         return now.toDate();

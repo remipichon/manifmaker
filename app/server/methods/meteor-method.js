@@ -1,4 +1,5 @@
 import {InjectDataServerService} from "../service/InjectDataServerService"
+import {InjectDataHelperServerService} from "../service/InjectDataHelperServerService"
 import {SecurityServiceServer} from "../service/SecurityServiceServer"
 import {ServerUserService} from "../service/ServerUserService"
 
@@ -7,9 +8,9 @@ Meteor.methods({
      injectData: function(){
          SecurityServiceServer.isItProd("inject data from front");
          Meteor.isStartingUp = true;
-         InjectDataServerService.deleteAll();
-         InjectDataServerService.initAccessRightData();
-         InjectDataServerService.injectAllData();
+         InjectDataHelperServerService.deleteAll();
+         InjectDataHelperServerService.initAccessRightData();
+         Meteor.injectDataServerService.injectAllData();
          Meteor.isStartingUp = false;
      },
     updateUserName: function(userId,newUsername){

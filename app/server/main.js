@@ -15,12 +15,16 @@ Meteor.startup(function () {
     ServerService.addCollectionHooks();
 
     var inject24hDataServerService = new Inject24hDataServerService();
+    var injectDataServerService = new InjectDataServerService();
+
+    Meteor.injectDataServerService = inject24hDataServerService;
+
     var injectAll = process.env.INJECT_ALL;
     if (typeof(injectAll) !== 'undefined' && injectAll == "true") {
         console.info("Meteor.startup : injectAll trigger by ENV (deleteAll, initAccessRightData, injectAllData)");
         InjectDataHelperServerService.deleteAll();
         InjectDataHelperServerService.initAccessRightData();
-        inject24hDataServerService.injectAllData();
+        Meteor.injectDataServerService.injectAllData();
     }
     var initAccessRight = process.env.INJECT_MINIMUM_ACCESS_RIGHT;
     if (typeof(initAccessRight) !== 'undefined' && initAccessRight == "true") {
@@ -34,13 +38,7 @@ Meteor.startup(function () {
         console.info("Meteor.startup : isDevelopment, injecting or not");
         InjectDataHelperServerService.deleteAll();
         InjectDataHelperServerService.initAccessRightData();
-
-        if(false){ //dev data test
-            InjectDataServerService.injectAllData();
-        } else { // 24 data test
-            inject24hDataServerService.injectAllData();
-        }
-
+        Meteor.injectDataServerService.injectAllData();
     }
 
 

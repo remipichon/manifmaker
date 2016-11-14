@@ -103,7 +103,10 @@ class TestAssignmentComponent extends BlazeComponent {
         $("#inject_data_result").html(`injecting data... please wait`);
         Meteor.call("injectData", _.bind(function (error,result) {
             Meteor.loginWithPassword("superadmin", "superadmin");
-            $("#inject_data_result").html(`error : ${error} and result : ${result}`);
+            if(error)
+                $("#inject_data_result").html(`error : ${error} and result : ${result}`);
+            else
+                $("#inject_data_result").html(`inject data went fine, you are now log as superadmin`);
         }, this));
     }
 
