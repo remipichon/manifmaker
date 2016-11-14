@@ -1,14 +1,17 @@
 version: '2'
 services:
-  manifmaker_mongo: 
+  manifmaker-mongo: 
+    container_name: manifmaker-mongo
     ports:
     - "27017:27017"
     image: mongo
-  dev_consul: 
+  dev_consul:    
+    container_name: dev_consul
     ports:
     - "8500:8500"
     image: consul
-  registrator: 
+  registrator:
+    container_name: registrator
     ports:
     - "8500:8500"
     image: gliderlabs/registrator:latest
@@ -17,7 +20,8 @@ services:
     command: consul://localhost:8500
     network_mode: "host"
   manifmaker-nginx:
-    build: ./nginx
+    container_name: manifmaker-nginx
+    build: ./staging/nginx
     image: manifmaker-nginx
     ports:
       - "80:80"
