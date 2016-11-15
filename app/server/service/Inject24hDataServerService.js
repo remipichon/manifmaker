@@ -344,7 +344,7 @@ export class Inject24hDataServerService {
                 },
 
             ],
-            calendarAccuracy: 1
+            calendarAccuracy: 2
         });
         AssignmentTerms.insert({
             name: "Premanif",

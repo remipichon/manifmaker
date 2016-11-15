@@ -166,9 +166,56 @@ export class AvailabilityService {
 
             Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
 
+            AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),start,end);
+
             //TODO remove availability parts that are not part of an assignment term periods
 
-            AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),start,end);
+            //
+            //var terms = AssignmentTerms.find({
+            //    teams: {$in: user.teams}
+            //}).fetch();
+            //
+            //start = new moment(start);
+            //end = new moment(end);
+            //
+            //terms.forEach(term => {
+            //    var termStart = new moment(term.start);
+            //    var termEnd = new moment(term.end);
+            //
+            //    if(TimeSlotService.isOverlapping(start,end,termStart,termEnd)){
+            //        if(term.assignmentTermPeriods.length === 0){
+            //            AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),start.toDate(),end.toDate());
+            //        } else {
+            //            term.assignmentTermPeriods.forEach(period => {
+            //                var periodStart = new moment(period.start);
+            //                var periodEnd = new moment(period.end);
+            //
+            //                //include in the period, add it as it
+            //                if( (periodStart.isBefore(start) || periodStart.isSame(start)) &&
+            //                    (periodEnd.isAfter(end) || periodEnd.isSame(end)) ){
+            //                    AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),start.toDate(),end.toDate());
+            //                }
+            //
+            //                //start outside period and finish inside, crop start and add
+            //                if( periodStart.isAfter(start) &&
+            //                    (periodEnd.isAfter(end) || periodEnd.isSame(end)) ){
+            //                    start = periodStart;
+            //                    AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),start.toDate(),end.toDate());
+            //                }
+            //
+            //                //start inside period and end outside period, crop end and add
+            //                if( (periodStart.isBefore(start) || periodStart.isSame(start)) &&
+            //                    periodEnd.isBefore(end) ){
+            //                    end = periodEnd;
+            //                    AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),start.toDate(),end.toDate());
+            //                }
+            //
+            //            });
+            //        }
+            //    }
+            //
+            //});
+
         }
 
         /**
