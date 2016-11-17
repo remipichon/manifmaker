@@ -46,8 +46,14 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         var date;
         if($(event.target).hasClass("creneau")) //user end selecting on an existing availabilities
             date = new moment($(event.target).parent().attr("quarter"));
-        else
-            date = new moment($(event.target).attr("quarter")).add(this.addHourAccordingToAccuracy(),"hour");;
+        else {
+            var target;
+            if($(event.target).attr("quarter"))
+                target = $(event.target);
+            else
+                target = $(event.target).parent();
+            date = new moment(target.attr("quarter")).add(this.addHourAccordingToAccuracy(), "hour");
+        }
         var user = this.parentComponent().parentComponent().data();
         var temp = this.startDate.get();
         this.resetSelect();
