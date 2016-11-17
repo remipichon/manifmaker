@@ -12,13 +12,10 @@ services:
     image: consul
   registrator:
     container_name: registrator
-    ports:
-    - "8500:8500"
     image: gliderlabs/registrator:latest
     volumes:
     - /var/run/docker.sock:/tmp/docker.sock
-    command: consul://localhost:8500
-    network_mode: "host"
+    command: consul://dev_consul:8500
   manifmaker-nginx:
     container_name: manifmaker-nginx
     build: ./staging/nginx
