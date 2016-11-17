@@ -21,6 +21,10 @@
                                      quarter="{{quarterDate ../../date ../date}}">
                                     {{#each timeSlot  ../../date ../date this}}
                                         {{>Template.dynamic template=../../../../timeSlotTemplate}}
+                                    {{else}}
+                                        {{#if enableAction ../../date ../date}}
+                                            {{#if ../../../displayCharisma}}<div class="calendar-charisma noselect" title="{{getCharisma ../../date ../date}} pts of charisma">{{getCharisma ../../date ../date}}</div>{{/if}}
+                                        {{/if}}
                                     {{/each}}
                                 </div>
                             {{/each}}

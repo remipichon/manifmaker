@@ -1,3 +1,4 @@
+import {TimeSlotService} from "../../both/service/TimeSlotService"
 export class UserServiceClient {
 
     /**
@@ -44,5 +45,107 @@ export class UserServiceClient {
                     }
                 );
             }
+    }
+
+    static getCharismaCount(user){
+        var charismaTot = 0;
+        user.availabilities.forEach(availability =>{
+            var start = new moment(availability.start);
+            var end = new moment(availability.end);
+
+            charismaTot += UserServiceClient.computeCharismaBetweenDate(start,end);
+        });
+
+        return charismaTot;
+    }
+
+    static getAvailableCharismaCountForUser(user){
+        var charismaTot = 0;
+
+        var terms = AssignmentTerms.find({
+            teams: {$in: user.teams}
+        }).fetch();
+
+        terms.forEach(term => {
+            charismaTot += UserServiceClient.computeCharismaBetweenDate(new moment(term.start), new moment(term.end));
+        });
+
+        return charismaTot;
+    }
+
+    static computeCharismaBetweenDate(start,end){
+        var term = AssignmentTerms.findOne({
+            start: {$lte: start.toDate()},
+            end: {$gte: end.toDate()}
+        });
+
+        var accuracy = term.calendarAccuracy;
+        var charismaTot;
+
+        if(term.assignmentTermPeriods.length === 0){
+            var duration = end.diff(start) / (3600 * 1000);
+            charismaTot = duration / accuracy * term.charisma;
+            return charismaTot;
+        } else {
+            charismaTot = 0;
+            term.assignmentTermPeriods.forEach(period => {
+                var charisma = period.charisma || term.charisma;
+                var duration = 0; //d = f(start,end,period.start, period.end)
+
+                var periodStart = new moment(period.start);
+                var periodEnd = new moment(period.end);
+
+                var startDuration;
+                var endDuration;
+
+                if(TimeSlotService.isOverlapping(start,end,periodStart,periodEnd)){
+                    //duration will not be 0
+                    if(start.isBefore(periodStart)){
+                        startDuration = periodStart
+                    } else {
+                        startDuration = start;
+                    }
+
+                    if(end.isAfter(periodEnd)){
+                        endDuration = periodEnd
+                    } else {
+                        endDuration = end;
+                    }
+
+                    duration = endDuration.diff(startDuration) / (3600 * 1000);
+
+                    var charismaPeriod = duration / accuracy * charisma;
+                    charismaTot += charismaPeriod;
+                }
+
+            });
+
+            return charismaTot;
+        }
+
+    }
+
+    static getCharismaFromDateTime(dateTime) {
+        var term = AssignmentTerms.findOne({
+            start: {$lte: dateTime.toDate()},
+            end: {$gte: dateTime.toDate()}
+        });
+
+        if(term.assignmentTermPeriods.length === 0)
+            return term.charisma;
+
+        var charismaOverride = null;
+        term.assignmentTermPeriods.forEach(period => {
+            if ( (new moment(period.start).isBefore(dateTime) || new moment(period.start).isSame(dateTime) ) &&
+                new moment(period.end).isAfter(dateTime) ) {
+                if (period.charisma !== 0){
+                    charismaOverride = period.charisma
+                } else {
+                    charismaOverride = term.charisma;
+                }
+            }
+        });
+
+        return charismaOverride;
     }
 }

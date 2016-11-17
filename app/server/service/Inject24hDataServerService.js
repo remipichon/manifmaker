@@ -288,6 +288,7 @@ export class Inject24hDataServerService {
             start: InjectDataHelperServerService.getDateFromDateAndHourMinute(2016, 4, 17, 0, 0),
             end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 4, 30, 0, 0),
             teams: [this.hardTeam],
+            charisma: 50,
             assignmentTermPeriods: [
                 {
                     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 4, 17, 6, 0),
@@ -343,10 +344,11 @@ export class Inject24hDataServerService {
                 },
 
             ],
-            calendarAccuracy: 1
+            calendarAccuracy: 2
         });
         AssignmentTerms.insert({
             name: "Premanif",
+            charisma: 30,
             start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 13, 0, 0),
             end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 19, 18, 0),
             teams: [this.softTeam, this.confianceTeam, this.hardTeam],
@@ -355,15 +357,79 @@ export class Inject24hDataServerService {
         });
         AssignmentTerms.insert({
             name: "Manif",
+            charisma: 15,
             start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 19, 18, 0),
             end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 22, 0, 0),
             teams: [this.softTeam, this.confianceTeam, this.hardTeam],
             addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 12, 0, 0),
-            calendarAccuracy: 2
+            calendarAccuracy: 2,
+            assignmentTermPeriods: [
+                {//ven, deb soirée
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 19, 18, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 19, 22, 0),
+                    charisma: 10
+                },
+                {//ven mi soirée
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 19, 22, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 2, 0),
+                    charisma: 10
+                },
+                { //ven nuit
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 2, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 6, 0),
+                    charisma: 20
+                },
+                {//sam matin
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 6, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 10, 0),
+                    charisma: 25
+                },
+                {//sam journée
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 10, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 18, 0),
+                },
+
+                {//sam, deb soirée
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 18, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 22, 0),
+                    charisma: 10
+                },
+                {//sam mi soirée
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 20, 22, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 2, 0),
+                    charisma: 10
+                },
+                { //sam nuit
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 2, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 6, 0),
+                    charisma: 20
+                },
+                {//dim matin
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 6, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 10, 0),
+                    charisma: 25
+                },
+                {//dim journée
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 10, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 18, 0),
+                },
+
+                {//dim, soirée
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 18, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 22, 0),
+                    charisma: 10
+                },
+                {//dim fin soirée
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 21, 22, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 22, 0, 0),
+                    charisma: 20
+                }
+            ]
 
         });
         AssignmentTerms.insert({
             name: "Postmanif",
+            charisma: 30,
             start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 22, 0, 0),
             end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 26, 0, 0),
             teams: [this.softTeam, this.confianceTeam, this.hardTeam],
