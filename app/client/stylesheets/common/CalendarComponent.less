@@ -104,7 +104,6 @@
   .jours {
     height: 964px;
     width: 100%;
-    overflow-y: scroll;
     overflow-x: hidden;
     padding-left: 40px;
     position: relative;
@@ -319,6 +318,49 @@
         }
       }
 
+    }
+  }
+}
+
+
+.assignment-calendar{
+  .titres {
+
+    height: 30px;
+    line-height: 30px;
+    width: 50%;
+    position: fixed;
+    top: 134px;
+
+    z-index: 20;
+    padding-left: 0px;
+    padding-right: 0px;
+
+    .titre_date {
+      background: white;
+    }
+    .titre_date:first-child {
+      margin-left: 39px;
+    }
+    .titre_date:last-of-type {
+      margin-right: 55px;
+    }
+  }
+
+  .jours{
+    padding-top : 30px;
+    height : 994px;
+  }
+}
+
+@screen-tablet: 768px;
+
+@media (max-width: @screen-tablet) { // whn the sidebar is not displayed, there is another placement
+  .assignment-calendar{
+    .titres {
+      .titre_date:last-of-type {
+        margin-right: 23px;
+      }
     }
   }
 }

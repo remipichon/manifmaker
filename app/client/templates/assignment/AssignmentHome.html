@@ -14,8 +14,10 @@
         </div>
 
         <div class="half-screen-scrollable">
-            {{>  AssignmentTermSelectComponent}}
-            {{> AssignmentCalendarComponent timeSlotTemplate="assignmentTimeSlotCalendar"}}
+            <div class="assignment-calendar">
+                {{>  AssignmentTermSelectComponent}}
+                {{> AssignmentCalendarComponent timeSlotTemplate="assignmentTimeSlotCalendar"}}
+            </div>
         </div>
 
     </div>
