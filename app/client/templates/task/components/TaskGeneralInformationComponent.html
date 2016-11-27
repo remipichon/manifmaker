@@ -24,12 +24,16 @@
             }}
         </div>
 
+        {{> DismissibleHelperComponent message="The user responsible for the task during its raising. He will get notified when task is updated or validated." uniqueId="user-responsible-update"}}
+
         <div>
             {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
             optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
             updateCollection="Tasks" updateItemId=this._id updateItemPath="masterId" readOnly=readOnly
             }}
         </div>
+
+        {{> DismissibleHelperComponent message="The user responsible for the task during the event. Its contact will be added to planning given to users." uniqueId="live-responsible-update"}}
 
         <div>
             <div>
@@ -41,6 +45,7 @@
         </div>
     </div>
     <div class="col-md-9">
+        {{> DismissibleHelperComponent message="Be talktative and concise. This description should describe everything that has to be done" uniqueId="description-update"}}
         <div>
             {{> afQuickField name='description' rows=20}}
         </div>

@@ -7,6 +7,9 @@
 
     {{validateForm}}
 
+    {{> DismissibleHelperComponent message="From here you can filter, sort, create or update a task. I don't have anything more to say than you can't already read..." uniqueId="task-list"}}
+
+
     <div>
         {{#if isInRole RolesEnum.TASKWRITE}}
             {{#unless isForGroup}}

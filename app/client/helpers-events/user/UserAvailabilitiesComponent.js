@@ -56,7 +56,7 @@ class UserAvailabilitiesComponent extends BlazeComponent {
     readOnly() {
         if(SecurityServiceClient.softGrantAccessToPage(RolesEnum.ASSIGNMENTTASKUSER)) return false;
         var isReadyForAssignment = this.data().isReadyForAssignment;
-        if (isReadyForAssignment) return true;
+        if (isReadyForAssignment) return true ;
 
         return this.assignmentTermDeadlineIsOver()
     }
