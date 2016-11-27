@@ -34,22 +34,23 @@
 }
 
 .calendar {
+  .assignement-timeslot{
+    position : relative;
+    padding : 5px;
+  }
+
   &.userToTask {
     .heure {
       &:hover {
-        border-top: 2px dashed OrangeRed !important;
+        background : lightgrey !important;
       }
       &.selected {
-        border-top: 2px solid OrangeRed !important;
+        background : lightgray !important;
       }
       .quart_heure {
         pointer-events: none; //in order to allow selecting a below calendar time slot instead of the whole user availability
       }
     }
-  }
-
-  &.taskToUser{
-
   }
 
   margin-top:10px;
@@ -103,7 +104,6 @@
   .jours {
     height: 964px;
     width: 100%;
-    overflow-y: scroll;
     overflow-x: hidden;
     padding-left: 40px;
     position: relative;
@@ -227,36 +227,18 @@
               table-layout: fixed;
 
 
-              .hasPopover {
-                .peopleNeed {
-
-                }
-              }
-
-              .calendar-wrapper {
-                -webkit-transform: rotate(90deg);
-
-                .peopleNeed {
-                  //display: table-cell;
-                  border-bottom: solid 1px black;
-                  text-align: center;
-                  overflow-y: scroll;
-                  width: 100%;
-                  overflow: hidden;
-                  //height: 1%;
-
-                  &.assigned {
-                    background: rgba(158, 100, 0, 0.8);
-                  }
-
-                  div {
-                    pointer-events: none; //in order to allow selecting a below calendar time slot instead of the whole user availability
-                  }
-                }
-              }
             }
           }
-          .creneau.affecte {
+          .peopleNeed {
+            border-top: solid 1px #c0c0c0;
+            padding:5px;
+          }
+          .wrapper {
+            div {
+              pointer-events: none; //in order to allow selecting a below calendar time slot instead of the whole user availability
+            }
+          }
+          .creneau.affecte, .assignementProgress {
             background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent) !important;
             background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent) !important;
             background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent) !important;
@@ -275,6 +257,45 @@
         .quart_heure{
           border-top: 1px solid #d6d6d6;
         }
+      }
+    }
+
+    .assignementProgress{
+      height : 100%;
+      width: 50%;
+      background : @green1;
+    }
+  }
+
+  .popOver{
+    z-index : 100;
+    position:fixed;
+    top: 150px;
+    right : 10px;
+    background : white;
+    border-top : solid 1px #757575;
+    border-bottom : solid 1px #757575;
+    //box-shadow: 0px 0px 20px black;
+    border-radius : 2px;
+    margin : 10px;
+    width : 48%;
+    padding-bottom: 20px;
+
+    i, .close-popover {
+      color: grey;
+    }
+    .close-popover:hover{
+       color : white;
+     }
+    .popOver-header{
+      background : #d6d6d6;
+      padding-left : 10px;
+    }
+    .popOver-body{
+      padding : 10px;
+      .halfPopOver{
+        width : 49%;
+        text-align: center;
       }
     }
   }
@@ -301,6 +322,47 @@
   }
 }
 
+.assignment-calendar{
+  .titres {
+
+    height: 30px;
+    line-height: 30px;
+    width: 50%;
+    position: fixed;
+    top: 134px;
+
+    z-index: 20;
+    padding-left: 0px;
+    padding-right: 0px;
+
+    .titre_date {
+      background: white;
+    }
+    .titre_date:first-child {
+      margin-left: 39px;
+    }
+    .titre_date:last-of-type {
+      margin-right: 55px;
+    }
+  }
+
+  .jours{
+    padding-top : 30px;
+    height : 994px;
+  }
+}
+
+@screen-tablet: 768px;
+
+@media (max-width: @screen-tablet) { // whn the sidebar is not displayed, there is another placement
+  .assignment-calendar{
+    .titres {
+      .titre_date:last-of-type {
+        margin-right: 23px;
+      }
+    }
+  }
+}
 .calendar-charisma {
   margin: auto;
 }

@@ -84,7 +84,7 @@ export class CalendarServiceClient {
 
         if (timeSlotFound !== null) {
             data.state = "available";
-            //data.name = task.name;
+            data.taskName = task.name;
             //Template.parentData() doesn't work so we use a trick
             data.taskId = task._id;
 
