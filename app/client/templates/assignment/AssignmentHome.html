@@ -4,18 +4,20 @@
 
 <template name="AssignmentHome">
 
-    <div class="row">
+    <div class="cancel-top-padding full-height">
 
-        <div class="clo-xs-12 col-md-6">
+        <div class="half-screen-scrollable">
             {{> AssignmentUserList args self}}
             <hr>
             {{> AssignmentTasksList args self}}
             <hr>
         </div>
 
-        <div class="clo-xs-12 col-md-6">
-            {{>  AssignmentTermSelectComponent}}
-            {{> AssignmentCalendarComponent timeSlotTemplate="assignmentTimeSlotCalendar"}}
+        <div class="half-screen-scrollable">
+            <div class="assignment-calendar">
+                {{>  AssignmentTermSelectComponent}}
+                {{> AssignmentCalendarComponent timeSlotTemplate="assignmentTimeSlotCalendar"}}
+            </div>
         </div>
 
     </div>
