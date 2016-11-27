@@ -14,7 +14,7 @@ Once tasks and their needs are validated, users assign volunteers to tasks accor
 * match between _time slot's people needs_ and _user's skills_. 
 
 ## Live Demo
-You can find a live demo [here](http://151.80.59.178:32783/). 
+You can find a live demo [here](http://151.80.59.178). Just pick one version. 
 
 * login: superadmin
 * password: superadmin

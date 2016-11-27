@@ -1,1 +1,1 @@
-FROM abernix/meteord:devbuild
+FROM jshimko/meteor-launchpad:latest

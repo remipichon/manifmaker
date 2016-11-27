@@ -1,4 +1,5 @@
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+import {UserServiceClient} from "../../../client/service/UserServiceClient"
 
 export class BaseCalendarComponent extends BlazeComponent{
 
@@ -67,6 +68,17 @@ export class BaseCalendarComponent extends BlazeComponent{
 
     quarterDate(date, timeHours) {
         return this.getCalendarDateTime(date, timeHours, this.currentData().quarter);
+    }
+
+    timeHourData(date, timeHours){
+        return this.quarterDate(date,timeHours)
+    }
+
+    getCharisma(date, timeHours){
+        var dateTime = this.getCalendarDateTime(date, timeHours, this.currentData().quarter);
+        var charisma =  UserServiceClient.getCharismaFromDateTime(dateTime);
+        if(charisma !== 0)
+        return charisma;
     }
 
     //labelSkills() {

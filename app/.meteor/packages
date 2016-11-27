@@ -6,20 +6,20 @@
 
 meteor-base@1.0.4             # Packages every Meteor app needs to have
 mobile-experience@1.0.4       # Packages for a great mobile UX
-mongo@1.1.12                   # The database Meteor supports right now
-session@1.1.6                 # Client-side reactive dictionary for your app
-jquery@1.11.9                  # Helpful client-side library
-tracker@1.1.0                 # Meteor's client-side reactive programming library
+mongo@1.1.14                   # The database Meteor supports right now
+session@1.1.7                 # Client-side reactive dictionary for your app
+jquery@1.11.10                  # Helpful client-side library
+tracker@1.1.1                 # Meteor's client-side reactive programming library
 
 standard-minifiers@1.0.6      # JS/CSS minifiers run for production mode
-es5-shim@4.6.14                # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.5.8              # Enable ECMAScript2015+ syntax in app code
+es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
+ecmascript@0.5.9              # Enable ECMAScript2015+ syntax in app code
 
 insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
 matb33:collection-hooks
-reactive-var@1.0.10
+reactive-var@1.0.11
 momentjs:moment
-less@2.7.5
+less@2.7.7
 mizzao:bootstrap-3
 iron:router
 aslagle:reactive-table #DAtaTables
@@ -31,18 +31,18 @@ aldeed:autoform-bs-datepicker
 rajit:bootstrap3-datepicker
 aldeed:delete-button
 alanning:roles
-accounts-password@1.3.0
+accounts-password@1.3.2
 accounts-ui@1.1.9
 peerlibrary:blaze-components
 tsega:bootstrap3-datetimepicker
-modules@0.7.6
+modules@0.7.7
 practicalmeteor:chai
 xolvio:cleaner
 practicalmeteor:mocha
 useraccounts:bootstrap
 dapearce:material-icons
 mrt:nprogress
-shell-server
+shell-server@0.2.1
 juliancwirko:s-alert
 juliancwirko:s-alert-stackslide
 mizzao:bootboxjs

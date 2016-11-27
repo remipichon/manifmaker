@@ -166,9 +166,60 @@ export class AvailabilityService {
 
             Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
 
-            //TODO remove availability parts that are not part of an assignment term periods
 
-            AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),start,end);
+            var term = AssignmentTerms.findOne({
+                teams: {$in: user.teams},
+                start: {$lte : start},
+                end: {$gt : end},
+                $or: [
+                    {
+                        assignmentTermPeriods: []
+                    },
+                    {
+                        assignmentTermPeriods: {
+                            $elemMatch: {
+                                start: {$lte : start},
+                                end: {$gt : end}
+                            }
+                        }
+                    }
+                ]
+            });
+
+            if(term){ //availability is either in a term or in a term's period if term has periods
+                AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),start,end);
+            } else { //remove availability parts that are not part of an assignment term periods
+                term = AssignmentTerms.findOne({
+                    teams: {$in: user.teams},
+                    start: {$lte : start},
+                    end: {$gt : end},
+                });
+
+                //lets say an availabity start will always match a period start
+                //(just because UI will never allow it)
+
+                start = new moment(start);
+                end = new moment(end);
+
+                //we have the term, let's find the period
+                var period = _.find(term.assignmentTermPeriods, function(period){
+                    return new moment(period.start).isSame(start);
+                });
+
+                //let's assume that period end is before availability end
+                //we had the whole period has it
+                AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),period.start,period.end);
+
+                //we know need to know where the availabilty ended
+                var periods = _.filter(term.assignmentTermPeriods, function(period){
+                    return new moment(period.start).isAfter(start) && //strictly after period start (to not add the same as previously)
+                        ( new moment(period.end).isBefore(end) || new moment(period.end).isSame(end) );
+                });
+
+                periods.forEach(period => {
+                    AvailabilityService.restoreAvailabilities(Meteor.users.findOne(user._id),period.start,period.end);
+                });
+            }
         }
 
         /**
