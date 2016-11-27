@@ -1,5 +1,7 @@
 <template name="taskTimeSlots">
 
+    {{> DismissibleHelperComponent message="The most important part of a task, its time slots. A task should have at least one time slot to explain when and with who it has be executed. A same task can be done several time, with different needs." uniqueId="task-timeslot-intro"}}
+
     {{reactiveConstructor}}
 
     <div class="col-md-12">
@@ -7,6 +9,7 @@
     </div>
 
     <div class="col-md-8">
+        {{> DismissibleHelperComponent message="The time slot's calendar overview, click on an existing one to see its details or update it." uniqueId="task-timeslot-calendar"}}
         {{> EditTimeSlotCalendarComponent task=taskData parentInstance=self timeSlotTemplate="updateTimeSlotCalendar" class="updateTimeSlotCalendar"}}
     </div>
 
@@ -16,6 +19,7 @@
 
                 {{#unless isTimeSlotsReadOnly}}
                     {{#if isTimeSlotCreated.get}}
+                        {{> DismissibleHelperComponent message="Start by creating a time slot by choosing its start and end date. Time slot cannot overllap each other. " uniqueId="task-timeslot-create"}}
                         <br>
                         <div class="pull-right">
                             <i class="mdi mdi-check done-button" title="validate"></i><i class="mdi mdi-close clear-button" title="Clear all"></i>
@@ -44,7 +48,7 @@
 
 
                     {{#if isTimeSlotUpdated.get}}
-
+                        {{> DismissibleHelperComponent message="You can duplicate a time slot with all its people needs or delete it entierly. You cannot delete a time slot which is already assigned." uniqueId="task-timeslot-duplicate-delete"}}
                         <br>
                         <div class="pull-right clearfix">
                             <i class="mdi mdi-content-copy duplicate-button" title="duplicate"></i><i class="mdi mdi-delete delete-button" title="delete"></i> | <i class="mdi mdi-plus add-button" title="create a new time slot"></i>
@@ -70,6 +74,7 @@
                         </div>
                         {{#if currentTimeSlotPeopleNeededMerged}}
                             <div class="people-need">
+                                {{> DismissibleHelperComponent message="Here you can update and duplicate a people need and see its count. You cannot duplicate a people user requiring a specific user has cloning is still not a allowed for human." uniqueId="task-peopleneed-list"}}
                                 <h5>People needs :</h5>
 
                                 <div  class="people-need">
@@ -122,6 +127,7 @@
                         {{/if}}
                         {{#if currentTimeSlotPeopleNeededMerged true}}
                             <div class="people-need-assigned">
+                                {{> DismissibleHelperComponent message="Those people needs are already assigned, you cannot update them and te corresponding time slot can be updated either." uniqueId="task-peopleneedassigned-list"}}
                                 <h5>People needs already assigned :</h5>
 
                                 <div>
@@ -182,6 +188,7 @@
                 {{#if isTimeSlotUpdated.get}}
                     <div class="col-md-12 add-people-need">
                         <div class="add-people-need">
+                            {{> DismissibleHelperComponent message="You can now add a people need. You can either request a specif user OR a user belonging to a team AND/OR a user which has specific skills." uniqueId="task-peopleneed-create"}}
                             <div class="pull-right clearfix">
                                 {{#if displayAddPeopleNeedForm}}
                                     <i class="mdi mdi-check done-button" title="validate"></i><i class="mdi mdi-close clear-button" title="Clear all"></i>

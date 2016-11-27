@@ -1,4 +1,5 @@
 <template name="taskValidation">
+
     <h4><i class="mdi mdi-wrench"></i> Equipment validation</h4>
 
     <div class="validation-comments-list-header toggle-equipment-validation-comments-list" data-toggle="collapse" data-target="#equipment-validation-comments-list">
@@ -50,6 +51,8 @@
 
     <!-- if you have the right to type a new comment -->
     {{#if displayTextArea 'EQUIPMENTVALIDATION' equipmentValidation.currentState}}
+        {{> DismissibleHelperComponent message="Once you have to review the equipment section, you can either 'refused' them or 'accepted' them. If refused, user will have to update them and send them again in validation. Once accepted, equipments cannot be updated." uniqueId="task-equipment-validation-role"}}
+
         <!-- Input to add a new validation state -->
         <div class="input-group validation-comment-input">
             <input type="text" class="form-control" placeholder="You can type a new comment for equipment validation" id="equipment-validation-new-comment">
@@ -72,6 +75,8 @@
         </div>
     {{else}}
         <div class="validation-comment-input">
+            {{> DismissibleHelperComponent message="Once you work is done you can 'Ask for validation', a responsible user will review your needs and either 'refused' them or 'accept them' Once accepted, it cannot be updated." uniqueId="task-equipment-validation-norole"}}
+
             <!-- if you can't because it's in validation -->
             {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
 
@@ -141,6 +146,8 @@
 
     <!-- if you have the right to type a new comment -->
     {{#if displayTextArea 'ASSIGNMENTVALIDATION' timeSlotValidation.currentState}}
+        {{> DismissibleHelperComponent message="Once you have reviewed the time slot section, you can either 'refused' them or 'accepted' them. If refused, user will have to update them and send them again in validation. Once accepted, task is ready for assignement and timeslots cannot be updated." uniqueId="task-timeslot-validation-role"}}
+
         <!-- Input to add a new validation state -->
         <div class="input-group validation-comment-input">
             <input type="text" class="form-control" placeholder="You can type a new comment for time slots validation" id="time-slot-validation-new-comment"> <!-- TODO uniformiser, time-slot ou time-slots ? -->
@@ -163,6 +170,7 @@
         </div>
     {{else}}
         <div class="validation-comment-input">
+            {{> DismissibleHelperComponent message="Once your work is done, you can 'Ask for validation', a responsible user will review your needs and either 'refused' them or 'accepted' them. Once accepted, task is ready for assignement and timeslots cannot be updated." uniqueId="task-timeslot-validation-norole"}}
             <!-- if you can't because it's in validation -->
             {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
 
