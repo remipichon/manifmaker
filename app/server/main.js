@@ -14,10 +14,10 @@ Meteor.startup(function () {
 
     ServerService.addCollectionHooks();
 
-    var inject24hDataServerService = new Inject24hDataServerService();
-    var injectDataServerService = new InjectDataServerService();
+    var injectDataServerService = new Inject24hDataServerService();
+    //var injectDataServerService = new InjectDataServerService();
 
-    Meteor.injectDataServerService = inject24hDataServerService;
+    Meteor.injectDataServerService = injectDataServerService;
 
     var injectAll = process.env.INJECT_ALL;
     if (typeof(injectAll) !== 'undefined' && injectAll == "true") {
