@@ -383,6 +383,13 @@ Schemas.User = new SimpleSchema({
         }
     },
 
+    dismissible: {
+        type: [String],
+        label: "Dismissed help",
+        defaultValue: [],
+        optional: true
+    },
+
     username: {
         type: String,
         // For accounts-password, either emails or username is required, but not both. It is OK to make this

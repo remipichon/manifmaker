@@ -6,17 +6,17 @@ ManifMaker is a single page web app aimed to plan and organize events where volu
 
 In a few words, users create _tasks_ describing the job to be done, add _time slot_ defining when the _task_ has to be done and specify _people needs_ to explicit how many and what kind of volunteers are needed to perform the _task_.
 
-Volunteers register on the app and add a few _availabilities_ and _skills_ to detail when they want to work and what can they do.  
+Volunteers register on the app and add a few _availabilities_ and _skills_ to detail when they want to work and what they can do.  
 
-Once tasks and their needs are validated, users assign volunteers to tasks according :
+Once the tasks and their needs are validated, special users assign volunteers to tasks according to :
 
 * match between  _task's time slots_ and _user's availabilities_ 
 * match between _time slot's people needs_ and _user's skills_. 
 
 ## Live Demo
-You can find a live demo [here](http://151.80.59.178:32783/). 
+You can find a live demo [here](http://151.80.59.178). Just pick one version. 
 
-* login: superadmin
+* email: superadmin@yopmail.com
 * password: superadmin
 
 ### Table of Contents
@@ -69,7 +69,7 @@ meteor
 
 <a id="dev-tools" name="dev-tools"></a>
 # Dev tools 
-Dev tools already installed and to be used when implementing cool features.
+Dev tools that are already installed and available to be used when implementing cool features.
 
 <a id="quality" name="quality"></a>
 ## Quality
@@ -111,14 +111,24 @@ Generated in /doc/markdown
 
 <a id="testing" name="testing"></a>
 ### Testing
-There is no test frameworks.
+There is no automatic tests frameworks.
 
 <a id="cd" name="cd"></a>
 ### Continuous Deployment
 [Travis CI](https://travis-ci.org/assomaker/manifmaker) is used to achieve Continuous Deployment. When a push occurs on branch _deploy_ : 
-* ManifMaker app is builded as a Docker image and push to our [Docker hub repo](https://hub.docker.com/r/assomaker/manifmaker/).
+* ManifMaker app is built as a Docker image and push to our [Docker hub repo](https://hub.docker.com/r/assomaker/manifmaker/).
 * the new app is started in the stagging machine
 * the HTML doc is build and deployed (available [here](http://151.80.59.178/doc))
+
+#### Docker Compose
+Staging environment can be build from scratch with [Docker Compose](https://github.com/assomaker/manifmaker/blob/master/docker-compose.yml). It instanciates : 
+* a single MongoDB
+* consul to store discovered services
+* registrator to register new services 
+* Nginx to act as a proxy for all deployed version and to serve static HTML doc
+
+They are part of "manifmaker_default" network that new app container joins at startup. 
+
 
 #### Version management
 app/package.json version is used to tag the Docker image. On the stagging machine there can be only one instance per version but several version can run at the same time. The [stagging index page](http://151.80.59.178/) provide links to all deployed version. 
@@ -200,7 +210,7 @@ You can refer to the auto-generated doc [select-component.md](https://github.com
 
 #### What is a reference collection ?
 
-Reference collection are used when the user as a choice between a set of editable values. Typically, you will need a reference collection with form field using a Custom Select. All reference collection are editable in a page (/conf-maker) linkied to a role _CONFMAKER_. 
+A Reference collection is used when the user as a choice between a set of editable values. Typically, you will need a reference collection with form field using a Custom Select (_Teams_, _Places_ or _Group Roles_ can be dynamically edited while being available in select). All reference collection are editable in a page (/conf-maker) linked to a role _CONFMAKER_. 
 
 Each reference collection provides a set of features : 
 * list all items from the page /conf-maker
@@ -214,7 +224,7 @@ Each reference collection provides a set of features :
 
 #### define a schema
 
-Add the schema to /both/collection/schema/CollectionReference.js. I will create Schema and Mongo Collection and generatares every needed routes)
+Add the schema to /both/collection/schema/CollectionReference.js. It will create Schema and Mongo Collection and generate every needed routes)
 
 * PLURAL_REFERENCE_URL : url for the list (GET)
 * REFERENCE_URL: url to create (POST), update and delete

@@ -1,4 +1,5 @@
 import {TimeSlotService} from "../../both/service/TimeSlotService"
+import {UserServiceClient} from "../../client/service/UserServiceClient"
 
 /** @class CalendarServiceClient*/
 export class CalendarServiceClient {
@@ -14,6 +15,22 @@ export class CalendarServiceClient {
             //Template.parentData() doesn't work so we use a trick
             data.userId = user._id;
 
+
+            var availStart = new moment(availabilitiesFound.start);
+            var availEnd = new moment(availabilitiesFound.end);
+
+            if(!availStart.isSame(startCalendarTimeSlot,"day")){
+                availStart = startCalendarTimeSlot
+            }
+
+            if(!availEnd.isSame(startCalendarTimeSlot,"day")){
+                availEnd = new moment(startCalendarTimeSlot); //until the end of the day
+                availEnd.minute(0);
+                availEnd.hour(0);
+                availEnd.add(1,'day');
+            }
+
+            data.charisma = UserServiceClient.computeCharismaBetweenDate(availStart,availEnd);
         }
 
         _.extend(data, availabilitiesFound);
@@ -34,6 +51,21 @@ export class CalendarServiceClient {
             data.userId = user._id;
             data.assigned = true;
 
+            var availStart = new moment(availabilitiesFound.start);
+            var availEnd = new moment(availabilitiesFound.end);
+
+            if(!availStart.isSame(startCalendarTimeSlot,"day")){
+                availStart = startCalendarTimeSlot
+            }
+
+            if(!availEnd.isSame(startCalendarTimeSlot,"day")){
+                availEnd = new moment(startCalendarTimeSlot); //until the end of the day
+                availEnd.minute(0);
+                availEnd.hour(0);
+                availEnd.add(1,'day');
+            }
+
+            data.charisma = UserServiceClient.computeCharismaBetweenDate(availStart,availEnd);
         }
 
         _.extend(data, assignmentsFound);
@@ -52,7 +84,7 @@ export class CalendarServiceClient {
 
         if (timeSlotFound !== null) {
             data.state = "available";
-            //data.name = task.name;
+            data.taskName = task.name;
             //Template.parentData() doesn't work so we use a trick
             data.taskId = task._id;
 

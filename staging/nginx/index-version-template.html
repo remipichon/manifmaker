@@ -5,11 +5,11 @@
   <body bgcolor=white>
 
     <h2>Welcome to Manifmaker staging machine</h2>
-    <h3>Here are the current version deployed</h3>
+    <h3>Here are the current versions deployed</h3>
     <ul>
       {{range services}}
         {{if .Name | regexMatch "manifmaker_"}}
-            <li>version <a href="{{.Name}}">{{.Name}}</a> or 
+            <li>version <!-- <a href="{{.Name}}">{{.Name}}</a> or -->
                 <ul>
                 {{range service .Name}} 
                     <li><a href="http://151.80.59.178:{{.Port}}">{{.Name}}</a></li>
@@ -20,9 +20,13 @@
     </ul>
     <p>The doc can be found <a href="/doc">here</a></p>
 
-    <p><a href="https://github.com/assomaker/manifmaker">Github</a>
+    <p>Don't mess with it <a href="http://151.80.59.178:8500/">Consul UI</a></p>
 
-    <p>building state of deploy branch : <img src="https://api.travis-ci.org/assomaker/manifmaker.svg?branch=deploy"></p>
+    <p>You don't even dare to mess with it <a href="http://151.80.59.178:9000/">Portainer</a></p>
+
+    <p>Follow and star ;) <a href="https://github.com/assomaker/manifmaker">Github</a>
+
+    <p>Building state of deploy branch : <img src="https://api.travis-ci.org/assomaker/manifmaker.svg?branch=deploy"></p>
 
   </body>
 </html>

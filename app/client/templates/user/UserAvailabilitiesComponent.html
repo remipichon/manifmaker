@@ -3,6 +3,13 @@
     {{reactiveConstructor}}
 
     <div class="col-md-12">
+        {{> DismissibleHelperComponent message="The more availabilties you add, the more charisma you get. You can see your friend's charisma and try to beat them ! (hint : some time slots are more valuable, it's well rewarded to work during the night...)" uniqueId="charisma-tot"}}
+        <label>Your charisma</label> {{totalCharisma}} / {{availableCharisma}}
+    </div>
+
+
+    <div class="col-md-12">
+        {{> DismissibleHelperComponent message="Depending on your team, you can access different period to add availabilties, check them all !" uniqueId="term-select"}}
         {{>AssignmentTermSelectComponent callbackIfNothingToDisplay=callbackIfNoTerms teams=userData.teams}}
     </div>
 
@@ -10,15 +17,17 @@
 
         <div class="col-md-12">
             {{#if readOnly}}
-                {{#if isCurrentUserTheOneLogged userData._id}}
-                    <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your availabilities</div>
-                    {{#if assignmentTermDeadlineIsOver}}
-                        <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add availabilities</div>
+                {{#if assignmentTermDeadlineIsOver}}
+                    <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add availabilities</div>
+                {{else}}
+                    {{#if isCurrentUserTheOneLogged userData._id}}
+                        <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your availabilities</div>
                     {{/if}}
                 {{/if}}
-                {{> ReadAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
+                {{> ReadAvailabilitiesCalendarComponent displayCharisma=true user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{else}}
-                {{> EditAvailabilitiesCalendarComponent user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
+                {{> DismissibleHelperComponent message="Want to add an availability ? Simply click and select when you want ! Double click allows you to remove one slot." uniqueId="availabily-update"}}
+                {{> EditAvailabilitiesCalendarComponent displayCharisma=true user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{/if}}
         </div>
 
@@ -33,8 +42,8 @@
 <template name="updateAvailabilitiesCalendar">
     <div class="creneau non-clickable {{#if assigned}}affecte{{/if}}" style="height: {{height}};">
 
-        <div class="wrapper on-calendar">
-
+        <div class="calendar-wrapper on-calendar">
+            <div class="calendar-charisma noselect" title="{{charisma}} pts of charisma">{{charisma}}</div>
         </div>
     </div>
 </template>

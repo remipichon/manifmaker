@@ -1,4 +1,5 @@
 import {SecurityServiceClient} from "../../service/SecurityServiceClient"
+import {UserServiceClient} from "../../service/UserServiceClient"
 
 class UserAvailabilitiesComponent extends BlazeComponent {
 
@@ -19,6 +20,14 @@ class UserAvailabilitiesComponent extends BlazeComponent {
         return [
             {}
         ];
+    }
+
+    totalCharisma(){
+        return UserServiceClient.getCharismaCount(this.userData());
+    }
+
+    availableCharisma(){
+        return UserServiceClient.getAvailableCharismaCountForUser(this.userData());
     }
 
     displayCalendar(){
@@ -47,7 +56,7 @@ class UserAvailabilitiesComponent extends BlazeComponent {
     readOnly() {
         if(SecurityServiceClient.softGrantAccessToPage(RolesEnum.ASSIGNMENTTASKUSER)) return false;
         var isReadyForAssignment = this.data().isReadyForAssignment;
-        if (isReadyForAssignment) return true;
+        if (isReadyForAssignment) return true ;
 
         return this.assignmentTermDeadlineIsOver()
     }
