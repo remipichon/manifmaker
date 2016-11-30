@@ -19,6 +19,9 @@ You can find a live demo [here](http://151.80.59.178). Just pick one version.
 * email: superadmin@yopmail.com
 * password: superadmin
 
+## Continuous Deployment build status
+branch deploy : [![Build Status](https://travis-ci.org/assomaker/manifmaker.svg?branch=deploy)](https://travis-ci.org/assomaker/manifmaker)
+
 ### Table of Contents
 * [Installation](#installation)
 * [Dev tools](#dev-tools)
