@@ -16,6 +16,9 @@ Once the tasks and their needs are validated, special users assign volunteers to
 ## Live Demo
 You can find a live demo [here](http://151.80.59.178). Just pick one version. 
 
+0.9.0 deployed : http://151.80.59.178:32772
+(Nginx is down)
+
 * email: superadmin@yopmail.com
 * password: superadmin
 
