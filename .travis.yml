@@ -18,6 +18,7 @@ before_install:
 
 
 script:
+  - { ssh root@vps302914.ovh.net "docker exec manifmaker-mongo mongo localhost:27017/manifmaker_$MANIFMAKER_VERSION /root/create_manifmaker_mongo_user.js"; } || { echo "If error is 'already existing user', it's not a problem"; } 
   - cd app
   - echo "... Now building and delivering" $MANIFMAKER_VERSION
   - docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
