@@ -21,9 +21,16 @@ class AssignmentTermSelectComponent extends BlazeComponent{
             terms =  AssignmentTerms.find({teams:{$in:this.data().teams}});
         else
             terms = AssignmentTerms.find();
+        terms = terms.fetch();
 
-        if(terms.fetch().length === 0 && this.data() && this.data().callbackIfNothingToDisplay)
+        if(terms.length === 0 && this.data() && this.data().callbackIfNothingToDisplay)
             this.data().callbackIfNothingToDisplay();
+
+        //select the currently used term
+        var selectedTermId = AssignmentCalendarDisplayedDays.findOne().assignmentTermId;
+        var i = terms.indexOf(_.findWhere(terms,{_id:selectedTermId}));
+        terms[i].selected = "selected";
+        console.info(selectedTermId,i);
 
         return terms;
 
