@@ -162,10 +162,20 @@ class AssignmentTasksList extends BlazeComponent {
         var teamFilter = this.taskTeamFilter.get();
         var displayAssignedTask = this.isplayAssignedTask.get();
         var assignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
+        var currentAssignmentTerm = AssignmentTerms.findOne(AssignmentCalendarDisplayedDays.findOne().assignmentTermId);
 
         var skillsFilter = this.taskSkillsFilter.get();
         var neededTeamFilter = this.taskNeededTeamFilter.get();
         var skillsAndNeededTeamFilterForAssigned = {};
+
+        var assignmentTermFilter = {
+            timeSlots:{
+                $elemMatch: {
+                    start: { $gte : currentAssignmentTerm.start},
+                    end: {$lt: currentAssignmentTerm.end}
+                }
+            }
+        };
 
         //TODO possible de factoriser ca
         if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
@@ -223,6 +233,7 @@ class AssignmentTasksList extends BlazeComponent {
         if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
             filterResult = Tasks.find({
                 $and: [
+                    assignmentTermFilter,
                     validationReadyFilter,
                     filter,
                     teamFilter,
@@ -237,6 +248,7 @@ class AssignmentTasksList extends BlazeComponent {
         } else {
             filterResult = Tasks.find({
                 $and: [
+                    assignmentTermFilter,
                     validationReadyFilter,
                     filter,
                     teamFilter,
