@@ -92,6 +92,7 @@ export class Inject24hDataServerService {
 
     _injectAuthenticationUsers() {
         console.info("inject user");
+        InjectDataHelperServerService.createAccountAndUser("Sticky Expert", "stickyexpert@yopmail.com", "stickyexpert", this.hardGroupRole);
         InjectDataHelperServerService.createAccountAndUser("hard", "hard@yopmail.com", "hard", this.hardGroupRole);
         InjectDataHelperServerService.createAccountAndUser("hard2", "hard2@yopmail.com", "hard2", this.hardGroupRole);
         InjectDataHelperServerService.createAccountAndUser("hard3", "hard3@yopmail.com", "hard3", this.hardGroupRole);
@@ -471,14 +472,15 @@ export class Inject24hDataServerService {
                 ]
             }
         });
-        this.hardId = Meteor.users.findOne({username: "hard"})._id
+        this.hardId = Meteor.users.findOne({username: "Sticky Expert"})._id
         InjectDataHelperServerService.setTeamsAndSkills(this.hardId, [this.hardTeam], [this.conducteurSkill]);
         Meteor.users.update(this.hardId, {
             $set: {
+                isReadyForAssignment: true,
                 availabilities: [
                     {
-                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 19, 18, 0),
-                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 21, 22, 0)
+                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 14, 18, 0),
+                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 15, 22, 0)
                     },
                     {
                         start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
@@ -487,6 +489,14 @@ export class Inject24hDataServerService {
                     {
                         start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 18, 6, 0),
                         end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 18, 8, 0)
+                    },
+                    {
+                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 6, 0),
+                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 8, 0)
+                    },
+                    {
+                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 29, 6, 0),
+                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 29, 8, 0)
                     }
                 ]
             }
@@ -505,6 +515,11 @@ export class Inject24hDataServerService {
             groupId: this.collageTaskGroup,
             placeId: this.bocalPlace,
             masterId: this.hardId,
+            timeSlotValidation: {
+                        currentState: ValidationState.READY,
+                        lastUpdateDate: now,
+                        comments: []
+            },
             timeSlots: [
                 {
                     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
@@ -521,6 +536,19 @@ export class Inject24hDataServerService {
                 {
                     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 18, 6, 0),
                     end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 18, 8, 0),
+                    peopleNeeded: [
+                        {
+                            teamId: this.hardTeam
+                        },
+                        {
+                            teamId: this.hardTeam,
+                            skills: [this.conducteurSkill]
+                        }
+                    ],
+                },
+                {
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 29, 6, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 29, 8, 0),
                     peopleNeeded: [
                         {
                             teamId: this.hardTeam
