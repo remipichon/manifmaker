@@ -73,6 +73,7 @@ export class InjectDataHelperServerService {
 
         Assignments.direct.remove({});
         Tasks.remove({});
+        Activities.remove({});
         Settings.remove({});
         Places.remove({});
         Teams.remove({});

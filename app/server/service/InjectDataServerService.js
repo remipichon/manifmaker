@@ -45,35 +45,6 @@ export class InjectDataServerService {
         })
 
     }
-    /**
-     * @summmary delete all data
-     */
-    static deleteAll() {
-        Meteor.roles.remove({});
-        GroupRoles.remove({});
-        Meteor.users.remove({});
-
-        Users.remove({});
-
-        Assignments.remove({});
-        Tasks.remove({});
-        Activities.remove({});
-        Places.remove({});
-        Teams.remove({});
-        Groups.remove({});
-        Skills.remove({});
-        Teams.remove({});
-        EquipmentCategories.remove({});
-        Equipments.remove({});
-        WaterSupplies.remove({});
-        WaterDisposals.remove({});
-        PowerSupplies.remove({});
-        EquipmentStorages.remove({});
-
-        AssignmentTerms.remove({});
-
-
-    }
 
      _injectGroupRoles() {
         var bureau = GroupRoles.insert({

@@ -47,7 +47,20 @@
                     </ul>
                 </li>
                 <li><a class="home-link" href="{{pathFor route='home'}}"><i class="sidebar-icon mdi mdi-home"></i> Home</a></li>
-
+                {{#if isInRole RolesEnum.ACTIVITYREAD}}
+                    <li class="dropdown">
+                        <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
+                            <i class="sidebar-icon mdi mdi-human-child"></i> Activities
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{pathFor route='activity.list'}}"><i class="sidebar-icon mdi mdi-format-list-bulleted"></i> List</a></li>
+                            {{#if isInRole RolesEnum.ACTIVITYWRITE}}
+                                <li><a href="{{pathFor route='activity.create'}}"><i class="sidebar-icon mdi mdi-plus"></i> Create</a></li>
+                            {{/if}}
+                        </ul>
+                    </li>
+                {{/if}}
                 {{#if isInRole RolesEnum.TASKREAD}}
                     <li class="dropdown">
                         <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">

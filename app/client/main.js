@@ -24,6 +24,7 @@ Meteor.startup(function () {
     Meteor.subscribe("skills");
     Meteor.subscribe("users");
     Meteor.subscribe("tasks");
+    Meteor.subscribe("activities");
     Meteor.subscribe("places");
     Meteor.subscribe("assignments");
     Meteor.subscribe("teams");

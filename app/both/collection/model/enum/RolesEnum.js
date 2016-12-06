@@ -29,6 +29,13 @@ RolesEnum = {
     /** group task **/
     TASKGROUPDELETE: "TASKGROUPDELETE",
 
+    /** activity */
+    ACTIVITYREAD: "ACTIVITYREAD",
+    /** activity */
+    ACTIVITYWRITE: "ACTIVITYWRITE",
+    /** activity */
+    ACTIVITYDELETE: "ACTIVITYDELETE",
+
     /** assignment */
     ASSIGNMENTTASKUSER: "ASSIGNMENTTASKUSER",
 
