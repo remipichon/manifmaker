@@ -365,7 +365,7 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     calendarAccuracy: {
         type: Number,
         decimal: true,
-        label: "Assignment calendar accuracy",
+        label: "Assignment calendar accuracy minimal duration for a timeslot or an availability (2 = 2 hours, 1 = 1 hour, 0.5 = 30 min, 0.25 = 15 min)",
         custom: function(){
             if(!CalendarAccuracyEnum[this.value])
                 return "accuracyNotFound"
