@@ -52,7 +52,7 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("activities", function () {
-        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ACITIVITYREAD,"Activity"))
+        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ACTIVITYREAD,"Activity"))
             return Activities.find({});
         else
             return [];

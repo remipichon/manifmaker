@@ -31,6 +31,7 @@ export class Inject24hDataServerService {
         console.info("Accounts Meteor.users collection size is " + Meteor.users.find().fetch().length);
         console.info("Customs Meteor.users collection size is " + Meteor.users.find().fetch().length);
         console.info("Tasks collection size is " + Tasks.find().fetch().length);
+        console.info("Activities collection size is " + Activities.find().fetch().length);
         console.info("Assignments collection size is " + Assignments.find().fetch().length);
         console.info("Task Groups collection size is " + TaskGroups.find().fetch().length);
         console.info("Skills collection size is " + Skills.find().fetch().length);
