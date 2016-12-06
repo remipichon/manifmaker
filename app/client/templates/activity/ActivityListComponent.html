@@ -1,0 +1,24 @@
+<template name="activityList">
+    {{> ActivityListComponent}}
+</template>
+
+<template name="activityListComponent">
+    Activity List
+
+    {{> reactiveTable settings=activitiesList }}
+
+</template>
+
+
+<template name="activityButtons">
+    {{#if isInRole RolesEnum.ACTIVITYWRITE}}
+        <a class="btn btn-primary" href="/activity/{{_id}}">Update</a>
+    {{else}}
+        {{#if isInRole RolesEnum.ACTIVITYWRITE}}
+            <a class="btn btn-primary" href="/activity/{{_id}}/read">Read</a>
+        {{/if}}
+    {{/if}}
+    {{#if isInRole RolesEnum.ACTIVITYDELETE}}
+        {{#quickRemoveButton class="btn btn-default" collection="Activities" _id=this._id}}Delete{{/quickRemoveButton}}
+    {{/if}}
+</template>
