@@ -1,7 +1,6 @@
 import {ServerAssignmentService} from "./ServerAssignmentService";
 import {ServerUserService} from "./ServerUserService";
 import {ServerTaskService} from "./ServerTaskService";
-<<<<<<< HEAD:app/server/service/ServerService.js
 import {ServerTaskGroupService} from "./ServerTaskGroupService";
 import {ServerGroupRoleService} from "./ServerGroupRoleService";
 import {ServerAssignmentTermService} from "./ServerAssignmentTermService";

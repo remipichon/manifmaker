@@ -701,7 +701,6 @@ export class InjectDataServerService {
             liveEventMasterId: user3Id,
             masterId: user1Id
         });
-    };
 
 
         //assignment user1 to task1
