@@ -1,4 +1,5 @@
 import {Schemas} from './SchemasHelpers'
+import "/both/collection/model/T-Validation.js"
 
 Schemas.Activities = new SimpleSchema({
     name: {
@@ -65,5 +66,23 @@ Schemas.Activities = new SimpleSchema({
                 options: Schemas.helpers.allUsersOptions
             }
         }
-    }
+    },
+    accessPassValidation: {
+        type: Schemas.Validation,
+        label: "Activity access pass validation",
+        defaultValue: function(){Schemas.Validation.clean({})}(),
+        optional: true,
+        autoform: {
+            type: "hidden",
+        }
+    },
+    equipmentValidation: {
+        type: Schemas.Validation,
+        label: "Activity equipments validation",
+        defaultValue: function(){Schemas.Validation.clean({})}(),
+        optional: true,
+        autoform: {
+            type: "hidden",
+        }
+    },
 });

@@ -18,6 +18,7 @@ export var ManifMakerRouterController = RouteController.extend({
             this.wait(Meteor.subscribe("skills"));
             this.wait(Meteor.subscribe("users"));
             this.wait(Meteor.subscribe("tasks"));
+            this.wait(Meteor.subscribe("activities"));
             this.wait(Meteor.subscribe("places"));
             this.wait(Meteor.subscribe("assignments"));
             this.wait(Meteor.subscribe("teams"));

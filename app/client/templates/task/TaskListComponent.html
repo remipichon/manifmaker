@@ -28,7 +28,7 @@
 
     </div>
 
-    <div class="task-list-filter-wrapper">
+    <div class="resource-list-filter-wrapper">
         <div class="row">
 
             <div class="col-md-3">
@@ -150,8 +150,10 @@
 
 
 
-<template name="validationStateForList">
+<template name="validationStateForTaskList">
     <span class="task-list-filter-wrapper">
+
+        TODO factoriser
 
         {{#if equals timeSlotValidation.currentState "OPEN"}}
            <span class="open" title="Time slots are open for anything">
