@@ -2,14 +2,15 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    {{> SideBar}}
+    {{> SideBar currentTab=currentTab}}
 
     <div class="not-sidebar">
         {{> navbar}}
 
         <!--<div class="container-fluid no-padding">-->
         <div class="container-fluid overall-wrapper">
-            <aside class="">
+            <aside>
+                {{tests}}
                 {{> yield "mainContent"}}
             </aside>
         </div>
