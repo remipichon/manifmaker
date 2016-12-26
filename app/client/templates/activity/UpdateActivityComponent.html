@@ -52,7 +52,8 @@
                 <div class="panel-heading">Validation</div>
 
                 <div class="panel-body">
-                    {{>ActivityValidationComponent}}
+                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="Equipment" validationTypeName="equipment" validationData=equipmentValidation validationRole="EQUIPMENTVALIDATION"}}
+                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="Access Pass" validationTypeName="access-pass" validationData=accessPassValidation validationRole="ACCESSPASSVALIDATION"}}
                 </div>
 
             </div>

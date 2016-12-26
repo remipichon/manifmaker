@@ -135,7 +135,7 @@
 
 <template name="validationStateForActivityList">
     <span class="activity-list-filter-wrapper">
-
-        TODO factoriser
+        {{> ValidationStateForListComponent dataValidation=accessPassValidation validationTypeLabel="Access Pass" mdiIcon="mdi-alert"}}
+        {{> ValidationStateForListComponent dataValidation=equipmentValidation validationTypeLabel="Equipments" mdiIcon="mdi-wrench"}}
     </span>
 </template>
