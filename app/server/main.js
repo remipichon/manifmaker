@@ -36,9 +36,9 @@ Meteor.startup(function () {
     if(Meteor.isDevelopment){
         //specific to the dev needs
         console.info("Meteor.startup : isDevelopment, injecting or not");
-        InjectDataHelperServerService.deleteAll();
-        InjectDataHelperServerService.initAccessRightData();
-        Meteor.injectDataServerService.injectAllData();
+        //InjectDataHelperServerService.deleteAll();
+        //InjectDataHelperServerService.initAccessRightData();
+        //Meteor.injectDataServerService.injectAllData();
     }
 
 

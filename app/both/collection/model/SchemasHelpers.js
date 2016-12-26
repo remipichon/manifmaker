@@ -33,6 +33,32 @@ SimpleSchema.messages({
 
 Schemas.helpers = {};
 
+Schemas.EquipmentAsked = new SimpleSchema({
+    equipmentId : {
+        type: SimpleSchema.RegEx.Id,
+        label: "Tasks Equipment needed",
+        optional: true,
+        autoform: {
+            afFieldInput: {
+                type: "hidden"
+            },
+            afFormGroup: {
+                label: false
+            }
+        }
+    },
+    quantity: {
+        type: Number,
+        label: "Task equipment needed quantity",
+        min: 0,
+        autoform: {
+            afFormGroup: {
+                label: false,
+            }
+        }
+    }
+});
+
 Schemas.helpers.allTeamsOptions = function () {
     var teams = Teams.find({
         name: {

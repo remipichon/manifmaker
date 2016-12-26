@@ -1,7 +1,7 @@
 import {ValidationService} from "../../../../both/service/ValidationService"
 import {SecurityServiceClient} from "../../../../client/service/SecurityServiceClient"
 
-class TaskValidationComponent extends BlazeComponent{
+class ActivityValidationComponent extends BlazeComponent{
     events() {
         return [{
             "click .toggle-equipment-validation-comments-list": this.switchEquipmentListDeveloped,
@@ -11,12 +11,11 @@ class TaskValidationComponent extends BlazeComponent{
     }
 
     template(){
-        return "taskValidation"
+        return "activityValidation"
     }
 
     onCreated() {
         this.EquipmentCommentsListDeveloped = new ReactiveVar(false);
-        this.TimeSlotsCommentsListDeveloped = new ReactiveVar(false);
     }
 
     /**
@@ -54,7 +53,7 @@ class TaskValidationComponent extends BlazeComponent{
     }
 
     /**
-     * @summary Update validation state for one the task part
+     * @summary Update validation state for one the activity part
      * @locus client
      * @param event
      */
@@ -82,4 +81,4 @@ class TaskValidationComponent extends BlazeComponent{
 
 }
 
-TaskValidationComponent.register("TaskValidationComponent");
+ActivityValidationComponent.register("ActivityValidationComponent");

@@ -1,10 +1,65 @@
 <template name="updateActivityForm">
-    {{> UpdateActivityComponent}}
+    {{>UpdateActivityComponent}}
 </template>
 
 <template name="updateActivityComponent">
-    Update activity {{activityDoc.name}}
 
-    {{> quickForm collection="Activities" doc=activityDoc id="updateActivityForm" type="update"}}
+    <div class="update-resource-wrapper-form">
+
+        {{reactiveConstructor}}
+
+        {{# autoForm collection="Activities" doc=this id="updateActivityForm" type="update" autosave=true}}
+
+            <div class="row">
+                <div class="col-md-12">
+                    {{>EditNameComponent collection="Activities" name=name _id=_id}}
+                    {{#if isInRole RolesEnum.ACTIVITYDELETE}}
+                        {{#quickRemoveButton class="btn btn-default delete-activity-button" collection="Activities" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                    {{/if}}
+                </div>
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
+
+                <div class="panel-body">
+                    TODO
+                    <!--{{>ActivityGeneralInformationComponent}}-->
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Equipments</div>
+
+                <div class="panel-body">
+                    TODO
+                    <!--{{>ActivityEquipmentsComponent}}-->
+                </div>
+
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Access Pass</div>
+
+                <div class="panel-body">
+                    TODO
+                    <!--{{>ActivityAccessPassComponent  parentInstance=self}}-->
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Validation</div>
+
+                <div class="panel-body">
+                    {{>ActivityValidationComponent}}
+                </div>
+
+            </div>
+
+
+        {{/autoForm}}
+
+    </div>
 
 </template>

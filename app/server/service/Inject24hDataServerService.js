@@ -114,8 +114,8 @@ export class Inject24hDataServerService {
         this._populateTaskGroups();
         this._populateAssignmentTerms();
         this._populateUser();
+        this._populateActivities();
         this._populateTasks();
-
     }
 
     _populateTeams() {
@@ -493,6 +493,16 @@ export class Inject24hDataServerService {
             }
         });
 
+    }
+
+    _populateActivities(){
+        Activities.insert({
+            name: "Chateau coconuts",
+            teamId: this.communicationTeam,
+            liveEventMasterId: this.hardId,
+            placeId: this.bocalPlace,
+            masterId: this.hardId,
+        });
     }
 
     _populateTasks() {

@@ -1,0 +1,91 @@
+<template name="validationComponent">
+
+    <h4><i class="mdi mdi-wrench"></i> {{validationTypeLabel}} validation</h4>
+
+    <div class="validation-comments-list-header toggle-validation-comments-list" data-toggle="collapse" data-target="#{{validationTypeName}}-validation-comments-list">
+        <!-- Show the expand/collapse icon if there is more than 1 validation states -->
+        <!-- comment between lines are here to avoid a white space between element, keeping a clean code with incrementations -->
+        {{#if isMore validationData.comments.length 1}}
+            <i class="mdi {{#if isCommentListDeveloped}}mdi-chevron-up{{else}} mdi-chevron-down{{/if}}"></i><!--
+        -->{{/if}}<!--
+        -->{{#if isMore validationData.comments.length 0}}<!--
+            --><i class="mdi mdi-wrench mdi-inline {{validationData.comments.[0].stateAfter.toLowerCase}}"></i>
+    {{/if}}
+
+        <!-- Show the first validation state or the "no comment" message -->
+        {{#if validationData.comments}}
+            <span title="{{displayDateTime validationData.comments.[0].creationDate}} : {{validationData.comments.[0].author}} updated {{validationTypeLabel}} validation from {{displayValidationState validationData.comments.[0].stateBefore}} to {{displayValidationState validationData.comments.[0].stateAfter}}  {{#if validationData.comments.[0].content}}with '{{validationData.comments.[0].content}}'{{else}}without any comment{{/if}}">
+                {{displayDateTime validationData.comments.[0].creationDate}} : has been updated to <b>{{displayValidationState validationData.comments.[0].stateAfter}}</b>
+                {{#if validationData.comments.[0].content}}
+                    with "{{validationData.comments.[0].content}}"
+                {{else}}
+                    without any comment
+                {{/if}}
+            </span>
+        {{else}}
+            There are not comments right now but with luck there will be yours soon.
+        {{/if}}
+    </div>
+
+
+    <!-- Show the other validation states -->
+    {{#if isMore validationData.comments.length 1}}
+        <div class="validation-comments-list-body collapse" id="{{validationTypeName}}-validation-comments-list">
+
+            {{#each validationData.comments}}
+                {{#unless equals @index 0}}
+                    <span title="{{displayDateTime creationDate}} : {{author}} updated {{validationTypeLabel}} validation from {{displayValidationState stateBefore}} to {{displayValidationState stateAfter}}  {{#if content}}with '{{content}}'{{else}}without any comment{{/if}}">
+                        <i class="mdi mdi-wrench mdi-inline {{stateAfter.toLowerCase}}"></i>
+                        {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
+                        {{#if content}}
+                            with "{{content}}"
+                        {{else}}
+                            without any comment
+                        {{/if}}
+                        <br>
+                    </span>
+                {{/unless}}
+            {{/each}}
+        </div>
+    {{/if}}
+
+    <!-- if you have the right to type a new comment -->
+    {{#if displayTextArea validationRole validationData.currentState}}
+        {{> DismissibleHelperComponent message="Once you have to review the corresponding section, you can either 'refused' them or 'accepted' them. If refused, user will have to update them and send them again in validation. Once accepted, corresponding section cannot be updated." uniqueId="task-validation-role"}}
+
+        <!-- Input to add a new validation state -->
+        <div class="input-group validation-comment-input">
+            <input type="text" class="form-control validation-new-comment" placeholder="You can type a new comment for {{validationTypeLabel}} validation">
+
+            <!-- button to display -->
+            {{#if equals validationData.currentState "OPEN"}}
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-state="to-be-validated">Ask for validation</span>
+            {{/if}}
+            {{#if equals validationData.currentState "REFUSED"}}
+                <span class="input-group-addon btn btn-primary askforvalidation-button" data-state="to-be-validated">Ask for validation</span>
+            {{/if}}
+            {{#if equals validationData.currentState "TOBEVALIDATED"}}
+                <span class="input-group-addon btn btn-primary refuse-button" data-state="refuse">Refuse</span>
+                <span class="input-group-addon btn btn-primary close-button" data-state="ready">Close</span>
+            {{/if}}
+            {{#if equals validationData.currentState "READY"}}
+                <span class="input-group-addon btn btn-primary refuse-button" data-state="refuse">Refuse</span>
+            {{/if}}
+
+        </div>
+    {{else}}
+        <div class="validation-comment-input">
+            {{> DismissibleHelperComponent message="Once you work is done you can 'Ask for validation', a responsible user will review your needs and either 'refused' them or 'accept them'. Once accepted, it cannot be updated." uniqueId="task-validation-norole"}}
+
+            <!-- if you can't because it's in validation -->
+            {{#if equals validationData.currentState "TOBEVALIDATED"}}
+
+                <input type="text" class="form-control tobevalidated-locked-input" placeholder="Task {{validationTypeLabel}} in validation" disabled>
+            {{/if}}
+            <!-- if you can't because it's closed -->
+            {{#if equals validationData.currentState "READY"}}
+                <input type="text" class="form-control ready-locked-input" placeholder="Task {{validationTypeLabel}} closed" disabled>
+            {{/if}}
+        </div>
+    {{/if}}
+</template>

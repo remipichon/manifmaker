@@ -85,4 +85,64 @@ Schemas.Activities = new SimpleSchema({
             type: "hidden",
         }
     },
+    equipments: {
+        label: "Activity equipments",
+        type: [Schemas.EquipmentAsked],
+        custom(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if(!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+        },
+        optional: true,
+        autoValue: function () {
+            if(this.isInsert){
+                //initialize all equipment to 0 quantity
+                return _.map(Equipments.find({targetUsage:{$in:[EquipementTargetUsage.BOTH,EquipementTargetUsage.TASK]}}).fetch(),function(item){return {equipmentId: item._id, quantity: 0};})
+            }
+        }
+    },
+    powerSupplyId :{
+        label: "Activity power supply",
+        type: SimpleSchema.RegEx.Id,
+        optional: true,
+        defaultValue: null,
+        custom(){
+            if (this.isUpdate) {
+                if(this.value !== null && !PowerSupplies.findOne(this.value)) return "unknownId"
+                var activity = Activities.findOne(this.docId);
+                if(!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allPowerSuppliesOptions
+            }
+        }
+    },
+    waterSupplyId :{
+        label: "Activity water supply",
+        type: SimpleSchema.RegEx.Id,
+        optional: true,
+        defaultValue: null,
+        custom(){
+            if (this.isUpdate) {
+                if(this.value !== null && !WaterSupplies.findOne(this.value)) return "unknownId"
+                var activity = Activities.findOne(this.docId);
+                if(!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allWaterSuppliesOptions
+            }
+        }
+    }
+
 });
