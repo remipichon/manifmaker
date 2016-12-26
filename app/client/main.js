@@ -33,6 +33,7 @@ Meteor.startup(function () {
     Meteor.subscribe("roles");
     Meteor.subscribe("equipment-categories");
     Meteor.subscribe("equipment-storages");
+    Meteor.subscribe("access-points");
     Meteor.subscribe("equipments");
     Meteor.subscribe("water-supplies");
     Meteor.subscribe("water-disposals");

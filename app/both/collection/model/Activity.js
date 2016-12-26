@@ -1,6 +1,67 @@
 import {Schemas} from './SchemasHelpers'
 import "/both/collection/model/T-Validation.js"
 
+Schemas.AccessPass = new SimpleSchema({
+    beneficiaries: {
+        type: String,
+        label: "Beneficiaries"
+    },
+    start: {
+        type: Date,
+        label: "Access Pass Start Date",
+        custom: function () {
+            var start, end;
+
+            end = new moment(this.field(this.key.replace("start", "") + 'end').value);
+
+            start = new moment(this.value);
+
+            if (start.isAfter(end)) {
+                return "startAfterEnd";
+            }
+
+        },
+        autoform: {
+            type: "datetime-local",
+        }
+    },
+    end: {
+        type: Date,
+        label: "Access Pass End Date",
+        custom: function () {
+            var start, end;
+
+            start = new moment(this.field(this.key.replace("end", "") + 'start').value);
+
+            end = new moment(this.value);
+
+            if (end.isBefore(start)) {
+                return "endBeforeStart";
+            }
+        },
+        autoform: {
+            type: "datetime-local",
+        }
+    },
+    recipientName: {
+        type: String,
+        label: "Beneficiaries"
+    },
+    recipientPhoneNumber: {
+        type: String,
+        label: "recipientPhoneNumber"
+    },
+    accessPointGranted: {
+        label: "Access Pass Access Point Granted",
+        type: [SimpleSchema.RegEx.Id],
+        custom(){
+            this.value = _.compact(this.value);
+            if(AccessPoints.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
+                return "unknownIdOrDuplicateId"
+        }
+    },
+});
+
 Schemas.Activities = new SimpleSchema({
     name: {
         type: String,
@@ -143,6 +204,11 @@ Schemas.Activities = new SimpleSchema({
                 options: Schemas.helpers.allWaterSuppliesOptions
             }
         }
-    }
+    },
+    accessPasses: {
+        label: "Activities Access Passes",
+        type: [Schemas.AccessPass],
+        optional: true
+    },
 
 });

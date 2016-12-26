@@ -19,7 +19,8 @@ AllCollections = {
     WaterSupplies: WaterSupplies,
     WaterDisposals: WaterDisposals,
     PowerSupplies: PowerSupplies,
-    EquipmentStorages: EquipmentStorages
+    EquipmentStorages: EquipmentStorages,
+    AccessPoints: AccessPoints,
 };
 
 var confMakerReactiveTables = [];

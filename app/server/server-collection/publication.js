@@ -221,4 +221,14 @@ Meteor.startup(function () {
         return Settings.find({});
     });
 
+    /**
+     * @memberOf Meteor_Publish
+     * @locus server
+     * @summary Access Point publication. No query, publish all Access Point data.
+     * @returns {Collection}
+     */
+    Meteor.publish("access-points", function () {
+        return AccessPoints.find({});
+    });
+
 });

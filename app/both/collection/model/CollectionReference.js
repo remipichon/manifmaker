@@ -787,3 +787,53 @@ Schemas.references.EquipmentStorages = new SimpleSchema({
 EquipmentStorages = new Mongo.Collection("equipment_storages");
 EquipmentStorages.attachSchema(Schemas.references.EquipmentStorages);
 
+/**
+ * @memberOf Route.collectionReference
+ * @summary Teams option to automatically generate routes and forms
+ * @description see code to get the values
+ */
+Schemas.references.options.AccessPoints = {
+    PLURAL_REFERENCE_URL: "access-points",
+    REFERENCE_URL: "access-point",
+    REFERENCE_COLLECTION_NAME: "AccessPoints",
+    REFERENCE_MONGO_COLLECTION_NAME: "AccessPoints",
+    REFERENCE_LABEL: "Access Points"
+};
+Schemas.references.AccessPoints = new SimpleSchema({
+    name: {
+        type: String,
+        label: "Access Point  Name",
+        max: 100
+    },
+    selectedImage:{
+      type: String,
+        label: "Access Point Selected image"
+    },
+    notSelectedImage:{
+        type: String,
+        label: "Access Point Not Selected image"
+    },
+    type: {
+        type: String,
+        label: "Access Point type",
+        autoValue: function(){
+            return "AccessPoints"
+        }
+    },
+    baseUrl: {
+        type: String,
+        label: "Access Point base URL",
+        autoValue: function(){
+            return "access-point"
+        }
+    }
+});
+/**
+ * @memberOf Collection
+ * @summary AccessPoints collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+AccessPoints = new Mongo.Collection("access_points");
+AccessPoints.attachSchema(Schemas.references.AccessPoints);
+

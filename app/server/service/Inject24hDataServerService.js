@@ -113,6 +113,7 @@ export class Inject24hDataServerService {
         this._populateSkill();
         this._populateTaskGroups();
         this._populateAssignmentTerms();
+        this._populateAccessPoint();
         this._populateUser();
         this._populateActivities();
         this._populateTasks();
@@ -440,6 +441,26 @@ export class Inject24hDataServerService {
 
     }
 
+    _populateAccessPoint(){
+        console.info("inject Access Point");
+
+        this.accessPoint1 = AccessPoints.insert({
+            name: "PS1",
+            selectedImage: "PS1 selected image",
+            notSelectedImage: "PS1 not selected image"
+        });
+        this.accessPoint2 = AccessPoints.insert({
+            name: "PS2",
+            selectedImage: "PS2 selected image",
+            notSelectedImage: "PS2 not selected image"
+        });
+        this.accessPoint3 = AccessPoints.insert({
+            name: "PS3",
+            selectedImage: "PS3 selected image",
+            notSelectedImage: "PS3 not selected image"
+        });
+    }
+
     _populateUser() {
         //users
         console.info("inject Meteor.users");
@@ -502,6 +523,19 @@ export class Inject24hDataServerService {
             liveEventMasterId: this.hardId,
             placeId: this.bocalPlace,
             masterId: this.hardId,
+            accessPasses:[{
+                beneficiaries: "Dagier",
+                start:InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
+                end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 6, 0),
+                recipientName: "Chouffe",
+                recipientPhoneNumber: "0123456789",
+                accessPointGranted:[
+                    this.accessPoint1,
+                    this.accessPoint2,
+                    this.accessPoint3,
+                ]
+
+            }]
         });
     }
 
