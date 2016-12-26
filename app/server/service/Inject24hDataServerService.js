@@ -110,6 +110,7 @@ export class Inject24hDataServerService {
         this._populateEquipment();
         this._populateStorage();
         this._populatePowerSupply();
+        this._populateWaterSupply();
         this._populateSkill();
         this._populateTaskGroups();
         this._populateAssignmentTerms();
@@ -238,6 +239,13 @@ export class Inject24hDataServerService {
         console.info("inject PowerSupplies");
         this.AIPPowerSupply = PowerSupplies.insert({name: "AIP"});
         var GCUPowerSupply = PowerSupplies.insert({name: "GCU"});
+
+    }
+    _populateWaterSupply() {
+        //power supply
+        console.info("inject WaterSupplies");
+        this.AIWaterSupply = WaterSupplies.insert({name: "AIP"});
+        var GCUWaterSupply = WaterSupplies.insert({name: "GCU"});
 
     }
 
