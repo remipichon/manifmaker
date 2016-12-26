@@ -86,6 +86,7 @@ export class InjectDataHelperServerService {
         WaterDisposals.remove({});
         PowerSupplies.remove({});
         EquipmentStorages.remove({});
+        AccessPoints.remove({});
 
         AssignmentTerms.remove({});
     }

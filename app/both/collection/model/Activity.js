@@ -2,10 +2,6 @@ import {Schemas} from './SchemasHelpers'
 import "/both/collection/model/T-Validation.js"
 
 Schemas.AccessPass = new SimpleSchema({
-    beneficiaries: {
-        type: String,
-        label: "Beneficiaries"
-    },
     start: {
         type: Date,
         label: "Access Pass Start Date",
@@ -58,6 +54,11 @@ Schemas.AccessPass = new SimpleSchema({
             this.value = _.compact(this.value);
             if(AccessPoints.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
                 return "unknownIdOrDuplicateId"
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allAccessPointsOptions
+            }
         }
     },
 });

@@ -135,7 +135,7 @@
 </template>
 
 <template name="access-point-update">
-    {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="update" type="update"}}
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.name}}</legend>
             {{> afQuickField name="name"}}

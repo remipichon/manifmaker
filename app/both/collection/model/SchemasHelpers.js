@@ -143,6 +143,18 @@ Schemas.helpers.allEquipmentStoragesOptions  = function () {
     return result;
 };
 
+Schemas.helpers.allAccessPointsOptions  = function () {
+    var list = AccessPoints.find({}).fetch();
+    var result = [];
+    _.each(list, function (item) {
+        result.push({
+            label: item.name,
+            value: item._id
+        });
+    });
+
+    return result;
+};
 
 Schemas.helpers.allUsersOptions = function () {
     var users = Meteor.users.find({}).fetch();
