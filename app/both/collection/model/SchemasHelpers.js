@@ -129,6 +129,32 @@ Schemas.helpers.allPowerSuppliesOptions  = function () {
     return result;
 };
 
+Schemas.helpers.allWaterSuppliesOptions  = function () {
+    var list = WaterSupplies.find({}).fetch();
+    var result = [];
+    _.each(list, function (item) {
+        result.push({
+            label: item.name,
+            value: item._id
+        });
+    });
+
+    return result;
+};
+
+Schemas.helpers.allWaterDisposalsOptions  = function () {
+    var list = WaterDisposals.find({}).fetch();
+    var result = [];
+    _.each(list, function (item) {
+        result.push({
+            label: item.name,
+            value: item._id
+        });
+    });
+
+    return result;
+};
+
 
 Schemas.helpers.allEquipmentStoragesOptions  = function () {
     var list = EquipmentStorages.find({}).fetch();

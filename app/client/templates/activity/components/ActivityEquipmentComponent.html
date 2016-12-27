@@ -11,6 +11,17 @@
                 </div>
             </div>
         {{/if}}
+        {{#if displayItem 'waterDisposalId'}}
+            <div class="col-md-3">
+                <div>
+                    {{> SingleNonMandatorySelectComponent selectLabel="Water disposal" title="Water disposal place"
+                    optionCollection="WaterDisposals" optionValueName="name" optionCollectionIndex="WaterDisposalsIndex"
+                    updateCollection="Activities" updateItemId=activityData._id updateItemPath="waterDisposalId"
+                    readOnly=isEquipmentsReadOnly
+                    }}
+                </div>
+            </div>
+        {{/if}}
         {{#if displayItem 'powerSupplyId'}}
             <div class="col-md-3">
                 <div>

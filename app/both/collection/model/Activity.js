@@ -207,6 +207,26 @@ Schemas.Activities = new SimpleSchema({
             }
         }
     },
+    waterDisposalId :{
+        label: "Activity water disposal",
+        type: SimpleSchema.RegEx.Id,
+        optional: true,
+        defaultValue: null,
+        custom(){
+            if (this.isUpdate) {
+                if(this.value !== null && !WaterDisposals.findOne(this.value)) return "unknownId"
+                var activity = Activities.findOne(this.docId);
+                if(!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)){
+                    return "updateNotAllowed"
+                }
+            }
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allWaterDisposalsOptions
+            }
+        }
+    },
     accessPasses: {
         label: "Activities Access Passes",
         type: [Schemas.AccessPass],
