@@ -517,6 +517,11 @@ Schemas.references.EquipmentCategories = new SimpleSchema({
         label: "Equipment Category Name",
         max: 100
     },
+    extraComputeRule: {
+        type: String,
+        label: "Equipment Category Extra rules (what to do with equipment.extra of this category. Valid values : SUM (extra * quantity)",
+        optional:true
+    },
     type: {   
         type: String,
         label: "Equipment categories type",
@@ -598,6 +603,11 @@ Schemas.references.Equipments = new SimpleSchema({
                 options: Schemas.helpers.allEquipmentCategoriesOptions
             }
         }
+    },
+    extra: {
+        type: String,
+        label: "Equipment specific extra (could be anything, leave empty if no idea)",
+        optional:true
     },
     type: {   
         type: String,

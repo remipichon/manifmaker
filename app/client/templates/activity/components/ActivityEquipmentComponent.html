@@ -39,7 +39,7 @@
         {{#each equipmentsCategories}}
             <div class="col-md-6">
                 <div class="row">
-                    <label>{{name}}</label>
+                    <label>{{name}}{{#if extraComputeRule}} - {{computeEquipmentExtra this}}{{/if}}</label>
                 </div>
                 <div class="row">
                     {{#each equipments this}}

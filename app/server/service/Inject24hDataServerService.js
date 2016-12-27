@@ -153,6 +153,7 @@ export class Inject24hDataServerService {
         this.barriereEquipmentCategory = EquipmentCategories.insert({name: "barrière"});
         this.attacheEquipmentCategory = EquipmentCategories.insert({name: "attache"});
         this.vehiculeEquipmentCategory = EquipmentCategories.insert({name: "véhicule"});
+        this.elecEquipmentCategory = EquipmentCategories.insert({name: "élec", extraComputeRule: "SUM"});
     }
 
     _populateEquipment() {
@@ -223,6 +224,20 @@ export class Inject24hDataServerService {
             quantity: 1,
             targetUsage: EquipementTargetUsage.TASK,
             EquipmentCategories_Id: this.vehiculeEquipmentCategory
+        });
+        this.grandFrigo = Equipments.insert({
+            name: "Grand Frigo",
+            quantity: 3,
+            extra: "30W",
+            targetUsage: EquipementTargetUsage.ACTIVITY,
+            EquipmentCategories_Id: this.elecEquipmentCategory
+        });
+        this.petitFrigo = Equipments.insert({
+            name: "Petit Frigo",
+            quantity: 7,
+            extra: "15W",
+            targetUsage: EquipementTargetUsage.ACTIVITY,
+            EquipmentCategories_Id: this.elecEquipmentCategory
         });
     }
 
