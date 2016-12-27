@@ -26,19 +26,7 @@ export class ValidationService {
             validationState.currentState = validationStateAsked;
             validationState.lastUpdateDate = now;
 
-
-            switch (validationType){
-                case ValidationTypeUrl["time-slot"]:
-                    TargetCollection.update({_id: task._id}, {$set: {timeSlotValidation: validationState}});
-                    break;
-                case ValidationTypeUrl["access-pass"]:
-                    TargetCollection.update({_id: task._id}, {$set: {accessPassValidation: validationState}});
-                    break;
-                case ValidationTypeUrl["equipment"]:
-                    TargetCollection.update({_id: task._id}, {$set: {equipmentValidation: validationState}});
-                    break;
-            }
-
+            TargetCollection.update({_id: task._id}, {$set: { [validationType] : validationState}});
         }
 
         static isUpdateAllowed(state) {

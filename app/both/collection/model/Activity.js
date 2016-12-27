@@ -148,6 +148,15 @@ Schemas.Activities = new SimpleSchema({
             type: "hidden",
         }
     },
+    generalInformationValidation: {
+        type: Schemas.Validation,
+        label: "Activity general information validation",
+        defaultValue: function(){Schemas.Validation.clean({})}(),
+        optional: true,
+        autoform: {
+            type: "hidden",
+        }
+    },
     equipments: {
         label: "Activity equipments",
         type: [Schemas.EquipmentAsked],

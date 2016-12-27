@@ -135,6 +135,7 @@
 
 <template name="validationStateForActivityList">
     <span class="activity-list-filter-wrapper">
+        {{> ValidationStateForListComponent dataValidation=generalInformationValidation validationTypeLabel="General Information" mdiIcon="mdi-information-outline"}}
         {{> ValidationStateForListComponent dataValidation=accessPassValidation validationTypeLabel="Access Pass" mdiIcon="mdi-alert"}}
         {{> ValidationStateForListComponent dataValidation=equipmentValidation validationTypeLabel="Equipments" mdiIcon="mdi-wrench"}}
     </span>

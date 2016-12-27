@@ -8,15 +8,15 @@ class ActivityAccessPassesComponent extends BlazeComponent{
 
     constructor(isReadOnly){
         super();
-        this.isReadOnly = isReadOnly;
+        this.isReadOnlyBool = isReadOnly;
     }
 
-    isAccessPassesUpdateAllowed() {
+    isUpdateAllowed() {
         return ValidationService.isUpdateAllowed(this.data().parentInstance.data().accessPassValidation.currentState);
     }
 
-    isEquipmentsReadOnly() {
-        return this.isReadOnly || !this.isAccessPassesUpdateAllowed();
+    isReadOnly() {
+        return this.isReadOnlyBool || !this.isUpdateAllowed();
     }
 }
 
