@@ -49,9 +49,9 @@
                 <div class="panel-heading">Validation</div>
 
                 <div class="panel-body">
-                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="General Information" validationTypeName="activity-general" validationData=generalInformationValidation validationRole="ACTIVITYGENERALVALIDATION"}}
-                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="Equipment" validationTypeName="equipment" validationData=equipmentValidation validationRole="EQUIPMENTVALIDATION"}}
-                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="Access Pass" validationTypeName="access-pass" validationData=accessPassValidation validationRole="ACCESSPASSVALIDATION"}}
+                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="General Information" validationTypeName="activity-general" validationData=generalInformationValidation validationRole="ACTIVITYGENERALVALIDATION" mdiIcon="mdi-information-outline"}}
+                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="Equipment" validationTypeName="equipment" validationData=equipmentValidation validationRole="EQUIPMENTVALIDATION" mdiIcon="mdi-wrench"}}
+                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="Access Pass" validationTypeName="access-pass" validationData=accessPassValidation validationRole="ACCESSPASSVALIDATION" mdiIcon="mdi-alert"}}
                 </div>
 
             </div>

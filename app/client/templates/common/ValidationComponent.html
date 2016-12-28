@@ -1,6 +1,6 @@
 <template name="validationComponent">
 
-    <h4><i class="mdi mdi-wrench"></i> {{validationTypeLabel}} validation</h4>
+    <h4><i class="mdi {{mdiIcon}}"></i> {{validationTypeLabel}} validation</h4>
 
     <div class="validation-comments-list-header toggle-validation-comments-list" data-toggle="collapse" data-target="#{{validationTypeName}}-validation-comments-list">
         <!-- Show the expand/collapse icon if there is more than 1 validation states -->
@@ -9,7 +9,7 @@
             <i class="mdi {{#if isCommentListDeveloped}}mdi-chevron-up{{else}} mdi-chevron-down{{/if}}"></i><!--
         -->{{/if}}<!--
         -->{{#if isMore validationData.comments.length 0}}<!--
-            --><i class="mdi mdi-wrench mdi-inline {{validationData.comments.[0].stateAfter.toLowerCase}}"></i>
+            --><i class="mdi {{mdiIcon}} mdi-inline {{validationData.comments.[0].stateAfter.toLowerCase}}"></i>
     {{/if}}
 
         <!-- Show the first validation state or the "no comment" message -->
@@ -35,7 +35,7 @@
             {{#each validationData.comments}}
                 {{#unless equals @index 0}}
                     <span title="{{displayDateTime creationDate}} : {{author}} updated {{validationTypeLabel}} validation from {{displayValidationState stateBefore}} to {{displayValidationState stateAfter}}  {{#if content}}with '{{content}}'{{else}}without any comment{{/if}}">
-                        <i class="mdi mdi-wrench mdi-inline {{stateAfter.toLowerCase}}"></i>
+                        <i class="mdi {{mdiIcon}} mdi-inline {{stateAfter.toLowerCase}}"></i>
                         {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
                         {{#if content}}
                             with "{{content}}"
