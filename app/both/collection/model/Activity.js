@@ -53,7 +53,7 @@ Schemas.AccessPass = new SimpleSchema({
         type: [SimpleSchema.RegEx.Id],
         custom(){
             this.value = _.compact(this.value);
-            if(AccessPoints.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
+            if (AccessPoints.find({_id: {$in: this.value}}).fetch().length !== this.value.length)
                 return "unknownIdOrDuplicateId"
         },
         autoform: {
@@ -64,22 +64,66 @@ Schemas.AccessPass = new SimpleSchema({
     },
 });
 
+Schemas.ServiceProvider = new SimpleSchema({
+    name: {
+        label: "Service provider name",
+        type: String,
+        optional: true,
+    },
+    phoneNumber: {
+        type: String,//SimpleSchema.RegEx.Phone,
+        label: "Provider phone",
+        optional: true,
+        defaultValue: null,
+        regEx: /^0{1}\d{10}$/,
+        optional: true,
+    },
+    email: {
+        label: "Provider Email",
+        type: String,
+        regEx: SimpleSchema.RegEx.Email,
+        optional: true,
+    },
+    commentListDeveloped: {
+        label: "Comments about the service provider",
+        type: String,
+        optional: true,
+    },
+
+});
+
 Schemas.Activities = new SimpleSchema({
     name: {
         type: String,
-        label: "Task Name",
+        label: "Activity Name",
         max: 100
     },
     description: {
         type: String,
-        label: "Task Description",
+        label: "Activity Description",
         optional: true
     },
     teamId: {
         type: SimpleSchema.RegEx.Id,
-        label: "Task Team",
+        label: "Activity Team",
         custom: function () {
             if (!Teams.findOne(this.value))
+                return "unknownId";
+            return 1
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allTeamsOptions
+            }
+        }
+    },
+    privilegedTeamId: {
+        type: SimpleSchema.RegEx.Id,
+        label: "Activity Privileged Team (if set, only users with the team will be able so see it)",
+        optional: true,
+        defaultValue: null,
+        custom: function () {
+            if (this.value && !Teams.findOne(this.value))
                 return "unknownId";
             return 1
         },
@@ -117,6 +161,28 @@ Schemas.Activities = new SimpleSchema({
             }
         }
     },
+    start: {
+        type: Date,
+        label: "Activity Start Date",
+        optional: true,
+        autoform: {
+            type: "datetime-local",
+        }
+    },
+    end: {
+        type: Date,
+        label: "Activity End Date",
+        optional: true,
+        autoform: {
+            type: "datetime-local",
+        }
+    },
+    //todo geoloc
+    serviceProvider: {
+        label: "Activity Service Provider",
+        type: Schemas.ServiceProvider,
+        optional: true
+    },
     masterId: {
         type: SimpleSchema.RegEx.Id,
         label: "Task responsible",
@@ -133,7 +199,9 @@ Schemas.Activities = new SimpleSchema({
     accessPassValidation: {
         type: Schemas.Validation,
         label: "Activity access pass validation",
-        defaultValue: function(){Schemas.Validation.clean({})}(),
+        defaultValue: function () {
+            Schemas.Validation.clean({})
+        }(),
         optional: true,
         autoform: {
             type: "hidden",
@@ -142,7 +210,9 @@ Schemas.Activities = new SimpleSchema({
     equipmentValidation: {
         type: Schemas.Validation,
         label: "Activity equipments validation",
-        defaultValue: function(){Schemas.Validation.clean({})}(),
+        defaultValue: function () {
+            Schemas.Validation.clean({})
+        }(),
         optional: true,
         autoform: {
             type: "hidden",
@@ -151,7 +221,9 @@ Schemas.Activities = new SimpleSchema({
     generalInformationValidation: {
         type: Schemas.Validation,
         label: "Activity general information validation",
-        defaultValue: function(){Schemas.Validation.clean({})}(),
+        defaultValue: function () {
+            Schemas.Validation.clean({})
+        }(),
         optional: true,
         autoform: {
             type: "hidden",
@@ -163,29 +235,31 @@ Schemas.Activities = new SimpleSchema({
         custom(){
             if (this.isUpdate) {
                 var activity = Activities.findOne(this.docId);
-                if(!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)){
+                if (!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)) {
                     return "updateNotAllowed"
                 }
             }
         },
         optional: true,
         autoValue: function () {
-            if(this.isInsert){
+            if (this.isInsert) {
                 //initialize all equipment to 0 quantity
-                return _.map(Equipments.find({targetUsage:{$in:[EquipementTargetUsage.BOTH,EquipementTargetUsage.ACTIVITY]}}).fetch(),function(item){return {equipmentId: item._id, quantity: 0};})
+                return _.map(Equipments.find({targetUsage: {$in: [EquipementTargetUsage.BOTH, EquipementTargetUsage.ACTIVITY]}}).fetch(), function (item) {
+                    return {equipmentId: item._id, quantity: 0};
+                })
             }
         }
     },
-    powerSupplyId :{
+    powerSupplyId: {
         label: "Activity power supply",
         type: SimpleSchema.RegEx.Id,
         optional: true,
         defaultValue: null,
         custom(){
             if (this.isUpdate) {
-                if(this.value !== null && !PowerSupplies.findOne(this.value)) return "unknownId"
+                if (this.value !== null && !PowerSupplies.findOne(this.value)) return "unknownId"
                 var activity = Activities.findOne(this.docId);
-                if(!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)){
+                if (!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)) {
                     return "updateNotAllowed"
                 }
             }
@@ -196,16 +270,16 @@ Schemas.Activities = new SimpleSchema({
             }
         }
     },
-    waterSupplyId :{
+    waterSupplyId: {
         label: "Activity water supply",
         type: SimpleSchema.RegEx.Id,
         optional: true,
         defaultValue: null,
         custom(){
             if (this.isUpdate) {
-                if(this.value !== null && !WaterSupplies.findOne(this.value)) return "unknownId"
+                if (this.value !== null && !WaterSupplies.findOne(this.value)) return "unknownId"
                 var activity = Activities.findOne(this.docId);
-                if(!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)){
+                if (!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)) {
                     return "updateNotAllowed"
                 }
             }
@@ -216,16 +290,16 @@ Schemas.Activities = new SimpleSchema({
             }
         }
     },
-    waterDisposalId :{
+    waterDisposalId: {
         label: "Activity water disposal",
         type: SimpleSchema.RegEx.Id,
         optional: true,
         defaultValue: null,
         custom(){
             if (this.isUpdate) {
-                if(this.value !== null && !WaterDisposals.findOne(this.value)) return "unknownId"
+                if (this.value !== null && !WaterDisposals.findOne(this.value)) return "unknownId"
                 var activity = Activities.findOne(this.docId);
-                if(!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)){
+                if (!ValidationService.isUpdateAllowed(activity.equipmentValidation.currentState)) {
                     return "updateNotAllowed"
                 }
             }

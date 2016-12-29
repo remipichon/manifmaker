@@ -1,8 +1,4 @@
 <template name="activityGeneralInformation">
-    <p>isUpdateAllowed : {{isUpdateAllowed}}</p>
-    <p>isReadOnly : {{isReadOnly}}</p>
-
-
     <div class="col-md-3">
         <div>
             {{> SingleSelectComponent selectLabel="Team" title="Update team"
@@ -10,6 +6,14 @@
                     updateCollection="Activities" updateItemId=this._id updateItemPath="teamId" readOnly=readOnly
             }}
         </div>
+
+        <div>
+            {{> SingleSelectComponent selectLabel="Team" title="Update priviliged team (if set, only users with the team will be able so see it)"
+                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                    updateCollection="Activities" updateItemId=this._id updateItemPath="privilegedTeamId" readOnly=readOnly
+            }}
+        </div>
+
 
         <div>
             {{> SingleSelectComponent selectLabel="Place" title="Update place"
@@ -43,5 +47,13 @@
         <div>
             {{> afQuickField name='description' rows=20}}
         </div>
+    </div>
+
+    <div class="col-md-6">
+        {{> afQuickField name='serviceProvider'}}
+    </div>
+
+    <div class="col-md-6">
+        TODO MAP
     </div>
 </template>
