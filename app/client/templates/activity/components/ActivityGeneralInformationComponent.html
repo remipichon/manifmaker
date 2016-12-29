@@ -1,4 +1,47 @@
 <template name="activityGeneralInformation">
     <p>isUpdateAllowed : {{isUpdateAllowed}}</p>
     <p>isReadOnly : {{isReadOnly}}</p>
+
+
+    <div class="col-md-3">
+        <div>
+            {{> SingleSelectComponent selectLabel="Team" title="Update team"
+                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                    updateCollection="Activities" updateItemId=this._id updateItemPath="teamId" readOnly=readOnly
+            }}
+        </div>
+
+        <div>
+            {{> SingleSelectComponent selectLabel="Place" title="Update place"
+                    optionCollection="Places" optionValueName="name" optionCollectionIndex="PlacesIndex"
+                    updateCollection="Activities" updateItemId=this._id updateItemPath="placeId" readOnly=readOnly
+            }}
+        </div>
+
+        {{> DismissibleHelperComponent message="The user responsible for the activity during its raising. He will get notified when activity is updated or validated." uniqueId="user-responsible-update"}}
+
+        <div>
+            {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
+                    optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                    updateCollection="Activities" updateItemId=this._id updateItemPath="masterId" readOnly=readOnly
+            }}
+        </div>
+
+        {{> DismissibleHelperComponent message="The user responsible for the activity during the event. Its contact will be added to planning given to users." uniqueId="live-responsible-update"}}
+
+        <div>
+            <div>
+                {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                        optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                        updateCollection="Activities" updateItemId=this._id updateItemPath="liveEventMasterId" readOnly=readOnly
+                }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        {{> DismissibleHelperComponent message="Be talktative and concise. This description should describe everything that has to be done" uniqueId="description-update"}}
+        <div>
+            {{> afQuickField name='description' rows=20}}
+        </div>
+    </div>
 </template>
