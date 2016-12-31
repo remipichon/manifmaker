@@ -44,8 +44,15 @@ export class Inject24hDataServerService {
     addSettings() {
         Settings.update(Settings.findOne()._id, {
             $set: {createAccountDefaultTeam: Teams.findOne({name: "soft"})._id}
-        })
-
+        });
+        Settings.update(Settings.findOne()._id, {
+            $set: {
+                defaultActivityMapsLatLng: {
+                    lat: 45.783642,
+                    lng: 4.872970
+                }
+            }
+        });
     }
 
     _injectGroupRoles() {

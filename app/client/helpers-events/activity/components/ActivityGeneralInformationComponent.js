@@ -18,6 +18,14 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
     isReadOnly() {
         return this.isReadOnlyBool || !this.isUpdateAllowed();
     }
+
+    defaultLat(){
+        return Settings.findOne().defaultActivityMapsLatLng.lat;
+    }
+
+    defaultLng(){
+        return Settings.findOne().defaultActivityMapsLatLng.lng;
+    }
 }
 
 ActivityGeneralInformationComponent.register("ActivityGeneralInformationComponent");

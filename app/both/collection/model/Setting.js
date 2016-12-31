@@ -47,5 +47,19 @@ Schemas.Settings = new SimpleSchema({
                 options: Schemas.helpers.allGroupRolesOptions
             }
         }
+    },
+    defaultActivityMapsLatLng: {
+        label: "Default Activity Maps Geoloc",
+        type: Object,
+        optional: true,
+        autoform: {
+            type: 'map',
+        }
+    },
+    'defaultActivityMapsLatLng.lat': {
+        type: String
+    },
+    'defaultActivityMapsLatLng.lng': {
+        type: String
     }
 });

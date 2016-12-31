@@ -49,11 +49,30 @@
         </div>
     </div>
 
-    <div class="col-md-6">
-        {{> afQuickField name='serviceProvider'}}
+    <div class="row">
+        <div class="col-md-2">
+            From *
+        </div>
+        <div class="col-md-4">
+            {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=createTimeSlotDefaultStartDate.get updateDateCallback=updateTimeSlotStartDate}}
+        </div>
+        <div class="col-md-2">
+            to *
+        </div>
+        <div class="col-md-4">
+            {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=createTimeSlotDefaultEndDate.get updateDateCallback=updateTimeSlotEndDate}}
+        </div>
     </div>
 
-    <div class="col-md-6">
-        TODO MAP
+    <div class="row">
+
+        <div class="col-md-6">
+            {{> afQuickField name='serviceProvider'}}
+        </div>
+
+        <div class="col-md-6">
+            {{> afQuickField name="location" height="400px" defaultLat=defaultLat defaultLng=defaultLng}}
+        </div>
+
     </div>
 </template>

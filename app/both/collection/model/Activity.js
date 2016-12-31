@@ -177,7 +177,16 @@ Schemas.Activities = new SimpleSchema({
             type: "datetime-local",
         }
     },
-    //todo geoloc
+    location: {
+        type: String,
+        optional: true,
+        autoform: {
+            type: 'map',
+            afFieldInput: {
+                zoom: 16
+            }
+        }
+    },
     serviceProvider: {
         label: "Activity Service Provider",
         type: Schemas.ServiceProvider,

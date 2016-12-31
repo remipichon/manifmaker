@@ -107,5 +107,10 @@ Meteor.startup(function () {
         onClose: _.noop 
     });
 
+    GoogleMaps.load({
+        key: 'AIzaSyCFSHZqW6l7IpFjnybMYIfH6_9mdBGmfgE',
+    });
+
+
 });
 
