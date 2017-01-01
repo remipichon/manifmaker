@@ -169,8 +169,9 @@ Schemas.Activities = new SimpleSchema({
     },
     start: {
         type: Date,
-        label: "Activity Start Date",
+        label: "Activity Start Date" ,
         optional: true,
+        defaultValue: null,
         autoform: {
             type: "datetime-local",
         }
@@ -179,6 +180,7 @@ Schemas.Activities = new SimpleSchema({
         type: Date,
         label: "Activity End Date",
         optional: true,
+        defaultValue: null,
         autoform: {
             type: "datetime-local",
         }

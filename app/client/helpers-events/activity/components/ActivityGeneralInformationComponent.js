@@ -26,6 +26,29 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
     defaultLng(){
         return Settings.findOne().defaultActivityMapsLatLng.lng;
     }
+
+    updateDateCallbackStartDate(newOption) {
+        return _.bind(function(newOption) {
+            var _time = new moment(newOption);
+            Activities.update(this.data()._id,{
+                $set:{
+                    start: _time.toDate()
+                }
+            })
+        },this);
+    }
+
+
+    updateDateCallbackEndDate(date){
+        return _.bind(function(newOption) {
+            var _time = new moment(newOption);
+            Activities.update(this.data()._id,{
+                $set:{
+                    end: _time.toDate()
+                }
+            })
+        },this);
+    }
 }
 
 ActivityGeneralInformationComponent.register("ActivityGeneralInformationComponent");

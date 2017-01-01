@@ -51,9 +51,9 @@
 
     <div class="col-md-3">
             From *
-            {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=createTimeSlotDefaultStartDate.get updateDateCallback=updateTimeSlotStartDate}}
+            {{>DateTimePickerComponent class="date-time-picker-update-activity-start" date=start updateDateCallback=updateDateCallbackStartDate}}
             to *
-            {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=createTimeSlotDefaultEndDate.get updateDateCallback=updateTimeSlotEndDate}}
+            {{>DateTimePickerComponent class="date-time-picker-update-activity-end" date=end updateDateCallback=updateDateCallbackEndDate}}
     </div>
 
         <div class="col-md-6">
