@@ -47,3 +47,7 @@ juliancwirko:s-alert
 juliancwirko:s-alert-stackslide
 mizzao:bootboxjs
 yogiben:autoform-map
+cfs:gridfs
+cfs:standard-packages
+yogiben:autoform-file
+cfs:filesystem

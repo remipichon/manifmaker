@@ -231,4 +231,8 @@ Meteor.startup(function () {
         return AccessPoints.find({});
     });
 
+    Meteor.publish("images", function () {
+        return Images.find({});
+    });
+
 });

@@ -187,6 +187,88 @@ Schemas.Activities = new SimpleSchema({
             }
         }
     },
+    applicationData: {
+        type: Object,
+        label: "Application Data",
+        optional: true,
+        defaultValue: {}
+    },
+    'applicationData.description': {
+        type: String,
+        label: "Application Data Description",
+        optional: true
+    },
+    'applicationData.categoryId': {
+        type: SimpleSchema.RegEx.Id,
+        label: "Application Data Category",
+        optional: true, //todo remove
+        custom: function () {
+            //TODO ApplicationCategories
+            // if (!ApplicationCategories.findOne(this.value))
+            //     return "unknownId";
+            return 1
+        },
+        // autoform: {
+        //     afFieldInput: {
+        //         options: Schemas.helpers.allTeamsOptions
+        //     }
+        // }
+    },
+
+    'applicationData.pictures': {
+        type: [String],
+        optional: true,
+        label: "Add some pictures"
+    },
+    'applicationData.pictures.$': {
+        type: String,
+        optional: true,
+        autoform: {
+            afFieldInput: {
+                type: 'fileUpload',
+                collection: 'Images',
+                label: 'Choose file'//optional
+            }
+        },
+    },
+    webData: {
+        type: Object,
+        label: "Web Data",
+        optional: true,
+        defaultValue: null
+    },
+    'webData.description': {
+        type: String,
+        optional: true,
+        label: "Web Data Description",
+    },
+    'webData.categoryId': {
+        type: SimpleSchema.RegEx.Id,
+        label: "Web Data Category",
+        optional: true, //todo remove
+        custom: function () {
+            //TODO WebCategories
+            // if (!ApplicationCategories.findOne(this.value))
+            //     return "unknownId";
+            return 1
+        },
+        // autoform: {
+        //     afFieldInput: {
+        //         options: Schemas.helpers.allTeamsOptions
+        //     }
+        // }
+    },
+    'webData.picture': {
+        type: String,
+        optional: true,
+        autoform: {
+            afFieldInput: {
+                type: 'fileUpload',
+                collection: 'Images',
+                label: 'Choose file'//optional
+            }
+        },
+    },
     serviceProvider: {
         label: "Activity Service Provider",
         type: Schemas.ServiceProvider,

@@ -1,5 +1,9 @@
 import {Schemas} from './model/SchemasHelpers'
 
+Images = new FS.Collection("images", {
+    stores: [new FS.Store.FileSystem("images", {path: "~/uploads"})]
+});
+
 /**
  * All MongoDB server collections (see {@link Meteor_Publish} to know what is published)
  * @namespace Collection

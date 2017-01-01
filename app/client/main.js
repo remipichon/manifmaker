@@ -21,6 +21,7 @@ Accounts.onEmailVerificationLink(function(token,done){
 
 Meteor.startup(function () {
 
+    Meteor.subscribe("images");
     Meteor.subscribe("skills");
     Meteor.subscribe("users");
     Meteor.subscribe("tasks");
