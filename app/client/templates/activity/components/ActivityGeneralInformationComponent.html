@@ -1,19 +1,19 @@
 <template name="activityGeneralInformation">
     <div class="col-md-3">
         <div>
-            {{> afQuickField name="limitToTeam"}}
+            {{> afQuickField name="limitToTeam" readOnly=isReadOnly}}
         </div>
         <div>
             {{> SingleSelectComponent selectLabel="Team" title="Update team"
                     optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                    updateCollection="Activities" updateItemId=this._id updateItemPath="teamId" readOnly=readOnly
+                    updateCollection="Activities" updateItemId=this._id updateItemPath="teamId" readOnly=isReadOnly
             }}
         </div>
 
         <div>
             {{> SingleSelectComponent selectLabel="Team" title="Update priviliged team (if set, only users with the team will be able so see it)"
                     optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                    updateCollection="Activities" updateItemId=this._id updateItemPath="privilegedTeamId" readOnly=readOnly
+                    updateCollection="Activities" updateItemId=this._id updateItemPath="privilegedTeamId" readOnly=isReadOnly
             }}
         </div>
 
@@ -21,7 +21,7 @@
         <div>
             {{> SingleSelectComponent selectLabel="Place" title="Update place"
                     optionCollection="Places" optionValueName="name" optionCollectionIndex="PlacesIndex"
-                    updateCollection="Activities" updateItemId=this._id updateItemPath="placeId" readOnly=readOnly
+                    updateCollection="Activities" updateItemId=this._id updateItemPath="placeId" readOnly=isReadOnly
             }}
         </div>
 
@@ -30,7 +30,7 @@
         <div>
             {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
                     optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                    updateCollection="Activities" updateItemId=this._id updateItemPath="masterId" readOnly=readOnly
+                    updateCollection="Activities" updateItemId=this._id updateItemPath="masterId" readOnly=isReadOnly
             }}
         </div>
 
@@ -40,7 +40,7 @@
             <div>
                 {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
                         optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                        updateCollection="Activities" updateItemId=this._id updateItemPath="liveEventMasterId" readOnly=readOnly
+                        updateCollection="Activities" updateItemId=this._id updateItemPath="liveEventMasterId" readOnly=isReadOnly
                 }}
             </div>
         </div>
@@ -54,30 +54,33 @@
 
     <div class="col-md-3">
             From *
-            {{>DateTimePickerComponent class="date-time-picker-update-activity-start" date=start updateDateCallback=updateDateCallbackStartDate}}
+            {{>DateTimePickerComponent class="date-time-picker-update-activity-start" readOnly=isReadOnly date=start updateDateCallback=updateDateCallbackStartDate}}
             to *
-            {{>DateTimePickerComponent class="date-time-picker-update-activity-end" date=end updateDateCallback=updateDateCallbackEndDate}}
+            {{>DateTimePickerComponent class="date-time-picker-update-activity-end" readOnly=isReadOnly date=end updateDateCallback=updateDateCallbackEndDate}}
     </div>
 
         <div class="col-md-6">
-            {{> afQuickField name='serviceProvider'}}
+            {{> afQuickField name='serviceProvider' readOnly=isReadOnly}}
         </div>
 
-        <div class="col-md-6">
-            {{> afQuickField name="location" height="400px" defaultLat=defaultLat defaultLng=defaultLng}}
-            <button type="submit" class="btn btn-primary">Update localisation</button>
-        </div>
+    <div class="col-md-6">
+        {{> afQuickField name="location" height="400px" defaultLat=defaultLat defaultLng=defaultLng readOnly=isReadOnly}}
+        {{#unless isReadOnly}}
+            <button type="submit" class="btn btn-primary">Update localisation</button>{{/unless}}
+    </div>
 
     <div class="col-md-12">
 
         <div class="col-md-6">
-            {{> afQuickField name='webData'}}
-            <button type="submit" class="btn btn-primary">Update Web Data</button>
+            {{> afQuickField name='webData' readOnly=isReadOnly}}
+            {{#unless isReadOnly}}
+                <button type="submit" class="btn btn-primary">Update Web Data</button>{{/unless}}
         </div>
 
         <div class="col-md-6">
-            {{> afQuickField name="applicationData"}}
-            <button type="submit" class="btn btn-primary">Update Application Data</button>
+            {{> afQuickField name="applicationData" readOnly=isReadOnly}}
+            {{#unless isReadOnly}}
+                <button type="submit" class="btn btn-primary">Update Application Data</button>{{/unless}}
         </div>
 
     </div>
