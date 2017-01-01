@@ -62,7 +62,7 @@ export class Inject24hDataServerService {
         });
         this.hardGroupRole = GroupRoles.insert({
             name: "hard",
-            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.TASKREAD, RolesEnum.TASKWRITE]
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
         });
         this.softGroupRole = GroupRoles.insert({
             name: "soft",

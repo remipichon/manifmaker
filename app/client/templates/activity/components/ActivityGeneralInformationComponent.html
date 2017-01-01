@@ -1,6 +1,9 @@
 <template name="activityGeneralInformation">
     <div class="col-md-3">
         <div>
+            {{> afQuickField name="limitToTeam"}}
+        </div>
+        <div>
             {{> SingleSelectComponent selectLabel="Team" title="Update team"
                     optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                     updateCollection="Activities" updateItemId=this._id updateItemPath="teamId" readOnly=readOnly

@@ -52,8 +52,21 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("activities", function () {
-        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ACTIVITYREAD,"Activity"))
-            return Activities.find({});
+        if (SecurityServiceServer.grantAccessToCollection(this.userId, RolesEnum.ACTIVITYREAD, "Activity")) {
+            var user = Meteor.users.findOne(this.userId);
+            console.log("publish activities",this.userId);
+            return Activities.find({
+                $or: [
+                    {limitToTeam: false},
+                    {
+                        limitToTeam: true,
+                        teamId: {
+                            $in: user.teams
+                        }
+                    }
+                ]
+            });
+        }
         else
             return [];
     });

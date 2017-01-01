@@ -109,6 +109,11 @@ Schemas.Activities = new SimpleSchema({
         label: "Activity Description",
         optional: true
     },
+    limitToTeam: {
+        label: "Is the Activity private to the responsible team ?",
+        type: Boolean,
+        defaultValue: false
+    },
     teamId: {
         type: SimpleSchema.RegEx.Id,
         label: "Activity Team",

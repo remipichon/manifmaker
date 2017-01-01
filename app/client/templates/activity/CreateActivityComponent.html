@@ -19,6 +19,10 @@
                     </div>
 
                     <div>
+                        {{> afQuickField name="limitToTeam"}}
+                    </div>
+
+                    <div>
                         {{> SingleSelectComponent selectLabel="Team" title="Update team"
                         optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
                         updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teamId"
