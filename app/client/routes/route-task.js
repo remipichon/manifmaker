@@ -26,7 +26,7 @@ Router.route('/tasks', function () {
             console.log("Route /tasks : waiting users and tasks data"); //TODO add a spinner
         }
     },
-    {controller: ManifMakerRouterController,name: 'task.list'}
+    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task.list'}
 )
 
 /**
@@ -52,7 +52,7 @@ Router.route('/task', function () {
         }
 
     },
-    {controller: ManifMakerRouterController,name: 'task.create'}
+    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task.create'}
 );
 
 /**
@@ -79,7 +79,7 @@ Router.route('/task/:_id', function () {
                 }, to: 'mainContent'
             });
     },
-    {controller: ManifMakerRouterController,name: 'task.update'}
+    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task.update'}
 );
 
 
@@ -107,5 +107,5 @@ Router.route('/task/:_id/read', function () {
             });
 
     },
-    {controller: ManifMakerRouterController, name: 'task.read'}
+    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController, name: 'task.read'}
 );

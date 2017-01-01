@@ -1,0 +1,90 @@
+<template name="insertActivityForm">
+    {{>CreateActivityComponent}}
+</template>
+
+<template name="createActivityComponent">
+    {{validateForm}}
+
+    <div class="panel panel-info">
+        <div class="panel-heading">General information</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <div class="form-group">
+                        <label for="first_name" data-required>Activity name *</label>
+                        <br>
+                        <input placeholder="Activity name" data-key="name" type="text" class="validate form-control">
+                    </div>
+
+                    <div>
+                        {{> afQuickField name="limitToTeam"}}
+                    </div>
+
+                    <div>
+                        {{> SingleSelectComponent selectLabel="Team" title="Update team"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teamId"
+                        nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                        }}
+                    </div>
+
+
+                    <div>
+                        {{> SingleSelectComponent selectLabel="User responsible" title="Activity responsible"
+                        optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="masterId"
+                        nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                        }}
+                    </div>
+
+                    <div>
+                        <div>
+                            {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                            optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                            updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="liveEventMasterId"
+                            nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                            }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            {{> SingleSelectComponent selectLabel="Rendez-vous point" title="Rendez-vous point"
+                            optionCollection="Places" optionValueName="name" optionCollectionIndex="PlacesIndex"
+                            updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="placeId"
+                            }}
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-9">
+                    <div>
+                        <label>Description</label>
+                        <textarea name="description" rows="17" data-key="description" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            {{#if errors}}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <div><strong>Some errors remains in the form</strong></div>
+                            {{#each errors}}
+                                <div>{{message}}</div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+    </div>
+
+    <div class="col-md-2 col-md-offset-5">
+        <button type="submit" class="btn btn-primary">Insert</button>
+    </div>
+</template>

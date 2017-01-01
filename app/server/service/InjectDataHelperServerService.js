@@ -73,6 +73,7 @@ export class InjectDataHelperServerService {
 
         Assignments.direct.remove({});
         Tasks.remove({});
+        Activities.remove({});
         Settings.remove({});
         Places.remove({});
         Teams.remove({});
@@ -85,6 +86,7 @@ export class InjectDataHelperServerService {
         WaterDisposals.remove({});
         PowerSupplies.remove({});
         EquipmentStorages.remove({});
+        AccessPoints.remove({});
 
         AssignmentTerms.remove({});
     }

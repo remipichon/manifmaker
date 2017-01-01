@@ -1,0 +1,64 @@
+<template name="updateActivityForm">
+    {{>UpdateActivityComponent}}
+</template>
+
+<template name="updateActivityComponent">
+
+    <div class="update-resource-wrapper-form">
+
+        {{reactiveConstructor}}
+
+        {{# autoForm collection="Activities" doc=this id="updateActivityForm" type="update" autosave=true}}
+
+            <div class="row">
+                <div class="col-md-12">
+                    {{>EditNameComponent collection="Activities" name=name _id=_id}}
+                    {{#if isInRole RolesEnum.ACTIVITYDELETE}}
+                        {{#quickRemoveButton class="btn btn-default delete-activity-button" collection="Activities" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                    {{/if}}
+                </div>
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">General information</div>
+
+                <div class="panel-body">
+                    {{>ActivityGeneralInformationComponent parentInstance=self}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Equipments</div>
+
+                <div class="panel-body">
+                    {{>ActivityEquipmentsComponent}}
+                </div>
+
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Access Pass</div>
+
+                <div class="panel-body">
+                    {{>ActivityAccessPassesComponent  parentInstance=self}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Validation</div>
+
+                <div class="panel-body">
+                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="General Information" validationTypeName="activity-general" validationData=generalInformationValidation validationRole="ACTIVITYGENERALVALIDATION" mdiIcon="mdi-information-outline"}}
+                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="Equipment" validationTypeName="equipment" validationData=equipmentValidation validationRole="EQUIPMENTVALIDATION" mdiIcon="mdi-wrench"}}
+                    {{> ValidationComponent targetCollection="Activities" targetCollectionWriteRole="ACTIVITYWRITE" targetItemId=_id validationTypeLabel="Access Pass" validationTypeName="access-pass" validationData=accessPassValidation validationRole="ACCESSPASSVALIDATION" mdiIcon="mdi-alert"}}
+                </div>
+
+            </div>
+
+
+        {{/autoForm}}
+
+    </div>
+
+</template>

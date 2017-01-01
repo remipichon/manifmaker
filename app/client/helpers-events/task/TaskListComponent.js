@@ -322,7 +322,7 @@ export class TaskListComponent extends BlazeComponent {
                 headerClass: 'col-sm-2 text-center',
                 sortable: false,
                 searchable: false, //TODO doesn't work (try with a teamId)
-                tmpl: Template.validationStateForList,
+                tmpl: Template.validationStateForTaskList,
                 fnAdjustColumnSizing: true
             });
     }

@@ -28,7 +28,7 @@
 
     </div>
 
-    <div class="task-list-filter-wrapper">
+    <div class="resource-list-filter-wrapper">
         <div class="row">
 
             <div class="col-md-3">
@@ -150,70 +150,9 @@
 
 
 
-<template name="validationStateForList">
+<template name="validationStateForTaskList">
     <span class="task-list-filter-wrapper">
-
-        {{#if equals timeSlotValidation.currentState "OPEN"}}
-           <span class="open" title="Time slots are open for anything">
-               <i class="mdi mdi-clock mdi-big"></i>
-            </span>
-        {{/if}}
-        {{#if equals timeSlotValidation.currentState "TOBEVALIDATED"}}
-            <span class="tobevalidated"  title='Time slots has been submitted to validation by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}} with "{{lastComment "content" "timeSlotValidation"}}"'>
-               <i class="mdi mdi-clock mdi-big"></i>
-            </span>
-        {{/if}}
-        {{#if equals timeSlotValidation.currentState "REFUSED"}}
-            <span class="refused" title='Time slots has been refused by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}} with "{{lastComment "content" "timeSlotValidation"}}"'>
-               <i class="mdi mdi-clock mdi-big"></i>
-            </span>
-        {{/if}}
-        {{#if equals timeSlotValidation.currentState "READY"}}
-            <span class="ready" title='Time slots has been validated by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime timeSlotValidation.lastUpdateDate}}'>
-               <i class="mdi mdi-clock mdi-big"></i>
-            </span>
-        {{/if}}
-
-        {{#if equals equipmentValidation.currentState "OPEN"}}
-            <span class="open" title="Equipments are open for anything">
-                <i class="mdi mdi-wrench mdi-big"></i>
-            </span>
-        {{/if}}
-        {{#if equals equipmentValidation.currentState "TOBEVALIDATED"}}
-            <span class="tobevalidated" title='Equipments has been submitted to validation by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime equipmentValidation.lastUpdateDate}} with "{{lastComment "content" "equipmentValidation"}}"'>
-                <i class="mdi mdi-wrench mdi-big"></i>
-            </span>
-        {{/if}}
-        {{#if equals equipmentValidation.currentState "REFUSED"}}
-            <span class="refused" title='Equipments has been refused by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime equipmentValidation.lastUpdateDate}} with "{{lastComment "content" "equipmentValidation"}}"'>
-                <i class="mdi mdi-wrench mdi-big"></i>
-            </span>
-        {{/if}}
-        {{#if equals equipmentValidation.currentState "READY"}}
-            <span class="ready" title='Equipments has been validated by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime equipmentValidation.lastUpdateDate}}'>
-                <i class="mdi mdi-wrench mdi-big"></i>
-            </span>
-        {{/if}}
-
-        {{#if equals accessPassValidation.currentState "OPEN"}}
-            <span class="open" title="Access Pass are open for anything">
-                <i class="mdi mdi-alert mdi-big"></i>
-            </span>
-        {{/if}}
-        {{#if equals accessPassValidation.currentState "TOBEVALIDATED"}}
-            <span class="tobevalidated" title='Access Pass have been submitted to validation by {{lastComment "author" "accessPassValidation"}} on {{displayDateTime accessPassValidation.lastUpdateDate}} with "{{lastComment "content" "accessPassValidation"}}"'>
-                <i class="mdi mdi-alert mdi-big"></i>
-            </span>
-        {{/if}}
-        {{#if equals accessPassValidation.currentState "REFUSED"}}
-            <span class="refused" title='Access Pass have been refused by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime accessPassValidation.lastUpdateDate}} with "{{lastComment "content" "accessPassValidation"}}"'>
-                 <i class="mdi mdi-alert mdi-big"></i>
-            </span>
-        {{/if}}
-        {{#if equals accessPassValidation.currentState "READY"}}
-            <span class="ready" title='Access Pass have been validated by {{lastComment "author" "equipmentValidation"}} on {{displayDateTime accessPassValidation.lastUpdateDate}}'>
-                 <i class="mdi mdi-alert mdi-big"></i>
-            </span>
-        {{/if}}
+        {{> ValidationStateForListComponent dataValidation=equipmentValidation validationTypeLabel="Equipments" mdiIcon="mdi-wrench"}}
+        {{> ValidationStateForListComponent dataValidation=timeSlotValidation validationTypeLabel="Time slots" mdiIcon="mdi-clock"}}
     </span>
 </template>

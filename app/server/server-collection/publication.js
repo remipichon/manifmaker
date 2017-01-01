@@ -42,6 +42,36 @@ Meteor.startup(function () {
             return [];
     });
 
+
+    /**
+     * @memberOf Meteor_Publish
+     * @locus server
+     * @summary Activity publication. No query, publish all Tasks data.
+     * @description
+     * Role required : ACTIVITYREAD
+     * @returns {Collection}
+     */
+    Meteor.publish("activities", function () {
+        if (SecurityServiceServer.grantAccessToCollection(this.userId, RolesEnum.ACTIVITYREAD, "Activity")) {
+            var user = Meteor.users.findOne(this.userId);
+            console.log("publish activities",this.userId);
+            return Activities.find({
+                $or: [
+                    {limitToTeam: false},
+                    {
+                        limitToTeam: true,
+                        teamId: {
+                            $in: user.teams
+                        }
+                    }
+                ]
+            });
+        }
+        else
+            return [];
+    });
+
+
     /**
      * @memberOf Meteor_Publish
      * @locus server
@@ -202,6 +232,20 @@ Meteor.startup(function () {
      */
     Meteor.publish("settings", function () {
         return Settings.find({});
+    });
+
+    /**
+     * @memberOf Meteor_Publish
+     * @locus server
+     * @summary Access Point publication. No query, publish all Access Point data.
+     * @returns {Collection}
+     */
+    Meteor.publish("access-points", function () {
+        return AccessPoints.find({});
+    });
+
+    Meteor.publish("images", function () {
+        return Images.find({});
     });
 
 });

@@ -33,6 +33,32 @@ SimpleSchema.messages({
 
 Schemas.helpers = {};
 
+Schemas.EquipmentAsked = new SimpleSchema({
+    equipmentId : {
+        type: SimpleSchema.RegEx.Id,
+        label: "Tasks Equipment needed",
+        optional: true,
+        autoform: {
+            afFieldInput: {
+                type: "hidden"
+            },
+            afFormGroup: {
+                label: false
+            }
+        }
+    },
+    quantity: {
+        type: Number,
+        label: "Task equipment needed quantity",
+        min: 0,
+        autoform: {
+            afFormGroup: {
+                label: false,
+            }
+        }
+    }
+});
+
 Schemas.helpers.allTeamsOptions = function () {
     var teams = Teams.find({
         name: {
@@ -103,6 +129,32 @@ Schemas.helpers.allPowerSuppliesOptions  = function () {
     return result;
 };
 
+Schemas.helpers.allWaterSuppliesOptions  = function () {
+    var list = WaterSupplies.find({}).fetch();
+    var result = [];
+    _.each(list, function (item) {
+        result.push({
+            label: item.name,
+            value: item._id
+        });
+    });
+
+    return result;
+};
+
+Schemas.helpers.allWaterDisposalsOptions  = function () {
+    var list = WaterDisposals.find({}).fetch();
+    var result = [];
+    _.each(list, function (item) {
+        result.push({
+            label: item.name,
+            value: item._id
+        });
+    });
+
+    return result;
+};
+
 
 Schemas.helpers.allEquipmentStoragesOptions  = function () {
     var list = EquipmentStorages.find({}).fetch();
@@ -117,6 +169,18 @@ Schemas.helpers.allEquipmentStoragesOptions  = function () {
     return result;
 };
 
+Schemas.helpers.allAccessPointsOptions  = function () {
+    var list = AccessPoints.find({}).fetch();
+    var result = [];
+    _.each(list, function (item) {
+        result.push({
+            label: item.name,
+            value: item._id
+        });
+    });
+
+    return result;
+};
 
 Schemas.helpers.allUsersOptions = function () {
     var users = Meteor.users.find({}).fetch();

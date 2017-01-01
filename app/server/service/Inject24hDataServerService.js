@@ -31,6 +31,7 @@ export class Inject24hDataServerService {
         console.info("Accounts Meteor.users collection size is " + Meteor.users.find().fetch().length);
         console.info("Customs Meteor.users collection size is " + Meteor.users.find().fetch().length);
         console.info("Tasks collection size is " + Tasks.find().fetch().length);
+        console.info("Activities collection size is " + Activities.find().fetch().length);
         console.info("Assignments collection size is " + Assignments.find().fetch().length);
         console.info("Task Groups collection size is " + TaskGroups.find().fetch().length);
         console.info("Skills collection size is " + Skills.find().fetch().length);
@@ -43,8 +44,15 @@ export class Inject24hDataServerService {
     addSettings() {
         Settings.update(Settings.findOne()._id, {
             $set: {createAccountDefaultTeam: Teams.findOne({name: "soft"})._id}
-        })
-
+        });
+        Settings.update(Settings.findOne()._id, {
+            $set: {
+                defaultActivityMapsLatLng: {
+                    lat: 45.783642,
+                    lng: 4.872970
+                }
+            }
+        });
     }
 
     _injectGroupRoles() {
@@ -54,7 +62,7 @@ export class Inject24hDataServerService {
         });
         this.hardGroupRole = GroupRoles.insert({
             name: "hard",
-            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.TASKREAD, RolesEnum.TASKWRITE]
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
         });
         this.softGroupRole = GroupRoles.insert({
             name: "soft",
@@ -70,7 +78,7 @@ export class Inject24hDataServerService {
         });
         this.humainGroupRole = GroupRoles.insert({
             name: "humain",
-            roles: [RolesEnum.MANIFMAKER, RolesEnum.ACCESSPASSVALIDATION, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.ASSIGNMENTVALIDATION, RolesEnum.CONFMAKER, RolesEnum.ASSIGNMENTTASKUSER]
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.ACCESSPASSVALIDATION, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.ASSIGNMENTVALIDATION, RolesEnum.ACTIVITYGENERALVALIDATION, RolesEnum.CONFMAKER, RolesEnum.ASSIGNMENTTASKUSER]
         });
         this.allUserGroupRole = GroupRoles.insert({
             name: "allUser",
@@ -110,12 +118,15 @@ export class Inject24hDataServerService {
         this._populateEquipment();
         this._populateStorage();
         this._populatePowerSupply();
+        this._populateWaterSupply();
+        this._populateWaterDisposal();
         this._populateSkill();
         this._populateTaskGroups();
         this._populateAssignmentTerms();
+        this._populateAccessPoint();
         this._populateUser();
+        this._populateActivities();
         this._populateTasks();
-
     }
 
     _populateTeams() {
@@ -150,6 +161,7 @@ export class Inject24hDataServerService {
         this.barriereEquipmentCategory = EquipmentCategories.insert({name: "barrière"});
         this.attacheEquipmentCategory = EquipmentCategories.insert({name: "attache"});
         this.vehiculeEquipmentCategory = EquipmentCategories.insert({name: "véhicule"});
+        this.elecEquipmentCategory = EquipmentCategories.insert({name: "élec", extraComputeRule: "SUM"});
     }
 
     _populateEquipment() {
@@ -221,6 +233,20 @@ export class Inject24hDataServerService {
             targetUsage: EquipementTargetUsage.TASK,
             EquipmentCategories_Id: this.vehiculeEquipmentCategory
         });
+        this.grandFrigo = Equipments.insert({
+            name: "Grand Frigo",
+            quantity: 3,
+            extra: "30W",
+            targetUsage: EquipementTargetUsage.ACTIVITY,
+            EquipmentCategories_Id: this.elecEquipmentCategory
+        });
+        this.petitFrigo = Equipments.insert({
+            name: "Petit Frigo",
+            quantity: 7,
+            extra: "15W",
+            targetUsage: EquipementTargetUsage.ACTIVITY,
+            EquipmentCategories_Id: this.elecEquipmentCategory
+        });
     }
 
     _populateStorage() {
@@ -236,7 +262,20 @@ export class Inject24hDataServerService {
         //power supply
         console.info("inject PowerSupplies");
         this.AIPPowerSupply = PowerSupplies.insert({name: "AIP"});
-        var GCUPowerSupply = PowerSupplies.insert({name: "GCU"});
+        this.GCUPowerSupply = PowerSupplies.insert({name: "GCU"});
+
+    }
+    _populateWaterSupply() {
+        console.info("inject WaterSupplies");
+        this.AIWaterSupply = WaterSupplies.insert({name: "AIP"});
+        this.GCUWaterSupply = WaterSupplies.insert({name: "GCU"});
+
+    }
+
+    _populateWaterDisposal() {
+        console.info("inject WaterDisposals");
+        this.AIWaterDisposal = WaterDisposals.insert({name: "AIP"});
+        this.GCUWaterDisposal = WaterDisposals.insert({name: "GCU"});
 
     }
 
@@ -440,6 +479,26 @@ export class Inject24hDataServerService {
 
     }
 
+    _populateAccessPoint(){
+        console.info("inject Access Point");
+
+        this.accessPoint1 = AccessPoints.insert({
+            name: "PS1",
+            selectedImage: "PS1 selected image",
+            notSelectedImage: "PS1 not selected image"
+        });
+        this.accessPoint2 = AccessPoints.insert({
+            name: "PS2",
+            selectedImage: "PS2 selected image",
+            notSelectedImage: "PS2 not selected image"
+        });
+        this.accessPoint3 = AccessPoints.insert({
+            name: "PS3",
+            selectedImage: "PS3 selected image",
+            notSelectedImage: "PS3 not selected image"
+        });
+    }
+
     _populateUser() {
         //users
         console.info("inject Meteor.users");
@@ -502,6 +561,29 @@ export class Inject24hDataServerService {
             }
         });
 
+    }
+
+    _populateActivities(){
+        Activities.insert({
+            name: "Chateau coconuts",
+            teamId: this.communicationTeam,
+            liveEventMasterId: this.hardId,
+            placeId: this.bocalPlace,
+            masterId: this.hardId,
+            accessPasses:[{
+                beneficiaries: "Dagier",
+                start:InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
+                end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 6, 0),
+                recipientName: "Chouffe",
+                recipientPhoneNumber: "0123456789",
+                accessPointGranted:[
+                    this.accessPoint1,
+                    this.accessPoint2,
+                    this.accessPoint3,
+                ]
+
+            }]
+        });
     }
 
     _populateTasks() {

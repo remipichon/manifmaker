@@ -1,0 +1,60 @@
+<template name="activityEquipments">
+    <div class="row">
+        {{#if displayItem 'waterSupplyId'}}
+            <div class="col-md-3">
+                <div>
+                    {{> SingleNonMandatorySelectComponent selectLabel="Water supply" title="Water supply place"
+                    optionCollection="WaterSupplies" optionValueName="name" optionCollectionIndex="WaterSuppliesIndex"
+                    updateCollection="Activities" updateItemId=activityData._id updateItemPath="waterSupplyId"
+                    readOnly=isEquipmentsReadOnly
+                    }}
+                </div>
+            </div>
+        {{/if}}
+        {{#if displayItem 'waterDisposalId'}}
+            <div class="col-md-3">
+                <div>
+                    {{> SingleNonMandatorySelectComponent selectLabel="Water disposal" title="Water disposal place"
+                    optionCollection="WaterDisposals" optionValueName="name" optionCollectionIndex="WaterDisposalsIndex"
+                    updateCollection="Activities" updateItemId=activityData._id updateItemPath="waterDisposalId"
+                    readOnly=isEquipmentsReadOnly
+                    }}
+                </div>
+            </div>
+        {{/if}}
+        {{#if displayItem 'powerSupplyId'}}
+            <div class="col-md-3">
+                <div>
+                    {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
+                    optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
+                    updateCollection="Activities" updateItemId=activityData._id updateItemPath="powerSupplyId"
+                    readOnly=isEquipmentsReadOnly
+                    }}
+                </div>
+            </div>
+        {{/if}}
+    </div>
+
+    <div class="equipment-wrapper col-md-12">
+        {{#each equipmentsCategories}}
+            <div class="col-md-6">
+                <div class="row">
+                    <label>{{name}}{{#if extraComputeRule}} - {{computeEquipmentExtra this}}{{/if}}</label>
+                </div>
+                <div class="row">
+                    {{#each equipments this}}
+                        <div class="col-lg-6">
+                            <div class="col-lg-5 input-min-4-digits">
+                                {{> afQuickField name=autoformNameForQuantity disabled=isEquipmentsReadOnly}}
+                                {{> afQuickField name=autoformNameForEquipmentId disabled=isEquipmentsReadOnly}}
+                            </div>
+                            <div class="col-lg-7">
+                                {{name}}
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</template>

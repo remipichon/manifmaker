@@ -5,31 +5,6 @@ import {ValidationService} from "../../../both/service/ValidationService"
 import "/both/collection/model/T-Validation.js"
 
 //order matters !
-Schemas.EquipmentAsked = new SimpleSchema({
-    equipmentId : {
-        type: SimpleSchema.RegEx.Id,
-        label: "Tasks Equipment needed",
-        optional: true,
-        autoform: {
-            afFieldInput: {
-                type: "hidden"
-            },
-            afFormGroup: {
-                label: false
-            }
-        }
-    },
-    quantity: {
-        type: Number,
-        label: "Task equipment needed quantity",
-        min: 0,
-        autoform: {
-            afFormGroup: {
-                label: false,
-            }
-        }
-    }
-});
 
 Schemas.SkillsId = new SimpleSchema({
     skillsId : {
