@@ -49,14 +49,12 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="col-md-3">
             From *
             {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=createTimeSlotDefaultStartDate.get updateDateCallback=updateTimeSlotStartDate}}
             to *
             {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=createTimeSlotDefaultEndDate.get updateDateCallback=updateTimeSlotEndDate}}
     </div>
-
-    <div class="row">
 
         <div class="col-md-6">
             {{> afQuickField name='serviceProvider'}}
@@ -64,7 +62,21 @@
 
         <div class="col-md-6">
             {{> afQuickField name="location" height="400px" defaultLat=defaultLat defaultLng=defaultLng}}
+            <button type="submit" class="btn btn-primary">Update localisation</button>
+        </div>
+
+    <div class="col-md-12">
+
+        <div class="col-md-6">
+            {{> afQuickField name='webData'}}
+            <button type="submit" class="btn btn-primary">Update Web Data</button>
+        </div>
+
+        <div class="col-md-6">
+            {{> afQuickField name="applicationData"}}
+            <button type="submit" class="btn btn-primary">Update Application Data</button>
         </div>
 
     </div>
+
 </template>

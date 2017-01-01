@@ -72,14 +72,14 @@ Schemas.ServiceProvider = new SimpleSchema({
     },
     phoneNumber: {
         type: String,//SimpleSchema.RegEx.Phone,
-        label: "Provider phone",
+        label: "Service Provider phone",
         optional: true,
         defaultValue: null,
         regEx: /^0{1}\d{10}$/,
         optional: true,
     },
     email: {
-        label: "Provider Email",
+        label: "Service Provider Email",
         type: String,
         regEx: SimpleSchema.RegEx.Email,
         optional: true,
@@ -89,6 +89,12 @@ Schemas.ServiceProvider = new SimpleSchema({
         type: String,
         optional: true,
     },
+    willBeThere :{
+        label: "Service Provider will be there during the event ?",
+        type: Boolean,
+        optional: true,
+        defaultValue: false
+    }
 
 });
 
@@ -214,11 +220,22 @@ Schemas.Activities = new SimpleSchema({
         //     }
         // }
     },
-
+    'applicationData.picture': {
+        type: String,
+        label: "Application Data Principal Picture",
+        optional: true,
+        autoform: {
+            afFieldInput: {
+                type: 'fileUpload',
+                collection: 'Images',
+                label: 'Choose file'//optional
+            }
+        },
+    },
     'applicationData.pictures': {
         type: [String],
         optional: true,
-        label: "Add some pictures"
+        label: "Add some other pictures"
     },
     'applicationData.pictures.$': {
         type: String,
@@ -261,6 +278,7 @@ Schemas.Activities = new SimpleSchema({
     'webData.picture': {
         type: String,
         optional: true,
+        label: "Web Data Picture",
         autoform: {
             afFieldInput: {
                 type: 'fileUpload',
