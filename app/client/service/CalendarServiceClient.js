@@ -4,73 +4,45 @@ import {UserServiceClient} from "../../client/service/UserServiceClient"
 /** @class CalendarServiceClient*/
 export class CalendarServiceClient {
 
+    /**
+     * @summary Given a user and a specific time, retrieve an assignment or and availability and add calendar related data
+     * @param userId
+     * @param userAvailabilitiesOrAssignments array of assignments or array of availabilities
+     * @param startCalendarTimeSlot
+     * @param isAssigned
+     * @returns calendar data {userId, assigned, charisma, css height}
+     */
+    static getCalendarSlotData(userId, userAvailabilitiesOrAssignments, startCalendarTimeSlot, isAssigned){
+        var data = {};
 
-    static computeAvailabilitiesData(user, startCalendarTimeSlot){
-        var data = {},baseOneHourHeight,accuracy,end,start,duration,height,founded;
+        var availabityOrAssignmentFound = TimeSlotService.getTimeSlotByStart(userAvailabilitiesOrAssignments, startCalendarTimeSlot);
+        if (availabityOrAssignmentFound === null) return null;
 
-        var availabilitiesFound = TimeSlotService.getTimeSlotByStart(user.availabilities, startCalendarTimeSlot);
-        if (availabilitiesFound === null) return null;
-
-        if (availabilitiesFound !== null) {
+        if (availabityOrAssignmentFound !== null) {
             //Template.parentData() doesn't work so we use a trick
-            data.userId = user._id;
+            data.userId = userId;
+            data.assigned = isAssigned;
 
+            var start = new moment(availabityOrAssignmentFound.start);
+            var end = new moment(availabityOrAssignmentFound.end);
 
-            var availStart = new moment(availabilitiesFound.start);
-            var availEnd = new moment(availabilitiesFound.end);
-
-            if(!availStart.isSame(startCalendarTimeSlot,"day")){
-                availStart = startCalendarTimeSlot
+            if(!start.isSame(startCalendarTimeSlot,"day")){
+                start = startCalendarTimeSlot
             }
 
-            if(!availEnd.isSame(startCalendarTimeSlot,"day")){
-                availEnd = new moment(startCalendarTimeSlot); //until the end of the day
-                availEnd.minute(0);
-                availEnd.hour(0);
-                availEnd.add(1,'day');
+            if(!end.isSame(startCalendarTimeSlot,"day")){
+                end = new moment(startCalendarTimeSlot); //until the end of the day
+                end.minute(0);
+                end.hour(0);
+                end.add(1,'day');
             }
 
-            data.charisma = UserServiceClient.computeCharismaBetweenDate(availStart,availEnd);
+            data.charisma = UserServiceClient.computeCharismaBetweenDate(start,end);
         }
 
-        _.extend(data, availabilitiesFound);
+        _.extend(data, availabityOrAssignmentFound);
 
-        data.height = this.computeTimeSlotAvailabilityHeight(availabilitiesFound,startCalendarTimeSlot) + "px";
-
-        return data;
-    }
-
-    static computeAssignmentData(user, startCalendarTimeSlot){
-        var data = {},baseOneHourHeight,accuracy,end,start,duration,height,founded;
-
-        var assignmentsFound = TimeSlotService.getTimeSlotByStart(user.assignments, startCalendarTimeSlot);
-        if (assignmentsFound === null) return null;
-
-        if (assignmentsFound !== null) {
-            //Template.parentData() doesn't work so we use a trick
-            data.userId = user._id;
-            data.assigned = true;
-
-            var availStart = new moment(availabilitiesFound.start);
-            var availEnd = new moment(availabilitiesFound.end);
-
-            if(!availStart.isSame(startCalendarTimeSlot,"day")){
-                availStart = startCalendarTimeSlot
-            }
-
-            if(!availEnd.isSame(startCalendarTimeSlot,"day")){
-                availEnd = new moment(startCalendarTimeSlot); //until the end of the day
-                availEnd.minute(0);
-                availEnd.hour(0);
-                availEnd.add(1,'day');
-            }
-
-            data.charisma = UserServiceClient.computeCharismaBetweenDate(availStart,availEnd);
-        }
-
-        _.extend(data, assignmentsFound);
-
-        data.height = this.computeTimeSlotAvailabilityHeight(assignmentsFound,startCalendarTimeSlot) + "px";
+        data.height = this.computeTimeSlotAvailabilityHeight(availabityOrAssignmentFound,startCalendarTimeSlot) + "px";
 
         return data;
     }

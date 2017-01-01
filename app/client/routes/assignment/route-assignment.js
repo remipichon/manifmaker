@@ -49,6 +49,7 @@ Router.route('/assignment', function () {
 
         AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.ALL);
     }, {
+        data:{currentTab:'Assignment'},
         controller: 'AssignmentController',
         name: 'assignment.calendar',
     }
@@ -79,6 +80,7 @@ Router.route('/assignment/user/:userId', function () {
         }
 
     }, {
+        data:{currentTab:'Assignment'},
         controller: 'AssignmentController',
         name: 'assignment.calendar.user'
     }
@@ -108,6 +110,7 @@ Router.route('/assignment/task/:taskId', function () {
         }
 
     }, {
+        data:{currentTab:'Assignment'},
         controller: 'AssignmentController',
         name: 'assignment.calendar.task'
     }

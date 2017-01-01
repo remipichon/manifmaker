@@ -24,18 +24,5 @@ Template.taskButtons.helpers({
     }
 });
 
-Template.validationStateForList.helpers({
-    lastComment: function (attribute, type) {
-        var lastComment;
-        this[type].comments.forEach(comment => {
-            if (!lastComment)
-                lastComment = comment;
-            if (new moment(comment.creationDate).isAfter(new moment(lastComment.creationDate))) {
-                lastComment = comment
-            }
-        });
-        return lastComment[attribute];
-    }
-});
 
 

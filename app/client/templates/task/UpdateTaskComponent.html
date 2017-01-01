@@ -4,7 +4,7 @@
 
 <template name="updateTaskComponent">
 
-    <div class="update-task-wrapper-form">
+    <div class="update-resource-wrapper-form">
 
         {{reactiveConstructor}}
 
@@ -48,8 +48,9 @@
             <div class="panel panel-info">
                 <div class="panel-heading">Validation</div>
 
-                <div class="panel-body equipments" id="equipments">
-                    {{>TaskValidationComponent}}
+                <div class="panel-body">
+                    {{> ValidationComponent targetCollection="Tasks" targetCollectionWriteRole="TASKWRITE" targetItemId=_id validationTypeLabel="Equipment" validationTypeName="equipment" validationData=equipmentValidation validationRole="EQUIPMENTVALIDATION" mdiIcon="mdi-wrench"}}
+                    {{> ValidationComponent targetCollection="Tasks" targetCollectionWriteRole="TASKWRITE" targetItemId=_id validationTypeLabel="Time Slot" validationTypeName="time-slot" validationData=timeSlotValidation validationRole="ASSIGNMENTVALIDATION" mdiIcon="mdi-clock"}}
                 </div>
 
             </div>

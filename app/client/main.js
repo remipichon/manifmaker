@@ -22,9 +22,11 @@ Accounts.onEmailVerificationLink(function(token,done){
 
 Meteor.startup(function () {
 
+    Meteor.subscribe("images");
     Meteor.subscribe("skills");
     Meteor.subscribe("users");
     Meteor.subscribe("tasks");
+    Meteor.subscribe("activities");
     Meteor.subscribe("places");
     Meteor.subscribe("assignments");
     Meteor.subscribe("teams");
@@ -33,6 +35,7 @@ Meteor.startup(function () {
     Meteor.subscribe("roles");
     Meteor.subscribe("equipment-categories");
     Meteor.subscribe("equipment-storages");
+    Meteor.subscribe("access-points");
     Meteor.subscribe("equipments");
     Meteor.subscribe("water-supplies");
     Meteor.subscribe("water-disposals");
@@ -105,6 +108,11 @@ Meteor.startup(function () {
         beep: false,
         onClose: _.noop 
     });
+
+    GoogleMaps.load({
+        key: 'AIzaSyCFSHZqW6l7IpFjnybMYIfH6_9mdBGmfgE',
+    });
+
 
 });
 

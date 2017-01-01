@@ -1,0 +1,10 @@
+<template name="updateActivityForm">
+    {{> UpdateActivityComponent}}
+</template>
+
+<template name="updateActivityComponent">
+    Update activity {{activityDoc.name}}
+
+    {{> quickForm collection="Activities" doc=activityDoc id="updateActivityForm" type="update"}}
+
+</template>

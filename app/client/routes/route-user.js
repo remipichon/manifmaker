@@ -19,7 +19,7 @@ Router.route('/users', function () {
             to: 'mainContent'
         });
     },
-    {controller: ManifMakerRouterController,name: 'user.list'}
+    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.list'}
 );
 
 /**
@@ -31,7 +31,7 @@ Router.route('/users', function () {
 Router.route('/user', function () {
     Router.go("/register");
     },
-    {name: 'user.create'}
+    {data:{currentTab:'Users'},name: 'user.create'}
 );
 
 /**
@@ -43,7 +43,7 @@ Router.route('/user', function () {
 Router.route('/register', function () {
         console.info("routing", "/register");
     },
-    {name: 'user.register',layoutTemplate:"register"}
+    {data:{currentTab:'Users'},name: 'user.register',layoutTemplate:"register"}
 );
 
 /**
@@ -69,7 +69,7 @@ Router.route('/user/:_id', function () {
             }, to: 'mainContent'
         });
     },
-    {controller: ManifMakerRouterController,name: 'user.write'}
+    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.write'}
 );
 
 /**
@@ -94,7 +94,7 @@ Router.route('/user/:_id/read', function () {
             }, to: 'mainContent'
         });
     },
-    {controller: ManifMakerRouterController,name: 'user.read'}
+    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.read'}
 );
 
 

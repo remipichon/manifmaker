@@ -102,3 +102,25 @@ PowerSuppliesIndex = new EasySearch.Index({
     fields: ['name'],
     engine: new EasySearch.Minimongo()
 });
+/**
+ * @memberOf EasySearch
+ * @summary EasySearch settings to perform search by label on WaterSupplies
+ * @locus Anywhere
+ * @instancename object
+ */
+WaterSuppliesIndex = new EasySearch.Index({
+    collection: WaterSupplies,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+/**
+ * @memberOf EasySearch
+ * @summary EasySearch settings to perform search by label on WaterSupplies
+ * @locus Anywhere
+ * @instancename object
+ */
+WaterDisposalsIndex = new EasySearch.Index({
+    collection: WaterDisposals,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});

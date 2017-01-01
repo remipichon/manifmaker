@@ -8,5 +8,6 @@
 ValidationTypeUrl = {
     "time-slot": "timeSlotValidation",
     "access-pass": "accessPassValidation",
-    "equipment": "equipmentValidation"
+    "equipment": "equipmentValidation",
+    "activity-general": "generalInformationValidation"
 };

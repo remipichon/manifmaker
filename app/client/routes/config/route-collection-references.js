@@ -19,7 +19,8 @@ AllCollections = {
     WaterSupplies: WaterSupplies,
     WaterDisposals: WaterDisposals,
     PowerSupplies: PowerSupplies,
-    EquipmentStorages: EquipmentStorages
+    EquipmentStorages: EquipmentStorages,
+    AccessPoints: AccessPoints,
 };
 
 var confMakerReactiveTables = [];
@@ -167,6 +168,7 @@ Router.route('/conf-maker', function () {
         });
     },
     {
+        data:{currentTab:'ConfMaker'},
         name: 'conf-maker',
         controller: ManifMakerRouterController
     }
