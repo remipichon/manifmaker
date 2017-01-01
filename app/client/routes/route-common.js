@@ -63,7 +63,8 @@ Router.route('/', function () {
 
 
     },
-    {name: 'home',
+    {data:{currentTab:'Home'},
+    name: 'home',
     controller: ManifMakerRouterController
     }
 );

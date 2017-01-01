@@ -44,7 +44,7 @@ Schemas.Settings = new SimpleSchema({
         },
         autoform: {
             afFieldInput: {
-                options: Schemas.helpers.allGroupRolesOptions
+                options: Schemas.helpers.allGroupRolesOptionsWithoutRoles
             }
         }
     },

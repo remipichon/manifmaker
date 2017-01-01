@@ -3,7 +3,7 @@
     <div class="sidebar-overlay"></div>
 
     <!-- Material sidebar -->
-    <aside id="sidebar" class="sidebar sidebar-default" role="navigation">
+    <aside id="sidebar" class="sidebar sidebar-default {{#unless currentUser}}logging{{/unless}}" role="navigation">
         <!-- Sidebar header -->
         <div class="sidebar-header header-cover"
              style="background-image: url(http://2.bp.blogspot.com/-2RewSLZUzRg/U-9o6SD4M6I/AAAAAAAADIE/voax99AbRx0/s1600/14%2B-%2B1%2B%281%29.jpg);">
@@ -28,7 +28,6 @@
             {{/if}}
 
         </div>
-
 
         {{#unless currentUser}}
             {{> atForm}}
@@ -61,8 +60,9 @@
                         </ul>
                     </li>
                 {{/if}}
+                <li class="{{#if equals currentTab "Home"}}active{{/if}}"><a class="home-link" href="{{pathFor route='home'}}"><i class="sidebar-icon mdi mdi-home"></i> Home</a></li>
                 {{#if isInRole RolesEnum.TASKREAD}}
-                    <li class="dropdown">
+                    <li class="dropdown {{#if equals currentTab "Tasks"}}active{{/if}}">
                         <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
                             <i class="sidebar-icon mdi mdi-calendar-plus"></i> Tasks
                             <b class="caret"></b>
@@ -78,13 +78,13 @@
                     </li>
                 {{/if}}
                 {{#if isInRole RolesEnum.USERREAD}}
-                    <li><a href="{{pathFor route='user.list'}}"><i class="sidebar-icon mdi mdi-account-multiple"></i> Users</a></li>
+                    <li class="{{#if equals currentTab "Users"}}active{{/if}}"><a href="{{pathFor route='user.list'}}"><i class="sidebar-icon mdi mdi-account-multiple"></i> Users</a></li>
                 {{/if}}
                 {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
-                    <li><a href="{{pathFor route='assignment.calendar'}}"><i class="sidebar-icon mdi mdi-calendar-multiple-check"></i> Assignment</a></li>
+                    <li class="{{#if equals currentTab "Assignment"}}active{{/if}}"><a href="{{pathFor route='assignment.calendar'}}"><i class="sidebar-icon mdi mdi-calendar-multiple-check"></i> Assignment</a></li>
                 {{/if}}
                 {{#if isInRole RolesEnum.CONFMAKER}}
-                    <li><a href="{{pathFor route='conf-maker'}}"><i class="sidebar-icon mdi mdi-settings"></i> ConfMaker</a></li>
+                    <li class="{{#if equals currentTab "ConfMaker"}}active{{/if}}"><a href="{{pathFor route='conf-maker'}}"><i class="sidebar-icon mdi mdi-settings"></i> ConfMaker</a></li>
                 {{/if}}
 
             </ul>

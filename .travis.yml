@@ -25,7 +25,7 @@ script:
   - echo "... Now deploying " $MANIFMAKER_VERSION
   - ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
   - echo "... ... Stoping app container" 
-  - scp ../scritps/stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
+  - scp ../scripts/stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
   - ssh root@vps302914.ovh.net "chmod 700 /root/stop_rm_docker_app.sh && CONTAINER_NAME=$CONTAINER_NAME . /root/stop_rm_docker_app.sh"
   - ssh root@vps302914.ovh.net "rm -f /root/stop_rm_docker_app.sh"
   - echo "... ... Creating new database with user in mongo" 

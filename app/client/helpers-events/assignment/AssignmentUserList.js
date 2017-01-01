@@ -120,6 +120,16 @@ class AssignmentUserList extends BlazeComponent {
             isReadyForAssignment: true
         };
 
+        var currentAssignmentTerm = AssignmentTerms.findOne(AssignmentCalendarDisplayedDays.findOne().assignmentTermId);
+        var assignmentTermFilter = {
+            availabilities:{
+                $elemMatch: {
+                    start: { $gte : currentAssignmentTerm.start},
+                    end: {$lt: currentAssignmentTerm.end}
+                }
+            }
+        };
+
         var hasAvailabilitiesFilter = {$or: []};
         var daysDisplayed = AssignmentCalendarDisplayedDays.find().fetch();
         daysDisplayed.forEach(day => {
@@ -151,6 +161,7 @@ class AssignmentUserList extends BlazeComponent {
 
         filterResult = Meteor.users.find({
             $and: [
+                assignmentTermFilter,
                 filter,
                 teamFilter,
                 skillsFilter,

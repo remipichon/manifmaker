@@ -39,41 +39,73 @@ class SideBar extends BlazeComponent {
             {
                 "click .sidebar-toggle": this.toggleSideBar,
                 "click .sidebar-overlay": this.onClickOverlay,
-                "click a[href^='/']": this.hrefOnClick //all internal routes
+                "click a[href^='/']": this.hrefOnClick, //all internal routes
+                "click a[href^='/logout']": this.logoutOnClick //when logout
             }
         ]
     }
 
+    /**
+     * Close the sidebar when the user goes on a new page
+     */
     hrefOnClick(){
         if(!$('#sidebar').hasClass("reduced"))
             this.toggleSideBar();
     }
 
+    /**
+     * re-open the sidebar with the logging form
+     */
+    logoutOnClick(){
+        this.toggleSideBar();
+    }
+
+    /**
+     * Open Sidebar if it's closed,
+     * Close it if it's open,
+     * let it open when we have the logging form
+     */
     toggleSideBar() {
         var overlay = $('.sidebar-overlay');
         var sidebar = $('#sidebar');
         var arrow = $('.sidebar-arrow');
-        sidebar.toggleClass('open');
-        sidebar.toggleClass('reduced');
-        arrow.toggleClass('mdi-arrow-left');
-        arrow.toggleClass('mdi-arrow-right');
 
-        if ((sidebar.hasClass('sidebar-fixed-left') || sidebar.hasClass('sidebar-fixed-right')) && sidebar.hasClass('open')) {
+        if(sidebar.hasClass('logging')){ //if we aren't on the logging screen in which we must not collapse the sidebar
+            sidebar.addClass('open');
+            sidebar.removeClass('reduced');
             overlay.addClass('active');
-        } else {
-            overlay.removeClass('active');
+        }else{
+            sidebar.toggleClass('open');
+            sidebar.toggleClass('reduced');
+            arrow.toggleClass('mdi-arrow-left');
+            arrow.toggleClass('mdi-arrow-right');
+
+            if ((sidebar.hasClass('sidebar-fixed-left') || sidebar.hasClass('sidebar-fixed-right')) && sidebar.hasClass('open')) {
+                overlay.addClass('active');
+            } else {
+                overlay.removeClass('active');
+            }
         }
     }
 
+    /**
+     * Close the sidebar if we click somewhere else
+     * @param e event
+     */
     onClickOverlay(e) {
         this.$(e.target).removeClass('active');
-        this.$('#sidebar').removeClass('open');
-        this.$('#sidebar').addClass('reduced');
-        this.$('.sidebar-arrow').removeClass('mdi-arrow-left');
-        this.$('.sidebar-arrow').addClass('mdi-arrow-right');
+        if(! $('#sidebar').hasClass('logging')) { //if we aren't on the logging screen in which we must not collapse the sidebar
+            this.$('#sidebar').removeClass('open');
+            this.$('#sidebar').addClass('reduced');
+            this.$('.sidebar-arrow').removeClass('mdi-arrow-left');
+            this.$('.sidebar-arrow').addClass('mdi-arrow-right');
+        }
     }
 
 
+    /**
+     * Display the sidebar the first time
+     */
     onRendered() {
         var value = "sidebar-fixed-left"; //"", "sidebar-fixed-left", "sidebar-fixed-right", "sidebar-stacked"
         var sidebar = this.$('#sidebar');

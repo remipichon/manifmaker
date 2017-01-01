@@ -249,6 +249,19 @@ Schemas.helpers.allGroupRolesOptions = function () {
     return result;
 };
 
+Schemas.helpers.allGroupRolesOptionsWithoutRoles = function () {
+    var skills = GroupRoles.find({}).fetch();
+    var result = [];
+    _.each(skills, function (groupRole) {
+        result.push({
+            label: groupRole.name + " (" +groupRole.roles.length + " roles)",
+            value: groupRole._id
+        });
+    });
+
+    return result;
+};
+
 Schemas.helpers.allDepartementOptions = function () {
     var items =   ["PC","TC","IF","GE","GM","GI","BIM","GCU","These"];
     var result = [];

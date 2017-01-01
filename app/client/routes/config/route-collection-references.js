@@ -168,6 +168,7 @@ Router.route('/conf-maker', function () {
         });
     },
     {
+        data:{currentTab:'ConfMaker'},
         name: 'conf-maker',
         controller: ManifMakerRouterController
     }

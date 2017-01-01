@@ -26,7 +26,7 @@ Router.route('/task-groups', function () {
             console.log("Route /task-groups : waiting users and taskGroups data"); //TODO add a spinner
         }
     },
-    {controller: ManifMakerRouterController,name: 'task-group.list'}
+    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task-group.list'}
 )
 
 /**
@@ -49,7 +49,7 @@ Router.route('/task-group', function () {
         }
 
     },
-    {controller: ManifMakerRouterController,name: 'task-group.create'}
+    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task-group.create'}
 );
 
 /**
@@ -76,7 +76,7 @@ Router.route('/task-group/:_id', function () {
             }, to: 'mainContent'
         });
     },
-    {controller: ManifMakerRouterController,name: 'task-group.update'}
+    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task-group.update'}
 );
 
 
@@ -104,5 +104,5 @@ Router.route('/task-group/:_id/read', function () {
         });
 
     },
-    {controller: ManifMakerRouterController, name: 'task-group.read'}
+    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController, name: 'task-group.read'}
 );

@@ -78,14 +78,14 @@ export class ReadAvailabilitiesCalendarComponent extends BaseCalendarComponent {
         var user = this.data().user;
         if (!user) return [];
 
-        var data = CalendarServiceClient.computeAvailabilitiesData(user,startCalendarTimeSlot);
-        var dataAssignment = CalendarServiceClient.computeAssignmentData(user,startCalendarTimeSlot);
+        var calendarSlotData;
+        //we search for an availability
+        calendarSlotData = CalendarServiceClient.getCalendarSlotData(user.Id, user.availabilities,startCalendarTimeSlot,false);
+        if(calendarSlotData) return [calendarSlotData];
+        //or an assignment;
+        calendarSlotData = CalendarServiceClient.getCalendarSlotData(user.Id, user.assignments,startCalendarTimeSlot,true);
+        if(calendarSlotData) return [calendarSlotData];
 
-        if(!data && !dataAssignment) return [];
-
-        if(data) return [data]
-        if(dataAssignment) return [dataAssignment];
-        //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
     }
 
     constructor() {
