@@ -419,7 +419,43 @@ It can lead the GUI to flickr. That is why it is probably better **to check ever
 # Production
 Not yet implemented, it will be on another machine. 
 
-use ENV ISPROD to prevent using inject-data in prod
+use ENV IS_PRODUCTIOM to prevent using inject-data in prod
+
+
+151.80.59.179
+
+## Setup production env
+
+* install Docker : https://get.docker.com/
+* clone repo
+* cd production
+* docker-compose up 
+manifmaker will fail to start because it can't connect to mongo
+* docker cp create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
+* docker exec production_mongodb mongo localhost:27017/manifmaker /root/create_manifmaker_mongo_user.js
+* docker-compose up manifmaker
+
+## Update version
+
+* docker pull assomaker/manifmaker:VERSION
+* cd production
+* docker-compose up manifmaker
+
+
+## Backup data
+
+A backup is run everyday at midnight. 
+
+## Restore from a backup
+
+See the list of backups, you can run:
+
+    docker exec mongodbbackup ls /backup
+
+To restore database from a certain backup, simply run:
+
+    docker exec mongodbbackup /restore.sh /backup/2015.08.06.171901
+
 
 
 <a id="project" name="project"></a>

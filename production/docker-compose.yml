@@ -1,0 +1,34 @@
+version: '2'
+version: '2'
+services:
+    mongodb:
+        image: 'mongo'
+        container_name: production_mongodb
+        ports:
+            - "27017:27017"
+    mongodb_backup:
+        image: 'tutum/mongodb-backup:latest'
+        container_name: mongodb_backup
+        links:
+            - mongodb
+        environment:
+            - CRON_TIME=20 3 * * * #Change to your favorate cron job schedule
+            - MAX_BACKUPS=10
+            - INIT_BACKUP=yes
+            - MONGODB_HOST=production_mongodb
+            - MONGODB_PORT=27017 
+            - MONGODB_USER=manifmaker 
+            - MONGODB_PASS=manifmaker 
+            - DB_STR= --db manifmaker
+        volumes:
+            - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
+    manifmaker: 
+        image: 'assomaker/manifmaker:0-10-0-activity'
+        environment:
+            - IS_PRODUCTIOM=true 
+            - INJECT_ALL=true 
+            - ROOT_URL=http://manifmaker.com 
+            - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker
+        ports: 
+            - "80:3000" 
+
