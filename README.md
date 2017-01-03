@@ -417,44 +417,64 @@ It can lead the GUI to flickr. That is why it is probably better **to check ever
 
 <a id="production" name="production"></a>
 # Production
-Not yet implemented, it will be on another machine. 
 
-use ENV IS_PRODUCTIOM to prevent using inject-data in prod
+ENV IS_PRODUCTION can be used to assert the platform. 
 
+Current production is reachable with [151.80.59.179](151.80.59.179).
 
-151.80.59.179
+Current production needs to be logged as root on production machine :
+
+    ssh root@vps302915.ovh.net
 
 ## Setup production env
 
-* install Docker : https://get.docker.com/
-* clone repo
-* cd production
-* docker-compose up 
-manifmaker will fail to start because it can't connect to mongo
-* docker cp create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
-* docker exec production_mongodb mongo localhost:27017/manifmaker /root/create_manifmaker_mongo_user.js
-* docker-compose up manifmaker
+* install Docker
 
-## Update version
+        curl -sSL https://get.docker.com/ | sh
+    
+* clone repo and use Compose
 
-* docker pull assomaker/manifmaker:VERSION
-* cd production
-* docker-compose up manifmaker
+        git clone https://github.com/assomaker/manifmaker.git
+        cd production
+        docker-compose up 
 
+* __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user.__
+
+        docker cp ../create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
+        docker exec production_mongodb mongo localhost:27017/manifmaker /root/create_manifmaker_mongo_user.js
+        docker-compose up manifmaker
+
+
+## Update version 
+
+__Current update policy provokes a service interruption as there is only one ManifMaker node. Following steps should get easier one day.__
+
+* update REPO/production/docker-compose.yml base image of manifmaker service
+
+         manifmaker: 
+                image: 'assomaker/manifmaker:0-10-0-activity'
+* commit your changes and pull on the production machine
+* use Compose to restart Manifmaker
+
+        cd production
+        docker-compose up manifmaker
+       
 
 ## Backup data
 
-A backup is run everyday at midnight. 
+A backup is run everyday at midnight; 
 
 ## Restore from a backup
 
 See the list of backups, you can run:
 
-    docker exec mongodbbackup ls /backup
+       docker exec mongodb_backup ls /backup
 
 To restore database from a certain backup, simply run:
 
-    docker exec mongodbbackup /restore.sh /backup/2015.08.06.171901
+    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901
+    
+It will delete everything (--drop) and restore all database. 
 
 
 

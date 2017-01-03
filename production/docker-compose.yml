@@ -1,5 +1,4 @@
 version: '2'
-version: '2'
 services:
     mongodb:
         image: 'mongo'
@@ -7,7 +6,8 @@ services:
         ports:
             - "27017:27017"
     mongodb_backup:
-        image: 'tutum/mongodb-backup:latest'
+        build: 
+           context: mongodb-backup
         container_name: mongodb_backup
         links:
             - mongodb
@@ -18,14 +18,14 @@ services:
             - MONGODB_HOST=production_mongodb
             - MONGODB_PORT=27017 
             - MONGODB_USER=manifmaker 
-            - MONGODB_PASS=manifmaker 
+            - MONGODB_PASS=manifmaker
             - DB_STR= --db manifmaker
         volumes:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
     manifmaker: 
         image: 'assomaker/manifmaker:0-10-0-activity'
         environment:
-            - IS_PRODUCTIOM=true 
+            - IS_PRODUCTION=true 
             - INJECT_ALL=true 
             - ROOT_URL=http://manifmaker.com 
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker
