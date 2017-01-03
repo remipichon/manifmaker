@@ -26,7 +26,10 @@ services:
         image: 'assomaker/manifmaker:0-10-0-activity'
         environment:
             - IS_PRODUCTION=true 
-            - INJECT_ALL=true 
+            - DELETE_ALL=true
+            - INJECT_MINIMUM_ACCESS_RIGHT=true
+            - INJECT_24H_43_DATA=true
+            - DATA_INJECTED_ONCE=true
             - ROOT_URL=http://manifmaker.com 
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker
         ports: 

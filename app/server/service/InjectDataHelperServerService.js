@@ -89,6 +89,8 @@ export class InjectDataHelperServerService {
         AccessPoints.remove({});
 
         AssignmentTerms.remove({});
+
+        InjectDataInfo.remove({});
     }
 
     static initAccessRightData() {
