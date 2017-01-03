@@ -259,7 +259,7 @@ Schemas.Activities = new SimpleSchema({
         type: Object,
         label: "Web Data",
         optional: true,
-        defaultValue: null
+        defaultValue: {}
     },
     'webData.description': {
         type: String,
