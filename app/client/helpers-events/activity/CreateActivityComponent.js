@@ -7,7 +7,8 @@ class CreateActivityComponent extends BlazeComponent {
             teamId: null,
             placeId: null,
             liveEventMasterId: null,
-            masterId: null
+            masterId: null,
+            limitToTeam: false
         });
         this.insertActivityContext = Activities.simpleSchema().namedContext("insertActivity");
         this.errorsArray = new ReactiveVar([]);
@@ -30,6 +31,7 @@ class CreateActivityComponent extends BlazeComponent {
             {
                 "click [type=submit]": this.submitForm,
                 "change [data-key=name]": this.updateName,
+                "change [data-key=limitToTeam]": this.updateLimitToTeam,
                 "change [data-key=description]": this.updateDescription
             }]
     }
@@ -49,6 +51,16 @@ class CreateActivityComponent extends BlazeComponent {
             {
                 $set: {
                     name: $("[data-key=name]").val()
+                }
+            }
+        );
+    }
+
+    updateLimitToTeam() {
+        TempCollection.update({_id: this.tempItemId},
+            {
+                $set: {
+                    limitToTeam: $("[data-key=limitToTeam]").val()
                 }
             }
         );

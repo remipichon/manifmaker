@@ -428,21 +428,23 @@ Current production needs to be logged as root on production machine :
 
 ## Setup production env
 
-* install Docker
+* install Docker and Compose
 
-        curl -sSL https://get.docker.com/ | sh
+https://docs.docker.com/compose/install/
+ 
+https://docs.docker.com/engine/installation/linux/centos/
     
 * clone repo and use Compose
 
         git clone https://github.com/assomaker/manifmaker.git
         cd production
-        docker-compose up 
+        docker-compose up -d
 
 * __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user.__
 
         docker cp ../create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
         docker exec production_mongodb mongo localhost:27017/manifmaker /root/create_manifmaker_mongo_user.js
-        docker-compose up manifmaker
+        docker-compose up -d manifmaker
 
 
 ## Update version 
@@ -457,7 +459,7 @@ __Current update policy provokes a service interruption as there is only one Man
 * use Compose to restart Manifmaker
 
         cd production
-        docker-compose up manifmaker
+        docker-compose up -d manifmaker
        
 
 ## Backup data
@@ -472,10 +474,16 @@ See the list of backups, you can run:
 
 To restore database from a certain backup, simply run:
 
-    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901
+    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901/manifmaker
     
 It will delete everything (--drop) and restore all database. 
 
+
+## Force a backup by hand
+
+Simply restart the backup container
+
+        docker-compose restart mongodb_backup
 
 
 <a id="project" name="project"></a>

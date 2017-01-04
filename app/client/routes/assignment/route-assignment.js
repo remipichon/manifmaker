@@ -73,11 +73,7 @@ Router.route('/assignment/user/:userId', function () {
         //ceci est seulement le userToTask => TODO faire le taskToUser
 
 
-        if (this.ready()) {
-            Router.go("/assignment/userToTask/" + this.params.userId);
-        } else {
-            console.log("Route /assignemnt/user/:userId : waiting user data"); //TODO add a spinner
-        }
+        Router.go("/assignment/userToTask/" + this.params.userId);
 
     }, {
         data:{currentTab:'Assignment'},
@@ -103,12 +99,7 @@ Router.route('/assignment/task/:taskId', function () {
 
         //ceci est seulement le taskToUser => faire le  userToTask
 
-        if (this.ready()) {
-            Router.go("/assignment/taskToUser/" + this.params.taskId);
-        } else {
-            console.log("Route assignment/task/:taskId : waiting task data"); //TODO add a spinner
-        }
-
+        Router.go("/assignment/taskToUser/" + this.params.taskId);
     }, {
         data:{currentTab:'Assignment'},
         controller: 'AssignmentController',

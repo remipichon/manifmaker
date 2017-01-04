@@ -1,7 +1,7 @@
 version: '2'
 services:
     mongodb:
-        image: 'mongo'
+        image: 'mongo:3.2.6'
         container_name: production_mongodb
         ports:
             - "27017:27017"
@@ -23,7 +23,7 @@ services:
         volumes:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
     manifmaker: 
-        image: 'assomaker/manifmaker:0-10-0-activity'
+        image: 'assomaker/manifmaker:0-10-1-prod'
         environment:
             - IS_PRODUCTION=true 
             - DELETE_ALL=true
@@ -34,4 +34,6 @@ services:
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker
         ports: 
             - "80:3000" 
+        volumes:
+            - ~/manifmaker_images:/opt/meteor/dist/cfs/files/images
 

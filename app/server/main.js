@@ -3,11 +3,11 @@ import {ServerReferenceCollectionsService} from "../server/service/ServerReferen
 import {ServerUserService} from "../server/service/ServerUserService"
 import {ServerTaskService} from "../server/service/ServerTaskService"
 import {ServerService} from "./service/ServerService";
-import {InjectDataServerService} from "./service/InjectDataServerService";
+import {Inject24h43emeDataServerService} from "./service/Inject24h43emeDataServerService";
 import {Inject24hDataServerService} from "./service/Inject24hDataServerService";
 import {InjectDataHelperServerService} from "./service/InjectDataHelperServerService";
 
-InjectDataInfo = new Mongo.Collection("inject-data-infos");
+InjectDataInfo = new Mongo.Collection("inject_data_infos");
 
 
 Meteor.startup(function () {
@@ -68,8 +68,11 @@ Meteor.startup(function () {
         console.info("Meteor.startup : trigger by ENV INJECT_24H_43_DATA (initAccessRightData, inject24H43Data)");
         if (InjectDataInfo.findOne({triggerEnv: "INJECT_24H_43_DATA"}) && dataInjectedOnce)
             console.info("Meteor.startup : ENV INJECT_24H_43_DATA skipped because it has already been injected and DATA_INJECTED_ONCE is true.");
-        else
-            new Inject24hDataServerService().injectAllData();
+        else {
+            let inject24h43emeDataServerService = new Inject24h43emeDataServerService();
+            inject24h43emeDataServerService.injectConfMakerData();
+            inject24h43emeDataServerService.populateTestData();
+        }
         InjectDataInfo.insert({triggerEnv: "INJECT_24H_43_DATA", date: new Date(), envReport: envReport});
     }
 
@@ -77,9 +80,9 @@ Meteor.startup(function () {
     if (Meteor.isDevelopment) {
     //     specific to the dev needs
         console.info("Meteor.startup : isDevelopment, injecting or not");
-        InjectDataHelperServerService.deleteAll();
-        InjectDataHelperServerService.initAccessRightData();
-        Meteor.injectDataServerService.injectAllData();
+        // InjectDataHelperServerService.deleteAll();
+        // InjectDataHelperServerService.initAccessRightData();
+        // Meteor.injectDataServerService.injectAllData();
     }
 
 

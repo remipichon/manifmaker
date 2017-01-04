@@ -109,7 +109,6 @@ export class ServerUserService {
                     allGroupRolesMerged = [];
                 }
                 console.info("Roles.setUserRoles "+ doc._id,allGroupRolesMerged);
-                console.log(doc._id,allGroupRolesMerged);
                 Roles.setUserRoles(doc._id, allGroupRolesMerged); //add to Account package
             }
         } else {//insert
@@ -158,10 +157,6 @@ export class ServerUserService {
      * if userId is the doc being updated, no need of USERWRITE (a user can update itself)
      */
     static allowUpdate(userId, doc, fieldNames, modifier, options) {
-        console.log(fieldNames)
-        console.log(modifier)
-        console.log("userId",userId);
-
         var user = Meteor.users.findOne(doc._id);
 
 

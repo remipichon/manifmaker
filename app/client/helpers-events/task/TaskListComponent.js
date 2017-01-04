@@ -219,8 +219,6 @@ export class TaskListComponent extends BlazeComponent {
         this.taskListEquipmentValidationStateFilter = new ReactiveTable.Filter('task-equipment-validation-state-filter', ['equipmentValidation.currentState']);
         this.taskDateFilter = new ReactiveTable.Filter("task-date-filter", ["timeSlots"]);
 
-        console.log("task list on onCreated")
-
     }
 
     constructor(){
@@ -228,14 +226,6 @@ export class TaskListComponent extends BlazeComponent {
         this.taskListAdvancedSearch = new ReactiveVar(false);
         this.isAfterFilterOn = new ReactiveVar(false);
         this.isBeforeFilterOn = new ReactiveVar(false);
-
-        console.log("task list on constructor")
-
-
-    }
-
-    onRendered(){
-        console.log("task list on rendeerer")
     }
 
 

@@ -127,7 +127,7 @@ Router.route('/demo-select', function () {
                 powersupply1 : PowerSupplies.findOne({name:"powerSupply1"})._id,
                 updateCallbackDisplayArgs: function(){
                     return function(){
-                        console.log("updateCallbackDisplayArgs",arguments[0],arguments[1],arguments[2]);
+                        console.info("updateCallbackDisplayArgs",arguments[0],arguments[1],arguments[2]);
                     }
                 },
                 optionQueryteamsWithoutAlreadyAssigned: {
@@ -151,7 +151,7 @@ Router.route('/demo-select', function () {
                 ]
             }});
         } else {
-            console.log("Route / : waiting users_custom data"); //TODO add a spinner
+            console.info("Route /demo-select : waiting data");
         }
 
 
