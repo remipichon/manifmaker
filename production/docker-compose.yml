@@ -1,7 +1,7 @@
 version: '2'
 services:
     mongodb:
-        image: 'mongo'
+        image: 'mongo:3.2.6'
         container_name: production_mongodb
         ports:
             - "27017:27017"
@@ -34,4 +34,6 @@ services:
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker
         ports: 
             - "80:3000" 
+        volumes:
+            - ~/manifmaker_images:/opt/meteor/dist/cfs/files/images
 
