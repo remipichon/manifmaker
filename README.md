@@ -459,7 +459,7 @@ __Current update policy provokes a service interruption as there is only one Man
 * use Compose to restart Manifmaker
 
         cd production
-        docker-compose up manifmaker
+        docker-compose up -d manifmaker
        
 
 ## Backup data
@@ -474,7 +474,7 @@ See the list of backups, you can run:
 
 To restore database from a certain backup, simply run:
 
-    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901
+    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901/manifmaker
     
 It will delete everything (--drop) and restore all database. 
 
