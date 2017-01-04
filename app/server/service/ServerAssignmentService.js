@@ -13,7 +13,7 @@ export class ServerAssignmentService {
      * @param fieldNames {Array<String>}
      */
     static propagateAssignment(assignmentId, assignment, fieldNames) {
-        console.log("propagateAssignment for", assignment);
+        console.info("ServerAssignmentService.propagateAssignment for", assignment);
         var assignment = assignment;
         var user = Meteor.users.findOne(assignment.userId),
             task = Tasks.findOne(assignment.taskId);
@@ -50,7 +50,7 @@ export class ServerAssignmentService {
      * @param assignment {Assignment}
      */
     static removeAssignment(assignmentId, assignment) {
-        console.log("removeAssignment for", assignment);
+        console.info("ServerAssignmentService.removeAssignment for", assignment);
         var assignment = assignment;
         var updateUser = {},
             updateTask = {},

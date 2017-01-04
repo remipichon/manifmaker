@@ -18,13 +18,9 @@ Router.route('/task-groups', function () {
         SecurityServiceClient.grantAccessToPage( RolesEnum.TASKGROUPREAD);
         console.info("routing", "/task-groups");
 
-        if (this.ready()) {
-            this.render('taskGroupsList', {
-                to: 'mainContent'
-            });
-        } else {
-            console.log("Route /task-groups : waiting users and taskGroups data"); //TODO add a spinner
-        }
+        this.render('taskGroupsList', {
+            to: 'mainContent'
+        });
     },
     {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task-group.list'}
 )
@@ -40,13 +36,9 @@ Router.route('/task-group', function () {
         SecurityServiceClient.grantAccessToPage( RolesEnum.TASKGROUPWRITE);
         console.info("routing", "/task-group");
 
-        if (this.ready()) {
-            this.render('insertTaskGroupForm', {
-                to: 'mainContent'
-            });
-        } else {
-            console.log("Route /task-group : waiting team data"); //TODO add a spinner
-        }
+        this.render('insertTaskGroupForm', {
+            to: 'mainContent'
+        });
 
     },
     {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task-group.create'}

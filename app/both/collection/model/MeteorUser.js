@@ -16,10 +16,6 @@ Schemas.UserAvailabilities = new SimpleSchema({
             //check if new availability is overlapping with an assignment
             var userAssignment = Meteor.users.findOne(this.docId).assignments;
 
-            console.log(userAssignment.length);
-            console.log(start.toDate());
-            console.log(end.toDate());
-
             if(TimeSlotService.areArrayStartEndOverlappingStartDate(userAssignment,start,end,"none")){
                 return "availabilityOverlapAssignment";
             }
@@ -278,7 +274,6 @@ Schemas.User = new SimpleSchema({
 
                         //check if the user has one availability that are within the deleted team's assignment term
                         var user = Meteor.users.findOne(this.docId);
-                        console.log(teamRemoved, "has been removed from",user);
 
                         var userTeams = user.teams;
                         userTeams.splice(userTeams.indexOf(teamRemoved),1);

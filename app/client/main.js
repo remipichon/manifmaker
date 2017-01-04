@@ -15,7 +15,7 @@ beforeLogginRoute = null;
 Accounts.onEmailVerificationLink(function(token,done){
     console.info("onEmailVerification with token",token);
     Accounts.verifyEmail(token,function(error){
-        if(error) console.log(error);
+        if(error) console.error(error);
     });
 
 });
@@ -52,8 +52,6 @@ Meteor.startup(function () {
     //TODO autoform addHooks doesnt' seem to work
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
-            console.log("AutoForm.addHooks : "+name + " error:", error);
-
             //TODO je sais pas ou faire ca de plus proprement (User Update username)
             if(error.message.indexOf("duplicate key error") !== -1){
                 var userNameDuplicated = error.message.split("{ :")[1].split("}")[0];
