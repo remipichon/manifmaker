@@ -459,7 +459,7 @@ __Current update policy provokes a service interruption as there is only one Man
 * use Compose to restart Manifmaker
 
         cd production
-        docker-compose up manifmaker
+        docker-compose up -d manifmaker
        
 
 ## Backup data
