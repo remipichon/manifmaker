@@ -1,0 +1,42 @@
+{
+  "_id": "W2Rq8oMyjcBPnYn8J",
+  "createdAt": ISODate
+  (
+  "2017-01-05T21:41:27.040Z"
+  ),
+  "services": {
+    "google": {
+      "accessToken": "ya29.Ci_KA8iLcog2DHwLomosyaSwFlIFBlIw2n4EvWL5PzOrQLni-tHjZJbVN8CenuGmow",
+      "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijc5M2I1NDMwNTU5ZDk5ZDZjOTUwOGJkOTAzYWUxMGE5MzgwMDhhMzAifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiaWF0IjoxNDgzNjU0ODExLCJleHAiOjE0ODM2NTg0MTEsImF0X2hhc2giOiJmZzBhR0p5YUVWVm4tVVZpY3RVU1VRIiwiYXVkIjoiNjgzNzE0ODI2ODY5LW9vMGNqaTkyMzFucGxlZ2ttaTc3NGJjcmRrYzFjY2twLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA0ODY0NDQ5NjU4MjkxMDI0ODUwIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF6cCI6IjY4MzcxNDgyNjg2OS1vbzBjamk5MjMxbnBsZWdrbWk3NzRiY3Jka2MxY2NrcC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImVtYWlsIjoicGljaG9uLnJlbWkucHJAZ21haWwuY29tIn0.KTapScq227rdvtsXxQXuFIcd1OgotvDxTMulWWc-_Jf4qVJGuLR3R6ufs6aJvfxatB_xR4QtFly7frtTrKyp3j2RStnDW0RdbHgTr1DFac0VGEr1CDUFA_pAmcAoljGBV7nGMSAv9fykRdhkA9tQRyIRJy7bWigsVijPaKvRSmP5C439LSD4dDk-7VnCqKuMVQRjQrrjuReA1y2k7UhGuyEUQpVDZSXvvHeWUyL1by8l0uEIiG4SOJ9tGwAaN8t1Z2O2Ps5FzmqNqVW5OXSLQP8AwbEeqxaGCa1UGJbC2yi3I9fXLytUeFGoQePsbuDQ-dETdU_lmk84eEqdDKzQ-A",
+      "expiresAt": 1483658411729,
+      "scope": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile"
+      ],
+      "id": "104864449658291024850",
+      "email": "pichon.remi.pr@gmail.com",
+      "verified_email": true,
+      "name": "Rémi Pichon",
+      "given_name": "Rémi",
+      "family_name": "Pichon",
+      "picture": "https://lh6.googleusercontent.com/-g_cXJtbg-Wo/AAAAAAAAAAI/AAAAAAAAAK8/vKW3c9WD_ms/photo.jpg",
+      "locale": "fr",
+      "gender": "other"
+    },
+    "resume": {
+      "loginTokens": []
+    }
+  },
+  "profile": {
+    "firstName": null,
+    "phoneNumber": null
+  },
+  "isReadyForAssignment": false,
+  "teams": [
+    "GdBSFExrEDGDARuvS"
+  ],
+  "skills": [],
+  "availabilities": [],
+  "assignments": [],
+  "dismissible": []
+}
