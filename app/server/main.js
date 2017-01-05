@@ -33,7 +33,8 @@ Meteor.startup(function () {
         DELETE_ALL: process.env.DELETE_ALL,
         INJECT_MINIMUM_ACCESS_RIGHT: process.env.INJECT_MINIMUM_ACCESS_RIGHT,
         INJECT_24H_43_DATA: process.env.INJECT_24H_43_DATA
-    }
+    };
+    var password = null;
 
 
     if (typeof(IS_PRODUCTION) !== 'undefined' && IS_PRODUCTION == "true") {
@@ -60,7 +61,7 @@ Meteor.startup(function () {
         if (InjectDataInfo.findOne({triggerEnv: "INJECT_MINIMUM_ACCESS_RIGHT"}) && dataInjectedOnce)
             console.info("Meteor.startup : ENV INJECT_MINIMUM_ACCESS_RIGHT skipped because it has already been injected and DATA_INJECTED_ONCE is true.");
         else
-            InjectDataHelperServerService.initAccessRightData();
+            password = InjectDataHelperServerService.initAccessRightData();
         InjectDataInfo.insert({triggerEnv: "INJECT_MINIMUM_ACCESS_RIGHT", date: new Date(), envReport: envReport});
     }
 
@@ -80,12 +81,17 @@ Meteor.startup(function () {
     if (Meteor.isDevelopment) {
     //     specific to the dev needs
         console.info("Meteor.startup : isDevelopment, injecting or not");
-        // InjectDataHelperServerService.deleteAll();
-        // InjectDataHelperServerService.initAccessRightData();
-        // Meteor.injectDataServerService.injectAllData();
+        InjectDataHelperServerService.deleteAll();
+        password = InjectDataHelperServerService.initAccessRightData();
+        Meteor.injectDataServerService.injectAllData();
+    }
+
+    if(password){
+        InjectDataHelperServerService.printSuperAdmin(password);
     }
 
 
+    console.info("Meteor.isStarting is complete");
     Meteor.isStartingUp = false;
 });
 

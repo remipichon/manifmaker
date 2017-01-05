@@ -425,6 +425,25 @@ Current production is reachable with [151.80.59.179](151.80.59.179).
 Current production needs to be logged as root on production machine :
 
     ssh root@vps302915.ovh.net
+    
+## ENV
+    
+##### IS_PRODUCTION
+    
+##### DATA_INJECTED_ONCE
+Whatever data will be added only once, even if ManifMaker app is restarted. 
+    
+##### DELETE_ALL
+Delete absolutely all data. 
+    
+##### INJECT_MINIMUM_ACCESS_RIGHT
+Inject Roles define in Roles enum, add a superadmin group roles (not updatable) and a superadmin user (not updatable).
+
+Superadmin user has "superadmin" password in Development and a random one in Production. Superadmin password can be found in the app log when starting. 
+    
+##### INJECT_24H_43_DATA
+Inject some Conf data for 24Heures, 43th, 2017. 
+
 
 ## Setup production env
 
@@ -441,10 +460,12 @@ https://docs.docker.com/engine/installation/linux/centos/
         docker-compose up -d
 
 * __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user.__
-
+        chmod 777 ~/manifmaker_images
         docker cp ../create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
         docker exec production_mongodb mongo localhost:27017/manifmaker /root/create_manifmaker_mongo_user.js
         docker-compose up -d manifmaker
+
+__777 on ~/manifmaker_images seems to be required by Fs Collection to store image, it didn't even work with 666. It is a major security breach as we are giving exec access to a volume shared in a Docker__
 
 
 ## Update version 
