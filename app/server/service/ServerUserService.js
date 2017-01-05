@@ -67,6 +67,20 @@ export class ServerUserService {
             console.info("Data adder from Google",google.family_name,google.given_name,google.email);
         }
 
+        if(doc.services && doc.services.facebook){
+            var google = doc.services.facebook;
+            console.info("Read user data from Facebook");
+            Meteor.users.update(doc._id, {
+                $set: {
+                    'profile.familyName': google.last_name,
+                    'profile.firstName': google.first_name,
+                    'username': google.name
+                }
+            });
+            Accounts.addEmail(doc._id, google.email, false);
+            console.info("Data adder from Facebok",google.family_name,google.given_name,google.email);
+        }
+
 
 
             console.info("A new user has been update :"+doc.username+" whith _id :"+_id+" and '"+defaultGroupRolesId+"' group roles");
