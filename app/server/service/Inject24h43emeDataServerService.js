@@ -37,12 +37,56 @@ export class Inject24h43emeDataServerService {
         });
     }
 
+    _injectGroupRoles() {
+        this.bureauGroupRole = GroupRoles.insert({
+            name: "bureau",
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ROLE]
+        });
+        this.hardGroupRole = GroupRoles.insert({
+            name: "hard",
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
+        });
+        this.softGroupRole = GroupRoles.insert({
+            name: "soft",
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.TASKREAD]
+        });
+        this.respLogGroupRole = GroupRoles.insert({
+            name: "respLog",
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.CONFMAKER]
+        });
+        this.respSecuGroupRole = GroupRoles.insert({
+            name: "respSecu",
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.ACCESSPASSVALIDATION, RolesEnum.CONFMAKER]
+        });
+        this.humainGroupRole = GroupRoles.insert({
+            name: "humain",
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.ACCESSPASSVALIDATION, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.ASSIGNMENTVALIDATION, RolesEnum.ACTIVITYGENERALVALIDATION, RolesEnum.CONFMAKER, RolesEnum.ASSIGNMENTTASKUSER]
+        });
+        this.allUserGroupRole = GroupRoles.insert({
+            name: "allUser",
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.ROLE]
+        });
+        this.allTaskGroupRole = GroupRoles.insert({
+            name: "allTask",
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ACCESSPASSVALIDATION, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.ASSIGNMENTVALIDATION]
+        });
+        this.allConfGroupRole = GroupRoles.insert({
+            name: "allConf",
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.CONFMAKER]
+        });
+        this.minimalGroupRole = GroupRoles.insert({
+            name: "minimal",
+            roles: [RolesEnum.MANIFMAKER]
+        });
+    }
+
     _injectAuthenticationUsers() {
         console.info("inject user");
         InjectDataHelperServerService.createAccountAndUser("test_orga_hard", "test_orga_hard@yopmail.com", "test_orga_hard", this.hardGroupRole);
     }
 
     populateTestData() {
+        this._injectGroupRoles();
         this._injectAuthenticationUsers();
         this._populateTaskGroups();
         this._populateUser();
