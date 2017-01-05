@@ -6,6 +6,7 @@ import {UserServiceClient} from "../client/service/UserServiceClient";
 AccountsTemplates.configure({
     hideSignInLink: true,
     hideSignUpLink: true,
+    showForgotPasswordLink: true,
     onSubmitHook: UserServiceClient.onSubmitHook,
 });
 
