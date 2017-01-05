@@ -214,6 +214,7 @@ Schemas.User = new SimpleSchema({
         label: "User roles to gain a set of less or more data and features",
         type: [SimpleSchema.RegEx.Id],
         optional: true,
+        defaultValue: [],
         custom: function () {
             this.value = _.compact(this.value);
             if(GroupRoles.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
