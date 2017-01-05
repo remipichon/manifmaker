@@ -30,7 +30,7 @@ services:
             - INJECT_MINIMUM_ACCESS_RIGHT=true
             - INJECT_24H_43_DATA=true
             - DATA_INJECTED_ONCE=true
-            - ROOT_URL=http://manifmaker.assomaker.org 
+            - ROOT_URL=http://manifmaker.24heures.org/
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker
         ports: 
             - "80:3000" 
