@@ -53,7 +53,23 @@ export class ServerUserService {
             }
         });
 
-        console.info("A new user has been update :"+doc.username+" whith _id :"+_id+" and '"+defaultGroupRolesId+"' group roles");
+        if(doc.services && doc.services.google){
+            var google = doc.services.google;
+            console.info("Read user data from Google");
+            Meteor.users.update(doc._id, {
+                $set: {
+                    'profile.familyName': google.family_name,
+                    'profile.firstName': google.given_name,
+                    'username': google.name
+                }
+            });
+            Accounts.addEmail(doc._id, google.email, google.verified_email);
+            console.info("Data adder from Google",google.family_name,google.given_name,google.email);
+        }
+
+
+
+            console.info("A new user has been update :"+doc.username+" whith _id :"+_id+" and '"+defaultGroupRolesId+"' group roles");
     }
 
     /**
@@ -164,9 +180,23 @@ export class ServerUserService {
 
         //Meteor account doing its bizness
         if(_.contains(fieldNames, "services") && ( fieldNames.length === 1 || fieldNames.length === 2 && _.contains(fieldNames, "emails")) ){
-            console.info("Users.allowUpdate : authorizing updating user services because default its Meteor.account bizness")
+            console.info("Users.allowUpdate : authorizing updating user services because default its Meteor.account bizness : services, add email")
             return true;
         }
+        if(_.contains(fieldNames, "profile") &&  _.contains(fieldNames, "username") && fieldNames.length === 2 ){
+            if(modifier.$set && modifier.$set.username && modifier.$set['profile.firstName']&& modifier.$set['profile.familyName'])
+                if(doc.profile.username == null && doc.profile.firstName == null && doc.profile.familyName == null) {
+                    console.info("Users.allowUpdate : authorizing updating user services because default its Meteor.account bizness : updating firstName, familyName and username that where null")
+                    return true;
+                }
+        }
+        if(_.contains(fieldNames, "emails") &&  fieldNames.length === 1 ){
+            //if(modifier.$addToSet && modifier.$addToSet['emails.address'] ) {
+                console.info("Users.allowUpdate : authorizing updating user services because default its Meteor.account bizness : adding email because ")
+                return true;
+           // }
+        }
+
 
         if(user.username === SUPERADMIN){
             if (_.contains(fieldNames, "groupRoles"))
@@ -205,6 +235,7 @@ export class ServerUserService {
                 console.info("Users.allowUpdate : authorizing setting user roles because default group has been used")
                 return true;
             }
+
 
 
         //back to classic security check
