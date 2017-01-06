@@ -35,23 +35,20 @@ export class ServerUserService {
     static updateUser(userId, doc) {
         //user is not log in yet, userId is null, we bypass security with .direct and propagate role with direct call to method
         var settings = Settings.findOne();
+        var defaultGroupRolesId;
         if(settings)
-            var defaultGroupRolesId = settings.defaultGroupRoles;
-        if(!defaultGroupRolesId){
-            console.error("No default group role has been found, user will not be able to access anything");
-            return;
-        }
+            defaultGroupRolesId = settings.defaultGroupRoles;
 
         if(!defaultGroupRolesId){
             console.error(`Are you injecting data pragmatically ? If so, ignore this message. GroupRoles with id defaultGroupRolesId doesn't exists, user '${doc.name}' will not be created as a custom user as it won't have any roles. `)
-            return;
+        } else {
+            Meteor.users.update(doc._id, {
+                $set: {
+                    groupRoles: [defaultGroupRolesId],
+                }
+            });
         }
 
-        var _id = Meteor.users.update(doc._id, {
-            $set: {
-                groupRoles: [defaultGroupRolesId],
-            }
-        });
 
         if(doc.services && doc.services.google){
             var google = doc.services.google;
@@ -64,7 +61,7 @@ export class ServerUserService {
                 }
             });
             Accounts.addEmail(doc._id, google.email, google.verified_email);
-            console.info("Data adder from Google",google.family_name,google.given_name,google.email);
+            console.info("Data added from Google",google.family_name,google.given_name,google.email);
         }
 
         if(doc.services && doc.services.facebook){
@@ -78,12 +75,10 @@ export class ServerUserService {
                 }
             });
             Accounts.addEmail(doc._id, google.email, false);
-            console.info("Data adder from Facebok",google.family_name,google.given_name,google.email);
+            console.info("Data added from Facebook",google.family_name,google.given_name,google.email);
         }
 
-
-
-            console.info("A new user has been update :"+doc.username+" whith _id :"+_id+" and '"+defaultGroupRolesId+"' group roles");
+            console.info("A new user has been updated : "+doc.username+" whith _id :"+doc._id+" and '"+defaultGroupRolesId+"' group roles");
     }
 
     /**
@@ -126,6 +121,11 @@ export class ServerUserService {
      * @param options
      */
     static propagateRoles(userId, doc, fieldNames, modifier) {
+        if(doc && doc.groupRoles && doc.groupRoles.length == 0) {
+            console.log("Propagate roles skipped because group roles waw empty");
+            return;
+
+        }
         var allGroupRolesMerged;
         if (fieldNames) { //update
             if (_.contains(fieldNames, "groupRoles")) {
@@ -219,7 +219,12 @@ export class ServerUserService {
                         throw new Meteor.Error("403","User superadmin can not be updated");
 
             //when superadmin is created, there is just superadmin group roles
-            if (_.contains(fieldNames, "roles")) {
+            if (_.contains(fieldNames, "roles") && fieldNames.length === 1) {
+
+                if(modifier.$set && modifier.$set.roles && modifier.$set.roles.length == 0 ){
+                    console.info("Users.alloUpdate : authorizing settings no roles to superadmin, he is just being inserted");
+                    return true;
+                }
                 var superadminGroupRoles = GroupRoles.findOne({name:"superadmin"});
                 if (modifier.$set && modifier.$set.roles
                     && modifier.$set.roles.length === superadminGroupRoles.roles.length
@@ -231,7 +236,7 @@ export class ServerUserService {
         }
 
         //when inserting new user, its default group role have to be propagated even if default group role doesn't provide any roles
-        var defaultGroupRoles = GroupRoles.findOne(Settings.findOne().defaultGroupRoles);
+        if(Settings.findOne()) var defaultGroupRoles = GroupRoles.findOne(Settings.findOne().defaultGroupRoles);
 
         //we authorize to $SET DEFAULT group role without any security check
         if (_.contains(fieldNames, "groupRoles") && fieldNames.length === 1)
