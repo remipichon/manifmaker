@@ -214,18 +214,18 @@ Schemas.Activities = new SimpleSchema({
     'applicationData.categoryId': {
         type: SimpleSchema.RegEx.Id,
         label: "Application Data Category",
-        optional: true, //todo remove
+        optional: true, //TODO should be mandatory but can't make it work
         custom: function () {
-            //TODO ApplicationCategories
-            // if (!ApplicationCategories.findOne(this.value))
-            //     return "unknownId";
+            if(this.value)
+            if (!AndroidCategories.findOne(this.value))
+                return "unknownId";
             return 1
         },
-        // autoform: {
-        //     afFieldInput: {
-        //         options: Schemas.helpers.allTeamsOptions
-        //     }
-        // }
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allAndroidCategoriesOptions
+            }
+        }
     },
     'applicationData.picture': {
         type: String,
@@ -269,18 +269,18 @@ Schemas.Activities = new SimpleSchema({
     'webData.categoryId': {
         type: SimpleSchema.RegEx.Id,
         label: "Web Data Category",
-        optional: true, //todo remove
+        optional: true, //TODO should be mandatory but can't make it work
         custom: function () {
-            //TODO WebCategories
-            // if (!ApplicationCategories.findOne(this.value))
-            //     return "unknownId";
+            if(this.value)
+                if (!WebCategories.findOne(this.value))
+                return "unknownId";
             return 1
         },
-        // autoform: {
-        //     afFieldInput: {
-        //         options: Schemas.helpers.allTeamsOptions
-        //     }
-        // }
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allWebCategoriesOptions
+            }
+        }
     },
     'webData.picture': {
         type: String,
