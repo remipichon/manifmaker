@@ -112,6 +112,7 @@ export class Inject24hDataServerService {
     }
 
     populateData() {
+        this._populateAndroidWebData();
         this._populateTeams();
         this._populatePlaces();
         this._populateEquipmentCategories();
@@ -127,6 +128,15 @@ export class Inject24hDataServerService {
         this._populateUser();
         this._populateActivities();
         this._populateTasks();
+    }
+
+    _populateAndroidWebData(){
+        this.webCatSport = WebCategories.insert({name: "Sport"});
+        this.webCatCulture = WebCategories.insert({name: "Culture"});
+
+        this.androidCatSport = AndroidCategories.insert({name: "Sport"});
+        this.androidCatCulture = AndroidCategories.insert({name: "Culture"});
+
     }
 
     _populateTeams() {

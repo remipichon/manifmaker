@@ -1,75 +1,91 @@
 <template name="activityGeneralInformation">
-    <div class="col-md-3">
-        <div>
-            {{> afQuickField name="limitToTeam" readOnly=isReadOnly}}
-        </div>
-        <div>
-            {{> SingleSelectComponent selectLabel="Team" title="Update team"
-                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                    updateCollection="Activities" updateItemId=this._id updateItemPath="teamId" readOnly=isReadOnly
-            }}
-        </div>
+    {{# autoForm collection="Activities" doc=activityDoc id="updateActivityAccessPassForm" type=autoFormType autosave=true}}
 
-        <div>
-            {{> SingleSelectComponent selectLabel="Team" title="Update priviliged team (if set, only users with the team will be able so see it)"
-                    optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                    updateCollection="Activities" updateItemId=this._id updateItemPath="privilegedTeamId" readOnly=isReadOnly
-            }}
-        </div>
-
-
-        <div>
-            {{> SingleSelectComponent selectLabel="Place" title="Update place"
-                    optionCollection="Places" optionValueName="name" optionCollectionIndex="PlacesIndex"
-                    updateCollection="Activities" updateItemId=this._id updateItemPath="placeId" readOnly=isReadOnly
-            }}
-        </div>
-
-        {{> DismissibleHelperComponent message="The user responsible for the activity during its raising. He will get notified when activity is updated or validated." uniqueId="user-responsible-update"}}
-
-        <div>
-            {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
-                    optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                    updateCollection="Activities" updateItemId=this._id updateItemPath="masterId" readOnly=isReadOnly
-            }}
-        </div>
-
-        {{> DismissibleHelperComponent message="The user responsible for the activity during the event. Its contact will be added to planning given to users." uniqueId="live-responsible-update"}}
-
-        <div>
+        <div class="row">
+        <div class="col-md-3">
+            <h4>Who's in charge ?</h4>
             <div>
-                {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                {{> afQuickField name="limitToTeam"}}
+            </div>
+            <div>
+                {{> SingleSelectComponent selectLabel="Team" title="Update team"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="teamId" readOnly=isReadOnly
+                }}
+            </div>
+
+            <div>
+                {{> SingleSelectComponent selectLabel="Privileged team" title="Update privileged team (if set, only users with the team will be able so see it)"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="privilegedTeamId" readOnly=isReadOnly
+                }}
+            </div>
+
+
+            {{> DismissibleHelperComponent message="The user responsible for the activity during its raising. He will get notified when activity is updated or validated." uniqueId="user-responsible-update"}}
+
+            <div>
+                {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
                         optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                        updateCollection="Activities" updateItemId=this._id updateItemPath="liveEventMasterId" readOnly=isReadOnly
+                        updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="masterId" readOnly=isReadOnly
+                }}
+            </div>
+
+            {{> DismissibleHelperComponent message="The user responsible for the activity during the event. Its contact will be added to planning given to users." uniqueId="live-responsible-update"}}
+
+            <div>
+                <div>
+                    {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
+                            optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                            updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="liveEventMasterId" readOnly=isReadOnly
+                    }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+
+            <div>
+                <h4>When ?</h4>
+                From *
+                {{>DateTimePickerComponent class="date-time-picker-update-activity-start" readOnly=isReadOnly date=activityDoc.start updateDateCallback=updateDateCallbackStartDate}}
+                to *
+                {{>DateTimePickerComponent class="date-time-picker-update-activity-end" readOnly=isReadOnly date=activityDoc.end updateDateCallback=updateDateCallbackEndDate}}
+            </div>
+
+
+            <div>
+                <br>
+                <br>
+                <br>
+                <h4>Where ?</h4>
+                {{> SingleSelectComponent selectLabel="Place" title="Update place"
+                optionCollection="Places" optionValueName="name" optionCollectionIndex="PlacesIndex"
+                updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="placeId" readOnly=isReadOnly
                 }}
             </div>
         </div>
-    </div>
-    <div class="col-md-9">
-        {{> DismissibleHelperComponent message="Be talktative and concise. This description should describe everything that has to be done" uniqueId="description-update"}}
-        <div>
-            {{> afQuickField name='description' rows=20}}
+        <div class="col-md-6">
+            {{> DismissibleHelperComponent message="Be talktative and concise. This description should describe everything that has to be done" uniqueId="description-update"}}
+            <div>
+                {{> afQuickField name='description' rows=20}}
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-            From *
-            {{>DateTimePickerComponent class="date-time-picker-update-activity-start" readOnly=isReadOnly date=start updateDateCallback=updateDateCallbackStartDate}}
-            to *
-            {{>DateTimePickerComponent class="date-time-picker-update-activity-end" readOnly=isReadOnly date=end updateDateCallback=updateDateCallbackEndDate}}
-    </div>
-
+    <div class="row row-with-margin">
         <div class="col-md-6">
+            <br>
             {{> afQuickField name='serviceProvider' readOnly=isReadOnly}}
         </div>
 
-    <div class="col-md-6">
-        {{> afQuickField name="location" height="400px" defaultLat=defaultLat defaultLng=defaultLng readOnly=isReadOnly}}
-        {{#unless isReadOnly}}
-            <button type="submit" class="btn btn-primary">Update localisation</button>{{/unless}}
+        <div class="col-md-6">
+            {{> afQuickField name="location" height="400px" defaultLat=defaultLat defaultLng=defaultLng readOnly=isReadOnly}}
+            {{#unless isReadOnly}}
+                <button type="submit" class="btn btn-primary">Update localisation</button>{{/unless}}
+        </div>
     </div>
 
-    <div class="col-md-12">
+    <div class="row row-with-margin">
 
         <div class="col-md-6">
             {{> afQuickField name='webData' readOnly=isReadOnly}}
@@ -84,5 +100,5 @@
         </div>
 
     </div>
-
+{{/autoForm}}
 </template>

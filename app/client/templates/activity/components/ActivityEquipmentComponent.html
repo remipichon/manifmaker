@@ -1,7 +1,7 @@
 <template name="activityEquipments">
     <div class="row">
         {{#if displayItem 'waterSupplyId'}}
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div>
                     {{> SingleNonMandatorySelectComponent selectLabel="Water supply" title="Water supply place"
                     optionCollection="WaterSupplies" optionValueName="name" optionCollectionIndex="WaterSuppliesIndex"
@@ -12,7 +12,7 @@
             </div>
         {{/if}}
         {{#if displayItem 'waterDisposalId'}}
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div>
                     {{> SingleNonMandatorySelectComponent selectLabel="Water disposal" title="Water disposal place"
                     optionCollection="WaterDisposals" optionValueName="name" optionCollectionIndex="WaterDisposalsIndex"
@@ -23,7 +23,7 @@
             </div>
         {{/if}}
         {{#if displayItem 'powerSupplyId'}}
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div>
                     {{> SingleNonMandatorySelectComponent selectLabel="Power supply" title="Power supply"
                     optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
@@ -35,7 +35,7 @@
         {{/if}}
     </div>
 
-    <div class="equipment-wrapper col-md-12">
+    <div class="equipment-wrapper row">
         {{#each equipmentsCategories}}
             <div class="col-md-6">
                 <div class="row">

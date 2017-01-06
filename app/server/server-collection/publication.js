@@ -247,6 +247,26 @@ Meteor.startup(function () {
         return AccessPoints.find({});
     });
 
+    /**
+     * @memberOf Meteor_Publish
+     * @locus server
+     * @summary Web Category publication. No query, publish all Web Category data.
+     * @returns {Collection}
+     */
+    Meteor.publish("web-categories", function () {
+        return WebCategories.find({});
+    });
+
+    /**
+     * @memberOf Meteor_Publish
+     * @locus server
+     * @summary Android Category publication. No query, publish all Android Category data.
+     * @returns {Collection}
+     */
+    Meteor.publish("android-categories", function () {
+        return AndroidCategories.find({});
+    });
+
     Meteor.publish("images", function () {
         return Images.find({});
     });

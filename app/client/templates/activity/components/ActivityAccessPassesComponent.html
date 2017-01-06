@@ -1,5 +1,55 @@
 <template name="activityAccessPasses">
-    <p>isUpdateAllowed : {{isUpdateAllowed}}</p>
-    <p>isReadOnly : {{isReadOnly}}</p>
-    {{> afQuickField name='accessPasses'}}
+    <div class="row">
+
+    {{# autoForm collection="Activities" doc=activityDoc id="updateActivityAccessPassForm" type=autoFormType autosave=true}}
+
+        <div class="col-xs-6">
+            {{> afQuickField name='accessPasses'}}
+        </div>
+        <div class="col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Maps
+                </div>
+                <ul class="list-group">
+                 {{#each accessPasses}}
+                     <li class="list-group-item">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Access Pass {{adds @index 1}} map : {{recipientName}}</h3>
+                            </div>
+                            <div class="panel-body access-pass-map">
+                                <div class="access-pass-image">
+                                    <img src="/Plan43.png">
+                                </div>
+                                <div class="access-pass-image {{#if isAccessPointNotGranted accessPointGranted "PS1"}}hidden{{/if}}">
+                                    <img src="/PS1.png">
+                                </div>
+                                <div class="access-pass-image {{#if isAccessPointNotGranted accessPointGranted "PS2"}}hidden{{/if}}">
+                                    <img src="/PS2.png">
+                                </div>
+                                <div class="access-pass-image {{#if isAccessPointNotGranted accessPointGranted "PS3"}}hidden{{/if}}">
+                                    <img src="/PS3.png">
+                                </div>
+                                <div class="access-pass-image {{#if isAccessPointNotGranted accessPointGranted "PS4"}}hidden{{/if}}">
+                                    <img src="/PS4.png">
+                                </div>
+                                <div class="access-pass-image {{#if isAccessPointNotGranted accessPointGranted "PS5"}}hidden{{/if}}">
+                                    <img src="/PS5.png">
+                                </div>
+                                <div class="access-pass-image {{#if isAccessPointNotGranted accessPointGranted "PS6"}}hidden{{/if}}">
+                                    <img src="/PS6.png">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    {{/autoForm}}
+
+    </div>
+
+
 </template>

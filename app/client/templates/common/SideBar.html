@@ -45,7 +45,7 @@
                         <li><a href="/logout" tabindex="-1"><i class="sidebar-icon mdi mdi-logout"></i> Logout</a></li>
                     </ul>
                 </li>
-                <li><a class="home-link" href="{{pathFor route='home'}}"><i class="sidebar-icon mdi mdi-home"></i> Home</a></li>
+                <li class="{{#if equals currentTab "Home"}}active{{/if}}"><a class="home-link" href="{{pathFor route='home'}}"><i class="sidebar-icon mdi mdi-home"></i> Home</a></li>
                 {{#if isInRole RolesEnum.ACTIVITYREAD}}
                     <li class="dropdown">
                         <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
@@ -60,7 +60,6 @@
                         </ul>
                     </li>
                 {{/if}}
-                <li class="{{#if equals currentTab "Home"}}active{{/if}}"><a class="home-link" href="{{pathFor route='home'}}"><i class="sidebar-icon mdi mdi-home"></i> Home</a></li>
                 {{#if isInRole RolesEnum.TASKREAD}}
                     <li class="dropdown {{#if equals currentTab "Tasks"}}active{{/if}}">
                         <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">

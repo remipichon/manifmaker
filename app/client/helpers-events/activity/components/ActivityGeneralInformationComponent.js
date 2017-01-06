@@ -6,17 +6,27 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
         return "activityGeneralInformation"
     }
 
-    constructor(isReadOnly){
+    constructor(){
         super();
-        this.isReadOnlyBool = isReadOnly;
     }
 
     isUpdateAllowed() {
         return ValidationService.isUpdateAllowed(this.data().parentInstance.data().generalInformationValidation.currentState);
     }
 
+    activityDoc(){
+        return this.data().parentInstance.data();
+    }
+
+
+    autoFormType(){
+        if(this.isReadOnly())
+            return "readonly"
+        return "update"
+    }
+
     isReadOnly() {
-        return this.isReadOnlyBool || !this.isUpdateAllowed();
+        return !this.isUpdateAllowed();
     }
 
     defaultLat(){
@@ -30,24 +40,24 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
     updateDateCallbackStartDate(newOption) {
         return _.bind(function(newOption) {
             var _time = new moment(newOption);
-            Activities.update(this.data()._id,{
+            Activities.update(this._id,{
                 $set:{
                     start: _time.toDate()
                 }
             })
-        },this);
+        },this.activityDoc());
     }
 
 
     updateDateCallbackEndDate(date){
         return _.bind(function(newOption) {
             var _time = new moment(newOption);
-            Activities.update(this.data()._id,{
+            Activities.update(this._id,{
                 $set:{
                     end: _time.toDate()
                 }
             })
-        },this);
+        },this.activityDoc());
     }
 }
 

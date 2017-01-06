@@ -148,3 +148,27 @@
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
+
+
+<template name="web-category-insert">
+    {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
+        <fieldset>
+            <legend>Add a {{options.REFERENCE_LABEL}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+
+<template name="android-category-insert">
+    {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
+        <fieldset>
+            <legend>Add a {{options.REFERENCE_LABEL}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>

@@ -22,9 +22,9 @@ export class UserServiceClient {
                 bootbox.confirm("You are about to delete a user, are you sure ?",_.bind(function (result) {
                         if (result) {
                             Router.go("/users");
-                            this.remove();
+                            Meteor.users.remove(this._id);
                         }
-                    }, this)
+                    }, user)
                 );
             else {
                 var _id = Meteor.userId();
@@ -39,9 +39,9 @@ export class UserServiceClient {
                         callback: _.bind(function (result) {
                             if (result) {
                                 Router.go("/users");
-                                this.remove();
+                                Meteor.users.remove(this._id);
                             }
-                        }, this)
+                        }, user)
                     }
                 );
             }

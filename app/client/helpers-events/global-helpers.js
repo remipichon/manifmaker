@@ -30,6 +30,9 @@ Template.registerHelper(
 Template.registerHelper('equals', function (a, b) {
     return a === b;
 });
+Template.registerHelper('adds', function (a, b) {
+    return a + b;
+});
 
 
 Template.registerHelper(
