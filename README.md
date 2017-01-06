@@ -417,9 +417,94 @@ It can lead the GUI to flickr. That is why it is probably better **to check ever
 
 <a id="production" name="production"></a>
 # Production
-Not yet implemented, it will be on another machine. 
 
-use ENV ISPROD to prevent using inject-data in prod
+ENV IS_PRODUCTION can be used to assert the platform. 
+
+Current production is reachable with [151.80.59.179](151.80.59.179).
+
+Current production needs to be logged as root on production machine :
+
+    ssh root@vps302915.ovh.net
+    
+## ENV
+    
+##### IS_PRODUCTION
+    
+##### DATA_INJECTED_ONCE
+Whatever data will be added only once, even if ManifMaker app is restarted. 
+    
+##### DELETE_ALL
+Delete absolutely all data. 
+    
+##### INJECT_MINIMUM_ACCESS_RIGHT
+Inject Roles define in Roles enum, add a superadmin group roles (not updatable) and a superadmin user (not updatable).
+
+Superadmin user has "superadmin" password in Development and a random one in Production. Superadmin password can be found in the app log when starting. 
+    
+##### INJECT_24H_43_DATA
+Inject some Conf data for 24Heures, 43th, 2017. 
+
+
+## Setup production env
+
+* install Docker and Compose
+
+https://docs.docker.com/compose/install/
+ 
+https://docs.docker.com/engine/installation/linux/centos/
+    
+* clone repo and use Compose
+
+        git clone https://github.com/assomaker/manifmaker.git
+        cd production
+        docker-compose up -d
+
+* __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user.__
+        chmod 777 ~/manifmaker_images
+        docker cp ../create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
+        docker exec production_mongodb mongo localhost:27017/manifmaker /root/create_manifmaker_mongo_user.js
+        docker-compose up -d manifmaker
+
+__777 on ~/manifmaker_images seems to be required by Fs Collection to store image, it didn't even work with 666. It is a major security breach as we are giving exec access to a volume shared in a Docker__
+
+
+## Update version 
+
+__Current update policy provokes a service interruption as there is only one ManifMaker node. Following steps should get easier one day.__
+
+* update REPO/production/docker-compose.yml base image of manifmaker service
+
+         manifmaker: 
+                image: 'assomaker/manifmaker:0-10-0-activity'
+* commit your changes and pull on the production machine
+* use Compose to restart Manifmaker
+
+        cd production
+        docker-compose up -d manifmaker
+       
+
+## Backup data
+
+A backup is run everyday at midnight; 
+
+## Restore from a backup
+
+See the list of backups, you can run:
+
+       docker exec mongodb_backup ls /backup
+
+To restore database from a certain backup, simply run:
+
+    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901/manifmaker
+    
+It will delete everything (--drop) and restore all database. 
+
+
+## Force a backup by hand
+
+Simply restart the backup container
+
+        docker-compose restart mongodb_backup
 
 
 <a id="project" name="project"></a>

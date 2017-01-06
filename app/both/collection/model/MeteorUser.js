@@ -16,10 +16,6 @@ Schemas.UserAvailabilities = new SimpleSchema({
             //check if new availability is overlapping with an assignment
             var userAssignment = Meteor.users.findOne(this.docId).assignments;
 
-            console.log(userAssignment.length);
-            console.log(start.toDate());
-            console.log(end.toDate());
-
             if(TimeSlotService.areArrayStartEndOverlappingStartDate(userAssignment,start,end,"none")){
                 return "availabilityOverlapAssignment";
             }
@@ -218,6 +214,7 @@ Schemas.User = new SimpleSchema({
         label: "User roles to gain a set of less or more data and features",
         type: [SimpleSchema.RegEx.Id],
         optional: true,
+        defaultValue: [],
         custom: function () {
             this.value = _.compact(this.value);
             if(GroupRoles.find({_id:{$in:this.value}}).fetch().length !== this.value.length)
@@ -278,7 +275,6 @@ Schemas.User = new SimpleSchema({
 
                         //check if the user has one availability that are within the deleted team's assignment term
                         var user = Meteor.users.findOne(this.docId);
-                        console.log(teamRemoved, "has been removed from",user);
 
                         var userTeams = user.teams;
                         userTeams.splice(userTeams.indexOf(teamRemoved),1);
@@ -395,7 +391,8 @@ Schemas.User = new SimpleSchema({
         // For accounts-password, either emails or username is required, but not both. It is OK to make this
         // optional here because the accounts-password package does its own validation.
         // Third-party login packages may not require either. Adjust this schema as necessary for your usage.
-        optional: true
+        optional: true,
+        unique: true
     },
     emails: {
         type: Array,

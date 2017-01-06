@@ -27,7 +27,6 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         this.startDate.set(date);
         //this.hasDragged = true;
         this.tempEndDate.set(date);
-        console.log("start",this.startDate.get().toDate(),this.tempEndDate.get().toDate());
 
     }
 
@@ -37,7 +36,6 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         var date = new moment($(event.target).attr("quarter")).add(this.addHourAccordingToAccuracy(),"hour");
         this.hasDragged = true;
         this.tempEndDate.set(date);
-        console.log("select",this.startDate.get().toDate(),this.tempEndDate.get().toDate());
     }
 
     endSelectAvailability(event){

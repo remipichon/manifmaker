@@ -51,3 +51,6 @@ cfs:gridfs
 cfs:standard-packages
 yogiben:autoform-file
 cfs:filesystem
+accounts-google
+service-configuration
+accounts-facebook

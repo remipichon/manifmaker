@@ -46,7 +46,7 @@ Meteor.startup(function () {
     /**
      * @memberOf Meteor_Publish
      * @locus server
-     * @summary Activity publication. No query, publish all Tasks data.
+     * @summary Activity publication. Publish activities that are not 'limitToTeam' or are 'limitToTeam' to the user's teams. Superadmin has all activities.
      * @description
      * Role required : ACTIVITYREAD
      * @returns {Collection}
@@ -54,7 +54,10 @@ Meteor.startup(function () {
     Meteor.publish("activities", function () {
         if (SecurityServiceServer.grantAccessToCollection(this.userId, RolesEnum.ACTIVITYREAD, "Activity")) {
             var user = Meteor.users.findOne(this.userId);
-            console.log("publish activities",this.userId);
+
+            if(user.username === SUPERADMIN)
+                    return Activities.find({});
+
             return Activities.find({
                 $or: [
                     {limitToTeam: false},

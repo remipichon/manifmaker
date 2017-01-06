@@ -91,11 +91,43 @@ export class InjectDataHelperServerService {
         AndroidCategories.remove({});
 
         AssignmentTerms.remove({});
+
+        InjectDataInfo.remove({});
+    }
+
+    static makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 15; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
+    static printSuperAdmin(password){
+        console.log("***********************************************************************");
+        console.log("***********************************************************************");
+        console.log("*");
+        console.log("*");
+        console.log("*");
+        console.log("*");
+        console.log("*");
+        console.info("Superadmin has been created with password :",password);
+        console.log("*");
+        console.log("*");
+        console.log("*");
+        console.log("*");
+        console.log("*");
+        console.log("*");
+        console.log("***********************************************************************");
+        console.log("***********************************************************************");
+
     }
 
     static initAccessRightData() {
         if (Meteor.users.findOne({username: SUPERADMIN})) {
-            return;
+            return false;
         }
         console.info(SUPERADMIN + " user not found, now injecting roles and superadmin user");
 
@@ -110,7 +142,12 @@ export class InjectDataHelperServerService {
 
         var email = "superadmin@yopmail.com";
         var username = "superadmin";
-        var password = "superadmin";
+        var password;
+        if(Meteor.isDevelopment)
+            password = "superadmin";
+        else
+            password = InjectDataHelperServerService.makeid();
+
         var groupArray;
         if (Array.isArray(superAdmin))
             groupArray = superAdmin;
@@ -122,6 +159,7 @@ export class InjectDataHelperServerService {
             email: email,
             password: password
         });
+
 
         Meteor.users.direct.update(id, {
             $set: {
@@ -138,7 +176,10 @@ export class InjectDataHelperServerService {
             _id: id
         });
 
+        InjectDataHelperServerService.printSuperAdmin(password);
 
+
+        return password;
     }
 
 

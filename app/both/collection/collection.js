@@ -1,7 +1,7 @@
 import {Schemas} from './model/SchemasHelpers'
 
 Images = new FS.Collection("images", {
-    stores: [new FS.Store.FileSystem("images", {path: "~/uploads"})]
+    stores: [new FS.Store.FileSystem("images")]
 });
 
 /**

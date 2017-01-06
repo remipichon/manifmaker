@@ -219,8 +219,6 @@ export class ActivityListComponent extends BlazeComponent {
         this.activityListEquipmentValidationStateFilter = new ReactiveTable.Filter('activity-equipment-validation-state-filter', ['equipmentValidation.currentState']);
         this.activityDateFilter = new ReactiveTable.Filter("activity-date-filter", ["timeSlots"]);
 
-        console.log("activity list on onCreated")
-
     }
 
     constructor(){
@@ -228,14 +226,6 @@ export class ActivityListComponent extends BlazeComponent {
         this.activityListAdvancedSearch = new ReactiveVar(false);
         this.isAfterFilterOn = new ReactiveVar(false);
         this.isBeforeFilterOn = new ReactiveVar(false);
-
-        console.log("activity list on constructor")
-
-
-    }
-
-    onRendered(){
-        console.log("activity list on rendeerer")
     }
 
 

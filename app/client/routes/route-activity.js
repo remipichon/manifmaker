@@ -34,13 +34,9 @@ Router.route('/activity', function () {
         SecurityServiceClient.grantAccessToPage(RolesEnum.ACTIVITYWRITE);
         console.info("routing", "/activity");
 
-        if (this.ready()) {
-            this.render('insertActivityForm', {
-                to: 'mainContent'
-            });
-        } else {
-            console.log("Route /activity : waiting team data"); //TODO add a spinner
-        }
+        this.render('insertActivityForm', {
+            to: 'mainContent'
+        });
 
     },
     {controller: ManifMakerRouterController,name: 'activity.create'}
