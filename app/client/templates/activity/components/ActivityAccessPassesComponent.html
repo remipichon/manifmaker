@@ -1,5 +1,8 @@
 <template name="activityAccessPasses">
     <div class="row">
+
+    {{# autoForm collection="Activities" doc=activityDoc id="updateActivityAccessPassForm" type=autoFormType autosave=true}}
+
         <div class="col-xs-6">
             {{> afQuickField name='accessPasses'}}
         </div>
@@ -10,7 +13,7 @@
                 </div>
                 <ul class="list-group">
                  {{#each accessPasses}}
-                    <li class="list-group-item">
+                     <li class="list-group-item">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Access Pass {{adds @index 1}} map : {{recipientName}}</h3>
@@ -44,5 +47,9 @@
                 </ul>
             </div>
         </div>
+    {{/autoForm}}
+
     </div>
+
+
 </template>

@@ -1,9 +1,11 @@
 <template name="activityGeneralInformation">
-    <div class="row">
+    {{# autoForm collection="Activities" doc=activityDoc id="updateActivityAccessPassForm" type=autoFormType autosave=true}}
+
+        <div class="row">
         <div class="col-md-3">
             <h4>Who's in charge ?</h4>
             <div>
-                {{> afQuickField name="limitToTeam" readOnly=isReadOnly}}
+                {{> afQuickField name="limitToTeam"}}
             </div>
             <div>
                 {{> SingleSelectComponent selectLabel="Team" title="Update team"
@@ -98,5 +100,5 @@
         </div>
 
     </div>
-
+{{/autoForm}}
 </template>

@@ -6,17 +6,27 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
         return "activityGeneralInformation"
     }
 
-    constructor(isReadOnly){
+    constructor(){
         super();
-        this.isReadOnlyBool = isReadOnly;
     }
 
     isUpdateAllowed() {
         return ValidationService.isUpdateAllowed(this.data().parentInstance.data().generalInformationValidation.currentState);
     }
 
+    activityDoc(){
+        return this.data().parentInstance.data();
+    }
+
+
+    autoFormType(){
+        if(this.isReadOnly())
+            return "readonly"
+        return "update"
+    }
+
     isReadOnly() {
-        return this.isReadOnlyBool || !this.isUpdateAllowed();
+        return !this.isUpdateAllowed();
     }
 
     defaultLat(){
