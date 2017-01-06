@@ -76,6 +76,34 @@ Schemas.helpers.allTeamsOptions = function () {
     return result;
 };
 
+
+Schemas.helpers.allAndroidCategoriesOptions = function () {
+    var teams = AndroidCategories.find({}).fetch();
+    var result = [];
+    _.each(teams, function (team) {
+        result.push({
+            label: team.name,
+            value: team._id
+        });
+    });
+
+    return result;
+};
+
+
+Schemas.helpers.allWebCategoriesOptions = function () {
+    var teams = WebCategories.find({}).fetch();
+    var result = [];
+    _.each(teams, function (team) {
+        result.push({
+            label: team.name,
+            value: team._id
+        });
+    });
+
+    return result;
+};
+
 Schemas.helpers.allTaskGroupsOptions = function () {
     var taskGroups = TaskGroups.find({}).fetch();
     var result = [];

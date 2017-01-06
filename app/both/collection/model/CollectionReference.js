@@ -847,3 +847,88 @@ Schemas.references.AccessPoints = new SimpleSchema({
 AccessPoints = new Mongo.Collection("access_points");
 AccessPoints.attachSchema(Schemas.references.AccessPoints);
 
+/**
+ * @memberOf Route.collectionReference
+ * @summary Teams option to automatically generate routes and forms
+ * @description see code to get the values
+ */
+Schemas.references.options.WebCategories = {
+    PLURAL_REFERENCE_URL: "web-categories",
+    REFERENCE_URL: "web-category",
+    REFERENCE_COLLECTION_NAME: "WebCategories",
+    REFERENCE_MONGO_COLLECTION_NAME: "WebCategories",
+    REFERENCE_LABEL: "Web Category"
+};
+Schemas.references.WebCategories = new SimpleSchema({
+    name: {
+        type: String,
+        label: "Web Category Name",
+        max: 100
+    },
+    type: {
+        type: String,
+        label: "Web Categories type",
+        autoValue: function(){
+            return "WebCategories"
+        }
+    },
+    baseUrl: {
+        type: String,
+        label: "Web Categories base URL",
+        autoValue: function(){
+            return "web-category"
+        }
+    }
+});
+/**
+ * @memberOf Collection
+ * @summary WebCategories collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+WebCategories = new Mongo.Collection("web_categories");
+WebCategories.attachSchema(Schemas.references.WebCategories);
+
+
+/**
+ * @memberOf Route.collectionReference
+ * @summary Teams option to automatically generate routes and forms
+ * @description see code to get the values
+ */
+Schemas.references.options.AndroidCategories = {
+    PLURAL_REFERENCE_URL: "android-categories",
+    REFERENCE_URL: "android-category",
+    REFERENCE_COLLECTION_NAME: "AndroidCategories",
+    REFERENCE_MONGO_COLLECTION_NAME: "AndroidCategories",
+    REFERENCE_LABEL: "Android Category"
+};
+Schemas.references.AndroidCategories = new SimpleSchema({
+    name: {
+        type: String,
+        label: "Android Category Name",
+        max: 100
+    },
+    type: {
+        type: String,
+        label: "Android Categories type",
+        autoValue: function(){
+            return "AndroidCategories"
+        }
+    },
+    baseUrl: {
+        type: String,
+        label: "Android Categories base URL",
+        autoValue: function(){
+            return "android-category"
+        }
+    }
+});
+/**
+ * @memberOf Collection
+ * @summary AndroidCategories collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+AndroidCategories = new Mongo.Collection("android_categories");
+AndroidCategories.attachSchema(Schemas.references.AndroidCategories);
+

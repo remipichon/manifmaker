@@ -145,3 +145,28 @@
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
+
+
+<template name="web-category-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+
+
+<template name="android-category-update">
+    {{# autoForm collection=collection doc=document id="update" type="update"}}
+        <fieldset>
+            <legend>Update {{document.name}}</legend>
+            {{> afQuickField name="name"}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    {{/autoForm}}
+</template>
+

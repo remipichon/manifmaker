@@ -21,6 +21,8 @@ AllCollections = {
     PowerSupplies: PowerSupplies,
     EquipmentStorages: EquipmentStorages,
     AccessPoints: AccessPoints,
+    WebCategories: WebCategories,
+    AndroidCategories: AndroidCategories
 };
 
 var confMakerReactiveTables = [];

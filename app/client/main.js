@@ -33,6 +33,8 @@ Meteor.startup(function () {
     Meteor.subscribe("task-groups");
     Meteor.subscribe("group-roles");
     Meteor.subscribe("roles");
+    Meteor.subscribe("web-categories");
+    Meteor.subscribe("android-categories");
     Meteor.subscribe("equipment-categories");
     Meteor.subscribe("equipment-storages");
     Meteor.subscribe("access-points");
