@@ -10,14 +10,14 @@
             <div>
                 {{> SingleSelectComponent selectLabel="Team" title="Update team"
                         optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                        updateCollection="Activities" updateItemId=this._id updateItemPath="teamId" readOnly=isReadOnly
+                        updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="teamId" readOnly=isReadOnly
                 }}
             </div>
 
             <div>
                 {{> SingleSelectComponent selectLabel="Privileged team" title="Update privileged team (if set, only users with the team will be able so see it)"
                         optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                        updateCollection="Activities" updateItemId=this._id updateItemPath="privilegedTeamId" readOnly=isReadOnly
+                        updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="privilegedTeamId" readOnly=isReadOnly
                 }}
             </div>
 
@@ -27,7 +27,7 @@
             <div>
                 {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
                         optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                        updateCollection="Activities" updateItemId=this._id updateItemPath="masterId" readOnly=isReadOnly
+                        updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="masterId" readOnly=isReadOnly
                 }}
             </div>
 
@@ -37,7 +37,7 @@
                 <div>
                     {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
                             optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                            updateCollection="Activities" updateItemId=this._id updateItemPath="liveEventMasterId" readOnly=isReadOnly
+                            updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="liveEventMasterId" readOnly=isReadOnly
                     }}
                 </div>
             </div>
@@ -47,9 +47,9 @@
             <div>
                 <h4>When ?</h4>
                 From *
-                {{>DateTimePickerComponent class="date-time-picker-update-activity-start" readOnly=isReadOnly date=start updateDateCallback=updateDateCallbackStartDate}}
+                {{>DateTimePickerComponent class="date-time-picker-update-activity-start" readOnly=isReadOnly date=activityDoc.start updateDateCallback=updateDateCallbackStartDate}}
                 to *
-                {{>DateTimePickerComponent class="date-time-picker-update-activity-end" readOnly=isReadOnly date=end updateDateCallback=updateDateCallbackEndDate}}
+                {{>DateTimePickerComponent class="date-time-picker-update-activity-end" readOnly=isReadOnly date=activityDoc.end updateDateCallback=updateDateCallbackEndDate}}
             </div>
 
 
@@ -60,7 +60,7 @@
                 <h4>Where ?</h4>
                 {{> SingleSelectComponent selectLabel="Place" title="Update place"
                 optionCollection="Places" optionValueName="name" optionCollectionIndex="PlacesIndex"
-                updateCollection="Activities" updateItemId=this._id updateItemPath="placeId" readOnly=isReadOnly
+                updateCollection="Activities" updateItemId=activityDoc._id updateItemPath="placeId" readOnly=isReadOnly
                 }}
             </div>
         </div>

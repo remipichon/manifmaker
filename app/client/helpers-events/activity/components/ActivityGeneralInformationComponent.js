@@ -40,24 +40,24 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
     updateDateCallbackStartDate(newOption) {
         return _.bind(function(newOption) {
             var _time = new moment(newOption);
-            Activities.update(this.data()._id,{
+            Activities.update(this._id,{
                 $set:{
                     start: _time.toDate()
                 }
             })
-        },this);
+        },this.activityDoc());
     }
 
 
     updateDateCallbackEndDate(date){
         return _.bind(function(newOption) {
             var _time = new moment(newOption);
-            Activities.update(this.data()._id,{
+            Activities.update(this._id,{
                 $set:{
                     end: _time.toDate()
                 }
             })
-        },this);
+        },this.activityDoc());
     }
 }
 
