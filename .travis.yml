@@ -11,6 +11,10 @@ before_install:
   - . scripts/get_version.sh
   - CONTAINER_NAME=manifmaker_$MANIFMAKER_VERSION
   - echo MANIFMAKER_VERSION=$MANIFMAKER_VERSION CONTAINER_NAME=$CONTAINER_NAME
+  - openssl aes-256-cbc -K $encrypted_5cb4ad8e9b4e_key -iv $encrypted_5cb4ad8e9b4e_iv -in preprod_rsa.enc -out preprod_rsa -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 $TRAVIS_BUILD_DIR/preprod_rsa
+  - ssh-add $TRAVIS_BUILD_DIR/preprod_rsa
 
 
 script:
@@ -47,13 +51,6 @@ script:
   #- scp -r ../doc/html root@vps302914.ovh.net:~/
   #- ssh root@vps302914.ovh.net "docker cp ~/html manifmaker-nginx:/usr/share/nginx/html/doc"
   #- ssh root@vps302914.ovh.net "rm -rf ~/html"
-
-before_deploy: 
-  - #TODO read ssh keys
-  - openssl aes-256-cbc -K $encrypted_5cb4ad8e9b4e_key -iv $encrypted_5cb4ad8e9b4e_iv -in preprod_rsa.enc -out preprod_rsa -d
-  - eval "$(ssh-agent -s)"
-  - chmod 600 $TRAVIS_BUILD_DIR/preprod_rsa
-  - ssh-add $TRAVIS_BUILD_DIR/preprod_rsa
 
 deploy:
   - echo "... Now deploying to PreProd "
