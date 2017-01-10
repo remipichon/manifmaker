@@ -3,7 +3,7 @@ import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
 export var ManifMakerRouterController = RouteController.extend({
     onBeforeAction: function () {
         if (!Meteor.userId()) {
-            beforeLogginRoute = "/" + Router.current().route.getName();
+            beforeLogginRoute = Router.current().url;
             Router.go("/login");
         } else {
             try {

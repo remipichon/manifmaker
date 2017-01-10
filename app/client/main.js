@@ -22,6 +22,13 @@ Accounts.onEmailVerificationLink(function(token,done){
 
 });
 
+Accounts.onLogin(function(){
+    if(beforeLogginRoute){
+        Router.go(beforeLogginRoute);
+        beforeLogginRoute = null;
+    }
+});
+
 Meteor.startup(function () {
 
     Meteor.subscribe("images");
@@ -52,18 +59,14 @@ Meteor.startup(function () {
     TempCollection = new Meteor.Collection(null);
 
 
-    SimpleSchema.debug = true;
-    //TODO autoform addHooks doesnt' seem to work
+    if(Meteor.isDevelopment) SimpleSchema.debug = true;
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
             sAlert.error(`${error.reason}`);
         },
         onSuccess: function(formType, result) {
             UpdateInfo.insert({date:new Date()});
-            if(beforeLogginRoute){
-                Router.go(beforeLogginRoute);
-                beforeLogginRoute = null;
-            }
+
         }
     });
 
