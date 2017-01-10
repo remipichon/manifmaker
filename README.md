@@ -517,3 +517,33 @@ Simply restart the backup container.
 We are using the Github issues enhanced with [Zenhub product](https://www.zenhub.com/) which I recommend to install. 
 
 Our specs are written in a GDoc, ask me if you want access to it. 
+
+
+# Old Stagging conf
+  - echo "... ... Stoping app container" 
+  - scp stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
+  - ssh root@vps302914.ovh.net "chmod 700 /root/stop_rm_docker_app.sh && CONTAINER_NAME=$CONTAINER_NAME . /root/stop_rm_docker_app.sh"
+  - ssh root@vps302914.ovh.net "rm -f /root/stop_rm_docker_app.sh"
+  - echo "... ... Creating new database with user in mongo" 
+  - scp create_manifmaker_mongo_user.js root@vps302914.ovh.net:/root/create_manifmaker_mongo_user.js
+  - ssh root@vps302914.ovh.net "docker cp /root/create_manifmaker_mongo_user.js manifmaker-mongo:/root/create_manifmaker_mongo_user.js"
+  - ssh root@vps302914.ovh.net "docker exec manifmaker-mongo mongo localhost:27017/manifmaker_$MANIFMAKER_VERSION /root/create_manifmaker_mongo_user.js"
+  - echo "... ... Running new app container" 
+  - ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e SERVICE_NAME=$CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker_$MANIFMAKER_VERSION.com -e MONGO_URL=mongodb://manifmaker:manifmaker@manifmaker-mongo/manifmaker_$MANIFMAKER_VERSION -p :3000 --net manifmaker_default --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
+  - echo "... Now building and delivering markdown doc to repo" 
+  - npm install jsdoc-to-markdown --save-dev
+  - npm run doc:md
+  - git config --global push.default matching
+  - git remote set-url origin git@github.com:assomaker/manifmaker.git
+  - git add ../doc/markdown/*.md
+  - git commit -m "update markdown doc [ci skip]"
+  - git branch my-temporary-work
+  - git checkout master
+  - git merge my-temporary-work
+  - git push origin master
+  - echo "... Now building and delivering html doc to staging" 
+  - npm install jsdoc -g
+  - npm run doc:html
+  - scp -r ../doc/html root@vps302914.ovh.net:~/
+  - ssh root@vps302914.ovh.net "docker cp ~/html manifmaker-nginx:/usr/share/nginx/html/doc"
+  - ssh root@vps302914.ovh.net "rm -rf ~/html"
