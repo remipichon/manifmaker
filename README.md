@@ -448,10 +448,11 @@ Inject some Conf data for 24Heures, 43th, 2017.
 ## Setup production env
 
 * install Docker and Compose
+ 
+https://docs.docker.com/engine/installation
 
 https://docs.docker.com/compose/install/
- 
-https://docs.docker.com/engine/installation/linux/centos/
+
     
 * clone repo and use Compose
 
