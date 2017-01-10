@@ -4,7 +4,6 @@ try{
 	    pwd: "manifmaker",
 	    roles: [ "readWrite", "dbAdmin" ]
 	});
-	});
 } catch (e){
 	print(e);
 	if(e.message.indexOf("already exists") !== -1)
