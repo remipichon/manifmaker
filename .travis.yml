@@ -51,8 +51,6 @@ script:
   #- scp -r ../doc/html root@vps302914.ovh.net:~/
   #- ssh root@vps302914.ovh.net "docker cp ~/html manifmaker-nginx:/usr/share/nginx/html/doc"
   #- ssh root@vps302914.ovh.net "rm -rf ~/html"
-
-deploy:
   - echo "... Now deploying to PreProd "
   - echo "!!! manifmaker repo need to be present AND production/docker-compose manifmaker image tag should be identical to app/package.json verion !!!"
   - ssh root@vps302914.ovh.net "cd manifmaker; git reset --hard HEAD; git pull origin deploy"
