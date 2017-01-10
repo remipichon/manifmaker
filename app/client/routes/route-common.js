@@ -27,24 +27,6 @@ Router.onAfterAction(function () {
     }
 );
 
-//hide topNavBar to each expect assignment
-Router.onAfterAction(function () {
-        this.render("", {to: "topNavBar"});
-    },
-    {
-        except: [
-            'assignment.calendar',
-            'assignment.calendar.user',
-            'assignment.calendar.userToTask',
-            'assignment.calendar.userToTask.user',
-            'assignment.calendar.userToTask.user.date',
-
-            'assignment.calendar.taskToUser',
-            'assignment.calendar.taskToUser.task',
-            'assignment.calendar.taskToUser.task.timeSlot',
-        ]
-    }
-);
 
 /**
  * @memberOf Route

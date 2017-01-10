@@ -11,6 +11,7 @@ AccountsTemplates.configure({
 });
 
 beforeLogginRoute = null;
+commonNavBarWrapperIsRendered = false;
 
 
 Accounts.onEmailVerificationLink(function(token,done){
@@ -48,20 +49,17 @@ Meteor.startup(function () {
         AssignmentServiceClient.setCalendarTerms();
     });
 
-    TempCollection = new Meteor.Collection(null)
+    TempCollection = new Meteor.Collection(null);
 
 
     SimpleSchema.debug = true;
     //TODO autoform addHooks doesnt' seem to work
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
-            //TODO je sais pas ou faire ca de plus proprement (User Update username)
-            if(error.message.indexOf("duplicate key error") !== -1){
-                var userNameDuplicated = error.message.split("{ :")[1].split("}")[0];
-                sAlert.error(`Username ${userNameDuplicated} already exists`);
-            }
+            sAlert.error(`${error.reason}`);
         },
         onSuccess: function(formType, result) {
+            UpdateInfo.insert({date:new Date()});
             if(beforeLogginRoute){
                 Router.go(beforeLogginRoute);
                 beforeLogginRoute = null;

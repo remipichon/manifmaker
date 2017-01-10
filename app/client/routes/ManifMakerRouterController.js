@@ -15,6 +15,11 @@ export var ManifMakerRouterController = RouteController.extend({
                 throw e;
             }
 
+            if(!commonNavBarWrapperIsRendered) {
+                this.render("CommonNavBarWrapper", {to: "topNavBar"});
+                commonNavBarWrapperIsRendered = true;
+            }
+
             this.wait(Meteor.subscribe("images"));
             this.wait(Meteor.subscribe("skills"));
             this.wait(Meteor.subscribe("users"));

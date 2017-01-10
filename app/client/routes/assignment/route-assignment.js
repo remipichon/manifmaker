@@ -14,7 +14,8 @@ AssignmentController = ManifMakerRouterController.extend({
     onBeforeAction: function () {
         SecurityServiceClient.grantAccessToPage( RolesEnum.ASSIGNMENTTASKUSER, "assignment");
 
-        this.render("AssignmentNavBarWrapper", {to: "topNavBar"})
+        this.render("AssignmentNavBarWrapper", {to: "topNavBar"});
+        commonNavBarWrapperIsRendered = false;
 
 
         if (!assignmentCalendarIsRendered) {
