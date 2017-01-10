@@ -15,7 +15,7 @@ before_install:
 
 script:
   #- cd app
-  #- echo "... Now building and delivering Docker image for " $MANIFMAKER_VERSION
+  - echo "... Now building and delivering Docker image for " $MANIFMAKER_VERSION
   #- docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
   #- docker push assomaker/manifmaker:$MANIFMAKER_VERSION
   #- echo "... Now shipping " $MANIFMAKER_VERSION
