@@ -17,9 +17,9 @@ services:
             - INIT_BACKUP=yes
             - MONGODB_HOST=production_mongodb
             - MONGODB_PORT=27017 
-            - MONGODB_USER=manifmaker 
-            - MONGODB_PASS=manifmaker
-            - DB_STR= --db manifmaker
+            - MONGODB_USER=backupuser #backup user previously added in /admin database
+            - MONGODB_PASS=backupuserPWD
+            - DB_STR= --db manifmaker #which DB to backup
         volumes:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
     manifmaker: 
@@ -31,7 +31,7 @@ services:
             - INJECT_24H_43_DATA=true
             - DATA_INJECTED_ONCE=true
             - ROOT_URL=http://manifmaker.24heures.org/
-            - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker
+            - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
         ports: 
             - "80:3000" 
         volumes:

@@ -1,7 +1,9 @@
+//to be used on /manifmaker database
 try{ 
 	db.createUser( { user: "manifmaker",
 	    pwd: "manifmaker",
 	    roles: [ "readWrite", "dbAdmin" ]
+	});
 	});
 } catch (e){
 	print(e);

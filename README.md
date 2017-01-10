@@ -457,14 +457,16 @@ https://docs.docker.com/compose/install/
 * clone repo and use Compose
 
         git clone https://github.com/assomaker/manifmaker.git
-        cd production
+        cd manifmaker/production
         docker-compose up -d
 
 * __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user.__
 
         chmod 777 ~/manifmaker_images
-        docker cp ../create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
-        docker exec production_mongodb mongo localhost:27017 /root/create_manifmaker_mongo_user.js
+        docker cp create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
+        docker cp create_backup_mongo_user.js production_mongodb:/root/create_backup_mongo_user.js
+        docker exec production_mongodb mongo localhost:27017/admin /root/create_backup_mongo_user.js
+        docker exec production_mongodb mongo localhost:27017/manifmaker /root/create_manifmaker_mongo_user.js
         docker-compose up -d manifmaker
 
 __777 on ~/manifmaker_images seems to be required by Fs Collection to store image, it didn't even work with 666. It is a major security breach as we are giving exec access to a volume shared in a Docker__
@@ -481,13 +483,13 @@ __Current update policy provokes a service interruption as there is only one Man
 * commit your changes and pull on the production machine
 * use Compose to restart Manifmaker
 
-        cd production
+        cd manifmaker/production
         docker-compose up -d manifmaker
        
 
 ## Backup data
 
-A backup is run everyday at midnight; 
+A backup is run everyday at midnight, it backups all /manifmaker database. 
 
 ## Restore from a backup
 
@@ -497,14 +499,14 @@ See the list of backups, you can run:
 
 To restore database from a certain backup, simply run:
 
-    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901
+    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901/manifmaker
     
-It will delete everything (--drop) and restore all database. 
+It will delete everything (--drop) and restore /manifmaker database. 
 
 
 ## Force a backup by hand
 
-Simply restart the backup container
+Simply restart the backup container. 
 
         docker-compose restart mongodb_backup
 
