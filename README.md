@@ -460,6 +460,7 @@ https://docs.docker.com/engine/installation/linux/centos/
         docker-compose up -d
 
 * __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user.__
+
         chmod 777 ~/manifmaker_images
         docker cp ../create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
         docker exec production_mongodb mongo localhost:27017 /root/create_manifmaker_mongo_user.js
