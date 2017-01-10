@@ -10,6 +10,7 @@ export var ManifMakerRouterController = RouteController.extend({
                 SecurityServiceClient.grantAccessToPage(RolesEnum.MANIFMAKER, "whole application");
             } catch (e) {
                 if (e.errorType === "Meteor.Error" && e.error === "403") {
+                    beforeForbiddenRoute = Router.current().url;
                     Router.go("forbidden");
                 }
                 throw e;

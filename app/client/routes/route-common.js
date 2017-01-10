@@ -72,12 +72,23 @@ Router.route('/login', function () {
  * @name 'forbidden'  /login
  */
 Router.route('/forbidden', function () {
+
+        this.wait(Meteor.subscribe("users")); //wait for user data before any attempt
+
         this.render("forbidden",{
             data : {
                 message : "You don't have permission to access this component."
             },
             to: 'mainContent'
         });
+
+        if(this.ready()){
+            if(beforeForbiddenRoute){
+                console.info(`retrying beforeForbiddenRoute ${beforeForbiddenRoute}`);
+                Router.go(beforeForbiddenRoute);
+
+            }
+        }
     },
     {
         name: 'forbidden',

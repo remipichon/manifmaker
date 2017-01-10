@@ -11,6 +11,7 @@ AccountsTemplates.configure({
 });
 
 beforeLogginRoute = null;
+beforeForbiddenRoute = null;
 commonNavBarWrapperIsRendered = false;
 
 
