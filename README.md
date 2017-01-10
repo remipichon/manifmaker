@@ -460,7 +460,7 @@ https://docs.docker.com/compose/install/
         cd manifmaker/production
         docker-compose up -d
 
-* __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user.__
+* __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user. A special Docker production_mongodb image will be used in a near future__
 
         chmod 777 ~/manifmaker_images
         docker cp create_manifmaker_mongo_user.js production_mongodb:/root/create_manifmaker_mongo_user.js
