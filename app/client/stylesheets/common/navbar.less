@@ -1,11 +1,98 @@
 .navbar {
-  text-align : center;
+  text-align: center;
   .inline {
-    margin-top:14px;
+    margin-top: 14px;
     display: inline-block;
     vertical-align: middle;
-    i,a,p{
+    i, a, p {
       vertical-align: middle;
     }
   }
+
+  .common-nav-bar {
+    .lastUpdate {
+      margin-top: 10px;
+      background: rgba(57, 241, 44, 0);
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    .clock-wrapper {
+      margin-top: 3px;
+
+      .hero-circle {
+        width: 45px;
+        height: 45px;
+        margin: 0 auto;
+        position: relative;
+        border: 2px solid black;
+        border-radius: 50%;
+        background: url(../img/bg.png) 0 50%;
+      }
+
+      .hero-face {
+        width: 100%;
+        height: 100%;
+      }
+
+      .hero-face:after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4px;
+        height: 4px;
+        margin: -2px 0 0 -1.4px;
+        background: black;
+        border-radius: 4.5px;
+        content: "";
+        display: block;
+      }
+
+      .hero-hour {
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -1px 0 -1px -25%;
+        padding: 1px 0 1px 25%;
+        background: black;
+        -webkit-transform-origin: 100% 50%;
+        -ms-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+        border-radius: 1px 0 0 1px;
+      }
+
+      .hero-minute {
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -40% -0.75px 0;
+        padding: 40% 0.75px 0;
+        background: black;
+        -webkit-transform-origin: 50% 100%;
+        -ms-transform-origin: 50% 100%;
+        transform-origin: 50% 100%;
+        border-radius: 0.75px 0.75px 0 0;
+      }
+
+      .hero-second {
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -40% -0.25px 0 0;
+        padding: 40% 0.25px 0;
+        background: black;
+        -webkit-transform-origin: 50% 100%;
+        -ms-transform-origin: 50% 100%;
+        transform-origin: 50% 100%;
+      }
+    }
+
+  }
+
 }

@@ -1,3 +1,4 @@
+//to be used on /manifmaker database
 try{ 
 	db.createUser( { user: "manifmaker",
 	    pwd: "manifmaker",

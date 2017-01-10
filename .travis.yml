@@ -6,11 +6,7 @@ addons:
   ssh_known_hosts: vps302914.ovh.net
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_80de618ab877_key -iv $encrypted_80de618ab877_iv -in travis_rsa.enc -out travis_rsa -d  
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - eval "$(ssh-agent -s)"
-  - chmod 600 $TRAVIS_BUILD_DIR/travis_rsa
-  - ssh-add $TRAVIS_BUILD_DIR/travis_rsa
   - chmod 700 scripts/get_version.sh
   - . scripts/get_version.sh
   - CONTAINER_NAME=manifmaker_$MANIFMAKER_VERSION
@@ -18,22 +14,22 @@ before_install:
 
 
 script:
-  - cd app
-  - echo "... Now building and delivering" $MANIFMAKER_VERSION
-  - docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
-  - docker push assomaker/manifmaker:$MANIFMAKER_VERSION
-  - echo "... Now deploying " $MANIFMAKER_VERSION
-  - ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
-  - echo "... ... Stoping app container" 
-  - scp ../scripts/stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
-  - ssh root@vps302914.ovh.net "chmod 700 /root/stop_rm_docker_app.sh && CONTAINER_NAME=$CONTAINER_NAME . /root/stop_rm_docker_app.sh"
-  - ssh root@vps302914.ovh.net "rm -f /root/stop_rm_docker_app.sh"
-  - echo "... ... Creating new database with user in mongo" 
-  - scp ../create_manifmaker_mongo_user.js root@vps302914.ovh.net:/root/create_manifmaker_mongo_user.js
-  - ssh root@vps302914.ovh.net "docker cp /root/create_manifmaker_mongo_user.js manifmaker-mongo:/root/create_manifmaker_mongo_user.js"
-  - ssh root@vps302914.ovh.net "docker exec manifmaker-mongo mongo localhost:27017/manifmaker_$MANIFMAKER_VERSION /root/create_manifmaker_mongo_user.js"
-  - echo "... ... Running new app container" 
-  - ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e SERVICE_NAME=$CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker_$MANIFMAKER_VERSION.com -e MONGO_URL=mongodb://manifmaker:manifmaker@manifmaker-mongo/manifmaker_$MANIFMAKER_VERSION -p :3000 --net manifmaker_default --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
+  #- cd app
+  #- echo "... Now building and delivering Docker image for " $MANIFMAKER_VERSION
+  #- docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
+  #- docker push assomaker/manifmaker:$MANIFMAKER_VERSION
+  #- echo "... Now shipping " $MANIFMAKER_VERSION
+  #- ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
+  #- echo "... ... Stoping app container" 
+  #- scp ../scripts/stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
+  #- ssh root@vps302914.ovh.net "chmod 700 /root/stop_rm_docker_app.sh && CONTAINER_NAME=$CONTAINER_NAME . /root/stop_rm_docker_app.sh"
+  #- ssh root@vps302914.ovh.net "rm -f /root/stop_rm_docker_app.sh"
+  #- echo "... ... Creating new database with user in mongo" 
+  #- scp ../create_manifmaker_mongo_user.js root@vps302914.ovh.net:/root/create_manifmaker_mongo_user.js
+  #- ssh root@vps302914.ovh.net "docker cp /root/create_manifmaker_mongo_user.js manifmaker-mongo:/root/create_manifmaker_mongo_user.js"
+  #- ssh root@vps302914.ovh.net "docker exec manifmaker-mongo mongo localhost:27017/manifmaker_$MANIFMAKER_VERSION /root/create_manifmaker_mongo_user.js"
+  #- echo "... ... Running new app container" 
+  #- ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e SERVICE_NAME=$CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker_$MANIFMAKER_VERSION.com -e MONGO_URL=mongodb://manifmaker:manifmaker@manifmaker-mongo/manifmaker_$MANIFMAKER_VERSION -p :3000 --net manifmaker_default --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
   #- echo "... Now building and delivering markdown doc to repo" 
   #- npm install jsdoc-to-markdown --save-dev
   #- npm run doc:md
@@ -45,12 +41,25 @@ script:
   #- git checkout master
   #- git merge my-temporary-work
   #- git push origin master
-  - echo "... Now building and delivering html doc to staging" 
-  - npm install jsdoc -g
-  - npm run doc:html
-  - scp -r ../doc/html root@vps302914.ovh.net:~/
-  - ssh root@vps302914.ovh.net "docker cp ~/html manifmaker-nginx:/usr/share/nginx/html/doc"
-  - ssh root@vps302914.ovh.net "rm -rf ~/html"
+  #- echo "... Now building and delivering html doc to staging" 
+  #- npm install jsdoc -g
+  #- npm run doc:html
+  #- scp -r ../doc/html root@vps302914.ovh.net:~/
+  #- ssh root@vps302914.ovh.net "docker cp ~/html manifmaker-nginx:/usr/share/nginx/html/doc"
+  #- ssh root@vps302914.ovh.net "rm -rf ~/html"
+
+before_deploy: 
+  - #TODO read ssh keys
+  - openssl aes-256-cbc -K $encrypted_5cb4ad8e9b4e_key -iv $encrypted_5cb4ad8e9b4e_iv -in preprod_rsa.enc -out preprod_rsa -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 $TRAVIS_BUILD_DIR/preprod_rsa
+  - ssh-add $TRAVIS_BUILD_DIR/preprod_rsa
+
+deploy:
+  - echo "... Now deploying to PreProd "
+  - echo "!!! manifmaker repo need to be present AND production/docker-compose manifmaker image tag should be identical to app/package.json verion !!!"
+  - ssh root@vps302914.ovh.net "cd manifmaker; git reset --hard HEAD; git pull origin deploy"
+  - ssh root@vps302914.ovh.net "cd manifmaker/production; docker-compose up -d manifmaker"
 
 branches:
   only:

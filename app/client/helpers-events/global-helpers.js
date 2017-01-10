@@ -9,6 +9,11 @@ Template.registerHelper(
     }
 );
 Template.registerHelper(
+    "displayHoursMinuteSeconde", function (date) {
+        return new moment(date).format("H[h]mm ss[sec]");
+    }
+);
+Template.registerHelper(
     "displayDateTime", function (date) {
         return new moment(date).format("ddd DD MMM HH[h]mm");
     }

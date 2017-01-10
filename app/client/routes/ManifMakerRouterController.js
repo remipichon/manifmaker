@@ -3,16 +3,22 @@ import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
 export var ManifMakerRouterController = RouteController.extend({
     onBeforeAction: function () {
         if (!Meteor.userId()) {
-            beforeLogginRoute = "/" + Router.current().route.getName();
+            beforeLogginRoute = Router.current().url;
             Router.go("/login");
         } else {
             try {
                 SecurityServiceClient.grantAccessToPage(RolesEnum.MANIFMAKER, "whole application");
             } catch (e) {
                 if (e.errorType === "Meteor.Error" && e.error === "403") {
+                    beforeForbiddenRoute = Router.current().url;
                     Router.go("forbidden");
                 }
                 throw e;
+            }
+
+            if(!commonNavBarWrapperIsRendered) {
+                this.render("CommonNavBarWrapper", {to: "topNavBar"});
+                commonNavBarWrapperIsRendered = true;
             }
 
             this.wait(Meteor.subscribe("images"));

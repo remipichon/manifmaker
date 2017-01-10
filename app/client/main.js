@@ -11,6 +11,8 @@ AccountsTemplates.configure({
 });
 
 beforeLogginRoute = null;
+beforeForbiddenRoute = null;
+commonNavBarWrapperIsRendered = false;
 
 
 Accounts.onEmailVerificationLink(function(token,done){
@@ -19,6 +21,13 @@ Accounts.onEmailVerificationLink(function(token,done){
         if(error) console.error(error);
     });
 
+});
+
+Accounts.onLogin(function(){
+    if(beforeLogginRoute){
+        Router.go(beforeLogginRoute);
+        beforeLogginRoute = null;
+    }
 });
 
 Meteor.startup(function () {
@@ -48,24 +57,17 @@ Meteor.startup(function () {
         AssignmentServiceClient.setCalendarTerms();
     });
 
-    TempCollection = new Meteor.Collection(null)
+    TempCollection = new Meteor.Collection(null);
 
 
-    SimpleSchema.debug = true;
-    //TODO autoform addHooks doesnt' seem to work
+    if(Meteor.isDevelopment) SimpleSchema.debug = true;
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
-            //TODO je sais pas ou faire ca de plus proprement (User Update username)
-            if(error.message.indexOf("duplicate key error") !== -1){
-                var userNameDuplicated = error.message.split("{ :")[1].split("}")[0];
-                sAlert.error(`Username ${userNameDuplicated} already exists`);
-            }
+            sAlert.error(`${error.reason}`);
         },
         onSuccess: function(formType, result) {
-            if(beforeLogginRoute){
-                Router.go(beforeLogginRoute);
-                beforeLogginRoute = null;
-            }
+            UpdateInfo.insert({date:new Date()});
+
         }
     });
 
