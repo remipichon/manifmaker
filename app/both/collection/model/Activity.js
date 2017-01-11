@@ -146,7 +146,7 @@ Schemas.Activities = new SimpleSchema({
     },
     placeId: {
         type: SimpleSchema.RegEx.Id,
-        label: "Task Place",
+        label: "Activity Place",
         custom: function () {
             if (!Places.findOne(this.value))
                 return "unknownId";
