@@ -47,9 +47,9 @@
             <div>
                 <h4>When ?</h4>
                 From *
-                {{>DateTimePickerComponent class="date-time-picker-update-activity-start" readOnly=isReadOnly date=activityDoc.start updateDateCallback=updateDateCallbackStartDate}}
+                {{>DateTimePickerComponent class="date-time-picker-update-activity-start" readOnly=isReadOnly date=activityDoc.start updateDateCallback=updateDateCallbackStartDate viewDate=startActivitiesEnclosingDate}}
                 to *
-                {{>DateTimePickerComponent class="date-time-picker-update-activity-end" readOnly=isReadOnly date=activityDoc.end updateDateCallback=updateDateCallbackEndDate}}
+                {{>DateTimePickerComponent class="date-time-picker-update-activity-end" readOnly=isReadOnly date=activityDoc.end updateDateCallback=updateDateCallbackEndDate viewDate=endActivitiesEnclosingDate}}
             </div>
 
 

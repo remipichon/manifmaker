@@ -53,6 +53,14 @@ export class Inject24hDataServerService {
                 }
             }
         });
+        Settings.update(Settings.findOne()._id, {
+            $set: {
+                activitiesEnclosingDate: {
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 20, 8, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 21, 18, 0)
+                }
+            }
+        });
     }
 
     _injectGroupRoles() {

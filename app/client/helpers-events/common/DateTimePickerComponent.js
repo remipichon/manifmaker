@@ -3,6 +3,7 @@ DateTimePickerComponent =
 
         initializeData() {
             this.date = this.data().date;
+            this.viewDate = this.data().viewDate;
             this.updateDateCallback = this.data().updateDateCallback;
             this.format = this.data().format || null;
             if(this.isRendered()){
@@ -14,8 +15,9 @@ DateTimePickerComponent =
             var options = {
                 defaultDate: this.date,
                 sideBySide: true,
-                stepping:15
+                stepping:15,
             };
+            if(this.viewDate) options.viewDate =  new moment(this.viewDate);
             if(this.format) options.format =  this.format;
             else options.format = "DD/MM/YYYY HH:mm";
             this.$(".datetimepicker").datetimepicker(options);

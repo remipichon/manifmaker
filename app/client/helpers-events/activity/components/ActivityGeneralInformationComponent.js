@@ -59,6 +59,13 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
             })
         },this.activityDoc());
     }
+
+    startActivitiesEnclosingDate(){
+        return Settings.findOne().activitiesEnclosingDate.start;
+    }
+    endActivitiesEnclosingDate(){
+        return Settings.findOne().activitiesEnclosingDate.end;
+    }
 }
 
 ActivityGeneralInformationComponent.register("ActivityGeneralInformationComponent");
