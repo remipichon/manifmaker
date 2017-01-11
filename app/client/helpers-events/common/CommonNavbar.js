@@ -7,48 +7,69 @@ class CommonNavbar extends BlazeComponent {
         super();
         this.self = this;
         this.timedUpdate();
+        this.highlightEffect = null;
+        this.updateInfoLastSize = 0;
     }
 
     lastUpdateDate() {
+        var doAnimate = true;
         var updateInfo = UpdateInfo.find({}).fetch();
+
+        if(updateInfo.length == 0){
+            return "nothing has been updated yet";
+        }
+
+        //prevent animating if updateInfo didn't changed (don't know why but lastUpdateDate is fired when switching page)
+        if(updateInfo.length === this.updateInfoLastSize) {
+            doAnimate = false;
+        }
+        this.updateInfoLastSize = updateInfo.length;
+
         var lastInfo = updateInfo[updateInfo.length - 1];
         var lastDate = new moment(lastInfo.date);
-        var now = new moment();
 
-        //highlight effect
-        var startOpacity = 0.6;
-        var opacity = startOpacity;
-        var duration = 3000; //miliseconds
-        var delay, step;
-        var step = 0.01;
-        var numberOfSteps = 0.6 / step;
-        var delay = duration / numberOfSteps;
-        var iconTurn = 2;
-        var rotationStep = iconTurn * 360 / numberOfSteps
-        var rot = 0;
+        if(doAnimate) {
+            //highlight effect
+            var startOpacity = 0.6;
+            var opacity = startOpacity;
+            var duration = 2000; //miliseconds
+            var delay, step;
+            var step = 0.01;
+            var numberOfSteps = 0.6 / step;
+            var delay = duration / numberOfSteps;
+            var iconTurn = 1;
+            var rotationStep = iconTurn * 360 / numberOfSteps
+            var rot = 0;
 
-        var highlightEffect = setInterval(_.bind(function () {
-            opacity = opacity - step;
-            rot += rotationStep;
-            this.$(".lastUpdate").css("background", `rgba(57, 241, 44, ${opacity})`);
+            clearInterval(this.highlightEffect); //remove previous animation if several update are fire at the the same time
+            this.highlightEffect = setInterval(_.bind(function () {
+                var icon = this.$(".lastUpdate .mdi");
+                if (!icon) { //we probably are on a page what doesn't have CommonNavBar
+                    clearInterval(this.highlightEffect);
+                    return;
+                }
 
-            var icon = this.$(".lastUpdate .mdi");
+                //color highlight
+                opacity = opacity - step;
+                this.$(".lastUpdate").css("background", `rgba(57, 241, 44, ${opacity})`);
 
-            icon.css("-webkit-transform", `rotate(${rot}deg)`);
-            icon.css("-moz-transform", `rotate(${rot}deg)`);
-            icon.css("-ms-transform", `rotate(${rot}deg)`);
-            icon.css("-o-transform", `rotate(${rot}deg)`);
-            icon.css("transform", `rotate(${rot}deg)`);
+                //icon rotation
+                rot += rotationStep;
+                icon.css("-webkit-transform", `rotate(${rot}deg)`);
+                icon.css("-moz-transform", `rotate(${rot}deg)`);
+                icon.css("-ms-transform", `rotate(${rot}deg)`);
+                icon.css("-o-transform", `rotate(${rot}deg)`);
+                icon.css("transform", `rotate(${rot}deg)`);
 
+                if (opacity <= 0) {
+                    clearInterval(this.highlightEffect);
+                }
 
-            if (opacity <= 0) {
-                clearInterval(highlightEffect);
-            }
+            }, this), delay);
 
-        }, this), delay);
+        }
 
-
-        return lastDate.toDate();
+        return lastDate.format("H[h]mm ss[sec]");
     }
 
 
