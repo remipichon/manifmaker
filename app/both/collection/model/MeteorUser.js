@@ -114,20 +114,20 @@ Schemas.UserProfile = new SimpleSchema({
 
     familyName: {
         type: String,
-        label: "Users Family Name",
+        label: "Family Name",
         max: 100,
         optional: true
     },
     firstName: {
         type: String,
-        label: "User first name",
+        label: "First name",
         max: 100,
         optional: true,
         defaultValue: null
     },
     phoneNumber:{
         type: String,//SimpleSchema.RegEx.Phone,
-        label: "User phone",
+        label: "Phone",
         optional: true,
         defaultValue: null,
         regEx: /^0{1}\d{10}$/
@@ -169,7 +169,7 @@ Schemas.UserProfile = new SimpleSchema({
     birthday: {
         type: Date,
         optional: true,
-        label: "User birth date",
+        label: "Birthday",
     },
     gender: {
         type: String,
