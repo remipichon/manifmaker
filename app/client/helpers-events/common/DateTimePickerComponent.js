@@ -4,16 +4,19 @@ DateTimePickerComponent =
         initializeData() {
             this.date = this.data().date;
             this.updateDateCallback = this.data().updateDateCallback;
+            this.format = this.data().format || null;
             if(this.isRendered()){
                     this.$(".datetimepicker").data("DateTimePicker").date(this.date);
             }
         }
 
         onRendered() {
-            this.$(".datetimepicker").datetimepicker({
+            var options = {
                 defaultDate: this.date,
-                sideBySide: true
-            });
+                sideBySide: true,
+            };
+            if(this.format) options.format =  this.format;
+            this.$(".datetimepicker").datetimepicker(options);
         }
 
         onCreated(){
