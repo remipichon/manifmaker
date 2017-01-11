@@ -14,8 +14,10 @@ DateTimePickerComponent =
             var options = {
                 defaultDate: this.date,
                 sideBySide: true,
+                stepping:15
             };
             if(this.format) options.format =  this.format;
+            else options.format = "DD/MM/YYYY HH:mm";
             this.$(".datetimepicker").datetimepicker(options);
         }
 
