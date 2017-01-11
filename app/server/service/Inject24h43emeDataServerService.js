@@ -298,6 +298,7 @@ export class Inject24h43emeDataServerService {
             end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 30, 0, 0),
             teams: [this.hardTeam],
             charisma: 50,
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 3, 17, 6, 0),
             assignmentTermPeriods: [
                 {
                     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),

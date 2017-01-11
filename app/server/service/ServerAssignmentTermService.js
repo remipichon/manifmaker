@@ -63,7 +63,8 @@ export class ServerAssignmentTermService {
      */
     static allowUpdate(userId, doc, fieldNames, modifier, options) {
         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.CONFMAKER, doc, 'assignmentTerm');
-        ServerAssignmentTermService.isUsed(doc);
+        if(!_.contains(fieldNames,"addAvailabilitiesDeadline"))
+            ServerAssignmentTermService.isUsed(doc);
     }
 
     /**

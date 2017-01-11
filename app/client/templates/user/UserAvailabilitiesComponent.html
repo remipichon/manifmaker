@@ -18,14 +18,13 @@
         <div class="col-md-12">
             {{#if readOnly}}
                 {{#if assignmentTermDeadlineIsOver}}
-                    <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add availabilities</div>
-                {{else}}
-                    {{#if isCurrentUserTheOneLogged userData._id}}
-                        <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your availabilities</div>
-                    {{/if}}
+                    <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add nor removeavailabilities</div>
                 {{/if}}
                 {{> ReadAvailabilitiesCalendarComponent displayCharisma=true user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{else}}
+                {{#if assignmentTermDeadlineIsOver}}
+                    <div class="alert alert-warning" role="alert">This assignment term is closed, you can add availabilities, be careful when you remove availabilities.</div>
+                {{/if}}
                 {{> DismissibleHelperComponent message="Want to add an availability ? Simply click and select when you want ! Double click allows you to remove one slot." uniqueId="availabily-update"}}
                 {{> EditAvailabilitiesCalendarComponent displayCharisma=true user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{/if}}
