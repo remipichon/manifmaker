@@ -77,6 +77,21 @@ Schemas.helpers.allTeamsOptions = function () {
     return result;
 };
 
+Schemas.helpers.allActivitiesOptions = function () {
+    var teams = Activities.find({
+    }).fetch();
+    var result = [];
+    _.each(teams, function (team) {
+        result.push({
+            label: team.name,
+            value: team._id
+        });
+    });
+
+    return result;
+};
+
+
 
 Schemas.helpers.allAndroidCategoriesOptions = function () {
     var teams = AndroidCategories.find({}).fetch();
