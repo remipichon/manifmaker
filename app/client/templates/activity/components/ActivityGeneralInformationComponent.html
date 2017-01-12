@@ -78,8 +78,8 @@
             {{> afQuickField name='serviceProvider' readOnly=isReadOnly}}
         </div>
 
-        <div class="col-md-6">
-            {{> afQuickField name="location" height="400px" defaultLat=defaultLat defaultLng=defaultLng readOnly=isReadOnly}}
+        <div class="col-md-6 {{#if isReadOnly}}google-map-wrapper-read-only{{/if}}">
+            {{> afQuickField name="location" googleMap=googleMapOption height="400px" defaultLat=defaultLat defaultLng=defaultLng}}
             {{#unless isReadOnly}}
                 <button type="submit" class="btn btn-primary">Update localisation</button>{{/unless}}
         </div>

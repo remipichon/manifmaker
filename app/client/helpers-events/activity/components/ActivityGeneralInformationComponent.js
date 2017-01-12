@@ -6,6 +6,7 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
         return "activityGeneralInformation"
     }
 
+
     constructor(){
         super();
     }
@@ -36,6 +37,17 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
     defaultLng(){
         return Settings.findOne().defaultActivityMapsLatLng.lng;
     }
+
+    googleMapOption() {
+        var options = {};
+        if (this.isReadOnly()) {
+            options.disableDefaultUI = true;
+            options.draggable = false;
+        }
+        options.clickableIcons = false;
+        return options;
+    }
+
 
     updateDateCallbackStartDate(newOption) {
         return _.bind(function(newOption) {
