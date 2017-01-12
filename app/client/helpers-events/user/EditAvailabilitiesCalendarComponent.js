@@ -16,126 +16,70 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
     events() {
         return super.events().concat({
             'click .quart_heure:not(.no-action)': this.calendarOnClick,
-            // 'click .quart_heure:not(.no-action)': this.addAvailability,
            'mouseenter .quart_heure': this.selectAvailability,
-            //'mouseup .quart_heure': this.endSelectAvailability,
             'mouseleave .jours': this.resetSelecting,
-            // 'dblclick .quart_heure': this.removeAvailability,
         });
     }
 
     calendarOnClick(event) {
-        var date = $
         event.stopPropagation();
-        this.peopleNeedAssignedClick++;
-        if (this.peopleNeedAssignedClick == 1) {
-
+        this.availabilityClick++;
+        if (this.availabilityClick == 1) {
             (function(event,self){
-
                 setTimeout(_.bind(function () {
-                    if (this.peopleNeedAssignedClick == 1) {
-
+                    if (this.availabilityClick == 1) {
                         if(this.isSelecting){
                             this.endSelectingAvailability(event);
                         } else
                         if(event.shiftKey){
-                            console.log("start selecting")
                             this.startSelectingAvailability(event);
                         } else {
-                            console.log("add")
                           this.addAvailability(event);
                         }
-
                     } else {
-                        // AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
                         if(!this.isSelecting) {
-                            console.log("rem0ve")
                             this.removeAvailability(event);
                         }
                     }
-                    this.peopleNeedAssignedClick = 0;
+                    this.availabilityClick = 0;
                 }, self), 300);
-
-
             })(event,this)
+        }
+    }
 
+    readFirstDate(event){
+        event.stopPropagation();
 
+        //prevent firing add on an existing availability
+        if($($($(event.target)[0]).children()[0]).hasClass("creneau")){
+            console.warn("EditAvailabilitiesCalendarComponent : skipping add availability.");
+            return;
         }
 
+        var date = $(event.target).attr("quarter");
+        if(!date) {
+            console.warn("EditAvailabilitiesCalendarComponent : could not read date from 'quarter' attribute.",$(event.target));
+            return;
+        }
+        return new moment(date);
     }
 
     startSelectingAvailability(event){
-        event.stopPropagation();
-
-        //prevent firing add on an existing availability
-        if($($($(event.target)[0]).children()[0]).hasClass("creneau")){
-            console.log("skipping add availability");
-            return;
-        }
-        //
-        // if($($(event.target)[0]).hasClass("creneau")){
-        //     console.log("skipping add availability");
-        //     return;
-        // }
-
-        var date = $(event.target).attr("quarter");
-        if(!date) {
-            console.error("could not read date",$(event.target));
-            return;
-        }
-        var firstDate = new moment(date);
-        // this.firstDate.set(date);
-        //this.hasDragged = true;
-        // this.secondDate.set(date);
-
-        var user = this.parentComponent().parentComponent().data();
-        var secondDate = new moment(firstDate).add(this.addHourAccordingToAccuracy(),"hour");
-
-        console.log("EditAvailabilitiesCalendarComponent","start selecting",firstDate.toDate());
-        // AvailabilityService.addAvailabilities(user,firstDate.toDate(),secondDate.toDate())
-
-        this.firstDate.set(firstDate);
+        this.firstDate.set(this.readFirstDate(event));
         this.isSelecting = true;
-
     }
+
     addAvailability(event){
-        event.stopPropagation();
-
-        //prevent firing add on an existing availability
-        if($($($(event.target)[0]).children()[0]).hasClass("creneau")){
-            console.log("skipping add availability");
-            return;
-        }
-        //
-        // if($($(event.target)[0]).hasClass("creneau")){
-        //     console.log("skipping add availability");
-        //     return;
-        // }
-
-        var date = $(event.target).attr("quarter");
-        if(!date) {
-            console.error("could not read date",$(event.target));
-            return;
-        }
-        var firstDate = new moment(date);
-        // this.firstDate.set(date);
-        //this.hasDragged = true;
-        // this.secondDate.set(date);
-
+        var firstDate = this.readFirstDate(event);
         var user = this.parentComponent().parentComponent().data();
         var secondDate = new moment(firstDate).add(this.addHourAccordingToAccuracy(),"hour");
-
-        console.log("EditAvailabilitiesCalendarComponent","add",firstDate.toDate(),secondDate.toDate())
         AvailabilityService.addAvailabilities(user,firstDate.toDate(),secondDate.toDate())
     }
 
     selectAvailability(event){
         event.stopPropagation();
-
         var date = new moment($(event.target).attr("quarter"));
         this.hasDragged = true;
-        
-        
         this.secondDate.set(date);
     }
 
@@ -164,7 +108,6 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         }
 
 
-
         var user = this.parentComponent().parentComponent().data();
         var start,end;
         if(firstDate.isAfter(lastDate)){
@@ -179,27 +122,23 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
     }
 
     resetSelecting(){
-        console.log("reset select");
         this.firstDate.set(null);
         this.hasDragged = false;
         this.secondDate.set(null);
         this.isSelecting = false;
-
     }
 
     removeAvailability(event){
-        // this.resetSelect();
         sAlert.closeAll();
         event.stopPropagation();
         var date = $(event.target).attr("quarter");
         if(!date) {
-            console.error("could not read date",$(event.target))
+            console.warn("EditAvailabilitiesCalendarComponent : could not read date from 'quarter' attribute.",$(event.target));
+            return;
         }
         var firstDate = new moment(date);
         var user = this.parentComponent().parentComponent().data();
         var secondDate = new moment(firstDate).add(this.addHourAccordingToAccuracy(),"hour");
-        console.log("EditAvailabilitiesCalendarComponent","remove",firstDate.toDate(),secondDate.toDate())
-
         AvailabilityService.removeAvailabilities(user,firstDate.toDate(),secondDate.toDate());
     }
 
@@ -218,18 +157,10 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         var firstDate = this.firstDate.get();
         var secondDate = this.secondDate.get();
 
-        // console.log(firstDate.toDate(),secondDate.toDate())
         if(firstDate.isAfter(secondDate)){
             start = new moment(secondDate);
             end = new moment(firstDate);
-            // if(start.diff(end,"minutes") / 60 ==  this.addHourAccordingToAccuracy()){
-            //     //nothing
-            // } else if(start.diff(end,"minutes") / 60 ==  this.addHourAccordingToAccuracy() * 2){
-            //
-            // } else {
                 end.add(this.addHourAccordingToAccuracy(), "hour");
-            // }
-
         } else {
             start = new moment(firstDate);
             end = new moment(secondDate);
@@ -243,12 +174,9 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
 
     constructor() {
         super();
-
-        this.peopleNeedAssignedClick = 0; //to double click purpose..
-
+        this.availabilityClick = 0; //to double click purpose..
         this.firstDate = new ReactiveVar(null);
         this.secondDate = new ReactiveVar(null);
-
         this.isSelecting = false;
     }
 }
