@@ -541,5 +541,10 @@ Schemas.Activities = new SimpleSchema({
             }
         },
     },
+    specificSecurityMeasures: {
+        type: String,
+        label: "Activity Specific Security Measures",
+        optional: true
+    },
 
 });
