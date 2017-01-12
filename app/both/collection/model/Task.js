@@ -346,6 +346,26 @@ Schemas.Tasks = new SimpleSchema({
             }
         }
     },
+    activityId: {
+        type: SimpleSchema.RegEx.Id,
+        label: "Linked Activity",
+        optional: true,
+        autoValue: function () {
+            if (!this.isSet)
+                return null;
+        },
+        custom: function () {
+            if(this.value)
+                if (!Activities.findOne(this.value))
+                    return "unknownId";
+            return 1;
+        },
+        autoform: {
+            afFieldInput: {
+                options: Schemas.helpers.allActivitiesOptions
+            }
+        }
+    },
     groupId: {
         type: SimpleSchema.RegEx.Id,
         label: "Task Group",

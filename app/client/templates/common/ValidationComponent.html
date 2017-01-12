@@ -35,7 +35,7 @@
             {{#each validationData.comments}}
                 {{#unless equals @index 0}}
                     <span title="{{displayDateTime creationDate}} : {{author}} updated {{validationTypeLabel}} validation from {{displayValidationState stateBefore}} to {{displayValidationState stateAfter}}  {{#if content}}with '{{content}}'{{else}}without any comment{{/if}}">
-                        <i class="mdi {{mdiIcon}} mdi-inline {{stateAfter.toLowerCase}}"></i>
+                        <i class="mdi {{../mdiIcon}} mdi-inline {{stateAfter.toLowerCase}}"></i>
                         {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
                         {{#if content}}
                             with "{{content}}"

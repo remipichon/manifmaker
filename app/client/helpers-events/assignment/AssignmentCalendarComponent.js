@@ -24,6 +24,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
             "click .calendar": this.closePopOver,
             "click .close-popover": this.closePopOver,
             "click .popOver": this.stopPropa,
+            "click .heure": this.heureOnClick
         })
     }
 
@@ -107,6 +108,10 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
             return "selected"
         }
         return ""
+    }
+
+    isTaskToUser(){
+        return AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.TASKTOUSER;
     }
 
 
@@ -234,17 +239,33 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
 
+    heureOnClick(){
+        //what time did we click on ?
+        console.log("heureOnClick");
+
+        var $target = $(event.target);
+
+        this.filterTaskList($target)
+    }
+
+
     //userToTask (we click on a creneau, not on the entire availability)
     quartHeureOnClick(event) {
         //TODO gerer le double click pour la desaffectation
+        console.log("quartHeureOnClick");
+
+        //what time did we click on ?
+        var $target = $(event.target);
+
+        this.filterTaskList($target)
+    }
+
+    filterTaskList($target){
 
         var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK://only display task that have at least one time slot matching the selected availability slot
-
-                //what time did we click on ?
-                var $target = $(event.target);
 
                 var selectedDate = null;
                 if (typeof $target.attr("hours") !== "undefined") {
@@ -253,7 +274,6 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                     selectedDate = new moment(new Date($target.attr("quarter")));
                 }
                 AssignmentReactiveVars.SelectedDate.set(selectedDate);
-
 
                 var userId = AssignmentReactiveVars.SelectedUser.get()._id;
                 var user = Meteor.users.findOne({_id: userId});

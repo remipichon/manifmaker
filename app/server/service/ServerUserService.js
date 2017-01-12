@@ -295,6 +295,13 @@ export class ServerUserService {
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
         }
 
+        if(_.contains(fieldNames, "availabilities")){
+            if(doc._id !== userId){
+                SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+            }
+
+        }
+
     }
 
     /**

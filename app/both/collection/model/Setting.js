@@ -61,5 +61,28 @@ Schemas.Settings = new SimpleSchema({
     },
     'defaultActivityMapsLatLng.lng': {
         type: String
-    }
+    },
+    activitiesEnclosingDate: {
+        label: "Start and End dates for Activities",
+        type: Object,
+        optional: true
+    },
+    "activitiesEnclosingDate.start": {
+        type: Date,
+        label: "Activities Start Date",
+        optional: true,
+        defaultValue: null,
+        autoform: {
+            type: "datetime-local",
+        }
+    },
+    "activitiesEnclosingDate.end": {
+        type: Date,
+        label: "Activities End Date",
+        optional: true,
+        defaultValue: null,
+        autoform: {
+            type: "datetime-local",
+        }
+    },
 });
