@@ -15,7 +15,11 @@ class UserListComponent extends BlazeComponent {
     filterTeam(error, docModified, newOption) {
         return _.bind(function (error, docModifier, newOption) {
             var _id = newOption;
-            this.userListTeamFilter.set({teams:_id});
+            if(_id)
+                this.userListTeamFilter.set(_id);
+            else
+                this.userListTeamFilter.set(null);
+
         },this);
     }
 
