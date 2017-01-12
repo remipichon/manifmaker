@@ -35,6 +35,14 @@ export class Inject24h43emeDataServerService {
                 }
             }
         });
+        Settings.update(Settings.findOne()._id, {
+            $set: {
+                activitiesEnclosingDate: {
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 20, 8, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 21, 18, 0)
+                }
+            }
+        });
     }
 
     _injectGroupRoles() {
@@ -290,6 +298,7 @@ export class Inject24h43emeDataServerService {
             end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 30, 0, 0),
             teams: [this.hardTeam],
             charisma: 50,
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 3, 17, 6, 0),
             assignmentTermPeriods: [
                 {
                     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
@@ -379,8 +388,8 @@ export class Inject24h43emeDataServerService {
             masterId: this.hardId,
             accessPasses:[{
                 beneficiaries: "Dagier",
-                start:InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
-                end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 6, 0),
+                start:InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 20, 6, 0),
+                end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 21, 6, 0),
                 recipientName: "Chouffe",
                 recipientPhoneNumber: "0123456789",
                 accessPointGranted:[

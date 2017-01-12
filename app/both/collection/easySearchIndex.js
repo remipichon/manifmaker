@@ -16,6 +16,17 @@ TasksIndex = new EasySearch.Index({
 });
 /**
  * @memberOf EasySearch
+ * @summary EasySearch settings to perform search by name on Activity
+ * @locus Anywhere
+ * @instancename object
+ */
+ActivitiesIndex = new EasySearch.Index({
+    collection: Activities,
+    fields: ['name'],
+    engine: new EasySearch.Minimongo()
+});
+/**
+ * @memberOf EasySearch
  * @summary EasySearch settings to perform search by name on Task Group
  * @locus Anywhere
  * @instancename object

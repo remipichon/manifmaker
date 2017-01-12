@@ -81,19 +81,6 @@ export class BaseCalendarComponent extends BlazeComponent{
         return charisma;
     }
 
-    //labelSkills() {
-    //    return Skills.findOne({_id: this.currentData().toString()}).label;
-    //}
-
-    //userName() {
-    //    return Meteor.users.findOne({_id: this.currentData().userId}).name;
-    //}
-    //
-    //teamName() {
-    //    return Teams.findOne({_id: this.currentData().teamId}).name;
-    //}
-    //
-
 
     sideHoursHeight() {
         switch (AssignmentCalendarDisplayedAccuracy.findOne({}).accuracy) {

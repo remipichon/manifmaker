@@ -82,7 +82,10 @@ export class TaskListComponent extends BlazeComponent {
             ALL_READY
          */
         var result = [];
-        var validationRoles = Meteor.roles.find({name:{$regex : ".*VALIDATION.*"}}).fetch();
+        var validationRoles = [
+            Meteor.roles.findOne({name:"ASSIGNMENTVALIDATION"}),
+            Meteor.roles.findOne({name:"EQUIPMENTVALIDATION"})
+        ];
         var userValidationRole = [];
         validationRoles.forEach(validationRole => {
             if(Roles.userIsInRole(Meteor.userId(), validationRole.name))

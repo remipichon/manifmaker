@@ -1,13 +1,18 @@
 <template name="taskGeneralInformation">
     <div class="col-md-3">
         <div>
-            <label>Linked activity</label>
-
-            <div><a href="/activity/_id">Activity name</a></div>
             <div>
-                <div>day1 : start to end</div>
-                <div>day1 : start to end and start2 to end2</div>
+                {{> SingleNonMandatorySelectComponent selectLabel="Linked Activity" title="Update linked activity"
+                        optionCollection="Activities" optionValueName="name" optionCollectionIndex="ActivitiesIndex"
+                        updateCollection="Tasks" updateItemId=this._id updateItemPath="activityId" readOnly=readOnly
+                }}
             </div>
+            {{#if activityId}}
+                <div>
+                    {{#if linkedActivity.start}}<div>from {{displayDateTime linkedActivity.start}}</div>{{else}}no start date{{/if}}
+                    {{#if linkedActivity.end}}<div>to {{displayDateTime linkedActivity.end}}</div>{{else}}no start date{{/if}}
+                </div>
+            {{/if}}
         </div>
 
         <div>

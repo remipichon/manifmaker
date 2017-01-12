@@ -53,6 +53,14 @@ export class Inject24hDataServerService {
                 }
             }
         });
+        Settings.update(Settings.findOne()._id, {
+            $set: {
+                activitiesEnclosingDate: {
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 20, 8, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 21, 18, 0)
+                }
+            }
+        });
     }
 
     _injectGroupRoles() {
@@ -338,6 +346,7 @@ export class Inject24hDataServerService {
             start: InjectDataHelperServerService.getDateFromDateAndHourMinute(2017, 4, 17, 0, 0),
             end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 30, 0, 0),
             teams: [this.hardTeam],
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 0, 0, 0),
             charisma: 50,
             assignmentTermPeriods: [
                 {
@@ -485,6 +494,15 @@ export class Inject24hDataServerService {
             teams: [this.softTeam, this.confianceTeam, this.hardTeam],
             calendarAccuracy: 2,
             addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 19, 0, 0),
+        });
+        AssignmentTerms.insert({
+            name: "Deadline is over term",
+            charisma: 30,
+            start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2018, 5, 22, 0, 0),
+            end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2018, 5, 26, 0, 0),
+            teams: [this.softTeam, this.confianceTeam, this.hardTeam],
+            calendarAccuracy: 2,
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2014, 5, 19, 0, 0),
         });
 
     }

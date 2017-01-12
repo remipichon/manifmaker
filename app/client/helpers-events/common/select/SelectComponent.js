@@ -556,7 +556,7 @@ export class SelectComponent extends BlazeComponent {
             if (removedOptions.length !== 0) {
                 updateQuery = {
                     $pull: {
-                        [pathOrPathWithIndex]: removedOptions[0]
+                        [pathOrPathWithIndex]: {$in: removedOptions}
                     }
                 };
             } else if (addedOptions.length !== 0) {

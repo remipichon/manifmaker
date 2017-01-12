@@ -6,6 +6,7 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
         return "activityGeneralInformation"
     }
 
+
     constructor(){
         super();
     }
@@ -37,6 +38,17 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
         return Settings.findOne().defaultActivityMapsLatLng.lng;
     }
 
+    googleMapOption() {
+        var options = {};
+        if (this.isReadOnly()) {
+            options.disableDefaultUI = true;
+            options.draggable = false;
+        }
+        options.clickableIcons = false;
+        return options;
+    }
+
+
     updateDateCallbackStartDate(newOption) {
         return _.bind(function(newOption) {
             var _time = new moment(newOption);
@@ -58,6 +70,13 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
                 }
             })
         },this.activityDoc());
+    }
+
+    startActivitiesEnclosingDate(){
+        return Settings.findOne().activitiesEnclosingDate.start;
+    }
+    endActivitiesEnclosingDate(){
+        return Settings.findOne().activitiesEnclosingDate.end;
     }
 }
 
