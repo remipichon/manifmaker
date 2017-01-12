@@ -6,7 +6,7 @@ DateTimePickerComponent =
             this.viewDate = this.data().viewDate;
             this.updateDateCallback = this.data().updateDateCallback;
             this.format = this.data().format || null;
-            if(this.isRendered()){
+            if(this.isRendered() && this.date){
                     this.$(".datetimepicker").data("DateTimePicker").date(this.date);
             }
         }
