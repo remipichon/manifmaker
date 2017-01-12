@@ -197,8 +197,8 @@ Schemas.references.options.AssignmentTerms = {
             }
         },
         {
-            key: "start",
-            label: "Start",
+            key: "end",
+            label: "End",
             fn: function(date){
                 return new moment(date).format("ddd DD MMM HH[h]mm");
             }
