@@ -105,21 +105,21 @@ Router.route('/user/:_id/read', function () {
  * @name 'user.export'  /user/:_id/export
  */
 Router.route('/user/:_id/export', function () {
-        if(!Users.findOne({_id: this.params._id})){
+        if(!Meteor.users.findOne({_id: this.params._id})){
             throw new Meteor.Error("404","User not found");
         }
-        if(Users.findOne(this.params._id).loginUserId !== Meteor.userId())
+        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
             SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
 
         console.info("routing", "/user/" + this.params._id + "/export");
         this.render('exportUserAssignment', {
             data: function () {
                 var currentUser = this.params._id;
-                return Users.findOne({_id: currentUser});
+                return Meteor.users.findOne({_id: currentUser});
             }, to: 'mainContent'
         });
     },
-    {controller: ManifMakerRouterController,name: 'user.export'}
+    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.export'}
 );
 
 
