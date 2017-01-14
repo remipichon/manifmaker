@@ -5,14 +5,8 @@
 <template name="CommonNavbar">
 
         <div class="row common-nav-bar">
-            <div class="col-md-10">
-                <div class="lastUpdate">
-                    <i class="mdi mdi-sync"></i> {{displayHoursMinuteSeconde lastUpdateDate}}
-                </div>
 
-            </div>
-
-            <div class="col-md-1 clock-wrapper">
+            <div class="pull-right clock-wrapper">
                 <div class="hero-circle">
                     <div class="hero-face">
                         <div id="hour" class="hero-hour"></div>
@@ -21,6 +15,11 @@
                     </div>
                 </div>
             </div>
+
+            <div class="lastUpdate">
+                <i class="mdi mdi-sync"></i> {{displayHoursMinuteSeconde lastUpdateDate}}
+            </div>
+
 
         </div>
 
