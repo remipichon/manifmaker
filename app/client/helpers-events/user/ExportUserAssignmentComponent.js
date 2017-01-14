@@ -12,12 +12,23 @@ class ExportUserAssignmentComponent extends BlazeComponent {
 
     sortedAssignments(){
         return _.sortBy(Assignments.find({userId: this.data()._id}).fetch(), function(assigment){
-           return TimeSlotService.getTimeSlot(Tasks.findOne(assigment.taskId), assigment.timeSlotId).start
+            return TimeSlotService.getTimeSlot(Tasks.findOne(assigment.taskId), assigment.timeSlotId).start
+        });
+    }
+    groupedTasksResponsible(){
+        var tasks =  _.groupBy(Tasks.find({liveEventMasterId : this.data()._id}).fetch(), function(task){
+            return task.groupId;
+        });
+        return _.map(tasks, function(value, key) {
+            return {
+                groupId: key,
+                tasksGrouped: value
+            };
         });
     }
 
     task(){
-        return Tasks.findOne(this.currentData().taskId)
+        return Tasks.findOne(this.currentData().taskId);
     }
 
     timeSlot(){
@@ -26,11 +37,14 @@ class ExportUserAssignmentComponent extends BlazeComponent {
 
     displayUserInfo(userId){
         var user = Meteor.users.findOne(userId);
-        var phone = (!user.profile.phoneNumber)?  " (" + user.profile.phoneNumber + ")":"";
-        return user.name + phone;
+        var phone = (user.profile.phoneNumber)?  " (" + user.profile.phoneNumber + ")":"";
+        return user.profile.firstName + " " + user.profile.familyName + phone;
     }
     place(placeId){
         return Places.findOne(placeId).name;
+    }
+    groupName(groupId){
+        return TaskGroups.findOne(groupId).name;
     }
 
     displayEquipment (equipmentObject){

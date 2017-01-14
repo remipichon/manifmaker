@@ -11,7 +11,30 @@
     <h1>Tasks planning</h1>
     <br>
 
-    <div class="panel panel-default">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3>Tasks that you are in charge of</h3>
+        </div>
+
+        {{#each groupedTasksResponsible}}
+            <div class="panel panel-default planning-group-wrapper">
+                <div class="panel-heading">
+                    {{#unless equals groupId "null"}}
+                        {{groupName groupId}}
+                    {{else}}
+                        Ungrouped Tasks
+                    {{/unless}}
+                </div>
+                <div class="panel-body">
+                    {{#each tasksGrouped}}
+                        {{name}}
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+
+    </div>
+    <div class="panel panel-info">
         <div class="panel-heading">
             <h3>Your tasks</h3>
         </div>
@@ -30,9 +53,9 @@
 
 
                         <h5>Team</h5>
-                        <ul>
+                        <ul class="small">
                             <li>
-                                <strong>{{displayUserInfo task.liveEventMasterId}} LiveEventResponsible</strong>
+                                <strong>{{displayUserInfo task.liveEventMasterId}} - LiveEventResponsible</strong>
                             </li>
                             {{#with resp=task.liveEventMasterId ppl=timeSlot.peopleNeeded}}
                                 {{#each ppl}}
