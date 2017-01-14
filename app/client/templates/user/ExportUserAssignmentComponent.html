@@ -19,15 +19,60 @@
         {{#each groupedTasksResponsible}}
             <div class="panel panel-default planning-group-wrapper">
                 <div class="panel-heading">
-                    {{#unless equals groupId "null"}}
-                        {{groupName groupId}}
-                    {{else}}
-                        Ungrouped Tasks
-                    {{/unless}}
+                    <h5>
+                        {{#unless equals groupId "null"}}
+                            {{groupName groupId}}
+                        {{else}}
+                            Ungrouped Tasks
+                        {{/unless}}
+                    </h5>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body container-fluid">
                     {{#each tasksGrouped}}
-                        {{name}}
+                        <h5 class="pull-right">
+                            <i class="mdi mdi-map-marker"></i>{{place placeId}}
+                        </h5>
+                        <h5>
+                            {{name}}
+                        </h5>
+                        <table class="table table-bordered">
+                            <tbody>
+                            {{#if equals timeSlots.length 0}}
+                                <tr>
+                                    <td class="col-sm-4" rowspan="3" style="vertical-align:top">
+                                        <h6>Description</h6>
+                                        {{description}}
+                                    </td>
+                                    <td class="col-sm-8">
+                                        There is no TimeSlot created.
+                                    </td>
+                                </tr>
+                                {{else}}
+                                    {{#each timeSlots}}
+                                        {{#if equals @index 0}}
+                                            <tr>
+                                                <td class="col-sm-4" rowspan="3" style="vertical-align:top">
+                                                    <h6>Description</h6>
+                                                    {{description}}
+                                                </td>
+                                                <td class="col-sm-8">
+                                                    {{displayDateTime start}} - {{displayHoursMinute end}}
+                                                    <br>
+                                                </td>
+                                            </tr>
+                                        {{else}}
+                                            <tr>
+                                                <td class="col-sm-8">
+                                                    {{displayDateTime start}} - {{displayHoursMinute end}}
+                                                    <br>
+                                                </td>
+                                            </tr>
+                                        {{/if}}
+                                    {{/each}}
+                                {{/if}}
+
+                            </tbody>
+                        </table>
                     {{/each}}
                 </div>
             </div>

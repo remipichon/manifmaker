@@ -47,6 +47,10 @@ class ExportUserAssignmentComponent extends BlazeComponent {
         return TaskGroups.findOne(groupId).name;
     }
 
+    test(truc){
+        return truc.length;
+    }
+
     displayEquipment (equipmentObject){
         var quantity = equipmentObject.quantity;
         var equipmentName = Equipments.findOne(equipmentObject.equipmentId).name;
