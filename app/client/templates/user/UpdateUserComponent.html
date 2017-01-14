@@ -34,14 +34,17 @@
                 <div class="col-md-5">
                     {{>EditNameComponent collection="Meteor.users" placeholder="First name..." name=profile.firstName pathToUpdate="profile.firstName" _id=_id}}
                 </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    {{#if isInRole RolesEnum.USERDELETE}}
+                        {{#quickRemoveButton class="btn btn-default delete-task-button pull-right" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                    {{/if}}
+                </div>
 
                 <div class="col-md-5">
                     {{>EditNameComponent collection="Meteor.users" placeholder="Family name..." name=profile.familyName pathToUpdate="profile.familyName" _id=_id}}
-                </div>
-                <div class="col-md-2">
-                    {{#if isInRole RolesEnum.USERDELETE}}
-                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
-                    {{/if}}
                 </div>
             </div>
 

@@ -12,10 +12,10 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    {{>EditNameComponent collection="Activities" name=name _id=_id}}
                     {{#if isInRole RolesEnum.ACTIVITYDELETE}}
-                        {{#quickRemoveButton class="btn btn-default delete-activity-button" collection="Activities" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                        {{#quickRemoveButton class="btn btn-default delete-activity-button pull-right" collection="Activities" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
                     {{/if}}
+                    {{>EditNameComponent collection="Activities" name=name _id=_id}}
                 </div>
             </div>
 
