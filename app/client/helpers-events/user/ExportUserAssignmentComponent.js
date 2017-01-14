@@ -25,10 +25,10 @@ class ExportUserAssignmentComponent extends BlazeComponent {
     }
 
     displayUserInfo(userId){
-        var user = Users.findOne(userId);
-        return user.name + "(066666)";
+        var user = Meteor.users.findOne(userId);
+        var phone = (!user.profile.phoneNumber)?  " (" + user.profile.phoneNumber + ")":"";
+        return user.name + phone;
     }
-
     place(placeId){
         return Places.findOne(placeId).name;
     }
@@ -36,7 +36,9 @@ class ExportUserAssignmentComponent extends BlazeComponent {
     displayEquipment (equipmentObject){
         var quantity = equipmentObject.quantity;
         var equipmentName = Equipments.findOne(equipmentObject.equipmentId).name;
-        if (quantity > 0){
+        if (quantity  = 1){
+            return equipmentName;
+        }else if(quantity>1){
             return String(quantity) + " " + equipmentName;
         }
 

@@ -22,6 +22,9 @@
 .mdi-big {
   font-size : 180%;
 }
+.mdi-small {
+  font-size : 110%;
+}
 .no-padding{
   padding:0;
 }
@@ -62,4 +65,12 @@ h5{
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
                                   not supported by any browser */
+}
+.inline-headers h2, .inline-headers h3, .inline-headers h4, .inline-headers h5 {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+.pre { // get the <br> when we have a \n in a string
+  white-space: pre;
 }

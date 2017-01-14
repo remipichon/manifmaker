@@ -3,35 +3,74 @@
 </template>
 
 <template name="exportUserAssignmentComponent">
+    <h2 class="pull-right">
+        {{profile.firstName}}
+        {{profile.familyName}}
+        <br>
+    </h2>
     <h1>Tasks planning</h1>
-    {{this.name}}
     <br>
-    {{#each sortedAssignments}}
-        {{task.name}} :
-        {{displayDateTime timeSlot.start}} - {{displayDateTime timeSlot.end}}
-        <br>
-        Description :<br>
-        {{task.description}}
-        <br>
-        Responsible:
-        <br>
-        <strong>{{displayUserInfo task.liveEventMasterId}}</strong><br>
-        Team :
-        {{#each timeSlot.peopleNeeded}}
-            <br>
-            {{displayUserInfo this.assignedUserId}}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Your tasks</h3>
+        </div>
+
+
+        {{#each sortedAssignments}}
+            <div class="panel panel-default planning-task-wrapper">
+                <div class="row inline-headers">
+                    <div class="col-sm-6">
+                        <h4>{{task.name}}</h4>
+                        {{displayDateTime timeSlot.start}} - {{displayHoursMinute timeSlot.end}}
+                        <br>
+                        <h5>Description</h5>
+                        <p class="pre small">{{task.description}}</p>
+                        <br>
+
+
+                        <h5>Team</h5>
+                        <ul>
+                            <li>
+                                <strong>{{displayUserInfo task.liveEventMasterId}} LiveEventResponsible</strong>
+                            </li>
+                            {{#with resp=task.liveEventMasterId ppl=timeSlot.peopleNeeded}}
+                                {{#each ppl}}
+                                    {{#unless equals this.assignedUserId null}}
+                                        {{#unless equals this.assignedUserId ../resp}}
+                                            <li>
+
+                                                {{displayUserInfo this.assignedUserId}}
+
+                                            </li>
+                                        {{/unless}}
+                                    {{/unless}}
+                                {{/each}}
+                            {{/with}}
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        MAP <br>
+                        <h5>
+                            <i class="mdi mdi-map-marker"></i>{{place task.placeId}}
+                        </h5>
+                        <br>
+                        <div class="row small">
+                            {{#each task.equipments}}
+                                {{#unless equals this.quantity 0}}
+                                    <div class="col-sm-6">
+                                        <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment this}}
+                                        <br>
+                                    </div>
+                                {{/unless}}
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         {{/each}}
-        <br>
-        Place :
-        <br>
-        {{place task.placeId}}
-        <br>
-        Equipment :
-        <br>
-        {{#each task.equipments}}
-            {{displayEquipment this}}
-            <br>
-        {{/each}}
-        <br>
-    {{/each}}
+
+
+    </div>
 </template>
