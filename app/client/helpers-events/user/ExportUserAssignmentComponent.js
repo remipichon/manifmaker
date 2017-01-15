@@ -18,6 +18,10 @@ class ExportUserAssignmentComponent extends BlazeComponent {
     taskAssignments(){
         return Assignments.find({timeSlotId: this.currentData()._id});
     }
+
+    isFirstHalf(list, index){
+        return index<=Object.keys(list.fetch()).length/2;
+    }
     groupedTasksResponsible(){
         var tasks =  _.groupBy(Tasks.find({liveEventMasterId : this.data()._id}).fetch(), function(task){
             return task.groupId;
@@ -48,10 +52,6 @@ class ExportUserAssignmentComponent extends BlazeComponent {
     }
     groupName(groupId){
         return TaskGroups.findOne(groupId).name;
-    }
-
-    test(truc){
-        return truc.length;
     }
 
     displayEquipment (equipmentObject){

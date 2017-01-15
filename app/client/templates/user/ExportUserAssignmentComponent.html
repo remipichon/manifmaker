@@ -51,21 +51,42 @@
                                                     {{displayDateTime start}} - {{displayHoursMinute end}}
 
                                                     <div class="col-md-12 col-xs-12">
-                                                        <ul class="small col-md-6 col-lg-4">
+                                                        <ul class="small col-md-6 col-lg-4 no-margin">
                                                             <li>
                                                                 <strong>{{displayUserInfo ../liveEventMasterId}}</strong>
                                                             </li>
-                                                            {{#each taskAssignments}}
-                                                                {{#unless equals userId null}}
-                                                                    {{#unless equals userId ../liveEventMasterId}}
-                                                                        <li>
+                                                            {{#with assign=taskAssignments}}
+                                                            {{#each assign}}
+                                                                {{#if isFirstHalf ../assign @index}}
+                                                                    {{#unless equals userId null}}
+                                                                        {{#unless equals userId ../liveEventMasterId}}
+                                                                            <li>
 
-                                                                            {{displayUserInfo userId}}
+                                                                                {{displayUserInfo userId}}
 
-                                                                        </li>
+                                                                            </li>
+                                                                        {{/unless}}
                                                                     {{/unless}}
-                                                                {{/unless}}
+                                                                {{/if}}
                                                             {{/each}}
+                                                            {{/with}}
+                                                        </ul>
+                                                        <ul class="small col-md-6 col-lg-4">
+                                                            {{#with assign=taskAssignments}}
+                                                                {{#each assign}}
+                                                                    {{#unless isFirstHalf ../assign @index}}
+                                                                        {{#unless equals userId null}}
+                                                                            {{#unless equals userId ../liveEventMasterId}}
+                                                                                <li>
+
+                                                                                    {{displayUserInfo userId}}
+
+                                                                                </li>
+                                                                            {{/unless}}
+                                                                        {{/unless}}
+                                                                    {{/unless}}
+                                                                {{/each}}
+                                                            {{/with}}
                                                         </ul>
                                                     </div>
                                                 </td>
