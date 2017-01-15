@@ -37,39 +37,75 @@
                         </h5>
                         <table class="table table-bordered">
                             <tbody>
-                            {{#if equals timeSlots.length 0}}
                                 <tr>
-                                    <td class="col-sm-4" rowspan="3" style="vertical-align:top">
+                                    <td class="col-sm-4" rowspan="{{timeSlots.length}}" style="vertical-align:top">
                                         <h6>Description</h6>
-                                        {{description}}
+                                        <p class="pre small">
+                                            {{description}}
+                                        </p>
                                     </td>
-                                    <td class="col-sm-8">
-                                        There is no TimeSlot created.
-                                    </td>
+                                    {{#unless equals timeSlots.length 0}}
+                                        {{#each timeSlots}}
+                                            {{#if equals @index 0}}
+                                                <td class="col-sm-8">
+                                                    {{displayDateTime start}} - {{displayHoursMinute end}}
+
+                                                    <div class="col-md-12 col-xs-12">
+                                                        <ul class="small col-md-6 col-lg-4">
+                                                            <li>
+                                                                <strong>{{displayUserInfo ../liveEventMasterId}}</strong>
+                                                            </li>
+                                                            {{#each taskAssignments}}
+                                                                {{#unless equals userId null}}
+                                                                    {{#unless equals userId ../liveEventMasterId}}
+                                                                        <li>
+
+                                                                            {{displayUserInfo userId}}
+
+                                                                        </li>
+                                                                    {{/unless}}
+                                                                {{/unless}}
+                                                            {{/each}}
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            {{/if}}
+                                        {{/each}}
+                                    {{else}}
+                                        <td class="col-sm-8">
+                                            There is no timeSlot for this task.
+                                        </td>
+                                    {{/unless}}
                                 </tr>
-                                {{else}}
-                                    {{#each timeSlots}}
-                                        {{#if equals @index 0}}
-                                            <tr>
-                                                <td class="col-sm-4" rowspan="3" style="vertical-align:top">
-                                                    <h6>Description</h6>
-                                                    {{description}}
-                                                </td>
-                                                <td class="col-sm-8">
-                                                    {{displayDateTime start}} - {{displayHoursMinute end}}
-                                                    <br>
-                                                </td>
-                                            </tr>
-                                        {{else}}
-                                            <tr>
-                                                <td class="col-sm-8">
-                                                    {{displayDateTime start}} - {{displayHoursMinute end}}
-                                                    <br>
-                                                </td>
-                                            </tr>
-                                        {{/if}}
-                                    {{/each}}
-                                {{/if}}
+
+                                {{#each timeSlots}}
+                                    {{#unless equals @index 0}}
+                                        <tr>
+                                            <td class="col-sm-8">
+                                                {{displayDateTime start}} - {{displayHoursMinute end}}
+
+                                                <div class="col-md-12 col-xs-12">
+                                                    <ul class="small col-md-6 col-lg-4">
+                                                        <li>
+                                                            <strong>{{displayUserInfo ../liveEventMasterId}}</strong>
+                                                        </li>
+                                                        {{#each taskAssignments}}
+                                                            {{#unless equals userId null}}
+                                                                {{#unless equals userId ../liveEventMasterId}}
+                                                                    <li>
+
+                                                                        {{displayUserInfo userId}}
+
+                                                                    </li>
+                                                                {{/unless}}
+                                                            {{/unless}}
+                                                        {{/each}}
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {{/unless}}
+                                {{/each}}
 
                             </tbody>
                         </table>

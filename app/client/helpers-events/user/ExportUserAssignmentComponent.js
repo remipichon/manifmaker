@@ -15,6 +15,9 @@ class ExportUserAssignmentComponent extends BlazeComponent {
             return TimeSlotService.getTimeSlot(Tasks.findOne(assigment.taskId), assigment.timeSlotId).start
         });
     }
+    taskAssignments(){
+        return Assignments.find({timeSlotId: this.currentData()._id});
+    }
     groupedTasksResponsible(){
         var tasks =  _.groupBy(Tasks.find({liveEventMasterId : this.data()._id}).fetch(), function(task){
             return task.groupId;
