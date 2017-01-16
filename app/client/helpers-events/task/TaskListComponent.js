@@ -292,7 +292,7 @@ export class TaskListComponent extends BlazeComponent {
 
         return {
             collection: Tasks,
-            rowsPerPage: 10,
+            rowsPerPage: Tasks.find().fetch().length,
             showFilter: false,
             showRowCount: true,
             fields: fields,

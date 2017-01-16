@@ -71,6 +71,8 @@ Router.route('/login', function () {
  * @locus client
  * @name 'forbidden'  /login
  */
+beforeBeforeForbiddenRoute = null;
+
 Router.route('/forbidden', function () {
 
         this.wait(Meteor.subscribe("users")); //wait for user data before any attempt
@@ -83,7 +85,8 @@ Router.route('/forbidden', function () {
         });
 
         if(this.ready()){
-            if(beforeForbiddenRoute){
+            if(beforeForbiddenRoute && beforeBeforeForbiddenRoute !== beforeForbiddenRoute){
+                beforeBeforeForbiddenRoute = beforeForbiddenRoute;
                 console.info(`retrying beforeForbiddenRoute ${beforeForbiddenRoute}`);
                 Router.go(beforeForbiddenRoute);
 
@@ -94,6 +97,8 @@ Router.route('/forbidden', function () {
         name: 'forbidden',
     }
 );
+
+
 
 /**
  * @memberOf Route.common

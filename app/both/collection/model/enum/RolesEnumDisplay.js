@@ -23,6 +23,8 @@ RolesEnumDisplay = {
     ASSIGNMENTVALIDATION: "Assignment validation",
     /** activity */
     ACTIVITYGENERALVALIDATION: "General Information validation",
+    /** activity */
+    ALLACTIVITY: "All Activities even private ones",
 
     /** assignment */
     ASSIGNMENTTASKUSER: "Access assignment",

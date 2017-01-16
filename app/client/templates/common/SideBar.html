@@ -85,6 +85,7 @@
                 {{#if isInRole RolesEnum.CONFMAKER}}
                     <li class="{{#if equals currentTab "ConfMaker"}}active{{/if}}"><a href="{{pathFor route='conf-maker'}}"><i class="sidebar-icon mdi mdi-settings"></i> ConfMaker</a></li>
                 {{/if}}
+                <li class="application-version"><a href=""><i class="sidebar-icon mdi"></i> Version {{getVersion}}</a></li>
 
             </ul>
             <!-- Sidebar divider -->

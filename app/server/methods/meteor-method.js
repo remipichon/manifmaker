@@ -21,6 +21,11 @@ Meteor.methods({
     },
     sendVerificationEmail: function(userId){
         ServerUserService.sendVerificationEmail(userId)
+    },
+    getVersion: function () {
+        var pjson = require('/package.json');
+        console.log(pjson.version); // This will print the version
+        return pjson.version;
     }
 });
 

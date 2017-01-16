@@ -116,6 +116,8 @@ Meteor.startup(function () {
         key: 'AIzaSyCFSHZqW6l7IpFjnybMYIfH6_9mdBGmfgE',
     });
 
+    Status.setTemplate('semantic_ui');
+
 
 });
 

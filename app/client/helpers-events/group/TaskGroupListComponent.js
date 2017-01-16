@@ -69,7 +69,7 @@ class TaskGroupListComponent extends BlazeComponent {
 
         return {
             collection: TaskGroups,
-            rowsPerPage: 10,
+            rowsPerPage: TaskGroups.find().fetch().length,
             showFilter: false,
             showRowCount: true,
             fields: fields,
