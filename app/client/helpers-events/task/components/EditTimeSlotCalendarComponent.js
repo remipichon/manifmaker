@@ -67,7 +67,8 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
     }
 
     timeSlot(date, timeHours, idTask) {
-        var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
+        var minutes = this.currentData().quarter;
+        var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours, minutes);
         var task = this.data().task;
         if (!task) return [];
 

@@ -65,7 +65,7 @@ export class TimeSlotService {
                         return false;
                 } else {
                     //is start midnight ? we should retrieve timeslot which started 'yesterday' and finish 'today' or later
-                    if (startDate.hour() === 0){
+                    if (startDate.hour() === 0 && startDate.minute() === 0){
                         //=> is thing.start lt start and thing.end gt start ?
                         if(thingStartDate.isBefore(startDate) && thingEndDate.isAfter(startDate)){
                             //=> => thing is a match
