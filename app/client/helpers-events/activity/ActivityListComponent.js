@@ -286,7 +286,7 @@ export class ActivityListComponent extends BlazeComponent {
 
         return {
             collection: Activities,
-            rowsPerPage: 10,
+            rowsPerPage: Activities.find().fetch().size,
             showFilter: false,
             showRowCount: true,
             fields: fields,
