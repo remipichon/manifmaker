@@ -48,7 +48,7 @@ export class Inject24h43emeDataServerService {
     _injectGroupRoles() {
         this.bureauGroupRole = GroupRoles.insert({
             name: "bureau",
-            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ROLE]
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ROLE, RolesEnum.ALLACTIVITY, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
         });
         this.hardGroupRole = GroupRoles.insert({
             name: "hard",

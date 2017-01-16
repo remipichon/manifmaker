@@ -28,6 +28,8 @@ RolesEnum = {
     TASKGROUPDELETE: "TASKGROUPDELETE",
 
     /** activity */
+    ALLACTIVITY: "ALLACTIVITY",
+    /** activity */
     ACTIVITYREAD: "ACTIVITYREAD",
     /** activity */
     ACTIVITYWRITE: "ACTIVITYWRITE",

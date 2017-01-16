@@ -66,11 +66,17 @@ export class Inject24hDataServerService {
     _injectGroupRoles() {
         this.bureauGroupRole = GroupRoles.insert({
             name: "bureau",
-            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ROLE]
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE,
+                RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE,
+                RolesEnum.ROLE,
+                RolesEnum.ALLACTIVITY,  RolesEnum.ACTIVITYREAD,RolesEnum.ACTIVITYDELETE, RolesEnum.ACTIVITYWRITE]
         });
         this.hardGroupRole = GroupRoles.insert({
             name: "hard",
-            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
+            roles: [RolesEnum.MANIFMAKER,
+                RolesEnum.USERREAD,
+                RolesEnum.TASKREAD, RolesEnum.TASKWRITE,
+                RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
         });
         this.softGroupRole = GroupRoles.insert({
             name: "soft",
