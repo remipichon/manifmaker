@@ -244,7 +244,14 @@ Schemas.TimeSlot = new SimpleSchema({
             if (!TimeSlotService.areTimeSlotOverlappingWithQuery(timeSlots, start, end, currentId))
                 return "timeSlotConflictDate";
 
-            return TimeSlotService.timeSlotIsWithinAssignmentTerm(start,end);
+             var term = TimeSlotService.timeSlotWithinAssignmentTerm(start,end);
+             if(!term) return "timeSlotNotWithinTerms";
+
+            var accuracy = term.calendarAccuracy;
+            var diff = start.diff(end,"minute");
+            if(diff % (accuracy * 60) !== 0){
+                return "timeSlotTermAccuracyError"
+            }
         },
         autoform: {
             type: "datetime-local",
@@ -292,7 +299,13 @@ Schemas.TimeSlot = new SimpleSchema({
             if (!TimeSlotService.areTimeSlotOverlappingWithQuery(timeSlots,start,end,currentId))
                 return "timeSlotConflictDate";
 
-            return TimeSlotService.timeSlotIsWithinAssignmentTerm(start,end);
+            var term = TimeSlotService.timeSlotWithinAssignmentTerm(start,end);
+
+            var accuracy = term.calendarAccuracy;
+            var diff = start.diff(end,"minute");
+            if(diff % (accuracy * 60) !== 0){
+                return "timeSlotTermAccuracyError"
+            }
         },
         autoform: {
             type: "datetime-local",

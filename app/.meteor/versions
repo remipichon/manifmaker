@@ -69,6 +69,7 @@ es5-shim@4.6.15
 facebook@1.2.8
 fastclick@1.0.13
 fortawesome:fontawesome@4.5.0
+francocatena:status@1.5.3
 geojson-utils@1.0.10
 google@1.1.13
 hot-code-push@1.0.4
@@ -97,6 +98,7 @@ matb33:collection-hooks@0.8.4
 mdg:validation-error@0.5.1
 meteor@1.6.0
 meteor-base@1.0.4
+meteorspark:util@0.2.0
 minifier-css@1.1.13
 minifier-js@1.1.13
 minimongo@1.0.18
@@ -151,6 +153,7 @@ srp@1.0.10
 standard-minifier-css@1.0.8
 standard-minifier-js@1.0.8
 standard-minifiers@1.0.6
+tap:i18n@1.7.0
 templating@1.1.14
 templating-tools@1.0.4
 tmeasday:test-reporter-helpers@0.2.1

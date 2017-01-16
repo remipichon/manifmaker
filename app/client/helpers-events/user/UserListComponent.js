@@ -92,7 +92,7 @@ class UserListComponent extends BlazeComponent {
 
         return {
             collection: Meteor.users,
-            rowsPerPage: 10,
+            rowsPerPage: Meteor.users.find().fetch().length,
             showFilter: false,
             showRowCount: true,
             fields: fields,

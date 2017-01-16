@@ -58,6 +58,10 @@ Meteor.startup(function () {
             if(user.username === SUPERADMIN)
                     return Activities.find({});
 
+            if(SecurityServiceServer.testAccessToItem(this.userId, RolesEnum.ALLACTIVITY)){
+                return Activities.find({});
+            }
+
             return Activities.find({
                 $or: [
                     {limitToTeam: false},
