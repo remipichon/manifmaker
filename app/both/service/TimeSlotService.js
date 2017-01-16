@@ -190,8 +190,8 @@ export class TimeSlotService {
 
         }
 
-        static timeSlotIsWithinAssignmentTerm(start, end){
-            if (!AssignmentTerms.findOne({
+        static timeSlotWithinAssignmentTerm(start, end){
+            return AssignmentTerms.findOne({
                     $and:[
                         {
                             start: {
@@ -229,8 +229,6 @@ export class TimeSlotService {
                             }
                         }
                     ]
-                })
-            )
-                return "timeSlotNotWithinTerms"
+                });
         }
     }
