@@ -729,7 +729,7 @@ export class Inject24hDataServerService {
             masterId: this.hardId,
             timeSlots: [
                 {
-                    start: InjectDataHelperServerService.getDateFromDateAndHourMinute(2017,5,15, 9,0),
+                    start: InjectDataHelperServerService.getDateFromDateAndHourMinute(2017,5,15, 10,0),
                     end: InjectDataHelperServerService.getDateFromDateAndHourMinute(2017,5,15, 12,0),
                     peopleNeeded: [
                         {
