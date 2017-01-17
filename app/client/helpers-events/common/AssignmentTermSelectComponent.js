@@ -14,7 +14,10 @@ class AssignmentTermSelectComponent extends BlazeComponent{
         }]
     }
 
-    
+    isDeveloped(){
+        return this.data().isdeveloped;
+    }
+
     assignmentTerms() {
         var terms;
         if(this.data() && this.data().teams)
