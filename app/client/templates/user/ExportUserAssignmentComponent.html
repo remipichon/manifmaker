@@ -7,8 +7,11 @@
         {{profile.firstName}}
         {{profile.familyName}}
         <br>
+        ({{username}})
+        <br>
     </h2>
     <h1>Tasks planning</h1>
+    <br>
     <br>
 
     <div class="panel panel-info">
@@ -29,71 +32,63 @@
                 </div>
                 <div class="panel-body container-fluid">
                     {{#each tasksGrouped}}
-                        <h5 class="pull-right">
-                            <i class="mdi mdi-map-marker"></i>{{place placeId}}
-                        </h5>
                         <h5>
                             {{name}}
                         </h5>
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <td class="col-sm-4" rowspan="{{timeSlots.length}}" style="vertical-align:top">
-                                        <h6>Description</h6>
-                                        <p class="pre small">
-                                            {{description}}
-                                        </p>
+                                    <td class="col-sm-8" rowspan="{{timeSlots.length}}" style="vertical-align:top">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h5>Description</h5>
+                                                <p class="pre small">
+                                                    {{description}}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5>
+                                                    <i class="mdi mdi-map-marker"></i>{{place placeId}}
+                                                </h5>
+                                                MAP
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <div class="row small">
+                                                {{#each equipments}}
+                                                    {{#unless equals this.quantity 0}}
+                                                        <div class="col-sm-6">
+                                                            <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment this}}
+                                                            <br>
+                                                        </div>
+                                                    {{/unless}}
+                                                {{/each}}
+                                            </div>
+                                        </div>
                                     </td>
                                     {{#unless equals timeSlots.length 0}}
                                         {{#each timeSlots}}
                                             {{#if equals @index 0}}
-                                                <td class="col-sm-8">
+                                                <td class="col-sm-4">
                                                     {{displayDateTime start}} - {{displayHoursMinute end}}
-
-                                                    <div class="col-md-12 col-xs-12">
-                                                        <ul class="small col-md-6 col-lg-4 no-margin">
-                                                            <li>
-                                                                <strong>{{displayUserInfo ../liveEventMasterId}}</strong>
-                                                            </li>
-                                                            {{#with assign=taskAssignments}}
-                                                            {{#each assign}}
-                                                                {{#if isFirstHalf ../assign @index}}
-                                                                    {{#unless equals userId null}}
-                                                                        {{#unless equals userId ../liveEventMasterId}}
-                                                                            <li>
-
-                                                                                {{displayUserInfo userId}}
-
-                                                                            </li>
-                                                                        {{/unless}}
-                                                                    {{/unless}}
-                                                                {{/if}}
+                                                    <span class="small">
+                                                        <br><strong>TaskResponsible :</strong> {{displayUserInfo ../masterId}}
+                                                        <br><strong>Assigned :</strong>
+                                                    </span>
+                                                        <ul class="small">
+                                                            {{#each taskAssignments}}
+                                                                {{#unless equals userId null}}
+                                                                    <li>
+                                                                        {{displayUserInfo userId}}
+                                                                    </li>
+                                                                {{/unless}}
                                                             {{/each}}
-                                                            {{/with}}
                                                         </ul>
-                                                        <ul class="small col-md-6 col-lg-4">
-                                                            {{#with assign=taskAssignments}}
-                                                                {{#each assign}}
-                                                                    {{#unless isFirstHalf ../assign @index}}
-                                                                        {{#unless equals userId null}}
-                                                                            {{#unless equals userId ../liveEventMasterId}}
-                                                                                <li>
-
-                                                                                    {{displayUserInfo userId}}
-
-                                                                                </li>
-                                                                            {{/unless}}
-                                                                        {{/unless}}
-                                                                    {{/unless}}
-                                                                {{/each}}
-                                                            {{/with}}
-                                                        </ul>
-                                                    </div>
                                                 </td>
                                             {{/if}}
                                         {{/each}}
                                     {{else}}
-                                        <td class="col-sm-8">
+                                        <td class="col-sm-4">
                                             There is no timeSlot for this task.
                                         </td>
                                     {{/unless}}
@@ -102,27 +97,23 @@
                                 {{#each timeSlots}}
                                     {{#unless equals @index 0}}
                                         <tr>
-                                            <td class="col-sm-8">
+                                            <td class="col-sm-4">
                                                 {{displayDateTime start}} - {{displayHoursMinute end}}
+                                                <span class="small">
+                                                    <br><strong>TaskResponsible :</strong> {{displayUserInfo ../masterId}}
+                                                    <br><strong>Assigned :</strong>
+                                                </span>
+                                                <ul class="small">
+                                                    {{#each taskAssignments}}
+                                                        {{#unless equals userId null}}
+                                                            <li>
 
-                                                <div class="col-md-12 col-xs-12">
-                                                    <ul class="small col-md-6 col-lg-4">
-                                                        <li>
-                                                            <strong>{{displayUserInfo ../liveEventMasterId}}</strong>
-                                                        </li>
-                                                        {{#each taskAssignments}}
-                                                            {{#unless equals userId null}}
-                                                                {{#unless equals userId ../liveEventMasterId}}
-                                                                    <li>
+                                                                {{displayUserInfo userId}}
 
-                                                                        {{displayUserInfo userId}}
-
-                                                                    </li>
-                                                                {{/unless}}
-                                                            {{/unless}}
-                                                        {{/each}}
-                                                    </ul>
-                                                </div>
+                                                            </li>
+                                                        {{/unless}}
+                                                    {{/each}}
+                                                </ul>
                                             </td>
                                         </tr>
                                     {{/unless}}
@@ -179,6 +170,7 @@
                         <h5>
                             <i class="mdi mdi-map-marker"></i>{{place task.placeId}}
                         </h5>
+                        <br>
                         <br>
                         <div class="row small">
                             {{#each task.equipments}}
