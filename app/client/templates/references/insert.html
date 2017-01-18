@@ -24,6 +24,7 @@
     {{# autoForm collection="Skills" id="insertSkillForm" type="insert"}}
         <fieldset>
             <legend>Add a Skill</legend>
+            {{> DismissibleHelperComponent message="Unique key in capital letter and without spaces or special char" uniqueId="skill-key"}}
             {{> afQuickField placeHolder="This skill doesn't have a key yet" name='key'}}
             {{> afQuickField placeHolder="This skill doesn't have a label yet" name='label'}}
         </fieldset>
@@ -33,14 +34,18 @@
 </template>
 
 <template name="assignment-term-insert">
+    {{> DismissibleHelperComponent message="An Assignment Term has a beginning and an end and can have periods inside these dates in order to be not contiguous." uniqueId="term-home"}}
     {{# autoForm collection="AssignmentTerms" id="insertAssignmentTerm" type="insert"}}
         <fieldset>
             <legend>Add a term</legend>
             {{> afQuickField name="name"}}
             {{> afQuickField name="start"}}
             {{> afQuickField name="end"}}
+            {{> DismissibleHelperComponent message="Only users with one of these teams can add availabilities during this term" uniqueId="term-team"}}
             {{> afQuickField name="teams"}}
+            {{> DismissibleHelperComponent message="After this deadline, only TIMESLOTVALIDATION users can update availabilities" uniqueId="term-dealine"}}
             {{> afQuickField name="addAvailabilitiesDeadline"}}
+            {{> DismissibleHelperComponent message="Accuracy defines the minimun availaby and timeslot duration. You can choose from 2 hours (2), 1 hour (1), half an hour (0.5) or 15 minutes (0.25)" uniqueId="term-accuracy"}}
             {{> afQuickField name="calendarAccuracy"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
@@ -50,6 +55,8 @@
 
 
 <template name="group-role-insert">
+    {{> DismissibleHelperComponent message="Roles (not editable) can be put together to form a group role. To access ressources (like Tasks), a user need roles (like TASKREAD) which are given by group role (like 'hard')" uniqueId="group-role-home"}}
+    {{> DismissibleHelperComponent message="A spécial role, nammed ROLE is needed to update group roles conf and updat group roles on user." uniqueId="group-role-role"}}
     {{# autoForm collection="GroupRoles" id="insertGroupRole" type="insert"}}
         <fieldset>
             <legend>Add a Group Role</legend>
@@ -151,6 +158,7 @@
 
 
 <template name="web-category-insert">
+    {{> DismissibleHelperComponent message="Activity Category for web export" uniqueId="webcategory-home"}}
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
             <legend>Add a {{options.REFERENCE_LABEL}}</legend>
@@ -163,6 +171,7 @@
 
 
 <template name="android-category-insert">
+    {{> DismissibleHelperComponent message="Activity Category for Android export" uniqueId="androidcategory-home"}}
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
             <legend>Add a {{options.REFERENCE_LABEL}}</legend>
