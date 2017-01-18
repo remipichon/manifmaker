@@ -1,0 +1,9 @@
+<template name="assignmentTermButtonsComponent">
+    <div class="row">
+        {{#each assignmentTerms}}
+            <div class="col-sm-3">
+                <button {{selected}} value="{{_id}}" class="btn btn-information button-large assignments-terms-button">{{name}} <br>({{displayDay start}} - {{displayDay end}})</button>
+            </div>
+        {{/each}}
+    </div>
+</template>
