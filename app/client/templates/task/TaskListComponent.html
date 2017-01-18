@@ -61,10 +61,10 @@
         </div>
 
         <div class="row">
-            <div class="col-md-2 col-md-offset-2">
+            <div class="col-md-2">
                 {{#if isForGroup}}
                     {{#if isInRole RolesEnum.TASKWRITE}}
-                        <label>
+                        <label class="clickable">
                             Display all Tasks : <input type="checkbox" id="display-all-task-toggle">
                         </label>
                     {{/if}}
@@ -95,11 +95,11 @@
                 </div>
             {{/if}}
             <div class="col-md-3 col-md-offset-1">
-                <label>
+                <label class="clickable">
                     <input type="checkbox" id="checkbox-after-filter"> After :
                 </label>
                 {{>DateTimePickerComponent class="date-after-filter" readOnly=isAfterFilterReadOnly date="now" updateDateCallback=filterAfter}}
-                <label>
+                <label class="clickable">
                     <input type="checkbox" id="checkbox-before-filter"> Before :
                 </label>
                 {{>DateTimePickerComponent class="date-before-filter" readOnly=isBeforeFilterReadOnly date="now" updateDateCallback=filterBefore}}
