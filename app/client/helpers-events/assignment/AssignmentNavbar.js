@@ -102,7 +102,7 @@ class AssignmentNavbar extends BlazeComponent {
 
                     if (isUnassignment)
                         result.push({
-                            label: "Select one of the assigned user",
+                            label: "Select the assigned user to remove assignment",
                             url: ""
                         });
                     else
