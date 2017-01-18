@@ -14,6 +14,15 @@ class AssignmentTermButtonsComponent extends BlazeComponent{
         }]
     }
 
+    constructor() {
+        super();
+        this.selectedDeadinevar = new ReactiveVar();
+    }
+
+
+    selectedDealine(){
+        return this.selectedDeadinevar.get();
+    }
 
     assignmentTerms() {
         var terms;
@@ -30,6 +39,7 @@ class AssignmentTermButtonsComponent extends BlazeComponent{
         var selectedTermId = AssignmentCalendarDisplayedDays.findOne().assignmentTermId;
         var i = terms.indexOf(_.findWhere(terms,{_id:selectedTermId}));
         terms[i].selected = "disabled";
+        this.selectedDeadinevar.set(AssignmentTerms.findOne({_id:selectedTermId}).addAvailabilitiesDeadline);
         console.info(selectedTermId,i);
 
         return terms;
