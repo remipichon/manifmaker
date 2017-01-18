@@ -38,42 +38,49 @@
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <td class="col-sm-8" rowspan="{{timeSlots.length}}" style="vertical-align:top">
+                                    <td class="col-sm-9" rowspan="{{timeSlots.length}}" style="vertical-align:top">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <h5>Description</h5>
-                                                <p class="pre small">
-                                                    {{description}}
-                                                </p>
+                                            <div class="col-md-6 test">
+                                                <h5>What to do ?</h5>
+                                                <p class="pre small">{{description}} </p>
                                             </div>
                                             <div class="col-md-6">
                                                 <h5>
                                                     <i class="mdi mdi-map-marker"></i>{{place placeId}}
                                                 </h5>
-                                                MAP
-                                                <!-- TODO : GoogleMap -->
+                                                <div class="wrapper-map">
+                                                    MAP
+                                                    <!-- TODO : GoogleMap -->
+                                                </div>
                                             </div>
                                             <br>
                                             <br>
-                                            <div class="row small">
-                                                {{#each equipments}}
-                                                    {{#unless equals this.quantity 0}}
-                                                        <div class="col-sm-6">
-                                                            <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment this}}
-                                                            <br>
-                                                        </div>
-                                                    {{/unless}}
-                                                {{/each}}
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h5>With what ?</h5>
+                                                <div class="row">
+                                                    {{#each equipments}}
+                                                        {{#unless equals this.quantity 0}}
+                                                            <div class="col-sm-6  small">
+                                                                <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment this}}
+                                                                <br>
+                                                            </div>
+                                                        {{/unless}}
+                                                    {{/each}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5>TaskResponsible :</h5> {{displayUserInfo masterId}}
                                             </div>
                                         </div>
                                     </td>
                                     {{#unless equals timeSlots.length 0}}
                                         {{#each timeSlots}}
                                             {{#if equals @index 0}}
-                                                <td class="col-sm-4">
+                                                <td class="col-sm-3">
                                                     {{displayDateTime start}} - {{displayHoursMinute end}}
                                                     <span class="small">
-                                                        <br><strong>TaskResponsible :</strong> {{displayUserInfo ../masterId}}
                                                         <br><strong>Assigned :</strong>
                                                     </span>
                                                         <ul class="small">
@@ -101,7 +108,6 @@
                                             <td class="col-sm-4">
                                                 {{displayDateTime start}} - {{displayHoursMinute end}}
                                                 <span class="small">
-                                                    <br><strong>TaskResponsible :</strong> {{displayUserInfo ../masterId}}
                                                     <br><strong>Assigned :</strong>
                                                 </span>
                                                 <ul class="small">
@@ -119,7 +125,6 @@
                                         </tr>
                                     {{/unless}}
                                 {{/each}}
-
                             </tbody>
                         </table>
                     {{/each}}
@@ -141,12 +146,12 @@
                         <h4>{{task.name}}</h4>
                         {{displayDateTime timeSlot.start}} - {{displayHoursMinute timeSlot.end}}
                         <br>
-                        <h5>Description</h5>
+                        <h5>What to do ?</h5>
                         <p class="pre small">{{task.description}}</p>
                         <br>
 
 
-                        <h5>Team</h5>
+                        <h5>With who ?</h5>
                         <ul class="small">
                             <li>
                                 <strong>{{displayUserInfo task.liveEventMasterId}} - LiveEventResponsible</strong>
@@ -167,23 +172,29 @@
                         </ul>
                     </div>
                     <div class="col-sm-6">
-                        MAP
-                        <!-- TODO : GoogleMap -->
-                        <br>
-                        <h5>
-                            <i class="mdi mdi-map-marker"></i>{{place task.placeId}}
-                        </h5>
-                        <br>
-                        <br>
-                        <div class="row small">
-                            {{#each task.equipments}}
-                                {{#unless equals this.quantity 0}}
-                                    <div class="col-sm-6">
-                                        <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment this}}
-                                        <br>
-                                    </div>
-                                {{/unless}}
-                            {{/each}}
+                        <div class="col-md-12">
+                            <h5>
+                                <i class="mdi mdi-map-marker"></i>{{place task.placeId}}
+                            </h5>
+                            <div class="wrapper-map">
+                                MAP
+                                <!-- TODO : GoogleMap -->
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                        <div class="col-md-12">
+                            <h5>With what ?</h5>
+                            <div class="row">
+                                {{#each task.equipments}}
+                                    {{#unless equals this.quantity 0}}
+                                        <div class="col-sm-6  small">
+                                            <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment this}}
+                                            <br>
+                                        </div>
+                                    {{/unless}}
+                                {{/each}}
+                            </div>
                         </div>
                     </div>
                 </div>

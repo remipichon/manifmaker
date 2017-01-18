@@ -73,9 +73,9 @@ class ExportUserAssignmentComponent extends BlazeComponent {
     displayEquipment (equipmentObject){
         var quantity = equipmentObject.quantity;
         var equipmentName = Equipments.findOne(equipmentObject.equipmentId).name;
-        if (quantity  = 1){
+        /*if (quantity  = 1){
             return equipmentName;
-        }else if(quantity>1){
+        }else*/ if(quantity>=1){
             return String(quantity) + " " + equipmentName;
         }
 
