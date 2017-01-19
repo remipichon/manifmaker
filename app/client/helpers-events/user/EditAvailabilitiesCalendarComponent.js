@@ -27,7 +27,10 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         if (this.availabilityClick == 1) {
             (function(event,self){
                 setTimeout(_.bind(function () {
-                    if (this.availabilityClick == 1) {
+                    var oldAvailability = this.availabilityClick
+                    this.availabilityClick = 0;
+
+                    if (oldAvailability == 1) {
                         if(this.isSelecting){
                             this.endSelectingAvailability(event);
                         } else
@@ -41,8 +44,7 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
                             this.removeAvailability(event);
                         }
                     }
-                    this.availabilityClick = 0;
-                }, self), 300);
+                }, self), 200);
             })(event,this)
         }
     }
@@ -73,6 +75,7 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         var firstDate = this.readFirstDate(event);
         var user = this.parentComponent().parentComponent().data();
         var secondDate = new moment(firstDate).add(this.addHourAccordingToAccuracy(),"hour");
+        if(!firstDate || !secondDate) return;
         AvailabilityService.addAvailabilities(user,firstDate.toDate(),secondDate.toDate())
     }
 
