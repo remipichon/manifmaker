@@ -36,7 +36,6 @@ export class ServerService {
         Assignments.after.remove(ServerAssignmentService.removeAssignment);
 
         //propagate roles update
-        Meteor.users.after.insert(ServerUserService.propagateRoles); //Meteor.users hooks are bypassed with .direct when registering a new user
         Meteor.users.after.update(ServerUserService.propagateRoles);
         GroupRoles.after.update(ServerUserService.propagateGroupRoles);
 
