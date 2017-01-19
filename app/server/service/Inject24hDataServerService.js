@@ -148,8 +148,8 @@ export class Inject24hDataServerService {
         this.webCatSport = WebCategories.insert({name: "Sport"});
         this.webCatCulture = WebCategories.insert({name: "Culture"});
 
-        this.androidCatSport = AndroidCategories.insert({name: "Sport"});
-        this.androidCatCulture = AndroidCategories.insert({name: "Culture"});
+        this.androidCatSport = AndroidCategories.insert({name: "Sport",iconName: "sport_icon", categoryName: "SPORT"});
+        this.androidCatCulture = AndroidCategories.insert({name: "Culture",iconName: "culture_icon", categoryName: "CULTURE"});
 
     }
 

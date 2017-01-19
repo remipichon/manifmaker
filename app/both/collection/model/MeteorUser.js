@@ -160,11 +160,10 @@ Schemas.UserProfile = new SimpleSchema({
         defaultValue: null
     },
     phoneNumber:{
-        type: String,//SimpleSchema.RegEx.Phone,
+        type: String,
         label: "Phone",
         optional: true,
-        defaultValue: null,
-        regEx: /^0{1}\d{10}$/
+        regEx: /^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/
     },
 
     //24h specific, will see later how to parametrize that

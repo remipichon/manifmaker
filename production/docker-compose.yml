@@ -23,7 +23,7 @@ services:
         volumes:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
     manifmaker: 
-        image: 'assomaker/manifmaker:0-2-0'
+        image: 'assomaker/manifmaker:0-2-1'
         environment:
             - IS_PRODUCTION=true 
             - DELETE_ALL=true

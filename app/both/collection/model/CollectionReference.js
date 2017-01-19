@@ -907,6 +907,15 @@ Schemas.references.AndroidCategories = new SimpleSchema({
         label: "Android Category Name",
         max: 100
     },
+    iconName:{
+        type: String,
+        label: "Android Category icon file name used by the app to display the right icon, see https://github.com/24HeuresINSA/24h-android-app",
+    },
+    categoryName:{
+        type: String,
+        //unique: true,
+        label: "Unique Android Category name used by the app to do filtering (only maj non special char, no white space), see https://github.com/24HeuresINSA/24h-android-app",
+    },
     type: {
         type: String,
         label: "Android Categories type",

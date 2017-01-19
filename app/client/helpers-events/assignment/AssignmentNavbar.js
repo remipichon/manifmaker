@@ -87,7 +87,7 @@ class AssignmentNavbar extends BlazeComponent {
 
                 if (selectedTimeSlot === null) {//TODO pas top
                     result.push({
-                        label: "Select one of the time slot and a people need",
+                        label: "Select one of the time slot from the calendar and a people need from the popover",
                         url: ""
                     });
                 } else {
@@ -102,7 +102,7 @@ class AssignmentNavbar extends BlazeComponent {
 
                     if (isUnassignment)
                         result.push({
-                            label: "Select one of the assigned user",
+                            label: "Select the assigned user to remove assignment",
                             url: ""
                         });
                     else

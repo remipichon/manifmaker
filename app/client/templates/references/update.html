@@ -24,8 +24,10 @@
     {{# autoForm collection=collection doc=document  id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.key}}</legend>
+            {{> DismissibleHelperComponent message="Unique key in capital letter and without spaces or special char" uniqueId="skill-key"}}
             {{> afQuickField name='key'}}
             {{> afQuickField name='label'}}
+            {{> DismissibleHelperComponent message="Only users with one of these teams will be able to add this skill" uniqueId="skill-team"}}
             {{> afQuickField name="teams"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Update</button>
@@ -34,14 +36,20 @@
 </template>
 
 <template name="assignment-term-update">
+    {{> DismissibleHelperComponent message="An Assignment Term has a beginning and an end and can have periods inside these dates in order to be not contiguous." uniqueId="term-home"}}
     {{# autoForm collection=collection doc=document  id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.date}}</legend>
             {{> afQuickField name="start"}}
             {{> afQuickField name="end"}}
+            {{> DismissibleHelperComponent message="Charisma is define per minimun availability (see accuracy). When adding availabilities, user will earn charisma depending on how much availability times charisma." uniqueId="term-charisma"}}
+            {{> DismissibleHelperComponent message="Charisma can be defined for the whole term here and override per period (if periods). Periods can be used to create a contiguous term with different charisma value." uniqueId="term-charisma-2"}}
             {{> afQuickField name="charisma"}}
+            {{> DismissibleHelperComponent message="Only users with one of these teams can add availabilities during this term" uniqueId="term-team"}}
             {{> afQuickField name="teams"}}
+            {{> DismissibleHelperComponent message="After this deadline, only TIMESLOTVALIDATION users can update availabilities" uniqueId="term-dealine"}}
             {{> afQuickField name="addAvailabilitiesDeadline"}}
+            {{> DismissibleHelperComponent message="Accuracy defines the minimun availaby and timeslot duration. You can choose from 2 hours (2), 1 hour (1), half an hour (0.5) or 15 minutes (0.25)" uniqueId="term-accuracy"}}
             {{> afQuickField name="calendarAccuracy"}}
             <div class="alert alert-success" role="alert">
                 <p>If this assignment term is not contiguous, you can add periods (periods can not overlapp and have to be included between assignment term start and end date).</p>
@@ -55,6 +63,8 @@
 </template>
 
 <template name="group-role-update">
+    {{> DismissibleHelperComponent message="Roles (not editable) can be put together to form a group role. To access ressources (like Tasks), a user need roles (like TASKREAD) which are given by group role (like 'hard')" uniqueId="group-role-home"}}
+    {{> DismissibleHelperComponent message="A spécial role, nammed ROLE is needed to update group roles conf and updat group roles on user." uniqueId="group-role-role"}}
     {{# autoForm collection=collection doc=document id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.date}}</legend>
@@ -149,6 +159,7 @@
 
 
 <template name="web-category-update">
+    {{> DismissibleHelperComponent message="Activity Category for web export" uniqueId="webcategory-home"}}
     {{# autoForm collection=collection doc=document id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.name}}</legend>
@@ -161,10 +172,13 @@
 
 
 <template name="android-category-update">
+    {{> DismissibleHelperComponent message="Activity Category for Android export" uniqueId="androidcategory-home"}}
     {{# autoForm collection=collection doc=document id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.name}}</legend>
             {{> afQuickField name="name"}}
+            {{> afQuickField name="iconName"}}
+            {{> afQuickField name="categoryName"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Update</button>
         <button type="reset" class="btn btn-default">Reset</button>
