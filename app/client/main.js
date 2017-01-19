@@ -64,6 +64,7 @@ Meteor.startup(function () {
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
             sAlert.error(`${error.reason}`);
+            console.error("Autoform on error :",error, "name :",name);
         },
         onSuccess: function(formType, result) {
             UpdateInfo.insert({date:new Date()});

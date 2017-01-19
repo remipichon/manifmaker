@@ -111,8 +111,8 @@ export class ServerUserService {
     /**
      * @summary Meteor.users.after.update hook.
      * @description
-     * About roles, we only add roles to the custom Meteor.users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
-     * Meteor.users linked account.
+     * About roles, by hand, we can only add roles to the custom Meteor.users collection, **not** with the Roles library. This hooks is the only one responsible to propagate roles to the
+     * Meteor.users linked Roles account.
      * @locus server
      * @param userId
      * @param doc
@@ -121,11 +121,10 @@ export class ServerUserService {
      * @param options
      */
     static propagateRoles(userId, doc, fieldNames, modifier) {
-        if(doc && doc.groupRoles && doc.groupRoles.length == 0) {
-            console.log("Propagate roles skipped because group roles waw empty");
-            return;
-
-        }
+        // if(doc && doc.groupRoles && doc.groupRoles.length == 0) {
+        //     console.log("Propagate roles skipped because group roles waw empty");
+        //
+        // }
         var allGroupRolesMerged;
         if (fieldNames) { //update
             if (_.contains(fieldNames, "groupRoles")) {
@@ -133,8 +132,18 @@ export class ServerUserService {
                     //we have to merge roles and roles from groups
                     allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(modifier.$set.groupRoles);
                 } else if(modifier.$push){
-                    allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(modifier.$push.groupRoles.$each);
-                } else {
+                    //we need to get the one the user already has
+                    var  currentGroupRoles = doc.groupRoles || [];
+                    var newGroupRoles =  modifier.$push.groupRoles.$each;
+                    var allGroupRoles = newGroupRoles.concat(currentGroupRoles);
+                    allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(allGroupRoles);
+                } else if(modifier.$pull){
+                    //we need to get the one the user already has
+                    var  currentGroupRoles = doc.groupRoles || [];
+                    var toRemoveGroupRoles =  modifier.$pull.groupRoles.$each;
+                    var allGroupRoles = _.difference(currentGroupRoles,toRemoveGroupRoles);
+                    allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(allGroupRoles);
+                }else {
                     //we have to remove all roles
                     allGroupRolesMerged = [];
                 }

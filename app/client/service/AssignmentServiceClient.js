@@ -325,5 +325,63 @@ export class AssignmentServiceClient {
         AssignmentReactiveVars.SelectedPeopleNeed.set(peopleNeeded);
         AssignmentReactiveVars.SelectedTimeSlot.set(timeSlot);
     }
+
+
+    static isDisplayed(uniqueId){
+        return ( Meteor.users.findOne({
+            _id: Meteor.userId(),
+            dismissible: uniqueId
+        })) ? false: true;
+    }
+
+    static congratsAssignment(mode, ressourceId){
+        if(AssignmentServiceClient.isDisplayed("congrat-assignment")){
+            switch (mode){
+                case AssignmentType.TASKTOUSER:
+                    sAlert.info("<p>You successfully assigned a task to a user ! You can see on the calendar that the task time slot is showing the assignment progress.<p>" +
+                        "<p>Click on 'User to Task mode' and select the user (<a href='/assignment/userToTask/"+ressourceId+"'>or click here</a>)</p>" +
+                        "<p>You can see the assigned task in place of the user availability.</p>",
+                        {html: true,timeout: 'none'});
+                    break;
+                case AssignmentType.USERTOTASK:
+                    sAlert.info("<p>You successfully assigned a user to a task ! You can see on the calendar that the user is no longer available and has a task assigned.<p>" +
+                        "<p>Click on 'Task to User mode' and select the task (<a href='/assignment/taskToUser/"+ressourceId+"'>or click here</a>)</p>" +
+                        "<p>You can see the progress of the assignment on the time slot.</p>",
+                        {html: true,timeout: 'none'});
+                    break;
+            }
+
+        }
+        Meteor.users.update(Meteor.userId(),{
+            $push: {
+                dismissible: "congrat-assignment"
+            }
+        })
+    }
+
+    static congratsRemoveAssignment(mode,ressourceId){
+        if(AssignmentServiceClient.isDisplayed("congrat-remove-assignment")){
+            switch (mode){
+                case AssignmentType.TASKTOUSER:
+                    sAlert.info("<p>You successfully remove the user from the task ! You can see on the calendar that the task time slot assignment progress decreased.<p>" +
+                        "<p>Click on 'User to Task mode' and select the user (<a href='/assignment/userToTask/"+ressourceId+"'>or click here</a>)</p>" +
+                        "<p>You can see the user being available again.</p>",
+                        {html: true,timeout: 'none'});
+                    break;
+                case AssignmentType.USERTOTASK:
+                    sAlert.info("<p>You successfully remove the task from the user ! You can see on the calendar that the user is available again.<p>" +
+                        "<p>Click on 'Task to User mode' and select the task (<a href='/assignment/taskToUser/"+ressourceId+"'>or click here</a>)</p>" +
+                        "<p>You can see on the calendar that the task time slot assignment progress decreased.</p>",
+                        {html: true,timeout: 'none'});
+                    break;
+            }
+
+        }
+        Meteor.users.update(Meteor.userId(),{
+            $push: {
+                dismissible: "congrat-remove-assignment"
+            }
+        })
+    }
 }
 

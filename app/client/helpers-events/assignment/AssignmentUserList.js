@@ -1,5 +1,6 @@
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 import {TeamService} from "../../../both/service/TeamService"
+import {AssignmentServiceClient} from "../../service/AssignmentServiceClient"
 
 class AssignmentUserList extends BlazeComponent {
 
@@ -46,10 +47,18 @@ class AssignmentUserList extends BlazeComponent {
                 break;
             case AssignmentType.TASKTOUSER:
                 if (isUnassignment) {
-                    Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, _id);
+                    Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, _id, function(error, result){
+                            if(!error){
+                                AssignmentServiceClient.congratsRemoveAssignment(AssignmentType.TASKTOUSER,_id);
+                            }
+                        });
                     AssignmentReactiveVars.IsUnassignment.set(false)
                 } else
-                    Meteor.call("assignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, _id);
+                    Meteor.call("assignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, _id,function(error, result){
+                        if(!error){
+                            AssignmentServiceClient.congratsAssignment(AssignmentType.TASKTOUSER,_id);
+                        }
+                    });
                 AssignmentReactiveVars.SelectedTimeSlot.set(null);
                 break;
         }

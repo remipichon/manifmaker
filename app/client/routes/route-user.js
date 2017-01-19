@@ -108,7 +108,7 @@ Router.route('/logout', function () {
         Accounts.logout();
         Router.go("/")
     },
-    {controller: ManifMakerRouterController,name: 'logout'}
+    {name: 'logout'}
 );
 
 

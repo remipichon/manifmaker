@@ -9,6 +9,7 @@
                     <i class="pull-right mdi mdi-inline mdi-close close-popover"></i>
                 </div>
                 <div class="popOver-body">
+                    {{> DismissibleHelperComponent message="Click on a people need according to which skills/teams you wan to assigned first." uniqueId="popover-peopleneed"}}
                     <div class="pull-left halfPopOver">
                         <h5>To be assigned :</h5>
                         {{#each peopleNeededNonAssigned}}
@@ -31,6 +32,7 @@
 
                     <div class="halfPopOver pull-right">
                         <h5>Already Assigned :</h5>
+                        {{> DismissibleHelperComponent message="Click on an already assigned user to remove its assignment (need one more step before actually removing)" uniqueId="popover-peopleneed-assigned"}}
                         {{#each peopleNeededAssigned}}
                             <div class="peopleNeed assigned" data-_id="{{_id}}">
                                 Assigned to {{displayAssignedUser}}
