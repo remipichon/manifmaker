@@ -46,8 +46,9 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5>
-                                                    <i class="mdi mdi-map-marker"></i>{{place placeId}}
+                                                   Where ?
                                                 </h5>
+                                                <i class="mdi mdi-map-marker"></i>{{place placeId}}
                                                 <div class="wrapper-map">
                                                     MAP
                                                     <!-- TODO : GoogleMap -->
@@ -154,7 +155,7 @@
                         <h5>With who ?</h5>
                         <ul class="small">
                             <li>
-                                <strong>{{displayUserInfo task.liveEventMasterId}} - LiveEventResponsible</strong>
+                                <strong>{{displayUserInfo task.liveEventMasterId}} - Responsible</strong>
                             </li>
                             {{#with resp=task.liveEventMasterId ppl=timeSlot.peopleNeeded}}
                                 {{#each ppl}}
@@ -174,8 +175,9 @@
                     <div class="col-sm-6">
                         <div class="col-md-12">
                             <h5>
-                                <i class="mdi mdi-map-marker"></i>{{place task.placeId}}
-                            </h5>
+                                Where ?
+                            </h5><br>
+                            <i class="mdi mdi-map-marker"></i>{{place task.placeId}}
                             <div class="wrapper-map">
                                 MAP
                                 <!-- TODO : GoogleMap -->
