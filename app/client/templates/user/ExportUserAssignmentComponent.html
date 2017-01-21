@@ -14,10 +14,11 @@
     <br>
     <br>
 
+    {{#unless equals groupedTasksResponsible.length 0}}
     <div class="panel panel-info">
-        <div class="panel-heading">
-            <h3>Tasks that you are in charge of</h3>
-        </div>
+            <div class="panel-heading">
+                <h3>Tasks that you are in charge of</h3>
+            </div>
 
         {{#each groupedTasksResponsible}}
             <div class="panel panel-default planning-group-wrapper">
@@ -134,6 +135,8 @@
         {{/each}}
 
     </div>
+
+    {{/unless}}
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3>Your tasks</h3>
