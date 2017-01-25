@@ -103,6 +103,7 @@ class TaskTimeSlotsComponent extends BlazeComponent{
             //remove possible assignment
             peopleNeeded.forEach(peopleNeed => {
                 peopleNeed.assignedUserId = null;
+                delete peopleNeed._id;
             });
         }
 
