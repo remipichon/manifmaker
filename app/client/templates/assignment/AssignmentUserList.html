@@ -23,14 +23,14 @@
             <div class="col-md-5 no-padding">
                 {{> SingleNonMandatorySelectComponent withoutLabel=true title="Select a team"
                 optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="Choose a team"
-                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned
+                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned displayUpdateResult=false
                 }}
             </div>
 
             <div class="col-md-5 col-md-offset-2 no-padding">
                 {{> MultipleNonMandatorySelectComponent withoutLabel=true title="Select a skill"
                 optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="Choose a skill"
-                updateCallback=filterSkill maxSelectedOptionDisplayed=1 maxSelectedOptionDisplayedLabel=" skills selected"
+                updateCallback=filterSkill maxSelectedOptionDisplayed=1 maxSelectedOptionDisplayedLabel=" skills selected" displayUpdateResult=false
                 }}
             </div>
         </div>

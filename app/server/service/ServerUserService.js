@@ -322,7 +322,7 @@ export class ServerUserService {
     static allowDelete(userId, doc) {
         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERDELETE, doc, 'task');
 
-        if(Meteor.users.findOne(doc._id).name === SUPERADMIN){
+        if(doc.username === SUPERADMIN){
             throw new Meteor.Error("403","User superadmin can not be deleted");
         }
 

@@ -95,7 +95,7 @@
                                                     updateCollection="Tasks" updateItemId=taskData._id
                                                     updateItemPath="userId"
                                                     pathWithArray=pathWithArrayPeopleNeeded
-                                                    updateCallback=updatePeopleNeedCallback
+                                                    updateCallback=updatePeopleNeedCallback displayUpdateResult=false
                                                     readOnly=isTimeSlotsReadOnly}}
                                                 {{/if}}
                                                 {{#if teamId}}
@@ -104,7 +104,7 @@
                                                     updateCollection="Tasks" updateItemId=taskData._id
                                                     updateItemPath="teamId"
                                                     bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                    updateCallback=updatePeopleNeedCallback
+                                                    updateCallback=updatePeopleNeedCallback displayUpdateResult=false
                                                     readOnly=isTimeSlotsReadOnly}}
                                                 {{/if}}
                                                 {{#if skills}}
@@ -113,7 +113,7 @@
                                                     updateCollection="Tasks" updateItemId=taskData._id
                                                     updateItemPath="skills"
                                                     bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                    updateCallback=updatePeopleNeedCallback
+                                                    updateCallback=updatePeopleNeedCallback displayUpdateResult=false
                                                     readOnly=isTimeSlotsReadOnly}}
                                                 {{/if}}
                                             </div>

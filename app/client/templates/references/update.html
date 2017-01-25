@@ -40,6 +40,7 @@
     {{# autoForm collection=collection doc=document  id="update" type="update"}}
         <fieldset>
             <legend>Update {{document.date}}</legend>
+            {{> afQuickField name="name"}}
             {{> afQuickField name="start"}}
             {{> afQuickField name="end"}}
             {{> DismissibleHelperComponent message="Charisma is define per minimun availability (see accuracy). When adding availabilities, user will earn charisma depending on how much availability times charisma." uniqueId="term-charisma"}}

@@ -41,7 +41,7 @@ export class AvailabilityService {
          */
         static getIndexOfSurroundingAvailability(user, start, end) {
             console.info("AvailabilityService.getAvailability start:", start, "end", end, "for user", user);
-            var found;
+            var found = null;
             var start = new moment(start);
             if (typeof end === "undefined") var end = new moment(start);
             else

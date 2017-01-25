@@ -1,3 +1,5 @@
+import {Utils} from "../../../client/service/Utils"
+
 class EditNameComponent extends BlazeComponent{
     template() {
         return "nameEdit";
@@ -36,7 +38,7 @@ class EditNameComponent extends BlazeComponent{
                 "input .header-limited-to-text": this.displayDoneButton,//TODO more precise selector
                 "click #done-name": this.updateName,//TODO more precise selector
                 "click .edit-name": this.focusName,//TODO more precise selector,
-                "keydown #edit-task-name-content": this.enterKeydown
+                "keydown .edit-name-content": this.enterKeydown
             }
         ];
     }
@@ -47,7 +49,7 @@ class EditNameComponent extends BlazeComponent{
 
 
     enterKeydown(e){
-        if (e.which == 13 && e.shiftKey == false) {
+        if (e.keyCode == 13 && e.shiftKey == false) {
             //Prevent insertion of a return
             this.updateName();
             e.preventDefault();
@@ -77,7 +79,7 @@ class EditNameComponent extends BlazeComponent{
                 $set: {
                     [pathToUpdate] : name
                 }
-            })
+            }, Utils.onUpdateCollectionResult);
         //} else {
         //    TODO add error ?
         //}
