@@ -1,6 +1,5 @@
 import {BaseCalendarComponent} from "../common/BaseCalendarComponent"
 import {AssignmentService} from "../../../both/service/AssignmentService"
-import {TimeSlotService} from "../../../both/service/TimeSlotService"
 import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {CalendarServiceClient} from "../../../client/service/CalendarServiceClient"
 import {ReadAvailabilitiesCalendarComponent} from "./ReadAvailabilitiesCalendarComponent"
@@ -37,7 +36,7 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
                         if(event.shiftKey){
                             this.startSelectingAvailability(event);
                         } else {
-                          this.addAvailability(event);
+                            this.addAvailability(event);
                         }
                     } else {
                         if(!this.isSelecting) {
@@ -76,7 +75,12 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         var user = this.parentComponent().parentComponent().data();
         var secondDate = new moment(firstDate).add(this.addHourAccordingToAccuracy(),"hour");
         if(!firstDate || !secondDate) return;
-        AvailabilityService.addAvailabilities(user,firstDate.toDate(),secondDate.toDate())
+
+        if(AvailabilityService.checkUserAvailabilty(user,firstDate,secondDate)) {
+            sAlert.info("Double click to delete an availability");
+        } else {
+            AvailabilityService.addAvailabilities(user,firstDate.toDate(),secondDate.toDate())
+        }
     }
 
     selectAvailability(event){

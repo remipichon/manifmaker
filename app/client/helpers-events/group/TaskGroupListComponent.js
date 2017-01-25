@@ -1,4 +1,6 @@
 import {TeamService} from "../../../both/service/TeamService"
+import {Utils} from "../../../client/service/Utils"
+import {TaskGroupServiceClient} from '../../service/TaskGroupServiceClient'
 
 class TaskGroupListComponent extends BlazeComponent {
     template() {
@@ -34,6 +36,11 @@ class TaskGroupListComponent extends BlazeComponent {
 
     }
 
+    beforeRemove() {
+        return _.bind(function () {
+            TaskGroupServiceClient.beforeRemove(this);
+        },this);
+    }
 
     taskGroupsList() {
         var fields = [
@@ -42,7 +49,8 @@ class TaskGroupListComponent extends BlazeComponent {
                 label: 'Name',
                 cellClass: 'col-sm-3',
                 headerClass: 'col-sm-3',
-                fnAdjustColumnSizing: true
+                fnAdjustColumnSizing: true,
+                fn: _.bind(function (value) { return Utils.camelize(value); },this)
             },
             {
                 key: 'teamId',

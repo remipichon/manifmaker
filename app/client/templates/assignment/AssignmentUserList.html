@@ -3,9 +3,9 @@
        <div class="col-md-4 no-padding users-list-header">
            <h4>
                {{#if isUsersListDeveloped}}
-                   <i class="mdi mdi-chevron-up"></i>
+                   <i class="mdi mdi-chevron-up clickable"></i>
                {{else}}
-                   <i class="mdi mdi-chevron-down"></i>
+                   <i class="mdi mdi-chevron-down clickable"></i>
                {{/if}}
                Users List
            </h4>
@@ -23,14 +23,14 @@
             <div class="col-md-5 no-padding">
                 {{> SingleNonMandatorySelectComponent withoutLabel=true title="Select a team"
                 optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="Choose a team"
-                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned
+                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned displayUpdateResult=false
                 }}
             </div>
 
             <div class="col-md-5 col-md-offset-2 no-padding">
                 {{> MultipleNonMandatorySelectComponent withoutLabel=true title="Select a skill"
                 optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="Choose a skill"
-                updateCallback=filterSkill maxSelectedOptionDisplayed=1 maxSelectedOptionDisplayedLabel=" skills selected"
+                updateCallback=filterSkill maxSelectedOptionDisplayed=1 maxSelectedOptionDisplayedLabel=" skills selected" displayUpdateResult=false
                 }}
             </div>
         </div>
@@ -42,7 +42,7 @@
                         <div class="panel-heading" data-toggle="collapse" data-parent="#assignment-user-list-collapsible"
                              data-target="#{{_id}}">
                             <h4 class="panel-title">
-                                <a class="href-assignment-user">{{profile.firstName}} {{profile.familyName}} ({{username}})</a>
+                                <a class="href-assignment-user clickable">{{profile.firstName}} {{profile.familyName}} ({{username}})</a>
                             </h4>
                         </div>
                         <div id="{{_id}}" class="panel-collapse collapse">

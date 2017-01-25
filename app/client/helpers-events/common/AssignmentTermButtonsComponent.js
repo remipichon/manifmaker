@@ -1,21 +1,27 @@
 import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 
-class AssignmentTermSelectComponent extends BlazeComponent{
+class AssignmentTermButtonsComponent extends BlazeComponent{
     template(){
-        return "assignmentTermSelectComponent";
+        return "assignmentTermButtonsComponent";
     }
 
     events(){
         return [{
-            "change #assignments-terms-select": function (event) {
+            "click .assignments-terms-button": function (event) {
                 var _id = $(event.target).val();
                 AssignmentServiceClient.setCalendarTerms(_id);
             }
         }]
     }
 
-    isDeveloped(){
-        return this.data().isdeveloped;
+    constructor() {
+        super();
+        this.selectedDeadinevar = new ReactiveVar();
+    }
+
+
+    selectedDealine(){
+        return this.selectedDeadinevar.get();
     }
 
     assignmentTerms() {
@@ -32,7 +38,8 @@ class AssignmentTermSelectComponent extends BlazeComponent{
         //select the currently used term
         var selectedTermId = AssignmentCalendarDisplayedDays.findOne().assignmentTermId;
         var i = terms.indexOf(_.findWhere(terms,{_id:selectedTermId}));
-        terms[i].selected = "selected";
+        terms[i].selected = "disabled";
+        this.selectedDeadinevar.set(AssignmentTerms.findOne({_id:selectedTermId}).addAvailabilitiesDeadline);
         console.info(selectedTermId,i);
 
         return terms;
@@ -40,4 +47,4 @@ class AssignmentTermSelectComponent extends BlazeComponent{
     }
 }
 
-AssignmentTermSelectComponent.register("AssignmentTermSelectComponent");
+AssignmentTermButtonsComponent.register("AssignmentTermButtonsComponent");

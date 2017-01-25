@@ -84,7 +84,7 @@
                                             <div class="col-md-3">
                                                 <span>{{count}}</span>
                                                 {{#unless isTimeSlotsReadOnly}}
-                                                    {{#unless userId}}<i class="mdi mdi-content-copy duplicate" title="Duplicate this need" data-peopleneededid="{{this._id}}"></i>{{/unless}}
+                                                    {{#unless userId}}<i class="mdi mdi-account-plus duplicate" title="Duplicate this need" data-peopleneededid="{{this._id}}"></i>{{/unless}}
                                                     <i class="mdi mdi-account-minus mdi-inline delete" title="Delete one of this need" data-peopleneededid="{{this._id}}"></i>
                                                 {{/unless}}
                                             </div>
@@ -95,7 +95,7 @@
                                                     updateCollection="Tasks" updateItemId=taskData._id
                                                     updateItemPath="userId"
                                                     pathWithArray=pathWithArrayPeopleNeeded
-                                                    updateCallback=updatePeopleNeedCallback
+                                                    updateCallback=updatePeopleNeedCallback displayUpdateResult=false
                                                     readOnly=isTimeSlotsReadOnly}}
                                                 {{/if}}
                                                 {{#if teamId}}
@@ -104,7 +104,7 @@
                                                     updateCollection="Tasks" updateItemId=taskData._id
                                                     updateItemPath="teamId"
                                                     bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                    updateCallback=updatePeopleNeedCallback
+                                                    updateCallback=updatePeopleNeedCallback displayUpdateResult=false
                                                     readOnly=isTimeSlotsReadOnly}}
                                                 {{/if}}
                                                 {{#if skills}}
@@ -113,11 +113,12 @@
                                                     updateCollection="Tasks" updateItemId=taskData._id
                                                     updateItemPath="skills"
                                                     bulkPeopleNeededIds=bulkPeopleNeededIds
-                                                    updateCallback=updatePeopleNeedCallback
+                                                    updateCallback=updatePeopleNeedCallback displayUpdateResult=false
                                                     readOnly=isTimeSlotsReadOnly}}
                                                 {{/if}}
                                             </div>
                                         </div>
+                                        <hr>
                                     {{/each}}
                                 </div>
                                 <div class="error-holder">
@@ -171,6 +172,7 @@
                                                 </div>
                                             </div>
                                         {{/if}}
+                                        <hr>
                                     {{/each}}
                                 </div>
                                 <div class="error-holder">

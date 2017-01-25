@@ -1,4 +1,5 @@
 import {TeamService} from "../../../both/service/TeamService"
+import {Utils} from "../../../client/service/Utils"
 
 export class TaskListComponent extends BlazeComponent {
     template() {
@@ -239,7 +240,8 @@ export class TaskListComponent extends BlazeComponent {
                 label: 'Name',
                 cellClass: 'col-sm-3',
                 headerClass: 'col-sm-3',
-                fnAdjustColumnSizing: true
+                fnAdjustColumnSizing: true,
+                fn: _.bind(function (value) { return Utils.camelize(value); },this)
             },
             // TODO add GROUP
             /*{
