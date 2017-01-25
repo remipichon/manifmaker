@@ -1,5 +1,6 @@
 import {TeamService} from "../../../both/service/TeamService"
 import {UserServiceClient} from "../../../client/service/UserServiceClient"
+import {Utils} from "../../../client/service/Utils"
 
 class UserListComponent extends BlazeComponent {
     template() {
@@ -48,6 +49,8 @@ class UserListComponent extends BlazeComponent {
     }
 
 
+
+
     usersList() {
         var fields = [
             {
@@ -55,7 +58,8 @@ class UserListComponent extends BlazeComponent {
                 label: 'Username',
                 cellClass: 'col-sm-3',
                 headerClass: 'col-sm-3',
-                fnAdjustColumnSizing: true
+                fnAdjustColumnSizing: true,
+                fn: _.bind(function (value) { return Utils.camelize(value); },this)
             },
             {
                 key: 'teams',
