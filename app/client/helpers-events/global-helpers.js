@@ -21,6 +21,11 @@ Template.registerHelper(
     }
 );
 Template.registerHelper(
+    "displayDay", function (date) {
+        return new moment(date).format("DD MMM");
+    }
+);
+Template.registerHelper(
     "skillLabel", function () {
         return Skills.findOne({_id: this.toString()}).label;
     }

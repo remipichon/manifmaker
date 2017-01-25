@@ -10,6 +10,8 @@ class UserListComponent extends BlazeComponent {
     events() {
         return [{
             "keyup #search_user_name": this.filterName,
+            "click #checkbox-validated": this.switchValidatedFilter,
+            "click #checkbox-unvalidated": this.switchUnvalidatedFilter,
         }];
     }
 
@@ -41,10 +43,30 @@ class UserListComponent extends BlazeComponent {
         }
     }
 
+    switchUnvalidatedFilter(){
+        if(this.userListUnvalidatedFilter.get()!=""){ //if a filter is already defined
+            this.userListUnvalidatedFilter.set("");
+        }else{
+            this.userListUnvalidatedFilter.set("false");
+        }
+    }
+
+    switchValidatedFilter(){
+        if(this.userListValidatedFilter.get()!=""){ //if a filter is already defined
+            this.userListValidatedFilter.set("");
+        }else{
+            this.userListValidatedFilter.set("true");
+        }
+    }
+
 
     onCreated() {
+        this.isAfterFilterOn = new ReactiveVar(false);
+        this.isBeforeFilterOn = new ReactiveVar(false);
         this.userListTeamFilter = new ReactiveTable.Filter("user-list-team-filter", ["teams"]);
         this.userListNameFilter = new ReactiveTable.Filter('search-user-name-filter', ['username']);
+        this.userListValidatedFilter = new ReactiveTable.Filter('user-list-validated-filter', ['isReadyForAssignment']);
+        this.userListUnvalidatedFilter = new ReactiveTable.Filter('user-list-unvalidated-filter', ['isReadyForAssignment']);
 
     }
 
@@ -102,7 +124,9 @@ class UserListComponent extends BlazeComponent {
             fields: fields,
             filters: [
                 'user-list-team-filter',
-                'search-user-name-filter'
+                'search-user-name-filter',
+                'user-list-validated-filter',
+                'user-list-unvalidated-filter'
             ]
         }
     }

@@ -10,7 +10,7 @@
 
     <div class="col-md-12">
         {{> DismissibleHelperComponent message="Depending on your team, you can access different period to add availabilties, check them all !" uniqueId="term-select"}}
-        {{>AssignmentTermSelectComponent callbackIfNothingToDisplay=callbackIfNoTerms teams=userData.teams}}
+        {{>AssignmentTermButtonsComponent callbackIfNothingToDisplay=callbackIfNoTerms teams=userData.teams}}
     </div>
 
     {{#if displayCalendar}}
