@@ -64,7 +64,7 @@ class UserListComponent extends BlazeComponent {
         this.isAfterFilterOn = new ReactiveVar(false);
         this.isBeforeFilterOn = new ReactiveVar(false);
         this.userListTeamFilter = new ReactiveTable.Filter("user-list-team-filter", ["teams"]);
-        this.userListNameFilter = new ReactiveTable.Filter('search-user-name-filter', ['username']);
+        this.userListNameFilter = new ReactiveTable.Filter('search-user-name-filter', ['username','profile.lastName','profile.familyName','profile.phoneNumber','emails.0.address']);
         this.userListValidatedFilter = new ReactiveTable.Filter('user-list-validated-filter', ['isReadyForAssignment']);
         this.userListUnvalidatedFilter = new ReactiveTable.Filter('user-list-unvalidated-filter', ['isReadyForAssignment']);
 
@@ -89,7 +89,7 @@ class UserListComponent extends BlazeComponent {
                 cellClass: 'col-sm-2',
                 headerClass: 'col-sm-2',
                 fnAdjustColumnSizing: true,
-                fn: function (teams, Task) {
+                fn: function (teams, User) {
                     var res = "";
                     teams.forEach(team => {
                         res += `${Teams.findOne(team).name}, `
@@ -98,10 +98,37 @@ class UserListComponent extends BlazeComponent {
                 }
             },
             {
-                key: "isReadyForAssignment",
-                label: 'Validated',
+                key: 'profile.phoneNumber',
+                label: 'Phone Number',
                 cellClass: 'col-sm-2',
                 headerClass: 'col-sm-2',
+                fnAdjustColumnSizing: true,
+            },
+            {
+                key: 'emails',
+                label: 'Email',
+                cellClass: 'col-sm-2',
+                headerClass: 'col-sm-2',
+                fnAdjustColumnSizing: true,
+                fn: function (emails, User) {
+                    return emails[0].address;
+                }
+            },
+            {
+                key: 'profile',
+                label: 'INSA',
+                cellClass: 'col-sm-2',
+                headerClass: 'col-sm-2',
+                fnAdjustColumnSizing: true,
+                fn: function (profile, User) {
+                    return ((profile.annee)?profile.annee:"") + ((profile.departement)?profile.departement:"")
+                }
+            },
+            {
+                key: "isReadyForAssignment",
+                label: 'Validated',
+                cellClass: 'col-sm-1',
+                headerClass: 'col-sm-1',
                 tmpl: Template.isReadyForAssignment,
             }
         ];
