@@ -62,6 +62,18 @@ Schemas.AccessPass = new SimpleSchema({
             }
         }
     },
+    _id: {
+        type: SimpleSchema.RegEx.Id,
+        label: "Access Pass _id",
+        autoValue: function () {
+            if(!this.isSet)
+                return new Meteor.Collection.ObjectID()._str;
+        },
+        autoform: {
+            type: "hidden",
+        }
+        // denyUpdate: true
+    }
 });
 
 Schemas.ServiceProvider = new SimpleSchema({

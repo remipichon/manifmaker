@@ -10,7 +10,8 @@ export class Utils{
     }
 
     static onUpdateError(message){
-        sAlert.error(`${message}`);
+        if(message)
+            sAlert.error(`${message}`);
     }
 
     static onUpdateCollectionResult(error, result){
