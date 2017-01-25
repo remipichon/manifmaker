@@ -1,5 +1,6 @@
 import {TeamService} from "../../../both/service/TeamService"
 import {Utils} from "../../../client/service/Utils"
+import {TaskGroupServiceClient} from '../../service/TaskGroupServiceClient'
 
 class TaskGroupListComponent extends BlazeComponent {
     template() {
@@ -35,6 +36,11 @@ class TaskGroupListComponent extends BlazeComponent {
 
     }
 
+    beforeRemove() {
+        return _.bind(function () {
+            TaskGroupServiceClient.beforeRemove(this);
+        },this);
+    }
 
     taskGroupsList() {
         var fields = [

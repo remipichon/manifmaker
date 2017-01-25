@@ -1,3 +1,5 @@
+import {Utils} from "../service/Utils"
+
 Template.registerHelper(
     "displayHours", function (date) {
         return new moment(date).format("H[h]");
@@ -23,6 +25,35 @@ Template.registerHelper(
         return Skills.findOne({_id: this.toString()}).label;
     }
 );
+
+Template.registerHelper(
+    "onUpdateError",function (error) {
+        return function(error){
+            Utils.onUpdateError(error.reason)
+        }
+    });
+
+Template.registerHelper(
+    "onUpdateSuccess",function (message) {
+        return function(message){
+            Utils.onUpdateSuccess(message);
+        }
+    });
+
+Template.registerHelper(
+    "onDeleteError",function (error) {
+        return function(error){
+            Utils.onUpdateError(error.reason)
+        }
+    });
+
+Template.registerHelper(
+    "onDeleteSuccess",function (message) {
+        return function(message){
+            Utils.onUpdateSuccess(message);
+        }
+    });
+
 
 
 

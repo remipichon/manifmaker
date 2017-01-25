@@ -1,4 +1,5 @@
 import {UserServiceClient} from "../../../client/service/UserServiceClient"
+import {Utils} from "../../../client/service/Utils"
 
 class UpdateUserComponent extends BlazeComponent {
 
@@ -104,7 +105,7 @@ class UpdateUserComponent extends BlazeComponent {
                     $set: {
                         isReadyForAssignment: true
                     }
-                })
+                }, Utils.onUpdateCollectionResult)
             }
         },this));
     }
@@ -118,14 +119,14 @@ class UpdateUserComponent extends BlazeComponent {
                 $push : {
                     skills: skill._id
                 }
-            });
+            }, Utils.onUpdateCollectionResult);
         } else {
             //remove skill
             Meteor.users.update(user._id,{
                 $pull : {
                     skills: skill._id
                 }
-            });
+            }, Utils.onUpdateCollectionResult);
         }
 
     }
@@ -137,7 +138,7 @@ class UpdateUserComponent extends BlazeComponent {
                 $set : {
                     'profile.birthday': birthday.toDate()
                 }
-            });
+            }, Utils.onUpdateCollectionResult);
         }, this);
     }
 

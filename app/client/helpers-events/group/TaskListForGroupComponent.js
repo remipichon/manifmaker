@@ -1,4 +1,5 @@
 import {TaskListComponent} from "../task/TaskListComponent"
+import {Utils} from "../../../client/service/Utils"
 
 class TaskListForGroupComponent extends TaskListComponent {
 
@@ -54,7 +55,7 @@ class TaskListForGroupComponent extends TaskListComponent {
                     if(result){
                         Tasks.update(task._id, {
                             $set: {groupId: this.parentComponent().data()._id}
-                        });
+                        },Utils.onUpdateCollectionResult);
                     } else {
                         $(event.target).attr("checked",false);
                     }
@@ -62,12 +63,12 @@ class TaskListForGroupComponent extends TaskListComponent {
             } else {
                 Tasks.update(task._id, {
                     $set: {groupId: this.parentComponent().data()._id}
-                });
+                }, Utils.onUpdateCollectionResult);
             }
         } else
             Tasks.update(task._id, {
                 $set: {groupId: null}
-            });
+            }, Utils.onUpdateCollectionResult);
     }
 
     events() {

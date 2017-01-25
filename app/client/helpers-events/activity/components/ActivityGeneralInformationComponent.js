@@ -1,4 +1,5 @@
 import {ValidationService} from "../../../../both/service/ValidationService"
+import {Utils} from "../../../../client/service/Utils"
 
 class ActivityGeneralInformationComponent extends BlazeComponent{
 
@@ -56,7 +57,7 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
                 $set:{
                     start: _time.toDate()
                 }
-            })
+            }, Utils.onUpdateCollectionResult)
         },this.activityDoc());
     }
 
@@ -68,7 +69,7 @@ class ActivityGeneralInformationComponent extends BlazeComponent{
                 $set:{
                     end: _time.toDate()
                 }
-            })
+            }, Utils.onUpdateCollectionResult)
         },this.activityDoc());
     }
 

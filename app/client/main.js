@@ -1,6 +1,7 @@
 import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
 import { AutoForm } from 'meteor/aldeed:autoform'
 import {UserServiceClient} from "../client/service/UserServiceClient";
+import {Utils} from "../client/service/Utils";
 
 
 AccountsTemplates.configure({
@@ -18,7 +19,7 @@ commonNavBarWrapperIsRendered = false;
 Accounts.onEmailVerificationLink(function(token,done){
     console.info("onEmailVerification with token",token);
     Accounts.verifyEmail(token,function(error){
-        if(error) console.error(error);
+        if(error) Utils.onUpdateError(error);
     });
 
 });
@@ -63,12 +64,11 @@ Meteor.startup(function () {
     if(Meteor.isDevelopment) SimpleSchema.debug = true;
     AutoForm.addHooks(null, {
         onError: function (name, error, template) {
-            sAlert.error(`${error.reason}`);
+            Utils.onUpdateError(error.reason)
             console.error("Autoform on error :",error, "name :",name);
         },
         onSuccess: function(formType, result) {
-            UpdateInfo.insert({date:new Date()});
-
+            Utils.onUpdateSuccess();
         }
     });
 

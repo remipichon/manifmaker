@@ -1,3 +1,5 @@
+import {Utils} from '../../../service/Utils'
+
 export class SelectComponent extends BlazeComponent {
 
     /** @ignore */
@@ -330,6 +332,14 @@ export class SelectComponent extends BlazeComponent {
         this.selectedOptionSortedOnTopOfList = this.data().selectedOptionSortedOnTopOfList || false;
 
 
+        /**
+         * @summary If true, update result will be given to Utils.onUpdateCollectionResult to display the error or update the sync top nav bar
+         * @default true
+         * @type {boolean}
+         */
+        this.displayUpdateResult = (typeof this.data().displayUpdateResult === "boolean")? this.data().displayUpdateResult: true;
+
+
         this.checkItemPath();
     }
 
@@ -578,6 +588,8 @@ export class SelectComponent extends BlazeComponent {
         this._getObjectUpdateCollection().update(this.updateItemId,
                 updateQuery
             , _.bind(function (error, numberAffected) {
+                if(this.displayUpdateResult)
+                    Utils.onUpdateCollectionResult(error,numberAffected);
                 if (this.updateCallback)
                     this.updateCallback(error, numberAffected, updateCallbackOptions);
             }, this)

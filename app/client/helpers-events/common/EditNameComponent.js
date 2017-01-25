@@ -1,3 +1,5 @@
+import {Utils} from "../../../client/service/Utils"
+
 class EditNameComponent extends BlazeComponent{
     template() {
         return "nameEdit";
@@ -77,7 +79,7 @@ class EditNameComponent extends BlazeComponent{
                 $set: {
                     [pathToUpdate] : name
                 }
-            })
+            }, Utils.onUpdateCollectionResult);
         //} else {
         //    TODO add error ?
         //}
