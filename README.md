@@ -152,6 +152,7 @@ Each version uses different Mongo user meaning that, while using the same Mongo 
 Icon definition can be found here : [https://materialdesignicons.com/](https://materialdesignicons.com/). 
 
 <a id="css" name="css"></a>
+<<<<<<< HEAD
 ### CSS Classes
 
 Some useful classes implemented in css :
@@ -160,6 +161,11 @@ Some useful classes implemented in css :
 
 .hide-on-small-devices : the element is only displayed on large devices ;
 
+=======
+Some useful classes implemented in css :
+.clickable : cursor is a hand over this element ;
+.hide-on-small-devices : the element is only displayed on large devices
+>>>>>>> 75a2a3f... [LOH] TopNavBar fixes : feedback link, no more clock on small devices, menu can be opened on small screens
 
 
 <a id="alert" name="alert"></a>
