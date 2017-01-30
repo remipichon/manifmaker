@@ -103,7 +103,7 @@ export class ServerUserService {
                     $set: {groupRoles: user.groupRoles}
                 };
                 //will fire the Meteor.users after hook and call propagateRoles
-                Meteor.users.direct.update(user._id, modifier);
+                Meteor.users.update(user._id, modifier);
             });
         }
     }

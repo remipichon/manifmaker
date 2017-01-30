@@ -65,6 +65,7 @@
 
 <template name="group-role-update">
     {{> DismissibleHelperComponent message="Roles (not editable) can be put together to form a group role. To access ressources (like Tasks), a user need roles (like TASKREAD) which are given by group role (like 'hard')" uniqueId="group-role-home"}}
+    {{> DismissibleHelperComponent message="Users should have at least once MANIFMAKER role to access the app." uniqueId="group-role-manifmaker"}}
     {{> DismissibleHelperComponent message="A spécial role, nammed ROLE is needed to update group roles conf and updat group roles on user." uniqueId="group-role-role"}}
     {{# autoForm collection=collection doc=document id="update" type="update"}}
         <fieldset>
