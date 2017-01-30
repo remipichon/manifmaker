@@ -31,6 +31,7 @@ branch deploy : [![Build Status](https://travis-ci.org/assomaker/manifmaker.svg?
     * [Continuous Deployment](#cd)
   * [Design and UI tools](#ui-tools)
     * [Material design icon](#mdi)
+    * [CSS classes](#css)
     * [Alert](#alert)
     * [Confirm](#confirm)
     * [Custom Select](#custom-select)
@@ -149,6 +150,17 @@ Each version uses different Mongo user meaning that, while using the same Mongo 
 ```
 
 Icon definition can be found here : [https://materialdesignicons.com/](https://materialdesignicons.com/). 
+
+<a id="css" name="css"></a>
+### CSS Classes
+
+Some useful classes implemented in css :
+
+.clickable : cursor is a hand over this element ;
+
+.hide-on-small-devices : the element is only displayed on large devices ;
+
+
 
 <a id="alert" name="alert"></a>
 ### Alert
