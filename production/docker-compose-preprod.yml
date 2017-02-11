@@ -15,7 +15,7 @@ services:
             - MONGODB_PORT=27017 
             - MONGODB_USER=backupuser #backup user previously added in /admin database
             - MONGODB_PASS=backupuserPWD
-            - DB_STR= --db manifmaker #which DB to backup
+            #- DB_STR= --db manifmaker #which DB to backup
         volumes:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
     manifmaker: 
