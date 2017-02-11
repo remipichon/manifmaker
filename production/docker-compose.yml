@@ -13,7 +13,7 @@ services:
             - mongodb
         environment:
             - CRON_TIME=20 3 * * * #Change to your favorate cron job schedule
-            - MAX_BACKUPS=10
+            - MAX_BACKUPS=100
             - INIT_BACKUP=yes
             - MONGODB_HOST=production_mongodb
             - MONGODB_PORT=27017 
