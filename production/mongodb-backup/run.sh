@@ -31,7 +31,7 @@ if ${BACKUP_CMD} ;then
         tar czvf /manifmaker_backup_tar/${BACKUP_NAME}.tar.gz /backup/${BACKUP_NAME}
         scp -r /manifmaker_backup_tar/${BACKUP_NAME}.tar.gz root@vps302914:/root/from_prod_backup_tar/
         export BACKUP_NAME
-        ssh root@vps302914.ovh.net "mkdir /root/from_prod_backup/${BACKUP_NAME} \
+        ssh ${BACKUP_SERVER} "mkdir /root/from_prod_backup/${BACKUP_NAME} \
         && tar xzvf /root/from_prod_backup_tar/${BACKUP_NAME}.tar.gz -C /root/from_prod_backup/${BACKUP_NAME} \
         && mv /root/from_prod_backup/${BACKUP_NAME}/root/manifmaker_backup/${BACKUP_NAME}/ /root/manifmaker_backup/prod_${BACKUP_NAME}/ \
         && rm -rf /root/from_prod_backup/${BACKUP_NAME} \ "
