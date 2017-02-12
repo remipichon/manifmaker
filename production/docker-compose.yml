@@ -21,7 +21,6 @@ services:
             - MONGODB_PASS=backupuserPWD
             - IS_PROD=true # Needs a ssh key, see volumes
             - BACKUP_SERVER=root@vps302914.ovh.net # Needs a ssh key, see volumes
-            #- DB_STR= --db manifmaker #which DB to backup
         volumes:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
             - ~/backup_server_ssh:/root/.ssh #To send backups to a server with ssh, private key should be here, public key on the backup server
@@ -29,9 +28,6 @@ services:
         image: 'assomaker/manifmaker:0-2-2'
         environment:
             - IS_PRODUCTION=true 
-            - DELETE_ALL=true
-            - INJECT_MINIMUM_ACCESS_RIGHT=true
-            - DATA_INJECTED_ONCE=true
             - ROOT_URL=http://manifmaker.24heures.org/
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
         ports: 
