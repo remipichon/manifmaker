@@ -29,8 +29,7 @@ script:
   #- ssh root@vps302914.ovh.net "cd manifmaker; git reset --hard HEAD; git pull origin deploy"
   #- ssh root@vps302914.ovh.net "cd manifmaker/production; docker-compose --file docker-compose-preprod.yml up -d manifmaker"
   - echo "... Now restoring most recent backup from production"
-  - ssh root@vps302914.ovh.net "LAST_DIRECTORY=$(find . -maxdepth 1 -name "prod*" | sort -n | tail -1); LAST_BACKUP="${LAST_DIRECTORY//.\/}"
-; docker exec mongodb_backup /restore.sh /backup/$LAST_DIRECTORY
+  - ssh root@vps302914.ovh.net "LAST_DIRECTORY=$(find . -maxdepth 1 -name \"prod*\" | sort -n | tail -1); LAST_BACKUP=\"\${LAST_DIRECTORY//.\/}\"; docker exec mongodb_backup /restore.sh /backup/\$LAST_DIRECTORY
 
 
 branches:
