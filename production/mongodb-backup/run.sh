@@ -34,7 +34,9 @@ if ${BACKUP_CMD} ;then
         ssh ${BACKUP_SERVER} "mkdir /root/from_prod_backup/\${BACKUP_NAME} \
         && tar xzvf /root/from_prod_backup_tar/\${BACKUP_NAME}.tar.gz -C /root/from_prod_backup/\${BACKUP_NAME} \
         && mv /root/from_prod_backup/\${BACKUP_NAME}/backup/\${BACKUP_NAME}/ /root/manifmaker_backup/prod_\${BACKUP_NAME}/ \
-        && rm -rf /root/from_prod_backup "
+        && rm -rf /root/from_prod_backup \
+        && rm -rf /root/manifmaker_backup/prod_latest \
+        && ln -s /root/manifmaker_backup/${BACKUP_NAME}/ /root/manifmaker_backup/prod_latest "       
         echo "   Backup sent to preprod"
     fi    
 
