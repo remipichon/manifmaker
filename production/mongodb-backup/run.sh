@@ -26,7 +26,7 @@ BACKUP_NAME=\$(date +\%Y.\%m.\%d.\%H\%M\%S)
 echo "=> Backup started"
 if ${BACKUP_CMD} ;then
     echo "   Backup succeeded"
-    if ${IS_PROD} ;then
+    if [ "$IS_PROD" == "true" ] ;then
         echo "   Send backup file to preprod through scp"
         tar czvf /root/manifmaker_backup_tar/${BACKUP_NAME}.tar.gz /root/manifmaker_backup/${BACKUP_NAME}
         scp -r /root/manifmaker_backup_tar/${BACKUP_NAME}.tar.gz root@vps302914:/root/from_prod_backup_tar/
