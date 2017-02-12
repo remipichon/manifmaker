@@ -26,6 +26,18 @@ BACKUP_NAME=\$(date +\%Y.\%m.\%d.\%H\%M\%S)
 echo "=> Backup started"
 if ${BACKUP_CMD} ;then
     echo "   Backup succeeded"
+    if ${IS_PROD} ;then
+        echo "   Send backup file to preprod through scp"
+        tar czvf /root/manifmaker_backup_tar/${BACKUP_NAME}.tar.gz /root/manifmaker_backup/${BACKUP_NAME}
+        scp -r /root/manifmaker_backup_tar/${BACKUP_NAME}.tar.gz root@vps302914:/root/from_prod_backup_tar/
+        export BACKUP_NAME
+        ssh root@vps302914.ovh.net "mkdir /root/from_prod_backup/${BACKUP_NAME} \
+        && tar xzvf /root/from_prod_backup_tar/${BACKUP_NAME}.tar.gz -C /root/from_prod_backup/${BACKUP_NAME} \
+        && mv /root/from_prod_backup/${BACKUP_NAME}/root/manifmaker_backup/${BACKUP_NAME}/ /root/manifmaker_backup/prod_${BACKUP_NAME}/ \
+        && rm -rf /root/from_prod_backup/${BACKUP_NAME} \ "
+        echo "   Backup sent to preprod"
+    fi    
+
 else
     echo "   Backup failed"
     rm -rf /backup/\${BACKUP_NAME}

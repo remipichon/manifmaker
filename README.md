@@ -511,7 +511,7 @@ See the list of backups, you can run:
 
 To restore database from a certain backup, simply run:
 
-    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901/manifmaker
+    docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901
     
 It will delete everything (--drop) and restore /manifmaker database. 
 
