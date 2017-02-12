@@ -36,7 +36,7 @@ if ${BACKUP_CMD} ;then
         && mv /root/from_prod_backup/\${BACKUP_NAME}/backup/\${BACKUP_NAME}/ /root/manifmaker_backup/prod_\${BACKUP_NAME}/ \
         && rm -rf /root/from_prod_backup \
         && rm -rf /root/manifmaker_backup/prod_latest \
-        && ln -s /root/manifmaker_backup/${BACKUP_NAME}/ /root/manifmaker_backup/prod_latest "       
+        && cp -r /root/manifmaker_backup/${BACKUP_NAME}/ /root/manifmaker_backup/prod_latest "       
         echo "   Backup sent to preprod"
     fi    
 
