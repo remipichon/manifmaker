@@ -5,9 +5,7 @@ services:
         container_name: production_mongodb
         ports:
             - "27017:27017"
-    mongodb_backup:
-        build: 
-           context: mongodb-backup
+    assomaker/mongodb_backup:
         container_name: mongodb_backup
         links:
             - mongodb

@@ -3,9 +3,7 @@ services:
     mongodb:
         image: 'mongo:3.2.6'
         container_name: production_mongodb
-    mongodb_backup:
-        build: 
-           context: mongodb-backup
+    assomaker/mongodb_backup:
         container_name: mongodb_backup
         environment:
             - CRON_TIME=20 3 * * * #Change to your favorate cron job schedule
