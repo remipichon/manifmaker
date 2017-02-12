@@ -12,6 +12,7 @@ RUN apt-get install -y mongodb-org-shell mongodb-org-tools ssh && \
 
 ENV CRON_TIME="0 0 * * *"
 
+ADD run.sh /run.sh
 VOLUME ["/root/.ssh"]
 VOLUME ["/backup"]
 VOLUME ["/manifmaker_backup_tar"]
