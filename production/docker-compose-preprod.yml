@@ -3,8 +3,9 @@ services:
     mongodb:
         image: 'mongo:3.2.6'
         container_name: production_mongodb
-    assomaker/mongodb_backup:
+    mongodb_backup:
         container_name: mongodb_backup
+        image: 'assomaker/mongodb_backup'
         environment:
             - CRON_TIME=20 3 * * * #Change to your favorate cron job schedule
             - MAX_BACKUPS=10
