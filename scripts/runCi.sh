@@ -1,9 +1,4 @@
-
-#!/bin/bash
-set -ev
-
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-
 if [[ $BRANCH_NAME = "production" ]];
 then
   echo "=production="
@@ -13,7 +8,6 @@ then
   ssh root@vps302915.ovh.net "cd manifmaker; git reset --hard HEAD; git pull origin production"
   #ssh root@vps302915.ovh.net "cd manifmaker/production; docker-compose up -d manifmaker"
 fi 
-
 if [[ $BRANCH_NAME = "deploy" ]];
 then
   echo "=deploy="
@@ -30,4 +24,3 @@ then
   echo "... Now restoring most recent backup from production"
   ssh root@vps302914.ovh.net "docker exec mongodb_backup /restore.sh /backup/prod_latest"
 fi 
-
