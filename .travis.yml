@@ -4,6 +4,7 @@ services:
 
 addons:
   ssh_known_hosts: vps302914.ovh.net
+  ssh_known_hosts: vps302915.ovh.net
 
 before_install:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
