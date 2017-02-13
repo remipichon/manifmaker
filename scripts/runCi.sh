@@ -8,7 +8,7 @@ then
   echo "... Now deploying to Production "
   ssh root@vps302915.ovh.net "cd manifmaker; git reset --hard HEAD; git pull origin production"
   ssh root@vps302915.ovh.net "cd manifmaker/production; docker-compose restart mongodb_backup"
-  #ssh root@vps302915.ovh.net "cd manifmaker/production; docker-compose up -d manifmaker"
+  ssh root@vps302915.ovh.net "cd manifmaker/production; docker-compose up -d manifmaker"
 fi 
 if [[ $BRANCH_NAME = "deploy" ]];
 then
