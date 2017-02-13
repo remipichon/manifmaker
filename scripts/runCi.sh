@@ -1,4 +1,4 @@
-BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+BRANCH_NAME=TRAVIS_BRANCH #$(git rev-parse --abbrev-ref HEAD)
 echo branch name $BRANCH_NAME
 if [[ $BRANCH_NAME = "production" ]];
 then
