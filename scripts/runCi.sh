@@ -1,17 +1,18 @@
 
 #!/bin/bash
 
-BRANCH_NAME=eval git rev-parse --abbrev-ref HEAD
-echo "Branche name $BRANCH_NAME "
-if [[ $BRANCH_NAME = "production" ]]; 
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+
+
+if [[ $BRANCH_NAME = "production" ]];
 then
   echo "=production="
   echo "... Now deploying to Production "
-  #ssh root@vps302915.ovh.net "cd manifmaker; git reset --hard HEAD; git pull origin production"
-  #ssh root@vps302915.ovh.net "cd manifmaker/production; docker-compose up -d manifmaker"
+  ssh root@vps302915.ovh.net "cd manifmaker; git reset --hard HEAD; git pull origin production"
+  ssh root@vps302915.ovh.net "cd manifmaker/production; docker-compose up -d manifmaker"
 fi 
 
-if [[ $BRANCH_NAME="deploy" ]];
+if [[ $BRANCH_NAME = "deploy" ]];
 then
   echo "=deploy="
   cd app
