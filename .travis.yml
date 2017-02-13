@@ -20,8 +20,8 @@ before_install:
   - chmod 700 scripts/runCi.sh
 
 
-script: . scripts/runCi.sh
-
+script:
+  - . scripts/runCi.sh
 
 branches:
   only:
