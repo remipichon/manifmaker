@@ -16,10 +16,10 @@ before_install:
   - eval "$(ssh-agent -s)"
   - chmod 600 $TRAVIS_BUILD_DIR/preprod_rsa
   - ssh-add $TRAVIS_BUILD_DIR/preprod_rsa
+  - chmod ugo+x scripts/runCi.sh
 
 
-script:
-  - . scripts/runCi.sh
+script:./scripts/runCi.sh
 
 
 branches:

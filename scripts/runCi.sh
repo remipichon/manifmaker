@@ -1,8 +1,8 @@
 
 #!/bin/bash
+set -ev
 
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-
 
 if [[ $BRANCH_NAME = "production" ]];
 then
