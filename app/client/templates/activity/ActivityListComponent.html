@@ -11,10 +11,10 @@
 
     <div>
         {{#if isInRole RolesEnum.ACTIVITYWRITE}}
-            <a class="btn btn-primary pull-right" href="/activity">Create a new Activity</a>
+            <a class="btn btn-primary pull-right" href="/activity">{{_ "page.activity.list.create"}}</a>
         {{/if}}
 
-        <h1>Activities List</h1>
+        <h1>{{_ "page.activity.list.header"}}</h1>
 
 
     </div>
@@ -24,10 +24,10 @@
 
             <div class="col-md-3">
                 <label>
-                    Activity name :
+                    {{_ "page.activity.list.filter.activityName"}} :
                 </label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="search_activity_name" placeholder="Search activity...">
+                    <input type="text" class="form-control" id="search_activity_name" placeholder="{{_ "page.activity.list.filter.searchPlaceHolder"}}">
                     <span class="input-group-addon">
                         <i class="mdi mdi-magnify mdi-inline"></i>
                     </span>
