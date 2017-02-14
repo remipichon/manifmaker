@@ -9,6 +9,7 @@ export class SingleNonMandatorySelectComponent extends SingleSelectComponent {
          * @type {string}
          */
         this.clearMessage = this.data().clearMessage || "Clear";
+        this.clearMessage= this._readi18n(this.clearMessage);
     }
 
     template() {

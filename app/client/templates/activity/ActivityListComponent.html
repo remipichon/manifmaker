@@ -35,9 +35,9 @@
             </div>
 
             <div class="col-md-3 col-md-offset-1">
-                {{> SingleNonMandatorySelectComponent selectLabel="Activity responsible" title="Activity responsible"
+                {{> SingleNonMandatorySelectComponent selectLabel="_ select.selectLabel.activityResponsible" title="_ select.selectLabel.activityResponsible"
                 optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                nothingSelectedLabel="No one" quickSelectLabel="select yourself" quickSelectId=currentUserId
+                nothingSelectedLabel="_ select.nothingSelectedLabel.noOne" quickSelectLabel="_ select.quickSelectLabel.selectYourself" quickSelectId=currentUserId
                 updateCallback=filterResponsible displayUpdateResult=false
                 }}
             </div>
@@ -114,10 +114,10 @@
 
 <template name="activityButtons">
     {{#if isInRole RolesEnum.ACTIVITYWRITE}}
-        <a class="btn btn-primary" href="/activity/{{_id}}" role="button" title="Edit"> <i class="mdi mdi-pencil"></i></a>
+        <a class="btn btn-primary" href="/activity/{{_id}}" role="button" title="{{_ "action.edit"}}"> <i class="mdi mdi-pencil"></i></a>
     {{else}}
         {{#if isInRole RolesEnum.ACTIVITYREAD}}
-            <a class="btn btn-primary" href="/activity/{{_id}}/read" title="Read"> <i class="mdi mdi-chevron-right"></i></a>
+            <a class="btn btn-primary" href="/activity/{{_id}}/read" title="{{_ "action.read"}}"> <i class="mdi mdi-chevron-right"></i></a>
         {{/if}}
     {{/if}}
     {{#if isInRole RolesEnum.ACTIVITYDELETE}}

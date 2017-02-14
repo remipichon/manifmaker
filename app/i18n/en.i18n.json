@@ -2,6 +2,21 @@
   "application": {
     "name": "ManifMaker"
   },
+  "select":{
+    "quickSelectLabel":{
+        "selectYourself": "select yourself"
+    },
+    "selectLabel":{
+      "activityResponsible": "Activity responsible"
+    },
+    "nothingSelectedLabel": {
+      "noOne": "No one"
+    }
+  },
+  "action":{
+    "edit": "edit",
+    "read": "read"
+  },
   "page": {
     "activity": {
       "list": {
