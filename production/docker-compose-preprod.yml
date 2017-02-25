@@ -3,8 +3,9 @@ services:
     mongodb:
         image: 'mongo:3.2.6'
         container_name: production_mongodb
-    assomaker/mongodb_backup:
+    mongodb_backup:
         container_name: mongodb_backup
+        image: 'assomaker/mongodb_backup'
         environment:
             - CRON_TIME=20 3 * * * #Change to your favorate cron job schedule
             - MAX_BACKUPS=10
@@ -16,7 +17,7 @@ services:
         volumes:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
     manifmaker: 
-        image: 'assomaker/manifmaker:0-2-2'
+        image: 'assomaker/manifmaker:0-2-3'
         environment:
             - ROOT_URL=http://preprod.manifmaker.24heures.org/
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
