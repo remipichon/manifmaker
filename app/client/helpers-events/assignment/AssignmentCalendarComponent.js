@@ -270,7 +270,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 var availability = AvailabilityService.getSurroundingAvailability(user, selectedDate);
 
                 if (typeof availability === "undefined") {
-                    console.error("Template.assignmentCalendar.events.click .heure, .quart_heure", "User can't normally click on this kind of element when in userToTask");
+                    AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
                     return;
                 }
                 AssignmentReactiveVars.SelectedAvailability.set(availability);

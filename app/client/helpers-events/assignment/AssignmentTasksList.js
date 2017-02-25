@@ -1,5 +1,7 @@
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
 import {TeamService} from "../../../both/service/TeamService"
+import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
+import {AssignmentService} from "../../../both/service/AssignmentService"
 import {AssignmentServiceClient} from "../../service/AssignmentServiceClient"
 
 class AssignmentTasksList extends BlazeComponent {
@@ -57,7 +59,7 @@ class AssignmentTasksList extends BlazeComponent {
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK:
                 if (isUnassignment) {
-                    Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, userId, function(error, result){
+                    Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get().peopleNeed._id, userId, function(error, result){
                         if(!error){
                             AssignmentServiceClient.congratsRemoveAssignment(AssignmentType.USERTOTASK,_idTask);
                         }
@@ -325,48 +327,69 @@ class AssignmentTasksList extends BlazeComponent {
         var peopleNeeded = this.currentData().peopleNeeded;
 
         if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
-            var result = [];
+            if (AssignmentReactiveVars.IsUnassignment.get()) {
 
-            _.each(peopleNeeded, (peopleNeed) => {
-                var selectedUser = Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get());
+                var userId = AssignmentReactiveVars.SelectedUser.get()._id;
+                var selectedDate = AssignmentReactiveVars.SelectedDate.get()
 
-                //userId : if existing, selected user must be the one
-                if (peopleNeed.userId) {
-                    if (peopleNeed.userId === selectedUser._id) {
+
+                var userAssignments = AssignmentService.getAssignmentForUser({_id:userId});
+                var assignmentFound;
+                userAssignments.forEach(assignment => {
+                    if((new moment(assignment.start).isBefore(selectedDate) || new moment(assignment.start).isSame(selectedDate)
+                        ) && new moment(assignment.end).isAfter(selectedDate)){
+                        assignmentFound =  assignment;
+                    }
+                });
+
+                var peopleNeed = PeopleNeedService.getPeopleNeedByIdAndTask(assignmentFound.peopleNeedId,Tasks.findOne(assignmentFound.taskId));
+
+                return [peopleNeed]
+
+            }else {
+                var result = [];
+
+                _.each(peopleNeeded, (peopleNeed) => {
+                    var selectedUser = Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get());
+
+                    //userId : if existing, selected user must be the one
+                    if (peopleNeed.userId) {
+                        if (peopleNeed.userId === selectedUser._id) {
+                            result.push(peopleNeed);
+                            return;
+                        }
+                        return;
+                    }
+
+
+                    //teamId : if existing, selected user must at least have the required team
+                    if (peopleNeed.teamId) {
+                        if (!_.contains(selectedUser.teams, peopleNeed.teamId)) {
+                            return;
+                        }
+                    }
+
+                    //if no skills required, we don't care about the user's skills
+                    if (peopleNeed.skills.length === 0) {
                         result.push(peopleNeed);
                         return;
                     }
-                    return;
-                }
 
-
-                //teamId : if existing, selected user must at least have the required team
-                if (peopleNeed.teamId) {
-                    if (!_.contains(selectedUser.teams, peopleNeed.teamId)) {
+                    //skills : if not empty, user must have all the required skill
+                    var userHaveAllRequiredSkills = true;
+                    _.each(peopleNeed.skills, (skill) => {
+                        if (!_.contains(selectedUser.skills, skill)) {
+                            userHaveAllRequiredSkills = false;
+                        }
+                    });
+                    if (userHaveAllRequiredSkills) {
+                        result.push(peopleNeed);
                         return;
                     }
-                }
-
-                //if no skills required, we don't care about the user's skills
-                if (peopleNeed.skills.length === 0) {
-                    result.push(peopleNeed);
-                    return;
-                }
-
-                //skills : if not empty, user must have all the required skill
-                var userHaveAllRequiredSkills = true;
-                _.each(peopleNeed.skills, (skill) => {
-                    if (!_.contains(selectedUser.skills, skill)) {
-                        userHaveAllRequiredSkills = false;
-                    }
                 });
-                if (userHaveAllRequiredSkills) {
-                    result.push(peopleNeed);
-                    return;
-                }
-            });
 
-            return result;
+                return result;
+            }
 
         } else {
             return peopleNeeded;
