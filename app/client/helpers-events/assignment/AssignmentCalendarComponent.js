@@ -190,19 +190,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
     peopleNeedAssignedOnClick(event) {
-        event.stopPropagation();
-        this.peopleNeedAssignedClick++;
-        if (this.peopleNeedAssignedClick == 1) {
-            setTimeout(_.bind(function () {
-                if (this.peopleNeedAssignedClick == 1) {
-                    sAlert.info('Double click to perform remove assignment')
-                } else {
-                    AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
-                }
-                this.peopleNeedAssignedClick = 0;
-            }, this.currentData()), 300);
-        }
-
+        AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
     }
 
     openPopOver(event) {
