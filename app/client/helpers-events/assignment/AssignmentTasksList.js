@@ -210,6 +210,7 @@ class AssignmentTasksList extends BlazeComponent {
                     skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
             }
         }
+        //TODO refact assignment : est ce que truc sert ? tester avec en ajoutant un user pour voir si une tache qui a un timeslot de affecte a fond et un autre non si elles'afiche
         var skillsAndNeededTeamFilter = {
             timeSlots: {
                 $elemMatch: {

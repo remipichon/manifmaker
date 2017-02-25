@@ -136,27 +136,6 @@ Schemas.PeopleNeed = new SimpleSchema({
             }
         }
     },
-    assignedUserId: {
-        type: SimpleSchema.RegEx.Id,
-        label: "People Need assigned user id",
-        optional: true,
-        autoValue: function () {
-            if (!this.isSet)
-                return null;
-        },
-        custom: function () {
-            var cantUpdate = PeopleNeedService.schemaCustomPeopleNeed(this);
-            if (cantUpdate) return cantUpdate;
-
-            if (this.value) {
-                if (!Meteor.users.findOne(this.value))
-                    return "unknownId";
-            }
-        },
-        autoform: {
-            type: "hidden",
-        }
-    },
     _id: {
         type: SimpleSchema.RegEx.Id,
         label: "People Need _id",

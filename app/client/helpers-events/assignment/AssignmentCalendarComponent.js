@@ -45,7 +45,8 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
     displayAssignedUser() {
-        return Meteor.users.findOne({_id: this.currentData().assignedUserId}).username;
+        var assignment = Assignments.findOne({peopleNeedId:this.currentData()._id})
+        return Meteor.users.findOne({_id: assignment.userId}).username;
     }
 
     teamName() {
@@ -179,13 +180,13 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
     peopleNeededNonAssigned(){
         return _.reject(this.currentData().peopleNeeded,function(peopleNeed){
-            return peopleNeed.assignedUserId !== null;
+            return Assignments.findOne({peopleNeedId:peopleNeed._id}) != null;
         });
     }
 
     peopleNeededAssigned(){
         return _.reject(this.currentData().peopleNeeded,function(peopleNeed){
-            return peopleNeed.assignedUserId === null;
+            return Assignments.findOne({peopleNeedId:peopleNeed._id}) == null;
         });
     }
 

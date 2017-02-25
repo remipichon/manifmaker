@@ -91,34 +91,6 @@ export class PeopleNeedService {
 
         /**
          * @memberOf PeopleNeedService
-         * @summary Assign peopleNeeded.assignedUserId
-         * @locus Anywhere
-         * @param {timeSlot} timeSlot
-         * @param {Task} task
-         * @param {TimeSlot} timeSlot
-         * @param {PeopleNeed} peopleNeed
-         * @param {MongoId} userId
-         */
-        static assignedPeopleNeeded(task, timeSlot, peopleNeed, userId) {
-            console.info("PeopleNeedService.assignedPeopleNeeded for task", task, "when", timeSlot, "and need", peopleNeed);
-            //we have the task
-            var timeSlots = task.timeSlots; //all its timeslots
-
-            var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
-            var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
-            var peopleNeedToRemoveIndex = PeopleNeedService.getPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
-
-            return Tasks.update({_id: task._id},
-                {
-                    $set: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded."+peopleNeedToRemoveIndex+".assignedUserId"] : userId
-                    }
-                });
-
-        }
-
-        /**
-         * @memberOf PeopleNeedService
          * @summary Check if people need match user (userId or teamId and/or skills). True is user match people need.
          * @locus Anywhere
          * @param {timeSlot} timeSlot
@@ -174,34 +146,6 @@ export class PeopleNeedService {
             return found;
         }
 
-        /**
-         * @memberOf PeopleNeedService
-         * @summary Set peopleNeeded.assignedUserId to null
-         * @locus Anywhere
-         * @param {Task} task
-         * @param {timeSlot} timeSlot
-         * @param {PeopleNeed} peopleNeed
-         * @param {MongoId} userId
-         */
-        static restorePeopleNeed(task, timeSlot, peopleNeed, userId) {
-            console.info("PeopleNeedService.restorePeopleNeed for task", task, "when", timeSlot, "and need", peopleNeed);
-            //we have the task
-            var timeSlots = task.timeSlots; //all its timeslots
-
-            var updatedTimeslot = timeSlot;
-
-            var timeSlotToUpdateIndex = TimeSlotService.getTimeSlotIndex(task, timeSlot._id);
-            var timeSlotToUpdate = timeSlots[timeSlotToUpdateIndex];
-
-            var peopleNeedToRemoveIndex = PeopleNeedService.getAssignedPeopleNeedIndex(timeSlotToUpdate, peopleNeed);
-
-            Tasks.update({_id: task._id},
-                {
-                    $set: {
-                        ["timeSlots."+timeSlotToUpdateIndex+".peopleNeeded."+peopleNeedToRemoveIndex+".assignedUserId"] : null
-                    }
-                });
-        }
 
         static removePeopleNeed(task, timeSlot, peopleNeed){
             console.info("PeopleNeedService.removePeopleNeed for task", task, "when", timeSlot, "and need", peopleNeed);
@@ -234,37 +178,21 @@ export class PeopleNeedService {
             if (schemaContext.isUpdate) {
                 var task = Tasks.findOne(schemaContext.docId);
 
-                if(schemaContext.key.indexOf("assignedUserId") !== -1){
-                    //assignedUserId : non editable sauf si READY
-                    if(schemaContext.value !== null && task.timeSlotValidation.currentState !== ValidationState.READY) {
-                        //Mongo doesn't support $pull with nested arrays meaning that a $set on the whole array is used.
-                        //All people need are updated when one is deleted causing a problem for all people need already assigned
-                        //below we check that the 'new' assignedUserId is the same as the 'old' one (we can update as long as we don't modify it....)
-                        //TODO avec ca on peut mettre à jour les autres fields (userId, skills, teamId) d'un people need deja affecté sans pour autant changer le assignedUserId
-                        //est ce qu'on s'en fout ? Ca ne pose de probleme que si on desaffecte le assignedUserId, le peopleNeed sera de nouveau dispo mais
-                        //avec des specs qui n'étaient pas les premieres mises. Un moindre mal...
-                        var split = schemaContext.key.split(".");
-                        var oldValue = Tasks.findOne(schemaContext.docId).timeSlots[split[1]].peopleNeeded[split[3]].assignedUserId;
-                        if(oldValue !== schemaContext.value)
-                            return "updateNotAllowed"
+                //array, userId, skills, teamId : non editable si pas OPEN ou REFUSED
+                if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState))
+                    return "updateNotAllowed"
+                //userId can not be duplicated
+                if(schemaContext.key.indexOf("userId") !== -1 && schemaContext.value !== null){
+                    var split = schemaContext.key.split(".");
+                    var timeSlotIndex = split[1];
+                    var peopleNeeded = task.timeSlots[timeSlotIndex].peopleNeeded;
+                    if (_.find(peopleNeeded, (peopleNeed) => {
+                            return peopleNeed.userId === schemaContext.value;
+                        }) !== undefined
+                    ) {
+                        return "peopleNeedUserIdUnique";
                     }
-                } else {
-                    //array, userId, skills, teamId : non editable si pas OPEN ou REFUSED
-                    if(!ValidationService.isUpdateAllowed(task.timeSlotValidation.currentState))
-                        return "updateNotAllowed"
-                    //userId can not be duplicated
-                    if(schemaContext.key.indexOf("userId") !== -1 && schemaContext.value !== null){
-                        var split = schemaContext.key.split(".");
-                        var timeSlotIndex = split[1];
-                        var peopleNeeded = task.timeSlots[timeSlotIndex].peopleNeeded;
-                        if (_.find(peopleNeeded, (peopleNeed) => {
-                                return peopleNeed.userId === schemaContext.value;
-                            }) !== undefined
-                        ) {
-                            return "peopleNeedUserIdUnique";
-                        }
 
-                    }
                 }
 
             }
