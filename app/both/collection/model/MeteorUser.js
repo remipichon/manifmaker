@@ -105,35 +105,6 @@ Schemas.UserAvailabilities = new SimpleSchema({
     }
 });
 
-Schemas.UserAssignment = new SimpleSchema({
-    taskName: {
-        type: String,
-        label: "User assignment User Name"
-    },
-    start: {
-        type: Date,
-        label: "User Assignment Start Date"
-    },
-    end: {
-        type: Date,
-        label: "User Assignment End Date"
-    },
-    assignmentId: {
-        type: SimpleSchema.RegEx.Id,
-        label: "User assignment assignment id",
-        custom: function () { //validate data is same as the real assignment
-            var assignment = Assignments.findOne(this.value);
-            if (!assignment)
-                return "unknownId"
-            var timeSlot = TimeSlotService.getTimeSlot(assignment.taskId,assignment.timeSlotId);
-            if (Tasks.findOne(assignment.taskId).name !== this.field(this.key.replace("assignmentId", "") + "taskName").value
-                || !new moment(timeSlot.start).isSame(new moment(this.field(this.key.replace("assignmentId", "") + "start").value))
-                || !new moment(timeSlot.end).isSame(new moment(this.field(this.key.replace("assignmentId", "") + "end").value)))
-                return "userAssignmentNotMatching"
-        }
-    }
-});
-
 Schemas.UserCountry = new SimpleSchema({
     name: {
         type: String
@@ -401,15 +372,6 @@ Schemas.User = new SimpleSchema({
         label: "User availabilities",
         optional: true,
         defaultValue: []
-    },
-    assignments: {
-        type: [Schemas.UserAssignment],
-        label: "User assignments",
-        defaultValue: [],
-        optional: true,
-        autoform: {
-            type: "hidden",
-        }
     },
 
     dismissible: {
