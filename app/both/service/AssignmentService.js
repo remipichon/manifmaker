@@ -32,5 +32,33 @@ export class AssignmentService {
             return TimeSlotService.getTimeSlotByStart(assignment, start);
         }
 
+    /**
+     * @memberOf AssignmentService
+     * @locus Anywhere
+     * @summary return assignment with start/end date, taskName
+     * @param user
+     * @returns {[assignments]|null}
+     */
+    static getAssignmentForUser(user) {
+        var assigments = Assignments.find({userId: user._id}).fetch();
+        var res = [];
+        assigments.forEach(assigment => {
+            var task = Tasks.findOne(assigment.taskId);
+            var timeSlot = TimeSlotService.getTimeSlotById(assigment.timeSlotId)
+            res.push({
+                start: timeSlot.start,
+                end: timeSlot.end,
+                taskName: task.name ,
+                userId: assigment.userId,
+                taskId: assigment.taskId,
+                timeSlotId: assigment.timeSlotId,
+                peopleNeedId: assigment.peopleNeedId,
+            });
+        });
+
+
+        return res;
+    }
+
 
     }

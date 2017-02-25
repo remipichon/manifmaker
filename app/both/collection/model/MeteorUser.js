@@ -14,11 +14,12 @@ Schemas.UserAvailabilities = new SimpleSchema({
                 return "startAfterEnd";
 
             //check if new availability is overlapping with an assignment
-            var userAssignment = Meteor.users.findOne(this.docId).assignments;
+            // var userAssignment = Meteor.users.findOne(this.docId).assignments;
 
-            if (TimeSlotService.areArrayStartEndOverlappingStartDate(userAssignment, start, end, "none")) {
-                return "availabilityOverlapAssignment";
-            }
+            //TODO assignment check is new availability doesn't overlap an assignment
+            // if (TimeSlotService.areArrayStartEndOverlappingStartDate(userAssignmentStartEnd, start, end, "none")) {
+            //     return "availabilityOverlapAssignment";
+            // }
 
             var userTeams = Meteor.users.findOne(this.docId).teams;
             var start = this.value;

@@ -129,7 +129,8 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
 
                 var availabilityFound = AvailabilityService.getAvailabilityByStart(user.availabilities, startCalendarTimeSlot);
-                var assignmentFound = AssignmentService.getAssignmentByStart(user.assignments, startCalendarTimeSlot);
+                var userAssignments = AssignmentService.getAssignmentForUser(user);
+                var assignmentFound = AssignmentService.getAssignmentByStart(userAssignments, startCalendarTimeSlot);
 
                 if (availabilityFound === null && assignmentFound === null) return [];
                 if (availabilityFound !== null && assignmentFound !== null) {

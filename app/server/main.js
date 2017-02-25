@@ -81,9 +81,9 @@ Meteor.startup(function () {
     if (Meteor.isDevelopment) {
     //     specific to the dev needs
         console.info("Meteor.startup : isDevelopment, injecting or not");
-        InjectDataHelperServerService.deleteAll();
-        password = InjectDataHelperServerService.initAccessRightData();
-        Meteor.injectDataServerService.injectAllData();
+        // InjectDataHelperServerService.deleteAll();
+        // password = InjectDataHelperServerService.initAccessRightData();
+        // Meteor.injectDataServerService.injectAllData();
     }
 
     if(password){
