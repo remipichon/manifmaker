@@ -44,10 +44,10 @@ export class AssignmentService {
         var res = [];
         assigments.forEach(assigment => {
             var task = Tasks.findOne(assigment.taskId);
-            var timeSlot = TimeSlotService.getTimeSlotById(assigment.timeSlotId)
+            var taskTimeSlot = TimeSlotService.getTimeSlotById(assigment.timeSlotId)
             res.push({
-                start: timeSlot.start,
-                end: timeSlot.end,
+                start: taskTimeSlot.timeSlot.start,
+                end: taskTimeSlot.timeSlot.end,
                 taskName: task.name ,
                 userId: assigment.userId,
                 taskId: assigment.taskId,
