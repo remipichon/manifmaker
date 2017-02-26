@@ -214,21 +214,6 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         AssignmentServiceClient.taskToUserPerformUserFilter();
     }
 
-    //taskToUser (we click on a complete task time slot)
-    creanOnClick() {
-
-        var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
-
-        switch (currentAssignmentType) {
-            case AssignmentType.USERTOTASK:
-                console.error("Template.assignmentCalendar.events.click .creneau", "User can't normally click on this kind of element when in userToTask");
-                return;
-                break;
-            case AssignmentType.TASKTOUSER: //only display users that have at least one availability matching the selected time slot
-                break;
-        }
-    }
-
 
     heureOnClick(){
         //what time did we click on ?
@@ -242,8 +227,6 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
     //userToTask (we click on a creneau, not on the entire availability)
     quartHeureOnClick(event) {
-        //TODO gerer le double click pour la desaffectation
-        console.log("quartHeureOnClick");
 
         //what time did we click on ?
         var $target = $(event.target);

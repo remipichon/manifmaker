@@ -9,6 +9,12 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
      */
 
+    events() {
+        return super.events().concat({
+            "click .creneau": this.selectTimeSlot
+        })
+    }
+
     enableAction(date, timeHours){
         var startDate = this.getCalendarDateTime(date, timeHours, 0);
         var endDate = new moment(startDate).add(1,"hour");
@@ -59,10 +65,10 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
     }
 
-    creanOnClick(e) {
-        //to implement
-        var _id = $(e.currentTarget).data("timeslotdid");
-        this.data().parentInstance.updatedTimeSlotId.set(_id);
+
+    selectTimeSlot(e){
+        var $target = $(e.target);
+        this.data().parentInstance.updatedTimeSlotId.set($target.parents(".creneau").data("timeslotdid"));
         this.data().parentInstance.isTimeSlotUpdated.set(true);
     }
 
