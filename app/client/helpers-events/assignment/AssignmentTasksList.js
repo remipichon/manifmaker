@@ -339,9 +339,9 @@ class AssignmentTasksList extends BlazeComponent {
                     }
                 });
 
-                var peopleNeed = PeopleNeedService.getPeopleNeedByIdAndTask(assignmentFound.peopleNeedId,Tasks.findOne(assignmentFound.taskId));
+                var timeSlotPeopleNeed = PeopleNeedService.getPeopleNeedByIdAndTask(assignmentFound.peopleNeedId,Tasks.findOne(assignmentFound.taskId));
 
-                return [peopleNeed]
+                return [timeSlotPeopleNeed.peopleNeed]
 
             }else {
                 var result = [];
