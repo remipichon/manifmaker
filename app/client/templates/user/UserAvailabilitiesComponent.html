@@ -26,7 +26,7 @@
                     <div class="alert alert-warning" role="alert">This assignment term is closed, you can add availabilities, be careful when you remove availabilities.</div>
                 {{/if}}
                 {{> DismissibleHelperComponent message="Want to add an availability ? Simply click on a time slot !      Protip : you can several by pressing 'maj' key along with a first click and then drag to select more." uniqueId="availabily-update"}}
-                {{> DismissibleHelperComponent message="Double click allows you to remove one slot." uniqueId="availabily-delete"}}
+                {{> DismissibleHelperComponent message="Click on an availability to remove one slot." uniqueId="availabily-delete"}}
                 {{> EditAvailabilitiesCalendarComponent displayCharisma=true user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{/if}}
         </div>
