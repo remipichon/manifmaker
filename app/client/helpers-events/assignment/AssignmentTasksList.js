@@ -351,6 +351,7 @@ class AssignmentTasksList extends BlazeComponent {
                 var result = [];
 
                 _.each(peopleNeeded, (peopleNeed) => {
+                    if(Assignments.findOne({peopleNeedId: peopleNeed._id})) return;
                     var selectedUser = Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get());
 
                     //userId : if existing, selected user must be the one
