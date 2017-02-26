@@ -59,7 +59,7 @@ class AssignmentTasksList extends BlazeComponent {
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK:
                 if (isUnassignment) {
-                    Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get().peopleNeed._id, userId, function(error, result){
+                    Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, userId, function(error, result){
                         if(!error){
                             AssignmentServiceClient.congratsRemoveAssignment(AssignmentType.USERTOTASK,_idTask);
                         }
@@ -175,59 +175,61 @@ class AssignmentTasksList extends BlazeComponent {
 
         var skillsFilter = this.taskSkillsFilter.get();
         var neededTeamFilter = this.taskNeededTeamFilter.get();
-        var skillsAndNeededTeamFilterForAssigned = {};
         var removeAssignmentFilter = {};
-        var timeSlotsFilter;
+        var timeSlotsFilter = {$elemMatch: {}};
 
         if(filter._id) {
             removeAssignmentFilter = filter;
-            //TODO peut etre que ici ca sert a rien de faire passer les filtres, vu q'on a deja la task...
-            timeSlotsFilter = {$elemMatch: {}};
-        } else if(filter.$elemMatch){
-            timeSlotsFilter = filter;
+        } else if (filter === AssignmentReactiveVars.noneFilter){
+            teamFilter = AssignmentReactiveVars.noneFilter;
+            removeAssignmentFilter = AssignmentReactiveVars.noneFilter;
         } else {
-            timeSlotsFilter = {$elemMatch: {}};
-        }
+            if (filter.$elemMatch) {
+                timeSlotsFilter = filter;
+            }
+
+            //assignmentTermFilter
+            timeSlotsFilter.$elemMatch.start = {$gte: currentAssignmentTerm.start};
+            timeSlotsFilter.$elemMatch.end = {$lt: currentAssignmentTerm.end};
 
 
+            if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
+                //skillsAndNeededTeamFilterForAssigned
+                if (!timeSlotsFilter.$elemMatch.peopleNeeded) timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
 
-        //assignmentTermFilter
-        timeSlotsFilter.$elemMatch.start = { $gte : currentAssignmentTerm.start};
-        timeSlotsFilter.$elemMatch.end = {$lt: currentAssignmentTerm.end};
+                if (skillsFilter)
+                    timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
+                if (neededTeamFilter) {
+                    if (neededTeamFilter === "noNeededTeam")
+                        timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
+                    else
+                        timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
+                }
+            }
+            if(!displayAssignedTask) {
+                var assignedPeopleNeedIds = _.reduce(Assignments.find().fetch(), function (memo, val) {
+                    memo.push(val.peopleNeedId);
+                    return memo
+                }, []);
+                if (!timeSlotsFilter.$elemMatch.peopleNeeded) timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
+                timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch._id = {$nin: assignedPeopleNeedIds};
+            }
 
 
-        if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
-            //skillsAndNeededTeamFilterForAssigned
-            if(!timeSlotsFilter.$elemMatch.peopleNeeded)timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
-
-            if (skillsFilter)
+            if (skillsFilter) {
+                if (!timeSlotsFilter.$elemMatch.peopleNeeded) timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
                 timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
+            }
             if (neededTeamFilter) {
+                if (!timeSlotsFilter.$elemMatch.peopleNeeded) timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
                 if (neededTeamFilter === "noNeededTeam")
                     timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
                 else
                     timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
             }
-        }
-        var assignedPeopleNeedIds = _.reduce(Assignments.find().fetch(),function (memo, val) {
-            memo.push(val.peopleNeedId);
-            return memo
-        },[]);
-        if(!timeSlotsFilter.$elemMatch.peopleNeeded)timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
-        timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch._id ={ $nin: assignedPeopleNeedIds };
 
+        }
 
-        if (skillsFilter){
-            if(!timeSlotsFilter.$elemMatch.peopleNeeded)timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
-            timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
-        }
-        if (neededTeamFilter) {
-            if(!timeSlotsFilter.$elemMatch.peopleNeeded)timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
-            if (neededTeamFilter === "noNeededTeam")
-                timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
-            else
-                timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
-        }
         var validationReadyFilter = {
           "timeSlotValidation.currentState" : ValidationState.READY
         };
@@ -235,33 +237,14 @@ class AssignmentTasksList extends BlazeComponent {
         var searchResult;
         var filterResult;
 
-        if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
-            filterResult = Tasks.find({
-                $and: [
-                    {timeSlots: timeSlotsFilter},
-                    validationReadyFilter,
-                    removeAssignmentFilter,
-                    //filter,
-                    teamFilter,
-                    {
-                        $or: [
-                            skillsAndNeededTeamFilter,
-                            skillsAndNeededTeamFilterForAssigned
-                        ]
-                    }
-                ]
-            }, {limit: 20}).fetch();
-        } else {
-            filterResult = Tasks.find({
-                $and: [
-                    {timeSlots: timeSlotsFilter},
-                    validationReadyFilter,
-                    removeAssignmentFilter,
-                    //filter,
-                    teamFilter,
-                ]
-            }, {limit: 20}).fetch();
-        }
+        filterResult = Tasks.find({
+            $and: [
+                {timeSlots: timeSlotsFilter},
+                validationReadyFilter,
+                removeAssignmentFilter,
+                teamFilter,
+            ]
+        }, {limit: 20}).fetch();
 
         searchResult = TasksIndex.search(filterIndex, {limit: 20}).fetch();
         return _.intersectionObjects(searchResult, filterResult);
