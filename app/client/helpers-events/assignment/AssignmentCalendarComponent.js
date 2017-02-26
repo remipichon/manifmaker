@@ -273,6 +273,8 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 if (typeof availability === "undefined") {
                     AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
                     return;
+                } else {
+                    AssignmentReactiveVars.IsUnassignment.set(false)
                 }
                 AssignmentReactiveVars.SelectedAvailability.set(availability);
 
