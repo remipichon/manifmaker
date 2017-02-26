@@ -176,62 +176,57 @@ class AssignmentTasksList extends BlazeComponent {
         var skillsFilter = this.taskSkillsFilter.get();
         var neededTeamFilter = this.taskNeededTeamFilter.get();
         var skillsAndNeededTeamFilterForAssigned = {};
+        var removeAssignmentFilter = {};
+        var timeSlotsFilter;
 
-        var assignmentTermFilter = {
-            timeSlots:{
-                $elemMatch: {
-                    start: { $gte : currentAssignmentTerm.start},
-                    end: {$lt: currentAssignmentTerm.end}
-                }
-            }
-        };
+        if(filter._id) {
+            removeAssignmentFilter = filter;
+            //TODO peut etre que ici ca sert a rien de faire passer les filtres, vu q'on a deja la task...
+            timeSlotsFilter = {$elemMatch: {}};
+        } else if(filter.$elemMatch){
+            timeSlotsFilter = filter;
+        } else {
+            timeSlotsFilter = {$elemMatch: {}};
+        }
 
-        //TODO possible de factoriser ca
+
+
+        //assignmentTermFilter
+        timeSlotsFilter.$elemMatch.start = { $gte : currentAssignmentTerm.start};
+        timeSlotsFilter.$elemMatch.end = {$lt: currentAssignmentTerm.end};
+
+
         if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
-            skillsAndNeededTeamFilterForAssigned = {
-                timeSlots: {
-                    $elemMatch: {
-                        peopleNeeded: {
-                            $elemMatch: {
-                                //below attributes will be added just after as it
-                                //skills: skillsFilter,
-                                //teamId: neededTeamFilter
-                            }
-                        }
-                    }
-                }
-            };
+            //skillsAndNeededTeamFilterForAssigned
+            if(!timeSlotsFilter.$elemMatch.peopleNeeded)timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
+
             if (skillsFilter)
-                skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
+                timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
             if (neededTeamFilter) {
                 if (neededTeamFilter === "noNeededTeam")
-                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
+                    timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
                 else
-                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
+                    timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
             }
         }
-        //TODO refact assignment : est ce que truc sert ? tester avec en ajoutant un user pour voir si une tache qui a un timeslot de affecte a fond et un autre non si elles'afiche
-        var skillsAndNeededTeamFilter = {
-            timeSlots: {
-                $elemMatch: {
-                    peopleNeeded: {
-                        $elemMatch: {
-                            assignedUserId:{ $eq: null }
-                            //below attributes will be added just after as it
-                            //skills: skillsFilter,
-                            //teamId: neededTeamFilter
-                        }
-                    }
-                }
-            }
-        };
-        if (skillsFilter)
-            skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
+        var assignedPeopleNeedIds = _.reduce(Assignments.find().fetch(),function (memo, val) {
+            memo.push(val.peopleNeedId);
+            return memo
+        },[]);
+        if(!timeSlotsFilter.$elemMatch.peopleNeeded)timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
+        timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch._id ={ $nin: assignedPeopleNeedIds };
+
+
+        if (skillsFilter){
+            if(!timeSlotsFilter.$elemMatch.peopleNeeded)timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
+            timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
+        }
         if (neededTeamFilter) {
+            if(!timeSlotsFilter.$elemMatch.peopleNeeded)timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
             if (neededTeamFilter === "noNeededTeam")
-                skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
+                timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
             else
-                skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
+                timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
         }
         var validationReadyFilter = {
           "timeSlotValidation.currentState" : ValidationState.READY
@@ -243,9 +238,10 @@ class AssignmentTasksList extends BlazeComponent {
         if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
             filterResult = Tasks.find({
                 $and: [
-                    assignmentTermFilter,
+                    {timeSlots: timeSlotsFilter},
                     validationReadyFilter,
-                    filter,
+                    removeAssignmentFilter,
+                    //filter,
                     teamFilter,
                     {
                         $or: [
@@ -258,11 +254,11 @@ class AssignmentTasksList extends BlazeComponent {
         } else {
             filterResult = Tasks.find({
                 $and: [
-                    assignmentTermFilter,
+                    {timeSlots: timeSlotsFilter},
                     validationReadyFilter,
-                    filter,
+                    removeAssignmentFilter,
+                    //filter,
                     teamFilter,
-                    skillsAndNeededTeamFilter,
                 ]
             }, {limit: 20}).fetch();
         }

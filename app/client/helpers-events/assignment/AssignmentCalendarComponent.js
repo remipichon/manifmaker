@@ -288,77 +288,73 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                  Foreach task's time slot, we need a matching skills and a matching availability
                  */
 
-                var newFilter = {
-                    $or: [ //$or does't work on $elemMatch with miniMongo, so we use it here
-                        { //userId filter
-                            timeSlots: {
-                                $elemMatch: {
-                                    //skills filter
-                                    peopleNeeded: {
-                                        $elemMatch: {
-                                            userId: user._id
-                                        }
-                                    },
-                                    //availabilities filter
-                                    start: {$gte: availability.start, $lte: selectedDate.toDate()},
-                                    end: {$gt: selectedDate.toDate(), $lte: availability.end}
-                                },
+                var timeSlotsFilter = {
+                    $elemMatch: {
+                        $or:[
+                            //userIdFilter,
+                            //skillsFilter,
+                            //noSkillsFilter
+                        ]
+                    }
+                };
+
+                timeSlotsFilter.$elemMatch.$or.push(
+                    {
+                        //userId filter
+                        peopleNeeded: {
+                            $elemMatch: {
+                                userId: user._id
                             }
                         },
-                        {
-                            $or: [ //either we match skills requirement or there is no skills requirement (and we don't care)
-                                { //skills filter
-                                    timeSlots: {
-                                        $elemMatch: {
-                                            //skills filter
-                                            peopleNeeded: {
-                                                $elemMatch: {
-                                                    skills: {
-                                                        $elemMatch: {
-                                                            $in: user.skills
-                                                        }
-                                                    },
-                                                    teamId: {
-                                                        $in: (user.teams.length === 0)? [null] : user.teams
-                                                    }
-                                                }
-                                            },
-                                            //availabilities filter
-                                            start: {$gte: availability.start, $lte: selectedDate.toDate()},
-                                            end: {$gt: selectedDate.toDate(), $lte: availability.end}
-                                        }
+                        //availabilities filter
+                        start: {$gte: availability.start, $lte: selectedDate.toDate()},
+                        end: {$gt: selectedDate.toDate(), $lte: availability.end}
+                    }
+                );
+                timeSlotsFilter.$elemMatch.$or.push(
+                    {
+                        //skills filter
+                        peopleNeeded: {
+                            $elemMatch: {
+                                skills: {
+                                    $elemMatch: {
+                                        $in: user.skills
                                     }
                                 },
-                                {//no-skills filter
-                                    timeSlots: {
-                                        $elemMatch: {
-                                            //skills filter
-                                            peopleNeeded: {
-                                                $elemMatch: {
-                                                    skills: { // $eq : [] doesn't work with miniMongo, here is a trick
-                                                        $not: {
-                                                            $ne: []
-                                                        }
-                                                    },
-                                                    teamId: {
-                                                        $in: user.teams
-                                                    }
-                                                }
-                                            },
-                                            //availabilities filter
-                                            start: {$gte: availability.start, $lte: selectedDate.toDate()},
-                                            end: {$gt: selectedDate.toDate(), $lte: availability.end}
-                                        }
-                                    }
+                                teamId: {
+                                    $in: (user.teams.length === 0) ? [null] : user.teams
                                 }
-                            ]
-                        }
-                    ]
-                };
+                            }
+                        },
+                        //availabilities filter
+                        start: {$gte: availability.start, $lte: selectedDate.toDate()},
+                        end: {$gt: selectedDate.toDate(), $lte: availability.end}
+                    }
+                );
+                timeSlotsFilter.$elemMatch.$or.push(
+                    {
+                        //skills filter
+                        peopleNeeded: {
+                            $elemMatch: {
+                                skills: { // $eq : [] doesn't work with miniMongo, here is a trick
+                                    $not: {
+                                        $ne: []
+                                    }
+                                },
+                                teamId: {
+                                    $in: user.teams
+                                }
+                            }
+                        },
+                        //availabilities filter
+                        start: {$gte: availability.start, $lte: selectedDate.toDate()},
+                        end: {$gt: selectedDate.toDate(), $lte: availability.end}
+                    }
+                );
                 //aggregate is not supported by mini mongo
 
 
-                AssignmentReactiveVars.TaskFilter.set(newFilter);
+                AssignmentReactiveVars.TaskFilter.set(timeSlotsFilter);
                 break;
             case
             AssignmentType.TASKTOUSER:
