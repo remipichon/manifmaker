@@ -49,7 +49,6 @@ Meteor.methods({
         Assignments.remove(assignment._id);
 
         AvailabilityService.restoreAvailabilities(user, timeSlot.start, timeSlot.end);
-        PeopleNeedService.restorePeopleNeed(task, timeSlot, peopleNeed, userId);
 
         return assignment;
     },
@@ -102,7 +101,6 @@ Meteor.methods({
 
 
         AvailabilityService.removeAvailabilities(user, timeSlot.start, timeSlot.end);
-        PeopleNeedService.assignedPeopleNeeded(task, timeSlot, peopleNeed, userId);
 
 
         return assignmentId;

@@ -29,11 +29,7 @@ export class ServerService {
         //create user when Account register a new one
         Meteor.users.after.insert(ServerUserService.updateUser);
 
-        //propagate assignment update
-        //Assignments.before.insert( /*if we need to add user and task data to assignments*/);
-        Assignments.after.insert(ServerAssignmentService.propagateAssignment);
         Assignments.before.update(ServerAssignmentService.preventUpdate);
-        Assignments.after.remove(ServerAssignmentService.removeAssignment);
 
         //propagate roles update
         Meteor.users.after.update(ServerUserService.propagateRoles);

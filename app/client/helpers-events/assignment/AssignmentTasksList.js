@@ -1,5 +1,7 @@
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
 import {TeamService} from "../../../both/service/TeamService"
+import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
+import {AssignmentService} from "../../../both/service/AssignmentService"
 import {AssignmentServiceClient} from "../../service/AssignmentServiceClient"
 
 class AssignmentTasksList extends BlazeComponent {
@@ -173,63 +175,61 @@ class AssignmentTasksList extends BlazeComponent {
 
         var skillsFilter = this.taskSkillsFilter.get();
         var neededTeamFilter = this.taskNeededTeamFilter.get();
-        var skillsAndNeededTeamFilterForAssigned = {};
+        var removeAssignmentFilter = {};
+        var timeSlotsFilter = {$elemMatch: {}};
 
-        var assignmentTermFilter = {
-            timeSlots:{
-                $elemMatch: {
-                    start: { $gte : currentAssignmentTerm.start},
-                    end: {$lt: currentAssignmentTerm.end}
+        if(filter._id) {
+            removeAssignmentFilter = filter;
+        } else if (filter === AssignmentReactiveVars.noneFilter){
+            teamFilter = AssignmentReactiveVars.noneFilter;
+            removeAssignmentFilter = AssignmentReactiveVars.noneFilter;
+        } else {
+            if (filter.$elemMatch) {
+                timeSlotsFilter = filter;
+            }
+
+            //assignmentTermFilter
+            timeSlotsFilter.$elemMatch.start = {$gte: currentAssignmentTerm.start};
+            timeSlotsFilter.$elemMatch.end = {$lt: currentAssignmentTerm.end};
+
+
+            if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
+                //skillsAndNeededTeamFilterForAssigned
+                if (!timeSlotsFilter.$elemMatch.peopleNeeded) timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
+
+                if (skillsFilter)
+                    timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
+                if (neededTeamFilter) {
+                    if (neededTeamFilter === "noNeededTeam")
+                        timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
+                    else
+                        timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
                 }
             }
-        };
+            if(!displayAssignedTask) {
+                var assignedPeopleNeedIds = _.reduce(Assignments.find().fetch(), function (memo, val) {
+                    memo.push(val.peopleNeedId);
+                    return memo
+                }, []);
+                if (!timeSlotsFilter.$elemMatch.peopleNeeded) timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
+                timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch._id = {$nin: assignedPeopleNeedIds};
+            }
 
-        //TODO possible de factoriser ca
-        if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
-            skillsAndNeededTeamFilterForAssigned = {
-                timeSlots: {
-                    $elemMatch: {
-                        peopleNeeded: {
-                            $elemMatch: {
-                                //below attributes will be added just after as it
-                                //skills: skillsFilter,
-                                //teamId: neededTeamFilter
-                            }
-                        }
-                    }
-                }
-            };
-            if (skillsFilter)
-                skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
+
+            if (skillsFilter) {
+                if (!timeSlotsFilter.$elemMatch.peopleNeeded) timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
+                timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
+            }
             if (neededTeamFilter) {
+                if (!timeSlotsFilter.$elemMatch.peopleNeeded) timeSlotsFilter.$elemMatch.peopleNeeded = {$elemMatch: {}};
                 if (neededTeamFilter === "noNeededTeam")
-                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
+                    timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
                 else
-                    skillsAndNeededTeamFilterForAssigned.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
+                    timeSlotsFilter.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
             }
+
         }
-        var skillsAndNeededTeamFilter = {
-            timeSlots: {
-                $elemMatch: {
-                    peopleNeeded: {
-                        $elemMatch: {
-                            assignedUserId:{ $eq: null }
-                            //below attributes will be added just after as it
-                            //skills: skillsFilter,
-                            //teamId: neededTeamFilter
-                        }
-                    }
-                }
-            }
-        };
-        if (skillsFilter)
-            skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeeded.$elemMatch.skills = {$all: skillsFilter};
-        if (neededTeamFilter) {
-            if (neededTeamFilter === "noNeededTeam")
-                skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = null;
-            else
-                skillsAndNeededTeamFilter.timeSlots.$elemMatch.peopleNeeded.$elemMatch.teamId = neededTeamFilter;
-        }
+
         var validationReadyFilter = {
           "timeSlotValidation.currentState" : ValidationState.READY
         };
@@ -237,32 +237,14 @@ class AssignmentTasksList extends BlazeComponent {
         var searchResult;
         var filterResult;
 
-        if (displayAssignedTask && assignmentType === AssignmentType.TASKTOUSER) {
-            filterResult = Tasks.find({
-                $and: [
-                    assignmentTermFilter,
-                    validationReadyFilter,
-                    filter,
-                    teamFilter,
-                    {
-                        $or: [
-                            skillsAndNeededTeamFilter,
-                            skillsAndNeededTeamFilterForAssigned
-                        ]
-                    }
-                ]
-            }, {limit: 20}).fetch();
-        } else {
-            filterResult = Tasks.find({
-                $and: [
-                    assignmentTermFilter,
-                    validationReadyFilter,
-                    filter,
-                    teamFilter,
-                    skillsAndNeededTeamFilter,
-                ]
-            }, {limit: 20}).fetch();
-        }
+        filterResult = Tasks.find({
+            $and: [
+                {timeSlots: timeSlotsFilter},
+                validationReadyFilter,
+                removeAssignmentFilter,
+                teamFilter,
+            ]
+        }, {limit: 20}).fetch();
 
         searchResult = TasksIndex.search(filterIndex, {limit: 20}).fetch();
         return _.intersectionObjects(searchResult, filterResult);
@@ -325,48 +307,70 @@ class AssignmentTasksList extends BlazeComponent {
         var peopleNeeded = this.currentData().peopleNeeded;
 
         if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
-            var result = [];
+            if (AssignmentReactiveVars.IsUnassignment.get()) {
 
-            _.each(peopleNeeded, (peopleNeed) => {
-                var selectedUser = Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get());
+                var userId = AssignmentReactiveVars.SelectedUser.get()._id;
+                var selectedDate = AssignmentReactiveVars.SelectedDate.get()
 
-                //userId : if existing, selected user must be the one
-                if (peopleNeed.userId) {
-                    if (peopleNeed.userId === selectedUser._id) {
+
+                var userAssignments = AssignmentService.getAssignmentForUser({_id:userId});
+                var assignmentFound;
+                userAssignments.forEach(assignment => {
+                    if((new moment(assignment.start).isBefore(selectedDate) || new moment(assignment.start).isSame(selectedDate)
+                        ) && new moment(assignment.end).isAfter(selectedDate)){
+                        assignmentFound =  assignment;
+                    }
+                });
+
+                var timeSlotPeopleNeed = PeopleNeedService.getPeopleNeedByIdAndTask(assignmentFound.peopleNeedId,Tasks.findOne(assignmentFound.taskId));
+
+                return [timeSlotPeopleNeed.peopleNeed]
+
+            }else {
+                var result = [];
+
+                _.each(peopleNeeded, (peopleNeed) => {
+                    if(Assignments.findOne({peopleNeedId: peopleNeed._id})) return;
+                    var selectedUser = Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get());
+
+                    //userId : if existing, selected user must be the one
+                    if (peopleNeed.userId) {
+                        if (peopleNeed.userId === selectedUser._id) {
+                            result.push(peopleNeed);
+                            return;
+                        }
+                        return;
+                    }
+
+
+                    //teamId : if existing, selected user must at least have the required team
+                    if (peopleNeed.teamId) {
+                        if (!_.contains(selectedUser.teams, peopleNeed.teamId)) {
+                            return;
+                        }
+                    }
+
+                    //if no skills required, we don't care about the user's skills
+                    if (peopleNeed.skills.length === 0) {
                         result.push(peopleNeed);
                         return;
                     }
-                    return;
-                }
 
-
-                //teamId : if existing, selected user must at least have the required team
-                if (peopleNeed.teamId) {
-                    if (!_.contains(selectedUser.teams, peopleNeed.teamId)) {
+                    //skills : if not empty, user must have all the required skill
+                    var userHaveAllRequiredSkills = true;
+                    _.each(peopleNeed.skills, (skill) => {
+                        if (!_.contains(selectedUser.skills, skill)) {
+                            userHaveAllRequiredSkills = false;
+                        }
+                    });
+                    if (userHaveAllRequiredSkills) {
+                        result.push(peopleNeed);
                         return;
                     }
-                }
-
-                //if no skills required, we don't care about the user's skills
-                if (peopleNeed.skills.length === 0) {
-                    result.push(peopleNeed);
-                    return;
-                }
-
-                //skills : if not empty, user must have all the required skill
-                var userHaveAllRequiredSkills = true;
-                _.each(peopleNeed.skills, (skill) => {
-                    if (!_.contains(selectedUser.skills, skill)) {
-                        userHaveAllRequiredSkills = false;
-                    }
                 });
-                if (userHaveAllRequiredSkills) {
-                    result.push(peopleNeed);
-                    return;
-                }
-            });
 
-            return result;
+                return result;
+            }
 
         } else {
             return peopleNeeded;

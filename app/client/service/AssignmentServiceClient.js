@@ -23,8 +23,28 @@ export class AssignmentServiceClient {
 
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK:
-                console.error("Template.assignmentCalendar.events.dblclick .creneau", "User can't normally dlb click on this kind of element when in userToTask");
-                return;
+
+                var userId = AssignmentReactiveVars.SelectedUser.get()._id;
+                var selectedDate = AssignmentReactiveVars.SelectedDate.get()
+
+
+                var userAssignments = AssignmentService.getAssignmentForUser({_id:userId});
+                var assignmentFound;
+                userAssignments.forEach(assignment => {
+                    if((new moment(assignment.start).isBefore(selectedDate) || new moment(assignment.start).isSame(selectedDate)
+                        ) && new moment(assignment.end).isAfter(selectedDate)){
+                        assignmentFound =  assignment;
+                    }
+                });
+
+                var newFilter = {
+                    _id: assignmentFound.taskId
+                };
+
+                AssignmentReactiveVars.SelectedPeopleNeed.set({_id:assignmentFound.peopleNeedId});
+                AssignmentReactiveVars.TaskFilter.set(newFilter);
+                AssignmentReactiveVars.IsUnassignment.set(true);
+
                 break;
             case AssignmentType.TASKTOUSER:
                 var peopleNeeded = AssignmentReactiveVars.SelectedPeopleNeed.get();
