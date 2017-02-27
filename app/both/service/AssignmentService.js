@@ -60,5 +60,16 @@ export class AssignmentService {
         return res;
     }
 
+    //TODO use also end date
+    static userHasAssignmentBetweenDates(user,startDate,endDate){
+        var userAssignments = AssignmentService.getAssignmentForUser(user);
+        var assignmentFound = AssignmentService.getAssignmentByStart(userAssignments, startDate);
+        if(assignmentFound){
+            return true;
+        }
+        return false;
+
+    }
+
 
     }

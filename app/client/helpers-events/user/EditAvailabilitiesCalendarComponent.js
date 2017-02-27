@@ -79,7 +79,9 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         if(AvailabilityService.checkUserAvailabilty(user,firstDate,secondDate)) {
             //sAlert.info("Double click to delete an availability");
             this.removeAvailability(event);
-        } else {
+        } else if(AssignmentService.userHasAssignmentBetweenDates(user,firstDate,secondDate)){
+            sAlert.info("You cannot edit an assigned availability");
+        } else{
             AvailabilityService.addAvailabilities(user,firstDate.toDate(),secondDate.toDate())
         }
     }
