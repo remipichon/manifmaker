@@ -19,36 +19,6 @@ Schemas.SkillsId = new SimpleSchema({
 
 });
 
-Schemas.TaskAssignment = new SimpleSchema({
-    userName: {
-        type: String,
-        label: "Task assignment User Name"
-    },
-    start: {
-        type: Date,
-        label: "Task Assignment Start Date"
-    },
-    end: {
-        type: Date,
-        label: "Task Assignment End Date"
-    },
-    assignmentId: {
-        type: SimpleSchema.RegEx.Id,
-        label: "Task assignment assignment id",
-        custom: function () { //validate data is same as the real assignment
-            var assignment = Assignments.findOne(this.value);
-            if (!assignment)
-                return "unknownId";
-            var timeSlot = TimeSlotService.getTimeSlot(assignment.taskId,assignment.timeSlotId);
-            if (Meteor.users.findOne(assignment.userId).username !== this.field(this.key.replace("assignmentId", "") + "userName").value
-                || !new moment(timeSlot.start).isSame(new moment(this.field(this.key.replace("assignmentId", "") + "start").value))
-                || !new moment(timeSlot.end).isSame(new moment(this.field(this.key.replace("assignmentId", "") + "end").value)))
-                return "taskAssignmentNotMatching"
-        }
-    }
-
-});
-
 Schemas.PeopleNeed = new SimpleSchema({
     userId: {
         type: String,
@@ -164,27 +134,6 @@ Schemas.PeopleNeed = new SimpleSchema({
             afFieldInput: {
                 options: Schemas.helpers.allSkillsOptions
             }
-        }
-    },
-    assignedUserId: {
-        type: SimpleSchema.RegEx.Id,
-        label: "People Need assigned user id",
-        optional: true,
-        autoValue: function () {
-            if (!this.isSet)
-                return null;
-        },
-        custom: function () {
-            var cantUpdate = PeopleNeedService.schemaCustomPeopleNeed(this);
-            if (cantUpdate) return cantUpdate;
-
-            if (this.value) {
-                if (!Meteor.users.findOne(this.value))
-                    return "unknownId";
-            }
-        },
-        autoform: {
-            type: "hidden",
         }
     },
     _id: {
@@ -443,15 +392,6 @@ Schemas.Tasks = new SimpleSchema({
         optional: true,
         custom(){
            return TimeSlotService.schemaCustomTimeSlot(this);
-        }
-    },
-    assignments: {
-        type: [Schemas.TaskAssignment],
-        label: "Task assignments",
-        defaultValue: [],
-        optional: true,
-        autoform: {
-            type: "hidden",
         }
     },
     timeSlotValidation: {

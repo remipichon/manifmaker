@@ -41,6 +41,7 @@ Router.route('/assignment/userToTask', function () {
 Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
         console.info("routing", '/assignment/userToTask/' + this.params.userId + '/' + this.params.selectedDate);
 
+        //TODO this is never used !!!
         var selectedDate = parseInt(this.params.selectedDate);
         selectedDate = new moment(selectedDate);
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;

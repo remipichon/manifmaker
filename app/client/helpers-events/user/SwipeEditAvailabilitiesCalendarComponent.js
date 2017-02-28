@@ -81,11 +81,8 @@ class SwipeEditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalenda
         return AssignmentCalendarDisplayedAccuracy.findOne().accuracy
     }
 
-    creanOnClick() {
-        //to implement
-    }
 
-    quartHeureOnClick(event) {
+    quartHeureOnClick(event) { //event is disabled
         //to implement
 
         sAlert.info('Add availabilities by selecting slots with your mouse pressed or double click to remove one slot.');

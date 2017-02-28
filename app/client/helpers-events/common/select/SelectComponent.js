@@ -264,6 +264,7 @@ export class SelectComponent extends BlazeComponent {
             this.quickSelectIds = this.data().quickSelectIds || null;
             this.quickSelectLabel = this.data().quickSelectLabel;
         }
+        this.quickSelectLabel= this._readi18n(this.quickSelectLabel);
 
         /**
          * @sumamry Popover title
@@ -272,6 +273,7 @@ export class SelectComponent extends BlazeComponent {
          *
          */
         this.title = this.data().title || "Update " + this.data().optionCollection;
+        this.title= this._readi18n(this.title);
 
         /**
          * @summary Label of the select component (not the popover title)
@@ -279,6 +281,7 @@ export class SelectComponent extends BlazeComponent {
          * @type {string}
          */
         this.selectLabel = this.data().selectLabel || this.data().updateCollection + "' " + this.data().optionCollection;
+        this.selectLabel= this._readi18n(this.selectLabel);
 
         /**
          * @summary Search input text placeholder
@@ -286,12 +289,14 @@ export class SelectComponent extends BlazeComponent {
          * @type {string}
          */
         this.filterPlaceHolder = this.data().filterPlaceHolder || "Filter by " + this.optionValueName;
+        this.filterPlaceHolder= this._readi18n(this.filterPlaceHolder);
 
         /**
          * @default : Nothing yet selected
          * @type {string}
          */
         this.nothingSelectedLabel = this.data().nothingSelectedLabel || "Nothing yet selected";
+        this.nothingSelectedLabel= this._readi18n(this.nothingSelectedLabel);
 
         /**
          * @summary compact form where selectLabel is not used
@@ -341,6 +346,15 @@ export class SelectComponent extends BlazeComponent {
 
 
         this.checkItemPath();
+    }
+
+    _readi18n(label) {
+        if (label) {
+            if (label.charAt(0) === "_") {
+                label = TAPi18n.__(label.substring(2, label.length))
+            }
+        }
+        return label;
     }
 
     /** @ignore */

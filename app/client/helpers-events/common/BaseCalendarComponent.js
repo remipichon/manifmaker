@@ -8,9 +8,6 @@ export class BaseCalendarComponent extends BlazeComponent{
         return true;
     }
 
-    creanOnClick() {
-        //to implement
-    }
 
     quartHeureOnClick(event) {
         //to implement
@@ -37,7 +34,6 @@ export class BaseCalendarComponent extends BlazeComponent{
             {
                 "click  .quart_heure:not(.no-action)": this.quartHeureOnClick,
                 "click  .quart_heure.no-action": this.quartHeureNoActionOnClick,
-                "click .creneau": this.creanOnClick
             }
         ]
     }

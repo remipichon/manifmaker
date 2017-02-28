@@ -84,7 +84,8 @@ export class ReadAvailabilitiesCalendarComponent extends BaseCalendarComponent {
         calendarSlotData = CalendarServiceClient.getCalendarSlotData(user.Id, user.availabilities,startCalendarTimeSlot,false);
         if(calendarSlotData) return [calendarSlotData];
         //or an assignment;
-        calendarSlotData = CalendarServiceClient.getCalendarSlotData(user.Id, user.assignments,startCalendarTimeSlot,true);
+        var userAssignments = AssignmentService.getAssignmentForUser(user);
+        calendarSlotData = CalendarServiceClient.getCalendarSlotData(user.Id, userAssignments,startCalendarTimeSlot,true);
         if(calendarSlotData) return [calendarSlotData];
 
     }
