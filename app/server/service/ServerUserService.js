@@ -241,8 +241,32 @@ export class ServerUserService {
                     console.info("Users.allowUpdate : authorizing setting superadmin roles because superadmin group role has been used")
                     return true;
                 }
+                return false;
             }
         }
+
+        var superadminGroupRoles = GroupRoles.findOne({name:"superadmin"});
+        console.log("========")
+        console.log(modifier)
+
+        if (modifier.$set && modifier.$set.roles
+            && modifier.$set.roles.length === superadminGroupRoles.roles.length
+            && _.difference(modifier.$set.roles, superadminGroupRoles.roles).length === 0) {
+            console.error("thrown to client 403", `Forbidden, superadmin set of roles can not be used`);
+            throw new Meteor.Error("403", `Forbidden, superadmin group role can be used`);
+        }
+
+        if (modifier.$push && modifier.$push.groupRoles && modifier.$push.groupRoles.$each){
+            var groupRoles = modifier.$push.groupRoles.$each;
+            groupRoles.forEach(groupRoleId => {
+                if(superadminGroupRoles._id  == groupRoleId){
+                    console.error("thrown to client 403", `Forbidden, superadmin group role can not be used`);
+                    throw new Meteor.Error("403", `Forbidden, superadmin group role can be used`);
+                }
+            });
+        }
+
+
 
         //when inserting new user, its default group role have to be propagated even if default group role doesn't provide any roles
         if(Settings.findOne()) var defaultGroupRoles = GroupRoles.findOne(Settings.findOne().defaultGroupRoles);

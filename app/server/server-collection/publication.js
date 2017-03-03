@@ -18,9 +18,13 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("users", function () {
-        if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"users")
-        || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"users"))
+        if(Meteor.users.findOne(this.userId).username === "superadmin"){
             return Meteor.users.find({});
+        }
+        else if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"users")
+            || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"users")
+            || SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"users"))
+            return Meteor.users.find({username: {$ne: "superadmin"}});
         else
             return Meteor.users.find({_id : this.userId});
         //TODO ne pas envoyer les roles des users si pas le role 'user'
@@ -153,7 +157,11 @@ Meteor.startup(function () {
      * @returns {Collection}
      */
     Meteor.publish("group-roles", function () {
-        return GroupRoles.find({});
+        if(Meteor.users.findOne(this.userId).username === "superadmin"){
+            return GroupRoles.find({});
+        }
+        var superadminGroupRoles = GroupRoles.findOne({name:"superadmin"});
+        return GroupRoles.find({_id: {$ne: superadminGroupRoles._id}});
     });
 
     /**
