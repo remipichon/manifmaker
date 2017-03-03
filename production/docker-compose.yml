@@ -26,6 +26,7 @@ services:
     manifmaker: 
         image: 'assomaker/manifmaker:0-2-2'
         environment:
+            - MAILGUN_PASSWORD=${MAILGUN_PASSWORD}
             - IS_PRODUCTION=true 
             - ROOT_URL=http://manifmaker.24heures.org/
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
