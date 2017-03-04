@@ -24,8 +24,9 @@ services:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
             - ~/backup_server_ssh:/root/.ssh #To send backups to a server with ssh, private key should be here, public key on the backup server
     manifmaker: 
-        image: 'assomaker/manifmaker:0-2-2'
+        image: 'assomaker/manifmaker:0-2-3'
         environment:
+            - MAILGUN_PASSWORD=_MAILGUN_PASSWORD_
             - IS_PRODUCTION=true 
             - ROOT_URL=http://manifmaker.24heures.org/
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
