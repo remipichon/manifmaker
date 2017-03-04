@@ -17,7 +17,8 @@ export class UserServiceClient {
      * @param user : user to delete
      */
     static beforeRemoveHook(user){
-            var assignmentsCount = user.assignments.length;
+        var userAssignments = AssignmentService.getAssignmentForUser(user);
+        var assignmentsCount = userAssignments.length;
             if (assignmentsCount === 0)
                 bootbox.confirm("You are about to delete a user, are you sure ?",_.bind(function (result) {
                         if (result) {

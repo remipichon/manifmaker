@@ -1,0 +1,44 @@
+{
+  "application": {
+    "name": "ManifMaker"
+  },
+  "select":{
+    "quickSelectLabel":{
+        "selectYourself": "select yourself"
+    },
+    "selectLabel":{
+      "activityResponsible": "Activity responsible"
+    },
+    "nothingSelectedLabel": {
+      "noOne": "No one"
+    }
+  },
+  "action":{
+    "edit": "edit",
+    "read": "read"
+  },
+  "page": {
+    "activity": {
+      "list": {
+        "header": "Activities List",
+        "create": "Create a new Activity",
+        "filter":{
+            "activityName":"Activity name",
+            "searchPlaceHolder": "Search activity..."
+        }
+      }
+    },
+    "assignment": {
+    },
+    "common": {
+    },
+    "group": {
+    },
+    "references": {
+    },
+    "task": {
+    },
+    "user": {
+    }
+  }
+}

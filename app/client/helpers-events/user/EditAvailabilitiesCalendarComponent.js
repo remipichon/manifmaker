@@ -22,14 +22,14 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
 
     calendarOnClick(event) {
         event.stopPropagation();
-        this.availabilityClick++;
-        if (this.availabilityClick == 1) {
-            (function(event,self){
-                setTimeout(_.bind(function () {
-                    var oldAvailability = this.availabilityClick
-                    this.availabilityClick = 0;
+        // this.availabilityClick++;
+        // if (this.availabilityClick == 1) {
+        //     (function(event,self){
+        //         setTimeout(_.bind(function () {
+        //             var oldAvailability = this.availabilityClick
+        //             this.availabilityClick = 0;
 
-                    if (oldAvailability == 1) {
+                    // if (oldAvailability == 1) {
                         if(this.isSelecting){
                             this.endSelectingAvailability(event);
                         } else
@@ -38,26 +38,26 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
                         } else {
                             this.addAvailability(event);
                         }
-                    } else {
-                        if(!this.isSelecting) {
-                            this.removeAvailability(event);
-                        }
-                    }
-                }, self), 200);
-            })(event,this)
-        }
+                    // } else {
+                    //     if(!this.isSelecting) {
+                    //         this.removeAvailability(event);
+                    //     }
+                    // }
+                // }, self), 200);
+            // })(event,this)
+        // }
     }
 
     readFirstDate(event){
         event.stopPropagation();
 
         //prevent firing add on an existing availability
-        if($($($(event.target)[0]).children()[0]).hasClass("creneau")){
-            console.warn("EditAvailabilitiesCalendarComponent : skipping add availability.");
-            return;
-        }
+        // if($($($(event.target)[0]).children()[0]).hasClass("creneau")){
+        //     console.warn("EditAvailabilitiesCalendarComponent : skipping add availability.");
+        //     return;
+        // }
 
-        var date = $(event.target).attr("quarter");
+        var date = $(event.target).attr("quarter") || $(event.target).parents().attr("quarter");
         if(!date) {
             console.warn("EditAvailabilitiesCalendarComponent : could not read date from 'quarter' attribute.",$(event.target));
             return;
@@ -77,8 +77,11 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
         if(!firstDate || !secondDate) return;
 
         if(AvailabilityService.checkUserAvailabilty(user,firstDate,secondDate)) {
-            sAlert.info("Double click to delete an availability");
-        } else {
+            //sAlert.info("Double click to delete an availability");
+            this.removeAvailability(event);
+        } else if(AssignmentService.userHasAssignmentBetweenDates(user,firstDate,secondDate)){
+            sAlert.info("You cannot edit an assigned availability");
+        } else{
             AvailabilityService.addAvailabilities(user,firstDate.toDate(),secondDate.toDate())
         }
     }
@@ -138,7 +141,7 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
     removeAvailability(event){
         sAlert.closeAll();
         event.stopPropagation();
-        var date = $(event.target).attr("quarter");
+        var date = $(event.target).attr("quarter") || $(event.target).parents().attr("quarter");
         if(!date) {
             console.warn("EditAvailabilitiesCalendarComponent : could not read date from 'quarter' attribute.",$(event.target));
             return;
