@@ -4,7 +4,55 @@ class ExportUserAssignmentComponent extends BlazeComponent {
 
     constructor() {
         super();
+        this.randNameArray = [];
+
     }
+
+
+    onRendered() {
+        GoogleMaps.load();
+        // We can use the `ready` callback to interact with the map API once the map is ready.
+        this.randNameArray.forEach(rand => {
+            GoogleMaps.ready(rand, function (map) {
+                // Add a marker to the map once it's ready
+                var marker = new google.maps.Marker({
+                    position: map.options.center,
+                    map: map.instance
+                });
+            })
+        });
+
+    }
+
+    mapOptions(){
+        if (GoogleMaps.loaded()) {
+            // Map initialization options
+            var task = this.task() || this.currentData();
+            var place = Places.findOne(task.placeId);
+            var loc = place.location.split(",");
+            return {
+                center: new google.maps.LatLng(loc[0], loc[1]),
+                zoom: 16
+            };
+        }
+    }
+
+    makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 5; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
+    randName(){
+        var rand = this.makeid();
+        this.randNameArray.push(rand);
+        return rand;
+    }
+
 
     template() {
         return "exportUserAssignmentComponent";

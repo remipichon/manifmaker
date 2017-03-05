@@ -51,8 +51,7 @@
                                                 </h5>
                                                 <i class="mdi mdi-map-marker"></i>{{place placeId}}
                                                 <div class="wrapper-map">
-                                                    MAP
-                                                    <!-- TODO : GoogleMap -->
+                                                    {{> googleMap name=randName options=mapOptions}}
                                                 </div>
                                             </div>
                                             <br>
@@ -182,8 +181,7 @@
                             </h5><br>
                             <i class="mdi mdi-map-marker"></i>{{place task.placeId}}
                             <div class="wrapper-map">
-                                MAP
-                                <!-- TODO : GoogleMap -->
+                                {{> googleMap name=randName options=mapOptions}}
                             </div>
                             <br>
                             <br>

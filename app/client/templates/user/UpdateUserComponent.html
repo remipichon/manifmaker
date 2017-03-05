@@ -31,10 +31,17 @@
         {{# autoForm collection="Meteor.users" doc=this id="updateUserForm" type="update" autosave=true}}
 
             <div class="row">
+                <div class="col-md-12">
+                    <a href="/user/{{this._id}}/export"><button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Export</button></a>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-md-5">
                     {{>EditNameComponent collection="Meteor.users" placeholder="First name..." name=profile.firstName pathToUpdate="profile.firstName" _id=_id}}
                 </div>
             </div>
+
 
             {{#if isInRole RolesEnum.USERDELETE}}
                 {{#quickRemoveButton class="btn btn-default delete-task-button pull-right" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
