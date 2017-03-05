@@ -1,0 +1,210 @@
+<template name="exportUserAssignment">
+    {{> ExportUserAssignmentComponent}}
+</template>
+
+<template name="exportUserAssignmentComponent">
+    <h2 class="pull-right">
+        {{profile.firstName}}
+        {{profile.familyName}}
+        <br>
+        ({{username}})
+        <br>
+    </h2>
+    <h1>Tasks planning</h1>
+    <br>
+    <br>
+
+    {{#unless equals groupedTasksResponsible.length 0}}
+    <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3>Tasks that you are in charge of</h3>
+            </div>
+
+        {{#each groupedTasksResponsible}}
+            <div class="panel panel-default planning-group-wrapper">
+                <div class="panel-heading">
+                    <h5>
+                        {{#unless equals groupId "null"}}
+                            {{groupName groupId}}
+                        {{else}}
+                            Ungrouped Tasks
+                        {{/unless}}
+                    </h5>
+                </div>
+                <div class="panel-body container-fluid">
+                    {{#each tasksGrouped}}
+                        <h5>
+                            {{name}}
+                        </h5>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="col-sm-9" rowspan="{{timeSlots.length}}" style="vertical-align:top">
+                                        <div class="row">
+                                            <div class="col-md-6 test">
+                                                <h5>What to do ?</h5>
+                                                <p class="pre small">{{description}} </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5>
+                                                   Where ?
+                                                </h5>
+                                                <i class="mdi mdi-map-marker"></i>{{place placeId}}
+                                                <div class="wrapper-map">
+                                                    {{> googleMap name=randName options=mapOptions}}
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <br>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h5>With what ?</h5>
+                                                <div class="row">
+                                                    {{#each equipments}}
+                                                        {{#unless equals this.quantity 0}}
+                                                            <div class="col-sm-6  small">
+                                                                <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment this}}
+                                                                <br>
+                                                            </div>
+                                                        {{/unless}}
+                                                    {{/each}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5>TaskResponsible :</h5> {{displayUserInfo masterId}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    {{#unless equals timeSlots.length 0}}
+                                        {{#each timeSlots}}
+                                            {{#if equals @index 0}}
+                                                <td class="col-sm-3">
+                                                    {{displayDateTime start}} - {{displayHoursMinute end}}
+                                                    <span class="small">
+                                                        <br><strong>Assigned :</strong>
+                                                    </span>
+                                                        <ul class="small">
+                                                            {{#each taskAssignments}}
+                                                                {{#unless equals userId null}}
+                                                                    <li>
+                                                                        {{displayUserInfo userId}}
+                                                                    </li>
+                                                                {{/unless}}
+                                                            {{/each}}
+                                                        </ul>
+                                                </td>
+                                            {{/if}}
+                                        {{/each}}
+                                    {{else}}
+                                        <td class="col-sm-4">
+                                            There is no timeSlot for this task.
+                                        </td>
+                                    {{/unless}}
+                                </tr>
+
+                                {{#each timeSlots}}
+                                    {{#unless equals @index 0}}
+                                        <tr>
+                                            <td class="col-sm-4">
+                                                {{displayDateTime start}} - {{displayHoursMinute end}}
+                                                <span class="small">
+                                                    <br><strong>Assigned :</strong>
+                                                </span>
+                                                <ul class="small">
+                                                    {{#each taskAssignments}}
+                                                        {{#unless equals userId null}}
+                                                            <li>
+
+                                                                {{displayUserInfo userId}}
+
+                                                            </li>
+                                                        {{/unless}}
+                                                    {{/each}}
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {{/unless}}
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+
+    </div>
+
+    {{/unless}}
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3>Your tasks</h3>
+        </div>
+
+
+        {{#each sortedAssignments}}
+            <div class="panel panel-default planning-task-wrapper">
+                <div class="row inline-headers">
+                    <div class="col-sm-6">
+                        <h4>{{task.name}}</h4>
+                        {{displayDateTime timeSlot.start}} - {{displayHoursMinute timeSlot.end}}
+                        <br>
+                        <h5>What to do ?</h5>
+                        <p class="pre small">{{task.description}}</p>
+                        <br>
+
+
+                        <h5>With who ?</h5>
+                        <ul class="small">
+                            <li>
+                                <strong>{{displayUserInfo task.liveEventMasterId}} - Responsible</strong>
+                            </li>
+                            {{#with resp=task.liveEventMasterId ppl=timeSlot.peopleNeeded}}
+                                {{#each ppl}}
+                                    {{#unless equals this.assignedUserId null}}
+                                        {{#unless equals this.assignedUserId ../resp}}
+                                            <li>
+
+                                                {{displayUserInfo this.assignedUserId}}
+
+                                            </li>
+                                        {{/unless}}
+                                    {{/unless}}
+                                {{/each}}
+                            {{/with}}
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="col-md-12">
+                            <h5>
+                                Where ?
+                            </h5><br>
+                            <i class="mdi mdi-map-marker"></i>{{place task.placeId}}
+                            <div class="wrapper-map">
+                                {{> googleMap name=randName options=mapOptions}}
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                        <div class="col-md-12">
+                            <h5>With what ?</h5>
+                            <div class="row">
+                                {{#each task.equipments}}
+                                    {{#unless equals this.quantity 0}}
+                                        <div class="col-sm-6  small">
+                                            <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment this}}
+                                            <br>
+                                        </div>
+                                    {{/unless}}
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {{/each}}
+
+
+    </div>
+</template>

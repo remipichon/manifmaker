@@ -31,17 +31,25 @@
         {{# autoForm collection="Meteor.users" doc=this id="updateUserForm" type="update" autosave=true}}
 
             <div class="row">
-                <div class="col-md-5 col-sm-12">
+                <div class="col-md-12">
+                    <a href="/user/{{this._id}}/export"><button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Export</button></a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5">
                     {{>EditNameComponent collection="Meteor.users" placeholder="First name..." name=profile.firstName pathToUpdate="profile.firstName" _id=_id}}
                 </div>
+            </div>
 
-                <div class="col-md-5 col-sm-12">
+
+            {{#if isInRole RolesEnum.USERDELETE}}
+                {{#quickRemoveButton class="btn btn-default delete-task-button pull-right" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+            {{/if}}
+
+            <div class="row">
+                <div class="col-md-5">
                     {{>EditNameComponent collection="Meteor.users" placeholder="Family name..." name=profile.familyName pathToUpdate="profile.familyName" _id=_id}}
-                </div>
-                <div class="col-md-2 col-sm-12">
-                    {{#if isInRole RolesEnum.USERDELETE}}
-                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
-                    {{/if}}
                 </div>
             </div>
 
@@ -61,25 +69,26 @@
                     <div class="">
                         <div class="row">
 
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <div>
                                     {{> afQuickField name='profile.phoneNumber'}}
-                                </div>
-                            </div>
-
-                            <div class="col-md-2">
-                                <div>
-                                    <label>Birth date</label>
-                                    {{>DateTimePickerComponent date=profile.birthday updateDateCallback=updateBirthDate format="DD/MM/YYYY"}}
+                                    TODO phone number
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div>
-                                    <div class="row text-center">
-                                        <label>Es tu à l'INSA ?</label>
-                                    </div>
-                                    <div class="row">
+                                    <!--<label>User Birth date</label>-->
+                                    TODO birth date
+                                    <!--{{>DateTimePickerComponent date=birthday updateDateCallback=updateBirthDate}}-->
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    <label>Es tu à l'INSA ?</label>
 
                                     <div class="col-md-6">
                                         {{> afQuickField name='profile.departement'}}
@@ -87,11 +96,9 @@
                                     <div class="col-md-6">
                                         {{> afQuickField name='profile.annee'}}
                                     </div>
-                                    </div>
-
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
                                     <div>
                                         {{> MultipleNonMandatorySelectComponent selectLabel="Team" title="Update teams"
@@ -102,7 +109,7 @@
                                     </div>
                                 {{/if}}
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 {{#if isInRole RolesEnum.ROLE}}
                                     <div>
                                         {{> MultipleNonMandatorySelectComponent selectLabel="Group Roles" title="Update group roles"
@@ -117,7 +124,7 @@
 
                             <div class="col-md-12">
                                 <div>
-                                    {{> afQuickField name='profile.comment' rows=2}}
+                                    {{> afQuickField name='profile.comment' rows=20}}
                                 </div>
                             </div>
                         </div>
