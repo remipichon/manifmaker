@@ -10,7 +10,7 @@
 
     <div class="col-md-12">
         {{> DismissibleHelperComponent message="Depending on your team, you can access different period to add availabilties, check them all !" uniqueId="term-select"}}
-        {{>AssignmentTermSelectComponent callbackIfNothingToDisplay=callbackIfNoTerms teams=userData.teams}}
+        {{>AssignmentTermButtonsComponent callbackIfNothingToDisplay=callbackIfNoTerms teams=userData.teams}}
     </div>
 
     {{#if displayCalendar}}
@@ -18,15 +18,15 @@
         <div class="col-md-12">
             {{#if readOnly}}
                 {{#if assignmentTermDeadlineIsOver}}
-                    <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add availabilities</div>
-                {{else}}
-                    {{#if isCurrentUserTheOneLogged userData._id}}
-                        <div class="alert alert-warning" role="alert">You have been validated, you cannot edit your availabilities</div>
-                    {{/if}}
+                    <div class="alert alert-warning" role="alert">This assignment term is closed, you cannot add nor removeavailabilities</div>
                 {{/if}}
                 {{> ReadAvailabilitiesCalendarComponent displayCharisma=true user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{else}}
-                {{> DismissibleHelperComponent message="Want to add an availability ? Simply click and select when you want ! Double click allows you to remove one slot." uniqueId="availabily-update"}}
+                {{#if assignmentTermDeadlineIsOver}}
+                    <div class="alert alert-warning" role="alert">This assignment term is closed, you can add availabilities, be careful when you remove availabilities.</div>
+                {{/if}}
+                {{> DismissibleHelperComponent message="Want to add an availability ? Simply click on a time slot !      Protip : you can several by pressing 'maj' key along with a first click and then drag to select more." uniqueId="availabily-update"}}
+                {{> DismissibleHelperComponent message="Click on an availability to remove one slot." uniqueId="availabily-delete"}}
                 {{> EditAvailabilitiesCalendarComponent displayCharisma=true user=userData parentInstance=self timeSlotTemplate="updateAvailabilitiesCalendar"}}
             {{/if}}
         </div>

@@ -1,3 +1,5 @@
+import {Utils} from '../../../service/Utils'
+
 export class SelectComponent extends BlazeComponent {
 
     /** @ignore */
@@ -262,6 +264,7 @@ export class SelectComponent extends BlazeComponent {
             this.quickSelectIds = this.data().quickSelectIds || null;
             this.quickSelectLabel = this.data().quickSelectLabel;
         }
+        this.quickSelectLabel= this._readi18n(this.quickSelectLabel);
 
         /**
          * @sumamry Popover title
@@ -270,6 +273,7 @@ export class SelectComponent extends BlazeComponent {
          *
          */
         this.title = this.data().title || "Update " + this.data().optionCollection;
+        this.title= this._readi18n(this.title);
 
         /**
          * @summary Label of the select component (not the popover title)
@@ -277,6 +281,7 @@ export class SelectComponent extends BlazeComponent {
          * @type {string}
          */
         this.selectLabel = this.data().selectLabel || this.data().updateCollection + "' " + this.data().optionCollection;
+        this.selectLabel= this._readi18n(this.selectLabel);
 
         /**
          * @summary Search input text placeholder
@@ -284,12 +289,14 @@ export class SelectComponent extends BlazeComponent {
          * @type {string}
          */
         this.filterPlaceHolder = this.data().filterPlaceHolder || "Filter by " + this.optionValueName;
+        this.filterPlaceHolder= this._readi18n(this.filterPlaceHolder);
 
         /**
          * @default : Nothing yet selected
          * @type {string}
          */
         this.nothingSelectedLabel = this.data().nothingSelectedLabel || "Nothing yet selected";
+        this.nothingSelectedLabel= this._readi18n(this.nothingSelectedLabel);
 
         /**
          * @summary compact form where selectLabel is not used
@@ -330,7 +337,24 @@ export class SelectComponent extends BlazeComponent {
         this.selectedOptionSortedOnTopOfList = this.data().selectedOptionSortedOnTopOfList || false;
 
 
+        /**
+         * @summary If true, update result will be given to Utils.onUpdateCollectionResult to display the error or update the sync top nav bar
+         * @default true
+         * @type {boolean}
+         */
+        this.displayUpdateResult = (typeof this.data().displayUpdateResult === "boolean")? this.data().displayUpdateResult: true;
+
+
         this.checkItemPath();
+    }
+
+    _readi18n(label) {
+        if (label) {
+            if (label.charAt(0) === "_") {
+                label = TAPi18n.__(label.substring(2, label.length))
+            }
+        }
+        return label;
     }
 
     /** @ignore */
@@ -556,7 +580,7 @@ export class SelectComponent extends BlazeComponent {
             if (removedOptions.length !== 0) {
                 updateQuery = {
                     $pull: {
-                        [pathOrPathWithIndex]: removedOptions[0]
+                        [pathOrPathWithIndex]: {$in: removedOptions}
                     }
                 };
             } else if (addedOptions.length !== 0) {
@@ -578,6 +602,8 @@ export class SelectComponent extends BlazeComponent {
         this._getObjectUpdateCollection().update(this.updateItemId,
                 updateQuery
             , _.bind(function (error, numberAffected) {
+                if(this.displayUpdateResult)
+                    Utils.onUpdateCollectionResult(error,numberAffected);
                 if (this.updateCallback)
                     this.updateCallback(error, numberAffected, updateCallbackOptions);
             }, this)

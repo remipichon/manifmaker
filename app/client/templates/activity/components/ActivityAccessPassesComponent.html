@@ -3,6 +3,13 @@
 
     {{# autoForm collection="Activities" doc=activityDoc id="updateActivityAccessPassForm" type=autoFormType autosave=true}}
 
+        <div class="col-md-12">
+            {{> DismissibleHelperComponent message="Does this activity has special security needs ?" uniqueId="specifc-secu-measure-update"}}
+            <div>
+                {{> afQuickField name='specificSecurityMeasures' rows=10}}
+            </div>
+        </div>
+
         <div class="col-xs-6">
             {{> afQuickField name='accessPasses'}}
         </div>

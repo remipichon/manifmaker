@@ -3,7 +3,9 @@ services:
   - docker
 
 addons:
-  ssh_known_hosts: vps302914.ovh.net
+  ssh_known_hosts: 
+    - vps302914.ovh.net
+    - vps302915.ovh.net
 
 before_install:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
@@ -15,20 +17,13 @@ before_install:
   - eval "$(ssh-agent -s)"
   - chmod 600 $TRAVIS_BUILD_DIR/preprod_rsa
   - ssh-add $TRAVIS_BUILD_DIR/preprod_rsa
+  - chmod 700 scripts/runCi.sh
 
 
 script:
-  - cd app
-  - echo "... Now building and delivering Docker image for " $MANIFMAKER_VERSION
-  - docker build -t assomaker/manifmaker:$MANIFMAKER_VERSION .
-  - docker push assomaker/manifmaker:$MANIFMAKER_VERSION
-  - echo "... Now shipping " $MANIFMAKER_VERSION
-  - ssh root@vps302914.ovh.net "docker pull assomaker/manifmaker:$MANIFMAKER_VERSION"
-  - echo "... Now deploying to PreProd "
-  - echo "!!! manifmaker repo need to be present AND production/docker-compose manifmaker image tag should be identical to app/package.json verion !!!"
-  - ssh root@vps302914.ovh.net "cd manifmaker; git reset --hard HEAD; git pull origin deploy"
-  - ssh root@vps302914.ovh.net "cd manifmaker/production; docker-compose up -d manifmaker"
+  - . scripts/runCi.sh
 
 branches:
   only:
   - deploy
+  - production

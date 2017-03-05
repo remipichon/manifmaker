@@ -7,6 +7,7 @@
     <div class="row">
     <div class="inline">
         <i class="mdi mdi-help-circle"></i>
+        {{> DismissibleHelperComponent message="Below is the next step you need to do an assignment (don't forget to dissmiss this helper)" uniqueId="assignment-bread"}}
         {{#each breadCrumbAssignment}}
             <i class="mdi mdi-chevron-right"></i>
             <a href="{{url}}">{{label}}</a>

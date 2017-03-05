@@ -11,6 +11,15 @@ InjectDataInfo = new Mongo.Collection("inject_data_infos");
 
 
 Meteor.startup(function () {
+
+    var mailGunPassword = process.env.MAILGUN_PASSWORD
+    if(mailGunPassword)
+        process.env.MAIL_URL = "smtp://postmaster@mail.manifmaker.com:MAILGUN_PASSWORD@smtp.mailgun.org:587";
+    else
+        console.info("MAILGUN_PASSWORD is not defined, this app will not send mail");
+
+
+
     Meteor.isStartingUp = true;
 
     // code to run on server at startup
@@ -81,9 +90,9 @@ Meteor.startup(function () {
     if (Meteor.isDevelopment) {
     //     specific to the dev needs
         console.info("Meteor.startup : isDevelopment, injecting or not");
-        InjectDataHelperServerService.deleteAll();
-        password = InjectDataHelperServerService.initAccessRightData();
-        Meteor.injectDataServerService.injectAllData();
+        // InjectDataHelperServerService.deleteAll();
+        // password = InjectDataHelperServerService.initAccessRightData();
+        // Meteor.injectDataServerService.injectAllData();
     }
 
     if(password){

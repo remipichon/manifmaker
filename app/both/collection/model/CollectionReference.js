@@ -197,8 +197,8 @@ Schemas.references.options.AssignmentTerms = {
             }
         },
         {
-            key: "start",
-            label: "Start",
+            key: "end",
+            label: "End",
             fn: function(date){
                 return new moment(date).format("ddd DD MMM HH[h]mm");
             }
@@ -357,7 +357,6 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     addAvailabilitiesDeadline: {
         type: Date,
         label: "Assignment add availabilities deadline",
-        optional: true,
         autoform: {
             type: "datetime-local"
         }
@@ -907,6 +906,15 @@ Schemas.references.AndroidCategories = new SimpleSchema({
         type: String,
         label: "Android Category Name",
         max: 100
+    },
+    iconName:{
+        type: String,
+        label: "Android Category icon file name used by the app to display the right icon, see https://github.com/24HeuresINSA/24h-android-app",
+    },
+    categoryName:{
+        type: String,
+        //unique: true,
+        label: "Unique Android Category name used by the app to do filtering (only maj non special char, no white space), see https://github.com/24HeuresINSA/24h-android-app",
     },
     type: {
         type: String,

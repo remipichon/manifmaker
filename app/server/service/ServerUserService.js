@@ -103,7 +103,7 @@ export class ServerUserService {
                     $set: {groupRoles: user.groupRoles}
                 };
                 //will fire the Meteor.users after hook and call propagateRoles
-                Meteor.users.direct.update(user._id, modifier);
+                Meteor.users.update(user._id, modifier);
             });
         }
     }
@@ -111,8 +111,8 @@ export class ServerUserService {
     /**
      * @summary Meteor.users.after.update hook.
      * @description
-     * About roles, we only add roles to the custom Meteor.users collection, **not** with the Roles library. This hooks is responsible to propagate roles to the
-     * Meteor.users linked account.
+     * About roles, by hand, we can only add roles to the custom Meteor.users collection, **not** with the Roles library. This hooks is the only one responsible to propagate roles to the
+     * Meteor.users linked Roles account.
      * @locus server
      * @param userId
      * @param doc
@@ -121,11 +121,10 @@ export class ServerUserService {
      * @param options
      */
     static propagateRoles(userId, doc, fieldNames, modifier) {
-        if(doc && doc.groupRoles && doc.groupRoles.length == 0) {
-            console.log("Propagate roles skipped because group roles waw empty");
-            return;
-
-        }
+        // if(doc && doc.groupRoles && doc.groupRoles.length == 0) {
+        //     console.log("Propagate roles skipped because group roles waw empty");
+        //
+        // }
         var allGroupRolesMerged;
         if (fieldNames) { //update
             if (_.contains(fieldNames, "groupRoles")) {
@@ -133,8 +132,18 @@ export class ServerUserService {
                     //we have to merge roles and roles from groups
                     allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(modifier.$set.groupRoles);
                 } else if(modifier.$push){
-                    allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(modifier.$push.groupRoles.$each);
-                } else {
+                    //we need to get the one the user already has
+                    var  currentGroupRoles = doc.groupRoles || [];
+                    var newGroupRoles =  modifier.$push.groupRoles.$each;
+                    var allGroupRoles = newGroupRoles.concat(currentGroupRoles);
+                    allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(allGroupRoles);
+                } else if(modifier.$pull){
+                    //we need to get the one the user already has
+                    var  currentGroupRoles = doc.groupRoles || [];
+                    var toRemoveGroupRoles =  modifier.$pull.groupRoles.$each;
+                    var allGroupRoles = _.difference(currentGroupRoles,toRemoveGroupRoles);
+                    allGroupRolesMerged = ServerUserService.getRolesFromGroupRoles(allGroupRoles);
+                }else {
                     //we have to remove all roles
                     allGroupRolesMerged = [];
                 }
@@ -232,8 +241,32 @@ export class ServerUserService {
                     console.info("Users.allowUpdate : authorizing setting superadmin roles because superadmin group role has been used")
                     return true;
                 }
+                return false;
             }
         }
+
+        var superadminGroupRoles = GroupRoles.findOne({name:"superadmin"});
+        console.log("========")
+        console.log(modifier)
+
+        if (modifier.$set && modifier.$set.roles
+            && modifier.$set.roles.length === superadminGroupRoles.roles.length
+            && _.difference(modifier.$set.roles, superadminGroupRoles.roles).length === 0) {
+            console.error("thrown to client 403", `Forbidden, superadmin set of roles can not be used`);
+            throw new Meteor.Error("403", `Forbidden, superadmin group role can be used`);
+        }
+
+        if (modifier.$push && modifier.$push.groupRoles && modifier.$push.groupRoles.$each){
+            var groupRoles = modifier.$push.groupRoles.$each;
+            groupRoles.forEach(groupRoleId => {
+                if(superadminGroupRoles._id  == groupRoleId){
+                    console.error("thrown to client 403", `Forbidden, superadmin group role can not be used`);
+                    throw new Meteor.Error("403", `Forbidden, superadmin group role can be used`);
+                }
+            });
+        }
+
+
 
         //when inserting new user, its default group role have to be propagated even if default group role doesn't provide any roles
         if(Settings.findOne()) var defaultGroupRoles = GroupRoles.findOne(Settings.findOne().defaultGroupRoles);
@@ -295,6 +328,13 @@ export class ServerUserService {
                     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
         }
 
+        if(_.contains(fieldNames, "availabilities")){
+            if(doc._id !== userId){
+                SecurityServiceServer.grantAccessToItem(userId, RolesEnum.ASSIGNMENTTASKUSER, doc, 'user');
+            }
+
+        }
+
     }
 
     /**
@@ -306,7 +346,7 @@ export class ServerUserService {
     static allowDelete(userId, doc) {
         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERDELETE, doc, 'task');
 
-        if(Meteor.users.findOne(doc._id).name === SUPERADMIN){
+        if(doc.username === SUPERADMIN){
             throw new Meteor.Error("403","User superadmin can not be deleted");
         }
 

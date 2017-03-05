@@ -24,6 +24,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
             "click .calendar": this.closePopOver,
             "click .close-popover": this.closePopOver,
             "click .popOver": this.stopPropa,
+            "click .heure": this.heureOnClick
         })
     }
 
@@ -44,7 +45,8 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
 
     displayAssignedUser() {
-        return Meteor.users.findOne({_id: this.currentData().assignedUserId}).username;
+        var assignment = Assignments.findOne({peopleNeedId:this.currentData()._id})
+        return Meteor.users.findOne({_id: assignment.userId}).username;
     }
 
     teamName() {
@@ -109,9 +111,14 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         return ""
     }
 
+    isTaskToUser(){
+        return AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.TASKTOUSER;
+    }
+
 
     timeSlot(date, timeHours, idTask) {
-        var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours);
+        var minutes = this.currentData().quarter;
+        var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours,minutes);
         var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
         var data = {},baseOneHourHeight,accuracy,end,start,duration,height,founded;
@@ -123,7 +130,8 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
 
                 var availabilityFound = AvailabilityService.getAvailabilityByStart(user.availabilities, startCalendarTimeSlot);
-                var assignmentFound = AssignmentService.getAssignmentByStart(user.assignments, startCalendarTimeSlot);
+                var userAssignments = AssignmentService.getAssignmentForUser(user);
+                var assignmentFound = AssignmentService.getAssignmentByStart(userAssignments, startCalendarTimeSlot);
 
                 if (availabilityFound === null && assignmentFound === null) return [];
                 if (availabilityFound !== null && assignmentFound !== null) {
@@ -172,30 +180,18 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
     peopleNeededNonAssigned(){
         return _.reject(this.currentData().peopleNeeded,function(peopleNeed){
-            return peopleNeed.assignedUserId !== null;
+            return Assignments.findOne({peopleNeedId:peopleNeed._id}) != null;
         });
     }
 
     peopleNeededAssigned(){
         return _.reject(this.currentData().peopleNeeded,function(peopleNeed){
-            return peopleNeed.assignedUserId === null;
+            return Assignments.findOne({peopleNeedId:peopleNeed._id}) == null;
         });
     }
 
     peopleNeedAssignedOnClick(event) {
-        event.stopPropagation();
-        this.peopleNeedAssignedClick++;
-        if (this.peopleNeedAssignedClick == 1) {
-            setTimeout(_.bind(function () {
-                if (this.peopleNeedAssignedClick == 1) {
-                    sAlert.info('Double click to perform remove assignment')
-                } else {
-                    AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
-                }
-                this.peopleNeedAssignedClick = 0;
-            }, this.currentData()), 300);
-        }
-
+        AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
     }
 
     openPopOver(event) {
@@ -218,33 +214,32 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         AssignmentServiceClient.taskToUserPerformUserFilter();
     }
 
-    //taskToUser (we click on a complete task time slot)
-    creanOnClick() {
 
-        var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
+    heureOnClick(){
+        //what time did we click on ?
+        console.log("heureOnClick");
 
-        switch (currentAssignmentType) {
-            case AssignmentType.USERTOTASK:
-                console.error("Template.assignmentCalendar.events.click .creneau", "User can't normally click on this kind of element when in userToTask");
-                return;
-                break;
-            case AssignmentType.TASKTOUSER: //only display users that have at least one availability matching the selected time slot
-                break;
-        }
+        var $target = $(event.target);
+
+        this.filterTaskList($target)
     }
 
 
     //userToTask (we click on a creneau, not on the entire availability)
     quartHeureOnClick(event) {
-        //TODO gerer le double click pour la desaffectation
+
+        //what time did we click on ?
+        var $target = $(event.target);
+
+        this.filterTaskList($target)
+    }
+
+    filterTaskList($target){
 
         var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
         switch (currentAssignmentType) {
             case AssignmentType.USERTOTASK://only display task that have at least one time slot matching the selected availability slot
-
-                //what time did we click on ?
-                var $target = $(event.target);
 
                 var selectedDate = null;
                 if (typeof $target.attr("hours") !== "undefined") {
@@ -254,14 +249,15 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 }
                 AssignmentReactiveVars.SelectedDate.set(selectedDate);
 
-
                 var userId = AssignmentReactiveVars.SelectedUser.get()._id;
                 var user = Meteor.users.findOne({_id: userId});
                 var availability = AvailabilityService.getSurroundingAvailability(user, selectedDate);
 
                 if (typeof availability === "undefined") {
-                    console.error("Template.assignmentCalendar.events.click .heure, .quart_heure", "User can't normally click on this kind of element when in userToTask");
+                    AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
                     return;
+                } else {
+                    AssignmentReactiveVars.IsUnassignment.set(false)
                 }
                 AssignmentReactiveVars.SelectedAvailability.set(availability);
 
@@ -277,77 +273,73 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                  Foreach task's time slot, we need a matching skills and a matching availability
                  */
 
-                var newFilter = {
-                    $or: [ //$or does't work on $elemMatch with miniMongo, so we use it here
-                        { //userId filter
-                            timeSlots: {
-                                $elemMatch: {
-                                    //skills filter
-                                    peopleNeeded: {
-                                        $elemMatch: {
-                                            userId: user._id
-                                        }
-                                    },
-                                    //availabilities filter
-                                    start: {$gte: availability.start, $lte: selectedDate.toDate()},
-                                    end: {$gt: selectedDate.toDate(), $lte: availability.end}
-                                },
+                var timeSlotsFilter = {
+                    $elemMatch: {
+                        $or:[
+                            //userIdFilter,
+                            //skillsFilter,
+                            //noSkillsFilter
+                        ]
+                    }
+                };
+
+                timeSlotsFilter.$elemMatch.$or.push(
+                    {
+                        //userId filter
+                        peopleNeeded: {
+                            $elemMatch: {
+                                userId: user._id
                             }
                         },
-                        {
-                            $or: [ //either we match skills requirement or there is no skills requirement (and we don't care)
-                                { //skills filter
-                                    timeSlots: {
-                                        $elemMatch: {
-                                            //skills filter
-                                            peopleNeeded: {
-                                                $elemMatch: {
-                                                    skills: {
-                                                        $elemMatch: {
-                                                            $in: user.skills
-                                                        }
-                                                    },
-                                                    teamId: {
-                                                        $in: (user.teams.length === 0)? [null] : user.teams
-                                                    }
-                                                }
-                                            },
-                                            //availabilities filter
-                                            start: {$gte: availability.start, $lte: selectedDate.toDate()},
-                                            end: {$gt: selectedDate.toDate(), $lte: availability.end}
-                                        }
+                        //availabilities filter
+                        start: {$gte: availability.start, $lte: selectedDate.toDate()},
+                        end: {$gt: selectedDate.toDate(), $lte: availability.end}
+                    }
+                );
+                timeSlotsFilter.$elemMatch.$or.push(
+                    {
+                        //skills filter
+                        peopleNeeded: {
+                            $elemMatch: {
+                                skills: {
+                                    $elemMatch: {
+                                        $in: user.skills
                                     }
                                 },
-                                {//no-skills filter
-                                    timeSlots: {
-                                        $elemMatch: {
-                                            //skills filter
-                                            peopleNeeded: {
-                                                $elemMatch: {
-                                                    skills: { // $eq : [] doesn't work with miniMongo, here is a trick
-                                                        $not: {
-                                                            $ne: []
-                                                        }
-                                                    },
-                                                    teamId: {
-                                                        $in: user.teams
-                                                    }
-                                                }
-                                            },
-                                            //availabilities filter
-                                            start: {$gte: availability.start, $lte: selectedDate.toDate()},
-                                            end: {$gt: selectedDate.toDate(), $lte: availability.end}
-                                        }
-                                    }
+                                teamId: {
+                                    $in: (user.teams.length === 0) ? [null] : user.teams
                                 }
-                            ]
-                        }
-                    ]
-                };
+                            }
+                        },
+                        //availabilities filter
+                        start: {$gte: availability.start, $lte: selectedDate.toDate()},
+                        end: {$gt: selectedDate.toDate(), $lte: availability.end}
+                    }
+                );
+                timeSlotsFilter.$elemMatch.$or.push(
+                    {
+                        //skills filter
+                        peopleNeeded: {
+                            $elemMatch: {
+                                skills: { // $eq : [] doesn't work with miniMongo, here is a trick
+                                    $not: {
+                                        $ne: []
+                                    }
+                                },
+                                teamId: {
+                                    $in: user.teams
+                                }
+                            }
+                        },
+                        //availabilities filter
+                        start: {$gte: availability.start, $lte: selectedDate.toDate()},
+                        end: {$gt: selectedDate.toDate(), $lte: availability.end}
+                    }
+                );
                 //aggregate is not supported by mini mongo
 
 
-                AssignmentReactiveVars.TaskFilter.set(newFilter);
+                AssignmentReactiveVars.TaskFilter.set(timeSlotsFilter);
                 break;
             case
             AssignmentType.TASKTOUSER:

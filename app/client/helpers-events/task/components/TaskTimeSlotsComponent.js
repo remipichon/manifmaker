@@ -102,7 +102,7 @@ class TaskTimeSlotsComponent extends BlazeComponent{
 
             //remove possible assignment
             peopleNeeded.forEach(peopleNeed => {
-                peopleNeed.assignedUserId = null;
+                delete peopleNeed._id;
             });
         }
 
@@ -302,7 +302,7 @@ class TaskTimeSlotsComponent extends BlazeComponent{
         }).peopleNeeded;
 
         peopleNeeded = _.reject(peopleNeeded, (peopleNeed) => {
-            return peopleNeed.assignedUserId === null;
+            return Assignments.findOne({peopleNeedId:peopleNeed._id}) == null;
         });
 
         return peopleNeeded.length;
@@ -327,11 +327,11 @@ class TaskTimeSlotsComponent extends BlazeComponent{
 
         if(fetchAlreadyAssigned){
             peopleNeeded = _.reject(peopleNeeded, (peopleNeed) => {
-                return peopleNeed.assignedUserId === null;
+                return Assignments.findOne({peopleNeedId:peopleNeed._id}) == null;
             });
         } else {
             peopleNeeded  = _.reject(peopleNeeded, (peopleNeed) => {
-                return peopleNeed.assignedUserId !== null;
+                return Assignments.findOne({peopleNeedId:peopleNeed._id}) != null;
             });
         }
 
@@ -366,11 +366,11 @@ class TaskTimeSlotsComponent extends BlazeComponent{
 
         if(fetchAlreadyAssigned){
             peopleNeeded = _.reject(peopleNeeded, (peopleNeed) => {
-                return peopleNeed.assignedUserId === null;
+                return Assignments.findOne({peopleNeedId:peopleNeed._id}) == null;
             });
         } else {
             peopleNeeded  = _.reject(peopleNeeded, (peopleNeed) => {
-                return peopleNeed.assignedUserId !== null;
+                return Assignments.findOne({peopleNeedId:peopleNeed._id}) != null;
             });
         }
 

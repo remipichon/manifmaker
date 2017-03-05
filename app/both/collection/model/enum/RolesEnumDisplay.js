@@ -15,12 +15,16 @@ RolesEnumDisplay = {
     TASKWRITE: "Edit task",
     /** task */
     TASKDELETE: "Delete task",
-    /** task */
+    /** activity */
     ACCESSPASSVALIDATION: "Access Pass validation",
-    /** task */
+    /** task and activity */
     EQUIPMENTVALIDATION: "Equipment validation",
     /** task */
     ASSIGNMENTVALIDATION: "Assignment validation",
+    /** activity */
+    ACTIVITYGENERALVALIDATION: "General Information validation",
+    /** activity */
+    ALLACTIVITY: "All Activities even private ones",
 
     /** assignment */
     ASSIGNMENTTASKUSER: "Access assignment",

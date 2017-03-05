@@ -8,9 +8,6 @@ export class BaseCalendarComponent extends BlazeComponent{
         return true;
     }
 
-    creanOnClick() {
-        //to implement
-    }
 
     quartHeureOnClick(event) {
         //to implement
@@ -37,7 +34,6 @@ export class BaseCalendarComponent extends BlazeComponent{
             {
                 "click  .quart_heure:not(.no-action)": this.quartHeureOnClick,
                 "click  .quart_heure.no-action": this.quartHeureNoActionOnClick,
-                "click .creneau": this.creanOnClick
             }
         ]
     }
@@ -80,19 +76,6 @@ export class BaseCalendarComponent extends BlazeComponent{
         if(charisma !== 0)
         return charisma;
     }
-
-    //labelSkills() {
-    //    return Skills.findOne({_id: this.currentData().toString()}).label;
-    //}
-
-    //userName() {
-    //    return Meteor.users.findOne({_id: this.currentData().userId}).name;
-    //}
-    //
-    //teamName() {
-    //    return Teams.findOne({_id: this.currentData().teamId}).name;
-    //}
-    //
 
 
     sideHoursHeight() {

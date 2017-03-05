@@ -1,4 +1,5 @@
 import {TeamService} from "../../../both/service/TeamService"
+import {Utils} from "../../../client/service/Utils"
 
 export class ActivityListComponent extends BlazeComponent {
     template() {
@@ -43,23 +44,27 @@ export class ActivityListComponent extends BlazeComponent {
 
     filterValidationStatus(error, docModifier, newOption) {
         return _.bind(function(error,docModifier,validationOption) {
-            var queryTimeSlot = "", queryEquipment = "";
+            var queryAccessPass = "", queryEquipment = "", queryGeneralInfo = "";
             if(validationOption) {
                 var validationRole = validationOption.split("_")[0];
                 var validationStatus = validationOption.split("_")[1];
 
                 if (validationRole === RolesEnum.EQUIPMENTVALIDATION) {
                     queryEquipment = validationStatus;
-                } else if (validationRole === RolesEnum.ASSIGNMENTVALIDATION) {
-                    queryTimeSlot = validationStatus;
-                } else if (validationRole === "ALL") {
+                } else if (validationRole === RolesEnum.ACCESSPASSVALIDATION) {
+                    queryAccessPass = validationStatus;
+                } else if (validationRole === RolesEnum.ACTIVITYGENERALVALIDATION) {
+                    queryGeneralInfo = validationStatus;
+                }else if (validationRole === "ALL") {
                     //TODO
                     queryEquipment = validationStatus;
-                    queryTimeSlot = validationStatus;
+                    queryAccessPass = validationStatus;
+                    queryGeneralInfo = validationStatus
                 }
             }
 
-            this.activityListTimeSlotValidationStateFilter.set(queryTimeSlot);
+            this.activityListAccessPassValidationStateFilter.set(queryAccessPass);
+            this.activityListGeneralInformationValidationStateFilter.set(queryGeneralInfo);
             this.activityListEquipmentValidationStateFilter.set(queryEquipment);
         }, this);
     }
@@ -82,7 +87,11 @@ export class ActivityListComponent extends BlazeComponent {
          ALL_READY
          */
         var result = [];
-        var validationRoles = Meteor.roles.find({name:{$regex : ".*VALIDATION.*"}}).fetch();
+        var validationRoles = [
+            Meteor.roles.findOne({name:"ACTIVITYGENERALVALIDATION"}),
+            Meteor.roles.findOne({name:"ACCESSPASSVALIDATION"}),
+            Meteor.roles.findOne({name:"EQUIPMENTVALIDATION"}),
+        ];
         var userValidationRole = [];
         validationRoles.forEach(validationRole => {
             if(Roles.userIsInRole(Meteor.userId(), validationRole.name))
@@ -215,7 +224,8 @@ export class ActivityListComponent extends BlazeComponent {
         this.activityListTeamFilter = new ReactiveTable.Filter("activity-list-team-filter", ["teamId"]);
         this.activityListResponsibleFilter = new ReactiveTable.Filter("activity-list-responsible-filter", ["masterId"]);
         this.activityListNameFilter = new ReactiveTable.Filter('search-activity-name-filter', ['name']);
-        this.activityListTimeSlotValidationStateFilter = new ReactiveTable.Filter('activity-timeslot-validation-state-filter', ['timeSlotValidation.currentState']);
+        this.activityListGeneralInformationValidationStateFilter = new ReactiveTable.Filter('activity-general-information-validation-state-filter', ['generalInformationValidation.currentState']);
+        this.activityListAccessPassValidationStateFilter = new ReactiveTable.Filter('activity-access-pass-validation-state-filter', ['accessPassValidation.currentState']);
         this.activityListEquipmentValidationStateFilter = new ReactiveTable.Filter('activity-equipment-validation-state-filter', ['equipmentValidation.currentState']);
         this.activityDateFilter = new ReactiveTable.Filter("activity-date-filter", ["timeSlots"]);
 
@@ -236,7 +246,8 @@ export class ActivityListComponent extends BlazeComponent {
                 label: 'Name',
                 cellClass: 'col-sm-3',
                 headerClass: 'col-sm-3',
-                fnAdjustColumnSizing: true
+                fnAdjustColumnSizing: true,
+                fn: _.bind(function (value) { return Utils.camelize(value); },this)
             },
             // TODO add GROUP
             /*{
@@ -277,7 +288,7 @@ export class ActivityListComponent extends BlazeComponent {
 
         return {
             collection: Activities,
-            rowsPerPage: 10,
+            rowsPerPage: Activities.find().fetch().size,
             showFilter: false,
             showRowCount: true,
             fields: fields,
@@ -285,7 +296,8 @@ export class ActivityListComponent extends BlazeComponent {
                 'activity-list-team-filter',
                 'activity-list-responsible-filter',
                 'search-activity-name-filter',
-                'activity-timeslot-validation-state-filter',
+                'activity-access-pass-validation-state-filter',
+                'activity-general-information-validation-state-filter',
                 'activity-equipment-validation-state-filter',
                 'activity-date-filter'
             ]

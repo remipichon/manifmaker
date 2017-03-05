@@ -53,16 +53,30 @@ export class Inject24hDataServerService {
                 }
             }
         });
+        Settings.update(Settings.findOne()._id, {
+            $set: {
+                activitiesEnclosingDate: {
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 20, 8, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 21, 18, 0)
+                }
+            }
+        });
     }
 
     _injectGroupRoles() {
         this.bureauGroupRole = GroupRoles.insert({
             name: "bureau",
-            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ROLE]
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE,
+                RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE,
+                RolesEnum.ROLE,
+                RolesEnum.ALLACTIVITY,  RolesEnum.ACTIVITYREAD,RolesEnum.ACTIVITYDELETE, RolesEnum.ACTIVITYWRITE]
         });
         this.hardGroupRole = GroupRoles.insert({
             name: "hard",
-            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
+            roles: [RolesEnum.MANIFMAKER,
+                RolesEnum.USERREAD,
+                RolesEnum.TASKREAD, RolesEnum.TASKWRITE,
+                RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
         });
         this.softGroupRole = GroupRoles.insert({
             name: "soft",
@@ -134,8 +148,8 @@ export class Inject24hDataServerService {
         this.webCatSport = WebCategories.insert({name: "Sport"});
         this.webCatCulture = WebCategories.insert({name: "Culture"});
 
-        this.androidCatSport = AndroidCategories.insert({name: "Sport"});
-        this.androidCatCulture = AndroidCategories.insert({name: "Culture"});
+        this.androidCatSport = AndroidCategories.insert({name: "Sport",iconName: "sport_icon", categoryName: "SPORT"});
+        this.androidCatCulture = AndroidCategories.insert({name: "Culture",iconName: "culture_icon", categoryName: "CULTURE"});
 
     }
 
@@ -338,6 +352,7 @@ export class Inject24hDataServerService {
             start: InjectDataHelperServerService.getDateFromDateAndHourMinute(2017, 4, 17, 0, 0),
             end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 30, 0, 0),
             teams: [this.hardTeam],
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 0, 0, 0),
             charisma: 50,
             assignmentTermPeriods: [
                 {
@@ -485,6 +500,56 @@ export class Inject24hDataServerService {
             teams: [this.softTeam, this.confianceTeam, this.hardTeam],
             calendarAccuracy: 2,
             addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 19, 0, 0),
+        });
+        AssignmentTerms.insert({
+            name: "Deadline is over term",
+            charisma: 30,
+            start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2018, 5, 22, 0, 0),
+            end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2018, 5, 26, 0, 0),
+            teams: [this.softTeam, this.confianceTeam, this.hardTeam],
+            calendarAccuracy: 2,
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2014, 5, 19, 0, 0),
+        });
+
+
+        AssignmentTerms.insert({
+            name: "accuray = 2",
+            charisma: 30,
+            start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 13, 0, 0),
+            end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2016, 5, 19, 18, 0),
+            teams: [this.softTeam, this.confianceTeam, this.hardTeam],
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2040, 5, 7, 0, 0),
+            calendarAccuracy: 2,
+        });
+
+        AssignmentTerms.insert({
+            name: "accuray = 1",
+            charisma: 30,
+            start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2015, 5, 13, 0, 0),
+            end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2015, 5, 19, 18, 0),
+            teams: [this.softTeam, this.confianceTeam, this.hardTeam],
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2040, 5, 7, 0, 0),
+            calendarAccuracy: 1,
+        });
+
+        AssignmentTerms.insert({
+            name: "accuray = 0.5",
+            charisma: 30,
+            start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2014, 5, 13, 0, 0),
+            end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2014, 5, 19, 18, 0),
+            teams: [this.softTeam, this.confianceTeam, this.hardTeam],
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2040, 5, 7, 0, 0),
+            calendarAccuracy: 0.5,
+        });
+
+        AssignmentTerms.insert({
+            name: "accuray = 0.25",
+            charisma: 30,
+            start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2013, 5, 13, 0, 0),
+            end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2013, 5, 19, 18, 0),
+            teams: [this.softTeam, this.confianceTeam, this.hardTeam],
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2040, 5, 7, 0, 0),
+            calendarAccuracy: 0.25,
         });
 
     }
@@ -664,7 +729,7 @@ export class Inject24hDataServerService {
             masterId: this.hardId,
             timeSlots: [
                 {
-                    start: InjectDataHelperServerService.getDateFromDateAndHourMinute(2017,5,15, 9,0),
+                    start: InjectDataHelperServerService.getDateFromDateAndHourMinute(2017,5,15, 10,0),
                     end: InjectDataHelperServerService.getDateFromDateAndHourMinute(2017,5,15, 12,0),
                     peopleNeeded: [
                         {

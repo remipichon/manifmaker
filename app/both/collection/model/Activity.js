@@ -62,6 +62,18 @@ Schemas.AccessPass = new SimpleSchema({
             }
         }
     },
+    _id: {
+        type: SimpleSchema.RegEx.Id,
+        label: "Access Pass _id",
+        autoValue: function () {
+            if(!this.isSet)
+                return new Meteor.Collection.ObjectID()._str;
+        },
+        autoform: {
+            type: "hidden",
+        }
+        // denyUpdate: true
+    }
 });
 
 Schemas.ServiceProvider = new SimpleSchema({
@@ -102,17 +114,41 @@ Schemas.Activities = new SimpleSchema({
     name: {
         type: String,
         label: "Activity Name",
-        max: 100
+        max: 100,
+        custom: function(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
+        }
     },
     description: {
         type: String,
         label: "Activity Description",
-        optional: true
+        optional: true,
+        custom: function(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
+        }
     },
     limitToTeam: {
         label: "Is the Activity private to the responsible team ?",
         type: Boolean,
-        defaultValue: false
+        defaultValue: false,
+        custom: function(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
+        }
     },
     teamId: {
         type: SimpleSchema.RegEx.Id,
@@ -120,6 +156,12 @@ Schemas.Activities = new SimpleSchema({
         custom: function () {
             if (!Teams.findOne(this.value))
                 return "unknownId";
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
             return 1
         },
         autoform: {
@@ -136,6 +178,12 @@ Schemas.Activities = new SimpleSchema({
         custom: function () {
             if (this.value && !Teams.findOne(this.value))
                 return "unknownId";
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
             return 1
         },
         autoform: {
@@ -146,10 +194,16 @@ Schemas.Activities = new SimpleSchema({
     },
     placeId: {
         type: SimpleSchema.RegEx.Id,
-        label: "Task Place",
+        label: "Activity Place",
         custom: function () {
             if (!Places.findOne(this.value))
                 return "unknownId";
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
             return 1
         },
         autoform: {
@@ -165,6 +219,12 @@ Schemas.Activities = new SimpleSchema({
         custom: function () {
             if (!Meteor.users.findOne(this.value))
                 return "unknownId";
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
         },
         autoform: {
             afFieldInput: {
@@ -179,6 +239,14 @@ Schemas.Activities = new SimpleSchema({
         defaultValue: null,
         autoform: {
             type: "datetime-local",
+        },
+        custom: function(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
         }
     },
     end: {
@@ -188,6 +256,14 @@ Schemas.Activities = new SimpleSchema({
         defaultValue: null,
         autoform: {
             type: "datetime-local",
+        },
+        custom: function(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
         }
     },
     location: {
@@ -198,13 +274,29 @@ Schemas.Activities = new SimpleSchema({
             afFieldInput: {
                 zoom: 16
             }
+        },
+        custom: function(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
         }
     },
     applicationData: {
         type: Object,
         label: "Application Data",
         optional: true,
-        defaultValue: {}
+        defaultValue: {},
+        custom: function(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
+        }
     },
     'applicationData.description': {
         type: String,
@@ -259,7 +351,15 @@ Schemas.Activities = new SimpleSchema({
         type: Object,
         label: "Web Data",
         optional: true,
-        defaultValue: {}
+        defaultValue: {},
+        custom: function(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
+        }
     },
     'webData.description': {
         type: String,
@@ -297,7 +397,15 @@ Schemas.Activities = new SimpleSchema({
     serviceProvider: {
         label: "Activity Service Provider",
         type: Schemas.ServiceProvider,
-        optional: true
+        optional: true,
+        custom: function(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
+        }
     },
     masterId: {
         type: SimpleSchema.RegEx.Id,
@@ -305,6 +413,12 @@ Schemas.Activities = new SimpleSchema({
         custom: function () {
             if (!Meteor.users.findOne(this.value))
                 return "unknownId";
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.generalInformationValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
         },
         autoform: {
             afFieldInput: {
@@ -429,6 +543,19 @@ Schemas.Activities = new SimpleSchema({
     accessPasses: {
         label: "Activities Access Passes",
         type: [Schemas.AccessPass],
+        optional: true,
+        custom(){
+            if (this.isUpdate) {
+                var activity = Activities.findOne(this.docId);
+                if (!ValidationService.isUpdateAllowed(activity.accessPassValidation.currentState)) {
+                    return "updateNotAllowed"
+                }
+            }
+        },
+    },
+    specificSecurityMeasures: {
+        type: String,
+        label: "Activity Specific Security Measures",
         optional: true
     },
 

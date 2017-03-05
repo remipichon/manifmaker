@@ -1,5 +1,7 @@
 <template name="confMaker">
     <div id="conf-maker-wrapper" class="panel-group">
+        {{> DismissibleHelperComponent message="Conf Maker is the place to configure the whole app. All list item (like team, skills) can be managed here as well as some default settings" uniqueId="conf-maker-home"}}
+
         {{#each confMakerReactiveTables}}
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -27,18 +29,27 @@
                     {{# autoForm collection="Settings" doc=settings id="updateSettingsForm" type="update" autosave=true}}
                         <div class="row">
                             <div class="col-md-4">
+                                {{> DismissibleHelperComponent message="Newly registered user will be added to this team" uniqueId="createAccountDefaultTeam"}}
                                 <div>
                                     {{> afQuickField name='createAccountDefaultTeam'}}
                                 </div>
                             </div>
                             <div class="col-md-4">
+                                {{> DismissibleHelperComponent message="Newly registered user will be added to this group role" uniqueId="defaultGroupRoles"}}
                                 <div>
                                     {{> afQuickField name='defaultGroupRoles'}}
                                 </div>
                             </div>
                             <div class="col-md-4">
+                                {{> DismissibleHelperComponent message="Maps on Activity update form will be center on this position" uniqueId="defaultActivityMapsLatLng"}}
                                 <div>
                                     {{> afQuickField name="defaultActivityMapsLatLng"}}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                {{> DismissibleHelperComponent message="Activities start and end date date time picker will be start and end with these enclosing date" uniqueId="activitiesEnclosingDate"}}
+                                <div>
+                                    {{> afQuickField name="activitiesEnclosingDate"}}
                                 </div>
                             </div>
                         </div>

@@ -6,13 +6,14 @@
                     {{#if taskName}}
                         <span>Task : {{taskName}} - {{displayHoursMinute start}} to {{displayHoursMinute end}}</span>
                     {{/if}}
-                    <i class="pull-right mdi mdi-inline mdi-close close-popover"></i>
+                    <i class="pull-right mdi mdi-inline mdi-close close-popover clickable"></i>
                 </div>
                 <div class="popOver-body">
+                    {{> DismissibleHelperComponent message="Click on a people need according to which skills/teams you wan to assigned first." uniqueId="popover-peopleneed"}}
                     <div class="pull-left halfPopOver">
                         <h5>To be assigned :</h5>
                         {{#each peopleNeededNonAssigned}}
-                            <div class="peopleNeed" data-_id="{{_id}}">
+                            <div class="peopleNeed clickable" data-_id="{{_id}}">
                                 {{#if userId }}
                                     <div class="user">{{userName}}</div>
                                 {{/if}}
@@ -31,8 +32,9 @@
 
                     <div class="halfPopOver pull-right">
                         <h5>Already Assigned :</h5>
+                        {{> DismissibleHelperComponent message="Click on an already assigned user to remove its assignment (need one more step before actually removing)" uniqueId="popover-peopleneed-assigned"}}
                         {{#each peopleNeededAssigned}}
-                            <div class="peopleNeed assigned" data-_id="{{_id}}">
+                            <div class="peopleNeed assigned clickable" data-_id="{{_id}}">
                                 Assigned to {{displayAssignedUser}}
                                 <i>
                                     {{#if userId }}
@@ -55,16 +57,18 @@
             </div>
         {{/if}}
     {{/if}}
-    <div class="creneau usedByTask {{state}}" style="height: {{height}}; background : indianred" title="{{displayHoursMinute start}} to {{displayHoursMinute end}} ,  affected at {{percentAffected}}%">
+    <div class="creneau usedByTask {{state}} clickable" style="height: {{height}}; background : indianred" title="{{displayHoursMinute start}} to {{displayHoursMinute end}} ,  affected at {{percentAffected}}%">
 
-        <div class="assignementProgress" style="width:{{percentAffected}}%"></div>
-        <div class="calendar-wrapper on-calendar assignement-timeslot" style="top: -{{height}}">
-            {{#if taskName}}
-                <span>{{taskName}}</span>
-            {{/if}}
+        {{#if isTaskToUser}}
+            <div class="assignementProgress" style="width:{{percentAffected}}%"></div>
+         {{else}}
+            <div class="calendar-wrapper on-calendar assignement-timeslot">
+                {{#if taskName}}
+                    <span>{{taskName}}</span>
+                {{/if}}
+            </div>
+        {{/if}}
 
-
-        </div>
     </div>
 </template>
 

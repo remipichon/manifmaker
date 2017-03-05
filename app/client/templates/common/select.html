@@ -27,14 +27,14 @@
                     </div>
              '>
                 {{#unless withoutLabel}}
-                    <span class="custom-select-label" data-required><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>{{#unless readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit"></i>{{/unless}}
+                    <span class="custom-select-label" data-required><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>{{#unless readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit clickable"></i>{{/unless}}
                 {{/unless}}
             </div>
         {{/if}}
 
         {{#unless readOnly}}
             {{#if withoutLabel}}
-                <i class="custom-select-icon mdi mdi-tooltip-edit"></i>
+                <i class="custom-select-icon mdi mdi-tooltip-edit clickable"></i>
             {{/if}}
         {{/unless}}
         <div class="selected-options">
@@ -83,7 +83,7 @@
                 <div class="custom-select-options">
                     <ul class="list-group">
                         <li class="list-group-item">
-                           <div class="clear">{{clearMessage}} <i class="custom-select-icon mdi mdi-delete"></i></div>
+                           <div class="clear">{{clearMessage}} <i class="custom-select-icon mdi mdi-delete clickable"></i></div>
                         </li>
                         {{#each sortedCollectionItems}}
                             <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/> <label for="{{_id}}">{{optionValue}}</label></li>
@@ -92,7 +92,7 @@
                 </div>
          '>
                 {{#unless withoutLabel}}
-                    <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>{{#unless readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit"></i>{{/unless}}
+                    <span class="custom-select-label"><label class="custom-select-label" for="exampleInputPassword1">{{selectLabel}}</label></span>{{#unless readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit clickable"></i>{{/unless}}
                 {{/unless}}
             </div>
         {{/if}}
@@ -100,7 +100,7 @@
         <div class="selected-options">
             {{#unless readOnly}}
                 {{#if withoutLabel}}
-                    <i class="custom-select-icon mdi mdi-tooltip-edit"></i>
+                    <i class="custom-select-icon mdi mdi-tooltip-edit clickable"></i>
                 {{/if}}
             {{/unless}}
             {{#if maxSelectedOptionDisplayed}}

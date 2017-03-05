@@ -7,6 +7,7 @@ import {InjectDataHelperServerService} from "./InjectDataHelperServerService";
 export class Inject24h43emeDataServerService {
 
     injectConfMakerData(){
+        this._injectGroupRoles();
         this._populateTeams();
         this._populatePlaces();
         this._populateEquipmentCategories();
@@ -28,10 +29,21 @@ export class Inject24h43emeDataServerService {
             $set: {createAccountDefaultTeam: Teams.findOne({name: "hard"})._id}
         });
         Settings.update(Settings.findOne()._id, {
+            $set: {defaultGroupRoles: this.hardGroupRole}
+        });
+        Settings.update(Settings.findOne()._id, {
             $set: {
                 defaultActivityMapsLatLng: {
                     lat: 45.783642,
                     lng: 4.872970
+                }
+            }
+        });
+        Settings.update(Settings.findOne()._id, {
+            $set: {
+                activitiesEnclosingDate: {
+                    start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 20, 8, 0),
+                    end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 21, 18, 0)
                 }
             }
         });
@@ -40,7 +52,7 @@ export class Inject24h43emeDataServerService {
     _injectGroupRoles() {
         this.bureauGroupRole = GroupRoles.insert({
             name: "bureau",
-            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ROLE]
+            roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ROLE, RolesEnum.ALLACTIVITY, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE, RolesEnum.ACTIVITYDELETE]
         });
         this.hardGroupRole = GroupRoles.insert({
             name: "hard",
@@ -86,7 +98,6 @@ export class Inject24h43emeDataServerService {
     }
 
     populateTestData() {
-        this._injectGroupRoles();
         this._injectAuthenticationUsers();
         this._populateTaskGroups();
         this._populateUser();
@@ -290,6 +301,7 @@ export class Inject24h43emeDataServerService {
             end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 30, 0, 0),
             teams: [this.hardTeam],
             charisma: 50,
+            addAvailabilitiesDeadline: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 3, 17, 6, 0),
             assignmentTermPeriods: [
                 {
                     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
@@ -379,8 +391,8 @@ export class Inject24h43emeDataServerService {
             masterId: this.hardId,
             accessPasses:[{
                 beneficiaries: "Dagier",
-                start:InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
-                end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 6, 0),
+                start:InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 20, 6, 0),
+                end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 21, 6, 0),
                 recipientName: "Chouffe",
                 recipientPhoneNumber: "0123456789",
                 accessPointGranted:[

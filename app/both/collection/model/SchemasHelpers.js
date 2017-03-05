@@ -22,7 +22,9 @@ SimpleSchema.messages({
     peopleNeededUpdateNotAllowed: "[label] can not be update as task time slots are not ready for assignment",
     peopleNeedUserIdUnique: "There can ba only one people need requiring a specific user by time slot",
     availabilitiesNoInTerm: "User does not have access to any assignment terms enclosing given availability.",
+    availabilitiesNoInEditableTerm: "Assignment Term deadline to add availabilities is over",
     timeSlotNotWithinTerms: "Time slot dates are not within a assignment term's periods",
+    timeSlotTermAccuracyError: "Time slot dates doesn't respect term accuray.",
     userHasAssignments: "Cannot perform this action as user already has assignments.",
     userHasBeenValidatedNoSkillsUpdate: "User has been validated therefore its skills cannot be update",
     accuracyNotFound: "Accuracy value is not a valide one.",
@@ -75,6 +77,21 @@ Schemas.helpers.allTeamsOptions = function () {
 
     return result;
 };
+
+Schemas.helpers.allActivitiesOptions = function () {
+    var teams = Activities.find({
+    }).fetch();
+    var result = [];
+    _.each(teams, function (team) {
+        result.push({
+            label: team.name,
+            value: team._id
+        });
+    });
+
+    return result;
+};
+
 
 
 Schemas.helpers.allAndroidCategoriesOptions = function () {

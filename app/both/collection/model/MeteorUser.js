@@ -14,12 +14,12 @@ Schemas.UserAvailabilities = new SimpleSchema({
                 return "startAfterEnd";
 
             //check if new availability is overlapping with an assignment
-            var userAssignment = Meteor.users.findOne(this.docId).assignments;
+            // var userAssignment = Meteor.users.findOne(this.docId).assignments;
 
-            if(TimeSlotService.areArrayStartEndOverlappingStartDate(userAssignment,start,end,"none")){
-                return "availabilityOverlapAssignment";
-            }
-
+            //TODO assignment check is new availability doesn't overlap an assignment
+            // if (TimeSlotService.areArrayStartEndOverlappingStartDate(userAssignmentStartEnd, start, end, "none")) {
+            //     return "availabilityOverlapAssignment";
+            // }
 
             var userTeams = Meteor.users.findOne(this.docId).teams;
             var start = this.value;
@@ -36,6 +36,23 @@ Schemas.UserAvailabilities = new SimpleSchema({
                 })
             )
                 return "availabilitiesNoInTerm"
+
+            if (!Roles.userIsInRole(this.userId, RolesEnum.ASSIGNMENTTASKUSER))
+                if (!AssignmentTerms.findOne({
+                        teams: {
+                            $elemMatch: {
+                                $in: userTeams
+                            }
+                        },
+                        start: {
+                            $lte: start
+                        },
+                        addAvailabilitiesDeadline: {
+                            $gte: new moment().toDate()
+                        }
+                    })
+                )
+                    return "availabilitiesNoInEditableTerm"
 
         },
         autoform: {
@@ -64,38 +81,27 @@ Schemas.UserAvailabilities = new SimpleSchema({
                 })
             )
                 return "availabilitiesNoInTerm"
+
+            if(!Roles.userIsInRole(this.userId, RolesEnum.ASSIGNMENTTASKUSER))
+                if (!AssignmentTerms.findOne({
+                    teams: {
+                        $elemMatch: {
+                            $in: userTeams
+                        }
+                    },
+                    end: {
+                        $gte: end
+                    },
+                    addAvailabilitiesDeadline:{
+                        $gte : new moment().toDate()
+                    }
+                })
+            )
+                return "availabilitiesNoInEditableTerm"
+
         },
         autoform: {
             type: "datetime-local",
-        }
-    }
-});
-
-Schemas.UserAssignment = new SimpleSchema({
-    taskName: {
-        type: String,
-        label: "User assignment User Name"
-    },
-    start: {
-        type: Date,
-        label: "User Assignment Start Date"
-    },
-    end: {
-        type: Date,
-        label: "User Assignment End Date"
-    },
-    assignmentId: {
-        type: SimpleSchema.RegEx.Id,
-        label: "User assignment assignment id",
-        custom: function () { //validate data is same as the real assignment
-            var assignment = Assignments.findOne(this.value);
-            if (!assignment)
-                return "unknownId"
-            var timeSlot = TimeSlotService.getTimeSlot(assignment.taskId,assignment.timeSlotId);
-            if (Tasks.findOne(assignment.taskId).name !== this.field(this.key.replace("assignmentId", "") + "taskName").value
-                || !new moment(timeSlot.start).isSame(new moment(this.field(this.key.replace("assignmentId", "") + "start").value))
-                || !new moment(timeSlot.end).isSame(new moment(this.field(this.key.replace("assignmentId", "") + "end").value)))
-                return "userAssignmentNotMatching"
         }
     }
 });
@@ -114,23 +120,22 @@ Schemas.UserProfile = new SimpleSchema({
 
     familyName: {
         type: String,
-        label: "Users Family Name",
+        label: "Family Name",
         max: 100,
         optional: true
     },
     firstName: {
         type: String,
-        label: "User first name",
+        label: "First name",
         max: 100,
         optional: true,
         defaultValue: null
     },
     phoneNumber:{
-        type: String,//SimpleSchema.RegEx.Phone,
-        label: "User phone",
+        type: String,
+        label: "Phone",
         optional: true,
-        defaultValue: null,
-        regEx: /^0{1}\d{10}$/
+        regEx: /^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/
     },
 
     //24h specific, will see later how to parametrize that
@@ -169,7 +174,7 @@ Schemas.UserProfile = new SimpleSchema({
     birthday: {
         type: Date,
         optional: true,
-        label: "User birth date",
+        label: "Birthday",
     },
     gender: {
         type: String,
@@ -368,15 +373,6 @@ Schemas.User = new SimpleSchema({
         label: "User availabilities",
         optional: true,
         defaultValue: []
-    },
-    assignments: {
-        type: [Schemas.UserAssignment],
-        label: "User assignments",
-        defaultValue: [],
-        optional: true,
-        autoform: {
-            type: "hidden",
-        }
     },
 
     dismissible: {

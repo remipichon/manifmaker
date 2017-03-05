@@ -28,6 +28,12 @@ class SideBar extends BlazeComponent {
                 $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
             });
         });
+
+        this.version = new ReactiveVar("-");
+        Meteor.call('getVersion',_.bind(function(error, result) {
+            // 'result' is the method return value
+            this.version.set(result);
+        },this));
     }
 
     template() {
@@ -115,6 +121,10 @@ class SideBar extends BlazeComponent {
         }
 
         $('.navbar .sidebar-toggle').on("click", this.toggleSideBar);
+    }
+
+    getVersion(){
+        return this.version.get();
     }
 }
 

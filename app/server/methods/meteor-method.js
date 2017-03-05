@@ -21,6 +21,22 @@ Meteor.methods({
     },
     sendVerificationEmail: function(userId){
         ServerUserService.sendVerificationEmail(userId)
+    },
+    getVersion: function () {
+        var pjson = require('/package.json');
+        console.log(pjson.version); // This will print the version
+        return pjson.version;
+    },
+    sendEmail: function (to, subject, text) {
+        // Let other method calls from the same client start running,
+        // without waiting for the email sending to complete.
+        this.unblock();
+        Email.send({
+            to: to,
+            from: "no-reply@manifmaker.com",
+            subject: subject,
+            text: text
+        });
     }
 });
 

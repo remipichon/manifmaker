@@ -11,10 +11,10 @@
 
     <div>
         {{#if isInRole RolesEnum.ACTIVITYWRITE}}
-            <a class="btn btn-primary pull-right" href="/activity">Create a new Activity</a>
+            <a class="btn btn-primary pull-right" href="/activity">{{_ "page.activity.list.create"}}</a>
         {{/if}}
 
-        <h1>Activities List</h1>
+        <h1>{{_ "page.activity.list.header"}}</h1>
 
 
     </div>
@@ -24,10 +24,10 @@
 
             <div class="col-md-3">
                 <label>
-                    Activity name :
+                    {{_ "page.activity.list.filter.activityName"}} :
                 </label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="search_activity_name" placeholder="Search activity...">
+                    <input type="text" class="form-control" id="search_activity_name" placeholder="{{_ "page.activity.list.filter.searchPlaceHolder"}}">
                     <span class="input-group-addon">
                         <i class="mdi mdi-magnify mdi-inline"></i>
                     </span>
@@ -35,17 +35,17 @@
             </div>
 
             <div class="col-md-3 col-md-offset-1">
-                {{> SingleNonMandatorySelectComponent selectLabel="Activity responsible" title="Activity responsible"
+                {{> SingleNonMandatorySelectComponent selectLabel="_ select.selectLabel.activityResponsible" title="_ select.selectLabel.activityResponsible"
                 optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                nothingSelectedLabel="No one" quickSelectLabel="select yourself" quickSelectId=currentUserId
-                updateCallback=filterResponsible
+                nothingSelectedLabel="_ select.nothingSelectedLabel.noOne" quickSelectLabel="_ select.quickSelectLabel.selectYourself" quickSelectId=currentUserId
+                updateCallback=filterResponsible displayUpdateResult=false
                 }}
             </div>
 
             <div class="col-md-3 col-md-offset-1">
                 {{> SingleNonMandatorySelectComponent selectLabel="Team" title="Select a team"
                 optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned
+                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned displayUpdateResult=false
                 }}
             </div>
 
@@ -71,7 +71,7 @@
                     <!-- TODO rendre fonctionnel le custom picker -->
                     {{> SingleNonMandatorySelectComponent title="Select a validation and its validation status" selectLabel="Validation Status"
                     optionCollection=optionValidationStatus optionValueName="label"
-                    updateCallback=filterValidationStatus
+                    updateCallback=filterValidationStatus displayUpdateResult=false
                     }}
 
                 </div>
@@ -114,10 +114,10 @@
 
 <template name="activityButtons">
     {{#if isInRole RolesEnum.ACTIVITYWRITE}}
-        <a class="btn btn-primary" href="/activity/{{_id}}" role="button" title="Edit"> <i class="mdi mdi-pencil"></i></a>
+        <a class="btn btn-primary" href="/activity/{{_id}}" role="button" title="{{_ "action.edit"}}"> <i class="mdi mdi-pencil"></i></a>
     {{else}}
         {{#if isInRole RolesEnum.ACTIVITYREAD}}
-            <a class="btn btn-primary" href="/activity/{{_id}}/read" title="Read"> <i class="mdi mdi-chevron-right"></i></a>
+            <a class="btn btn-primary" href="/activity/{{_id}}/read" title="{{_ "action.read"}}"> <i class="mdi mdi-chevron-right"></i></a>
         {{/if}}
     {{/if}}
     {{#if isInRole RolesEnum.ACTIVITYDELETE}}

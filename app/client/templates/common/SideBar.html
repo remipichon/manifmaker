@@ -49,7 +49,7 @@
                 {{#if isInRole RolesEnum.ACTIVITYREAD}}
                     <li class="dropdown">
                         <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
-                            <i class="sidebar-icon mdi mdi-human-child"></i> Activities
+                            <i class="sidebar-icon mdi mdi-castle"></i> Activities
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
@@ -72,7 +72,7 @@
                             {{#if isInRole RolesEnum.TASKWRITE}}
                                 <li><a href="{{pathFor route='task.create'}}"><i class="sidebar-icon mdi mdi-plus"></i> Create</a></li>
                             {{/if}}
-                            <li><a href="{{pathFor route='task.stats'}}"><i class="sidebar-icon mdi mdi-chart-line"></i>  Stats</a></li>
+                            <!--<li><a href="{{pathFor route='task.stats'}}"><i class="sidebar-icon mdi mdi-chart-line"></i>  Stats</a></li>-->
                         </ul>
                     </li>
                 {{/if}}
@@ -85,6 +85,7 @@
                 {{#if isInRole RolesEnum.CONFMAKER}}
                     <li class="{{#if equals currentTab "ConfMaker"}}active{{/if}}"><a href="{{pathFor route='conf-maker'}}"><i class="sidebar-icon mdi mdi-settings"></i> ConfMaker</a></li>
                 {{/if}}
+                <li class="application-version"><a href=""><i class="sidebar-icon mdi"></i> Version {{getVersion}}</a></li>
 
             </ul>
             <!-- Sidebar divider -->

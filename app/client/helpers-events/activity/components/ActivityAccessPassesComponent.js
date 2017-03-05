@@ -6,6 +6,14 @@ class ActivityAccessPassesComponent extends BlazeComponent{
         return "activityAccessPasses"
     }
 
+    events() {
+        return [
+            {
+                "click .autoform-remove-item": this.manuallyRemoveAccessPass //because AutoForm doesn't do it
+            }
+        ]
+    }
+
     constructor(){
         super();
     }
@@ -40,6 +48,19 @@ class ActivityAccessPassesComponent extends BlazeComponent{
             }
         }
         return !granted;
+    }
+
+    manuallyRemoveAccessPass(event){
+        var target = $(event.target);
+        var accessPassIndex = parseInt($($($(target[0]).parents(".autoform-array-item")[0]).find("[data-schema-key]")[0]).data("schema-key").split(".")[1])
+        console.log("accessPassIndex",accessPassIndex);
+
+        Activities.update(this.parentComponent().data()._id,
+            {$unset : {[`accessPasses.${accessPassIndex}`] : 1 }}
+        );
+        Activities.update(this.parentComponent().data()._id,
+            {$pull : {accessPasses : null }}
+        );
     }
 }
 

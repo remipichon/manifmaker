@@ -10,7 +10,8 @@ export class CalendarServiceClient {
      * @param userAvailabilitiesOrAssignments array of assignments or array of availabilities
      * @param startCalendarTimeSlot
      * @param isAssigned
-     * @returns calendar data {userId, assigned, charisma, css height}
+     * @description
+     * return : calendar data {userId, assigned, charisma, css height}
      */
     static getCalendarSlotData(userId, userAvailabilitiesOrAssignments, startCalendarTimeSlot, isAssigned){
         var data = {};

@@ -24,7 +24,7 @@ export class ServerAssignmentTermService {
                     }
                 }
             }).fetch().length !== 0)
-            throw new Meteor.Error("403", `Can't update/delete assignment term with availabilities`);
+            return `Can't update/delete assignment term with availabilities (except name and deadline)`;
 
 
         //has timeSlots
@@ -42,7 +42,8 @@ export class ServerAssignmentTermService {
                     }
                 }
             }).fetch().length !== 0)
-            throw new Meteor.Error("403", `Can't  update/delete assignment term with timeSlots`);
+            return `Can't  update/delete assignment term with timeSlots (except name and deadline)`;
+        return false;
     }
 
     /**
@@ -62,8 +63,20 @@ export class ServerAssignmentTermService {
      * - Needed role : CONFMAKER
      */
     static allowUpdate(userId, doc, fieldNames, modifier, options) {
+        var updateAvailableFields = ["addAvailabilitiesDeadline", "name","_id"]; //_id is not $set by AutoForm
+
         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.CONFMAKER, doc, 'assignmentTerm');
-        ServerAssignmentTermService.isUsed(doc);
+
+        var isItUsed = ServerAssignmentTermService.isUsed(doc);
+        if(isItUsed){
+            Object.keys(doc).forEach(field => {
+                if(!_.contains(updateAvailableFields,field)){
+                    if(JSON.stringify(doc[field]) !== JSON.stringify(modifier.$set[field])){
+                        throw new Meteor.Error("403", isItUsed);
+                    }
+                }
+            })
+        }
     }
 
     /**
@@ -74,7 +87,9 @@ export class ServerAssignmentTermService {
      */
     static allowDelete(userId, doc) {
         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.CONFMAKER, doc, 'assignmentTerm');
-        ServerAssignmentTermService.isUsed(doc);
+        var termIsUsed = ServerAssignmentTermService.isUsed(doc)
+        if(termIsUsed)
+            throw new Meteor.Error("403", termIsUsed);
     }
 
 }

@@ -1,40 +1,63 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manifmaker</title>
+    <title>ManifMaker</title>
 </head>
 
 <body>
-    {{> sAlert}}
+{{> sAlert}}
 </body>
 
 
 <template name="home">
 
-    <h1>Welcome</h1>
+    <div class="container">
 
-    <h3>at the demo of ManifMaker : a project for organizing huge events</h3>
-    <a href="https://github.com/assomaker/manifmaker">https://github.com/assomaker/manifmaker</a>
+        <h1>{{_ "application.name"}}</h1>
 
-    <br>
-    <br>
-    <p>Manage data test</p>
-    <a href="/inject-data">Inject data (delete, init access right, populate)</a><br>
-    <br>
-    <br>
+        <div class="col-md-5">
 
-    {{> DismissibleHelperComponent message="Dismissible message" uniqueId="testDismissible"}}
+            <h3>What is for ?</h3>
 
-    <p>Several accounts are available (expand left menu to log in)</p>
-    <ul>
-        <li>login/password</li>
-        <li>superadmin/superadmin</li>
-        <li>bureau/bureau</li>
-        <li>resplog/resplog</li>
-        <li>respsecu/respsecu</li>
-        <li>humain/humain</li>
-        <li>soft/soft</li>
-        <li>user1/user1</li>
-        <li>user2/user2</li>
-        <li>user3/user3</li>
-    </ul>
+            <p class="text-justify">ManifMaker is a powerful app aimed to plan and organize events where
+                volunteers take a great
+                part.</p>
+
+            <p class="text-justify">In a few words, users create
+                <stong>tasks</stong>
+                describing the job to be done, add <strong>time slot</strong> defining when the task
+                has to be
+                done and specify <strong>people needs</strong> to explicit how many and what kind of volunteers are
+                needed to perform the
+                task.
+            </p>
+
+            <p class="text-justify">Volunteers register on the app and add a few <strong>availabilities</strong> and
+                <strong>skills</strong> to detail when they want to work
+                and what
+                they can do.</p>
+
+            <p class="text-justify">Once the tasks and their needs are validated, special users assign volunteers to
+                tasks according to :
+            <ul>
+                <li> match between task's time slots and user's availabilities
+                </li>
+                <li> match between time slot's people needs and user's skills.
+                </li>
+            </ul>
+            </p>
+
+            <p class="text-justify">Once all the tasks and users are assigned, users can export their agenda which details the tasks they have to do and all related information.</p>
+
+        </div>
+
+        <div class="col-md-5 col-md-offset-1">
+            <h3>How to use it ?</h3>
+
+            {{> DismissibleHelperComponent message="You will find several of dissmissible helper message like this one. You read them once and dissmiss them forever by clicking on the X" uniqueId="dissmiss-example"}}
+
+            <p class="text-justify">You can start with the left menu.</p>
+
+        </div>
+    </div>
+
 </template>
