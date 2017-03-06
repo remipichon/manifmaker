@@ -17,16 +17,21 @@
                     {{#each hours}}
                         <div class="heure" hours="{{hoursDate ../date}}">
                             {{#each quarter}}
-                                <div class="quart_heure {{isSelected ../../date ../date}} {{quarterHeight}} {{#unless enableAction ../../date ../date}}no-action{{/unless}}"
-                                     quarter="{{quarterDate ../../date ../date}}">
-                                    {{#each timeSlot  ../../date ../date this}}
-                                        {{>Template.dynamic template=../../../../timeSlotTemplate}}
-                                    {{else}}
-                                        {{#if enableAction ../../date ../date}}
-                                            {{#if ../../../displayCharisma}}<div class="calendar-charisma noselect" title="{{getCharisma ../../date ../date}} pts of charisma">{{getCharisma ../../date ../date}}</div>{{/if}}
-                                        {{/if}}
-                                    {{/each}}
+                                {{#with num_quarter=@index}}
+                                <div class="quart_heure {{isSelected ../../../date ../../date}} {{quarterHeight}}
+                                    {{#unless enableAction ../../../date ../../date}}no-action{{/unless}}"
+                                     quarter="{{quarterDate ../../../date ../../date}}">
+                                        {{#each timeSlot  ../../../date ../../date this}}
+                                            {{#if equals ../num_quarter 0}}
+                                                {{>Template.dynamic template=../../../../../timeSlotTemplate}}
+                                            {{/if}}
+                                        {{else}}
+                                            {{#if enableAction ../../../date ../../date}}
+                                                {{#if ../../../../displayCharisma}}<div class="calendar-charisma noselect" title="{{getCharisma ../../../date ../date}} pts of charisma">{{getCharisma ../../../date ../../date}}</div>{{/if}}
+                                            {{/if}}
+                                        {{/each}}
                                 </div>
+                                    {{/with}}
                             {{/each}}
                         </div>
                     {{/each}}

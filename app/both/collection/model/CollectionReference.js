@@ -69,6 +69,15 @@ Schemas.references.Places = new SimpleSchema({
         label: "Place Name",
         max: 100
     },
+    location: {
+        type: String,
+        autoform: {
+            type: 'map',
+            afFieldInput: {
+                zoom: 16
+            }
+        }
+    },
     type: {   
         type: String,
         label: "Places type",

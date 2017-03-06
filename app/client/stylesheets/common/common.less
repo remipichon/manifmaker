@@ -2,9 +2,6 @@
   padding-top: 90px;
 }
 
-.clickable{
-  cursor: pointer;
-}
 .cancel-top-padding{
   margin-top : -90px;
 }
@@ -25,8 +22,14 @@
 .mdi-big {
   font-size : 180%;
 }
+.mdi-small {
+  font-size : 110%;
+}
 .no-padding{
   padding:0;
+}
+.no-margin{
+  margin : 0;
 }
 
 h5{
@@ -66,11 +69,11 @@ h5{
   user-select: none; /* Non-prefixed version, currently
                                   not supported by any browser */
 }
+.inline-headers h2, .inline-headers h3, .inline-headers h4, .inline-headers h5 {
+  display: inline-block;
+  vertical-align: baseline;
+}
 
-@media (max-width: 768px) {
-
-  .hide-on-small-devices{
-    display : none;
-  }
-
+.pre { // get the <br> when we have a \n in a string
+  white-space: pre-wrap;
 }

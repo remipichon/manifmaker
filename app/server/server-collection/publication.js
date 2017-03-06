@@ -95,7 +95,7 @@ Meteor.startup(function () {
         if(SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.ASSIGNMENTTASKUSER,"assignments"))
             return Assignments.find({});
         else
-            return [];
+            return Assignments.find({userId:this.userId});
     });
 
     /**
