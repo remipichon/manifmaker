@@ -39,6 +39,7 @@ branch deploy : [![Build Status](https://travis-ci.org/assomaker/manifmaker.svg?
     * [Add a reference collection](#reference)
 * [Project Management](#project)
 * [Production](#production)
+* [PDF export](#pdf-export)
 
 
 
@@ -443,6 +444,16 @@ When assigning, either you firstly check everything (user is available, task is 
 When choosing what to do you have to keep in mind that Meteor is real time, if you update something on the DB, it will be broadcasted to everyone subscribed. If you update something
 and revert it right away, you will unefficiently use DDP, the clients will compute the data and probably display something for a short amount of time before the sytem reverts the changes.
 It can lead the GUI to flickr. That is why it is probably better **to check everything BEFORE** database operations **if you need more than one database update** to perform one operation/action).
+
+
+<a id="pdf-export" name="pdf-export"></a>
+# PDF Export
+
+HTML_FOLDER=/Users/remi/sandbox;
+HTML_FILE=file.htm;
+PDF_FILE=output3.pdf;
+docker run --rm -v $HTML_FOLDER:/root/out/ --env IN=/root/out/$HTML_FILE --env OUT=/root/out/$PDF_FILE assomaker/wkhtmltopdf 
+
 
 
 <a id="production" name="production"></a>
