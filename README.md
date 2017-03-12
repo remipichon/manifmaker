@@ -451,7 +451,7 @@ It can lead the GUI to flickr. That is why it is probably better **to check ever
 
 HTML_FOLDER=/Users/remi/sandbox;
 HTML_FILE=file.htm;
-PDF_FILE=output3.pdf;
+PDF_FILE=output.pdf;
 docker run --rm -v $HTML_FOLDER:/root/out/ --env IN=/root/out/$HTML_FILE --env OUT=/root/out/$PDF_FILE assomaker/wkhtmltopdf 
 
 
