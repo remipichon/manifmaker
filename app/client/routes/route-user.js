@@ -1,5 +1,6 @@
 import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
 import {ManifMakerRouterController} from "./ManifMakerRouterController"
+import {ExportRouterController} from "./ExportRouterController"
 
 /**
  * @memberOf Route
@@ -119,7 +120,7 @@ Router.route('/user/:_id/export', function () {
             }, to: 'mainContent'
         });
     },
-    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.export'}
+    {data:{currentTab:'Users'},controller: ExportRouterController,name: 'user.export'}
 );
 
 

@@ -4,9 +4,6 @@ import {ManifMakerRouterController} from "./ManifMakerRouterController"
  * @namespace Route
  */
 
-Router.configure({
-    layoutTemplate: 'wrapper'
-});
 
 //hide topNavBar to each expect assignment
 Router.onAfterAction(function () {
