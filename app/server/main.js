@@ -6,6 +6,7 @@ import {ServerService} from "./service/ServerService";
 import {Inject24h43emeDataServerService} from "./service/Inject24h43emeDataServerService";
 import {Inject24hDataServerService} from "./service/Inject24hDataServerService";
 import {InjectDataHelperServerService} from "./service/InjectDataHelperServerService";
+import {JwtService} from "./service/JwtService";
 
 InjectDataInfo = new Mongo.Collection("inject_data_infos");
 
@@ -18,6 +19,12 @@ Meteor.startup(function () {
         console.log("MAIL_URL has been set to "+process.env.MAIL_URL);
     }else
         console.info("MAILGUN_PASSWORD is not defined, this app will not send mail");
+
+    if(!process.env.JWT_PRIVATE_KEY || !process.env.JWT_PUBLIC_KEY){
+        console.warn("JWT_PRIVATE_KEY and JWT_PUBLIC_KEY are not defined");
+        console.info("JWT_PRIVATE_KEY and JWT_PUBLIC_KEY set to random secret");
+        process.env.JWT_PRIVATE_KEY = process.env.JWT_PUBLIC_KEY = new Mongo.ObjectID()._str;
+    }
 
 
 
