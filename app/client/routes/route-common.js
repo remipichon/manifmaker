@@ -50,6 +50,29 @@ Router.route('/', function () {
 
 /**
  * @memberOf Route.common
+ * @summary token access
+ * @locus client
+ * @name 'home'  /jwt/:token
+ */
+Router.route('/jwt/:token', function () {
+
+        var token = this.params.token;
+        Meteor.call('verifyExportUrl',token,_.bind(function (error, result) {
+            console.log("verifyExportUrl",result,error)
+            Router.go(result.target)
+        }, this));
+
+        this.render('home', {to: 'mainContent'})
+
+
+    },
+    {data:{currentTab:'Home'},
+        name: 'token'
+    }
+);
+
+/**
+ * @memberOf Route.common
  * @summary Login
  * @locus client
  * @name 'login'  /login
