@@ -58,8 +58,10 @@ Router.route('/jwt/:token', function () {
 
         var token = this.params.token;
         Meteor.call('verifyExportUrl',token,_.bind(function (error, result) {
-            console.log("verifyExportUrl",result,error)
-            Router.go(result.target)
+            Meteor.loginWithToken(result.token);
+            var payload = result.payload;
+            console.log("verifyExportUrl",payload,error);
+            Router.go(payload.target)
         }, this));
 
         this.render('home', {to: 'mainContent'})

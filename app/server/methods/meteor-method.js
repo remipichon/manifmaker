@@ -44,7 +44,14 @@ Meteor.methods({
         return JwtService.sign({"target":target, type:"url"})
     },
     verifyExportUrl: function (jwtString) {
-        return JwtService.verify(jwtString)
+        var payload = JwtService.verify(jwtString);
+        console.log("payload",payload)
+        var userId = payload.target.match("user/(.*)/export")[1];
+        var user = Meteor.users.findOne(userId);
+        return {
+            payload: payload,
+            token: user.loginToken
+        }
     },
 });
 
