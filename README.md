@@ -455,7 +455,8 @@ PDF_FILE=output.pdf;
 IN=192.168.192.4:3000/jwt/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YXJnZXQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvdXNlci9uRHd3UnlQYnVDWlo4UTZwQS9leHBvcnQiLCJ0eXBlIjoidXJsIiwiaWF0IjoxNDg5NTI4NTgzfQ.DF98Qq7jqWK_qYcPL5JU0wrY97soU2JRb22S2_b-q7M
 docker run --rm -v $HTML_FOLDER:/root/out/ --env IN=$IN --env OUT=/root/out/$PDF_FILE assomaker/wkhtmltopdf 
 
-
+# Node PDF Export
+docker build -t assomaker/export_pdf .
 
 <a id="production" name="production"></a>
 # Production
