@@ -6,13 +6,17 @@ USER root
 RUN curl -sSL https://get.docker.com/ | sh 
 ENV DOCKER_HOST tcp://dind:4242
 
-# npm HTTP server to run Docker cmd
-#RUN npm install dockerode -g
-#RUN npm i koa
-#RUN npm install babel-register --save-dev
-#npm install --save-dev babel-plugin-transform-runtime
+COPY app /root/app/
+RUN cd /root/app/; npm install;
 
-RUN npm install express --save
-RUN  npm install express
+ENTRYPOINT node /root/app/app.js
 
-# docker rm -f nodeexport; docker run --name nodeexport -p 3030:3030 -d -v /Users/remi/WebstormProjects/manifmaker/production/export-pdf-node:/root/app  assomaker/export_pdf tail -f /dev/null
+# docker build -t assomaker/export_pdf .
+
+# dev mode : with code in shared volume
+# docker rm -f nodeexport; docker run -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d -v /Users/remi/WebstormProjects/manifmaker/production/export-pdf-node:/root --entrypoint="" assomaker/export_pdf tail -f /dev/null; docker exec -ti nodeexport sh
+# cd /root/app/; npm install; node app.js
+
+# normal mode
+# docker build -t assomaker/export_pdf .; docker rm -f nodeexport; docker run -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d  assomaker/export_pdf; docker logs -f nodeexport
+
