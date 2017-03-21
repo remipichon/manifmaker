@@ -39,6 +39,7 @@ branch deploy : [![Build Status](https://travis-ci.org/assomaker/manifmaker.svg?
     * [Add a reference collection](#reference)
 * [Project Management](#project)
 * [Production](#production)
+* [PDF export](#pdf-export)
 
 
 
@@ -152,6 +153,8 @@ Each version uses different Mongo user meaning that, while using the same Mongo 
 Icon definition can be found here : [https://materialdesignicons.com/](https://materialdesignicons.com/). 
 
 <a id="css" name="css"></a>
+<<<<<<< HEAD
+<<<<<<< HEAD
 ### CSS Classes
 
 Some useful classes implemented in css :
@@ -160,6 +163,22 @@ Some useful classes implemented in css :
 
 .hide-on-small-devices : the element is only displayed on large devices ;
 
+=======
+=======
+### CSS Classes
+
+>>>>>>> cff952d... [LOH] README update
+Some useful classes implemented in css :
+
+.clickable : cursor is a hand over this element ;
+<<<<<<< HEAD
+.hide-on-small-devices : the element is only displayed on large devices
+>>>>>>> 75a2a3f... [LOH] TopNavBar fixes : feedback link, no more clock on small devices, menu can be opened on small screens
+=======
+
+.hide-on-small-devices : the element is only displayed on large devices ;
+
+>>>>>>> cff952d... [LOH] README update
 
 
 <a id="alert" name="alert"></a>
@@ -426,6 +445,18 @@ When choosing what to do you have to keep in mind that Meteor is real time, if y
 and revert it right away, you will unefficiently use DDP, the clients will compute the data and probably display something for a short amount of time before the sytem reverts the changes.
 It can lead the GUI to flickr. That is why it is probably better **to check everything BEFORE** database operations **if you need more than one database update** to perform one operation/action).
 
+
+<a id="pdf-export" name="pdf-export"></a>
+# PDF Export
+
+HTML_FOLDER=/Users/remi/sandbox;
+HTML_FILE=file.htm;
+PDF_FILE=output.pdf;
+IN=192.168.192.4:3000/jwt/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YXJnZXQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvdXNlci9uRHd3UnlQYnVDWlo4UTZwQS9leHBvcnQiLCJ0eXBlIjoidXJsIiwiaWF0IjoxNDg5NTI4NTgzfQ.DF98Qq7jqWK_qYcPL5JU0wrY97soU2JRb22S2_b-q7M
+docker run --rm -v $HTML_FOLDER:/root/out/ --env IN=$IN --env OUT=/root/out/$PDF_FILE assomaker/wkhtmltopdf 
+
+# Node PDF Export
+docker build -t assomaker/export_pdf .
 
 <a id="production" name="production"></a>
 # Production

@@ -3,6 +3,13 @@
 </template>
 
 <template name="exportUserAssignmentComponent">
+
+    <div class="row">
+        <div class="col-md-12">
+            <a target="_blank" href="/jwt/{{token}}"><button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Download PDF</button></a>
+        </div>
+    </div>
+
     <h2 class="pull-right">
         {{profile.firstName}}
         {{profile.familyName}}

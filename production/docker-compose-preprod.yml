@@ -17,7 +17,7 @@ services:
         volumes:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
     manifmaker: 
-        image: 'assomaker/manifmaker:0-2-3'
+        image: 'assomaker/manifmaker:0-2-4'
         environment:
             - ROOT_URL=http://preprod.manifmaker.24heures.org/
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database

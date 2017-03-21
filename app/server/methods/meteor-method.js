@@ -2,6 +2,7 @@ import {InjectDataServerService} from "../service/InjectDataServerService"
 import {InjectDataHelperServerService} from "../service/InjectDataHelperServerService"
 import {SecurityServiceServer} from "../service/SecurityServiceServer"
 import {ServerUserService} from "../service/ServerUserService"
+import {JwtService} from "../service/JwtService";
 
 
 Meteor.methods({
@@ -37,6 +38,20 @@ Meteor.methods({
             subject: subject,
             text: text
         });
-    }
+    },
+    signExportUrl: function (target) {
+        //TODO check that user has EXPORTASSIGNMENT role
+        return JwtService.sign({"target":target, type:"url"})
+    },
+    verifyExportUrl: function (jwtString) {
+        var payload = JwtService.verify(jwtString);
+        console.log("payload",payload)
+        var userId = payload.target.match("user/(.*)/export")[1];
+        var user = Meteor.users.findOne(userId);
+        return {
+            payload: payload,
+            token: user.loginToken
+        }
+    },
 });
 

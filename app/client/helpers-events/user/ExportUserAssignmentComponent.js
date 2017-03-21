@@ -5,7 +5,15 @@ class ExportUserAssignmentComponent extends BlazeComponent {
     constructor() {
         super();
         this.randNameArray = [];
+        this.tokenReactive = new ReactiveVar();
+        Meteor.call('signExportUrl',Router.current().url,_.bind(function (error, result) {
+            this.tokenReactive.set(result);
+        }, this));
 
+    }
+
+    token(){
+        return this.tokenReactive.get();
     }
 
 

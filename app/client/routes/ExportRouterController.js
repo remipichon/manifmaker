@@ -1,10 +1,10 @@
 import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
 
-export var ManifMakerRouterController = RouteController.extend({
+export var ExportRouterController = RouteController.extend({
     onBeforeAction: function () {
 
         Router.configure({
-            layoutTemplate: 'wrapper'
+            layoutTemplate: 'export-wrapper'
         });
 
         if (!Meteor.userId()) {
@@ -20,8 +20,6 @@ export var ManifMakerRouterController = RouteController.extend({
                 }
                 throw e;
             }
-
-
 
             if(!commonNavBarWrapperIsRendered) {
                 this.render("CommonNavBarWrapper", {to: "topNavBar"});
@@ -55,11 +53,8 @@ export var ManifMakerRouterController = RouteController.extend({
             }
         }
 
+
     },
-
-    onAfterAction: function () {
-
-    }
 });
 
 

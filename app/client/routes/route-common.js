@@ -4,9 +4,6 @@ import {ManifMakerRouterController} from "./ManifMakerRouterController"
  * @namespace Route
  */
 
-Router.configure({
-    layoutTemplate: 'wrapper'
-});
 
 //hide topNavBar to each expect assignment
 Router.onAfterAction(function () {
@@ -48,6 +45,31 @@ Router.route('/', function () {
     {data:{currentTab:'Home'},
     name: 'home',
     controller: ManifMakerRouterController
+    }
+);
+
+/**
+ * @memberOf Route.common
+ * @summary token access
+ * @locus client
+ * @name 'home'  /jwt/:token
+ */
+Router.route('/jwt/:token', function () {
+
+        var token = this.params.token;
+        Meteor.call('verifyExportUrl',token,_.bind(function (error, result) {
+            Meteor.loginWithToken(result.token);
+            var payload = result.payload;
+            console.log("verifyExportUrl",payload,error);
+            Router.go(payload.target)
+        }, this));
+
+        this.render('home', {to: 'mainContent'})
+
+
+    },
+    {data:{currentTab:'Home'},
+        name: 'token'
     }
 );
 

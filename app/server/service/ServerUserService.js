@@ -78,6 +78,15 @@ export class ServerUserService {
             console.info("Data added from Facebook",google.family_name,google.given_name,google.email);
         }
 
+
+            var stampedLoginToken = Accounts._generateStampedLoginToken();
+            Accounts._insertLoginToken(doc._id, stampedLoginToken);
+            console.log("loginTokent",stampedLoginToken)
+            Meteor.users.update(doc._id, {
+            $set: {
+                'loginToken': stampedLoginToken.token
+            }});
+
             console.info("A new user has been updated : "+doc.username+" whith _id :"+doc._id+" and '"+defaultGroupRolesId+"' group roles");
     }
 
