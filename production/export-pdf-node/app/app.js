@@ -65,26 +65,44 @@ function runWkhtmltopdfContainer(outputFile,url){
 	  Tty: true,
 	  OpenStdin: false,
 	  StdinOnce: false,
+    "HostConfig": {
+      "NetworkMode": "host",    //TODO DEBUG ONLY
+      // "NetworkMode": "production_default",   
+      "Binds":["/Users/remi/sandbox:/root/out"]
+
+    },
+    "Labels": {
+        "outputFile": outputFile
+    },
+    // "Mounts": [
+            // {
+                // "Type": "bind",
+                // "Source": "/Users/remi/sandbox",
+                // "Destination": "/root/out",
+                // "Mode": "",
+                // "RW": true,
+                // "Propagation": ""
+            // }
+        // ],
 	  "Volumes":{"/root/out": {}}, 
-	  Network:"production_default",
 	  Env: [
         'IN='+url,
         'OUT=/root/out/'+outputFile
 	    ],
-	    "Binds":[sourceFolder+":/root/out"]
-	}).then(function(container) {
-	  return container.start();
-	}).then(function(container) {
-	   //container.stop();
-	   return 1;//container;
-	}).then(function(container) {
-	  return 1;//container.remove();
-	}).then(function(data) {
-	  //console.log('container removed');
-	  //check that file exists and if so, use websocket to meteor
-	}).catch(function(err) {
-	  console.log(err);
-	});
+  },function(err,container){
+      console.log("Container to ouput PDF file", outputFile, "created")
+      container.start(function (err, data) {
+        console.log("Container to ouput PDF file",outputFile, "started")
+      });
+      container.wait(function (err, data) {
+        console.log("Container to ouput PDF file",outputFile, "ended")
+        container.remove(function(err,data){
+          console.log("Clean container used for",outputFile);
+        })
+      });
+     
+  });
+
 }
 
 app.post('/export',function (req, res) {
@@ -105,7 +123,7 @@ app.post('/export',function (req, res) {
   	items.forEach(function(item){
   		var url = item.url;
   		var fileName = item.fileName
-  		console.info("Generate PDF",fileName,"from",url);
+  		console.info("Will be generated PDF",fileName,"from",url);
 		runWkhtmltopdfContainer(fileName,url)
   	});
 
