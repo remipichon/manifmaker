@@ -45,12 +45,11 @@ Meteor.methods({
     },
     verifyExportUrl: function (jwtString) {
         var payload = JwtService.verify(jwtString);
-        console.log("payload",payload)
         var userId = payload.target.match("user/(.*)/export")[1];
-        var user = Meteor.users.findOne(userId);
+        var token = ServerUserService.generateNewLoginToken(userId)
         return {
             payload: payload,
-            token: user.loginToken
+            token: token
         }
     },
 });

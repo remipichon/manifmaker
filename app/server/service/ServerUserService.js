@@ -7,6 +7,17 @@ import { Accounts } from 'meteor/accounts-base'
 /** @class ServerUserService */
 export class ServerUserService {
 
+    /**
+     * @summary Add a one time login token to user
+     * @param userId
+     * @returns {{loginToken}}
+     */
+    static generateNewLoginToken(userId){
+        var stampedLoginToken = Accounts._generateStampedLoginToken();
+        Accounts._insertLoginToken(userId, stampedLoginToken);
+        return stampedLoginToken.token;
+    }
+
     static updateUserName(userId,newUsername){
         Accounts.setUsername(userId, newUsername);
     }
@@ -77,15 +88,6 @@ export class ServerUserService {
             Accounts.addEmail(doc._id, google.email, false);
             console.info("Data added from Facebook",google.family_name,google.given_name,google.email);
         }
-
-
-            var stampedLoginToken = Accounts._generateStampedLoginToken();
-            Accounts._insertLoginToken(doc._id, stampedLoginToken);
-            console.log("loginTokent",stampedLoginToken)
-            Meteor.users.update(doc._id, {
-            $set: {
-                'loginToken': stampedLoginToken.token
-            }});
 
             console.info("A new user has been updated : "+doc.username+" whith _id :"+doc._id+" and '"+defaultGroupRolesId+"' group roles");
     }
