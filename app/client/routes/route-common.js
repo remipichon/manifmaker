@@ -60,7 +60,6 @@ Router.route('/jwt/:token', function () {
         Meteor.call('verifyExportUrl',token,_.bind(function (error, result) {
             Meteor.loginWithToken(result.token);
             var payload = result.payload;
-            console.log("verifyExportUrl",payload,error);
             Router.go(payload.target)
         }, this));
 

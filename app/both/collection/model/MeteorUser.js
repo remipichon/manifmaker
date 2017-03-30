@@ -201,11 +201,6 @@ Schemas.UserProfile = new SimpleSchema({
 });
 
 Schemas.User = new SimpleSchema({
-    loginToken:{
-        label: "Login Token",
-        type: String,
-        optional: true
-    },
     isReadyForAssignment: {
         label: "User assignment ready state",
         type: Boolean,
