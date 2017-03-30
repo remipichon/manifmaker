@@ -46,17 +46,6 @@ function containerLogs(container) {
 function runWkhtmltopdfContainer(outputFile,url){
 	var sourceFolder="/Users/remi/sandbox";
 
-// docker.run('assomaker/wkhtmltopdf', [], process.stdout, {
-//   'Volumes': {
-//     '/root/out': {}
-//   },
-// }, {
-//   'Binds': [sourceFolder+":/root/out"]
-// }, function(err, data, container) {
-//   console.log(data);//.StatusCode);
-// });
-// return;
-
 	docker.createContainer({
 	  Image: 'assomaker/wkhtmltopdf',
 	  AttachStdin: true,
@@ -74,16 +63,6 @@ function runWkhtmltopdfContainer(outputFile,url){
     "Labels": {
         "outputFile": outputFile
     },
-    // "Mounts": [
-            // {
-                // "Type": "bind",
-                // "Source": "/Users/remi/sandbox",
-                // "Destination": "/root/out",
-                // "Mode": "",
-                // "RW": true,
-                // "Propagation": ""
-            // }
-        // ],
 	  "Volumes":{"/root/out": {}}, 
 	  Env: [
         'IN='+url,
