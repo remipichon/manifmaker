@@ -9,6 +9,7 @@
     "express": "*",
     "body-parser":"*",
     "multer":"*",
-    "dockerode":"*"
+    "dockerode":"*",
+    "http": "*"
   }
 }

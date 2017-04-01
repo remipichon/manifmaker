@@ -100,19 +100,19 @@ Router.route('/user/:_id/read', function () {
 
 /**
  * @memberOf Route.User
- * @summary Display the user in read mode by it's MongoId
+ * @summary Display the user HTML agenda by it's MongoId
  * @locus client
  * @param userId
- * @name 'user.export'  /user/:_id/export
+ * @name 'user.export'  /user/:_id/export/html
  */
-Router.route('/user/:_id/export', function () {
+Router.route('/user/:_id/export/html', function () {
         if(!Meteor.users.findOne({_id: this.params._id})){
             throw new Meteor.Error("404","User not found");
         }
         if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
             SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
 
-        console.info("routing", "/user/" + this.params._id + "/export");
+        console.info("routing", "/user/" + this.params._id + "/export/html");
         this.render('exportUserAssignment', {
             data: function () {
                 var currentUser = this.params._id;
@@ -120,7 +120,40 @@ Router.route('/user/:_id/export', function () {
             }, to: 'mainContent'
         });
     },
-    {data:{currentTab:'Users'},controller: ExportRouterController,name: 'user.export'}
+    {data:{currentTab:'Users'},controller: ExportRouterController,name: 'user.export.html'}
+);
+
+/**
+ * @memberOf Route.User
+ * @summary Download the user PDF agenda by it's MongoId
+ * @locus client
+ * @param userId
+ * @name 'user.export'  /user/:_id/export/pdf
+ */
+Router.route('/user/:_id/export/pdf', function () {
+        if(!Meteor.users.findOne({_id: this.params._id})){
+            throw new Meteor.Error("404","User not found");
+        }
+        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
+            SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
+
+        var options = [{
+            url :  "/user/" + this.params._id + "/export/html",
+            fileName: Meteor.users.findOne(this.params._id).username + ".pdf"
+        }];
+
+        console.info("routing", "/user/" + this.params._id + "/export/pdf");
+        this.render('downloadPdf', {
+            data: function () {
+                return {
+                    user: Meteor.users.findOne(this.params._id),
+                    options: options,
+                    message: "We are generating a new fresh PDF agenda just for you, please wait..."
+                };
+            }, to: 'mainContent'
+        });
+    },
+    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.export.pdf'}
 );
 
 

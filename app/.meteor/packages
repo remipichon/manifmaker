@@ -58,3 +58,5 @@ francocatena:status
 tap:i18n
 email
 dburles:google-maps
+http
+cfs:http-methods
