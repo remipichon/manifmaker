@@ -491,6 +491,7 @@ Export Node PDF pull export-pdf image at startup
 proxy to expose node-pdf-export to the world (for dev purpose)
 docker run -d -p 3030:3030 --network production_default alpine tail -f /dev/null
 
+docker rm -fv nginx; docker run --name nginx -p 8080:80 -d -v /Users/remi/sandbox:/usr/share/nginx/html/pdf nginx
 
 <a id="production" name="production"></a>
 # Production

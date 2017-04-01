@@ -73,10 +73,10 @@ function runWkhtmltopdfContainer(outputFile,url){
 	    ],
   },function(err,container){
       console.log("Container to ouput PDF file", outputFile, "created")
-      http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/created', function(response) {});
+      //http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/created', function(response) {});
       container.start(function (err, data) {
         console.log("Container to ouput PDF file",outputFile, "started")
-        http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/started', function(response) {});
+        ///http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/started', function(response) {});
       });
       container.wait(function (err, data) {
         console.log("Container to ouput PDF file",outputFile, "ended")

@@ -31,6 +31,12 @@ Meteor.startup(function () {
     else
         Meteor.exportPdfEndpoint = "http://node_export_pdf:3030/export";
 
+    if(process.env.NGINX_ENDPOINT)
+        Meteor.nginxEndpoint = process.env.NGINX_ENDPOINT;
+    else
+        Meteor.nginxEndpoint = "http://localhost:8080/pdf/";
+
+
 
 
     Meteor.isStartingUp = true;

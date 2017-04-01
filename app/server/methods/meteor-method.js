@@ -66,6 +66,13 @@ Meteor.methods({
             item.url = "http://192.168.192.4:3000/jwt/" + JwtService.sign({"target": "http://192.168.192.4:3000"+option.url, type:"url"});
             item.fileName = option.fileName;
             items.push(item);
+            var downloadUrl = Meteor.nginxEndpoint + item.fileName;
+            var fileStatus = ExportStatus.findOne({fileName: item.fileName});
+            if (fileStatus) {
+                ExportStatus.update({fileName: item.fileName}, {$set: {status: "In progress", downloadUrl:downloadUrl}});
+            } else {
+                ExportStatus.insert({fileName: item.fileName, status: "In progress", downloadUrl:downloadUrl});
+            }
         });
         console.info("Calling export pdf endpoint",Meteor.exportPdfEndpoint,"with",items);
 

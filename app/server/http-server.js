@@ -7,13 +7,13 @@ HTTP.methods({
             var status = this.params.status;
             // var sessionId = this.params.sessionId; //TODO make use of it
             // var status = this.params.status; //TODO make use of it ?
+            var downloadUrl = Meteor.nginxEndpoint + fileName;
             var fileStatus = ExportStatus.findOne({fileName: fileName});
             if (fileStatus) {
-                ExportStatus.update({fileName: fileName}, {$set: {status: status}});
+                ExportStatus.update({fileName: fileName}, {$set: {status: status, downloadUrl:downloadUrl}});
             } else {
-                ExportStatus.insert({fileName: fileName, status: status});
+                ExportStatus.insert({fileName: fileName, status: status, downloadUrl:downloadUrl});
             }
-
 
             return 'Thanks';
         }

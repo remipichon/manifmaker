@@ -24,6 +24,10 @@ export class DownloadPdfComponent extends BlazeComponent{
         return ExportStatus.findOne({fileName:this.currentData().fileName}).status;
     }
 
+    getDownloadUrl(){
+        return ExportStatus.findOne({fileName:this.currentData().fileName}).downloadUrl;
+    }
+
 
 }
 
