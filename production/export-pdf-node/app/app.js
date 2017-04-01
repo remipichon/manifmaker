@@ -8,6 +8,8 @@ var stream = require('stream');
 var Docker = require('dockerode');
 var docker = new Docker({socketPath: '/var/run/docker.sock'});
 
+var ouputDir = process.env.OUTPUTDIR
+
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -44,7 +46,6 @@ function containerLogs(container) {
 }
 
 function runWkhtmltopdfContainer(outputFile,url){
-	var sourceFolder="/Users/remi/sandbox";
 
 	docker.createContainer({
 	  Image: 'assomaker/wkhtmltopdf',
@@ -57,7 +58,7 @@ function runWkhtmltopdfContainer(outputFile,url){
     "HostConfig": {
       "NetworkMode": "host",    //TODO DEBUG ONLY
       // "NetworkMode": "production_default",   
-      "Binds":["/Users/remi/sandbox:/root/out"]
+      "Binds":[ouputDir+":/root/out"]
 
     },
     "Labels": {
@@ -109,6 +110,24 @@ app.post('/export',function (req, res) {
   	res.send(items.length + " wil be generated");
 });
 
-app.listen(3030, function () {
-  console.log('Example app listening on port 3030!');
+console.log("About to pull assomaker/wkhtmltopdf")
+docker.pull('assomaker/wkhtmltopdf', function (err, stream) {
+  // streaming output from pull...
+  docker.modem.followProgress(stream, onFinished, onProgress);
+
+  function onFinished(err, output) {
+    if(err)
+      console.log(err);
+    else{
+      console.log("assomaker/wkhtmltopdf has been pulled, now starting http server")
+      app.listen(3030, function () {
+        console.log('Export PDF NodeJs just started on port 3030');
+      });
+    }
+  }
+  function onProgress(event) {
+    console.log("Downloading assomaker/wkhtmltopdf...")
+  }
+  
 });
+
