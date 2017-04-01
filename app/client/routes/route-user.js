@@ -137,23 +137,16 @@ Router.route('/user/:_id/export/pdf', function () {
         if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
             SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
 
-        var user = Meteor.users.findOne(this.params._id);
         var options = [{
             url :  "/user/" + this.params._id + "/export/html",
-            fileName: user.username + ".pdf"
+            fileName: Meteor.users.findOne(this.params._id).username + ".pdf"
         }];
-        //calling Meteor backend to generate PDF right away
-        Meteor.call("generatePdf",options,_.bind(function(error, result){
-            if(error){
-               console.error("generatePdf",error)
-            }
-            //generate pdf feedback is managed elsewhere
-        },this));
 
         console.info("routing", "/user/" + this.params._id + "/export/pdf");
         this.render('downloadPdf', {
             data: function () {
                 return {
+                    user: Meteor.users.findOne(this.params._id),
                     options: options,
                     message: "We are generating a new fresh PDF agenda just for you, please wait..."
                 };
