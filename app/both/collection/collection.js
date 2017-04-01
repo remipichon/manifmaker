@@ -57,6 +57,13 @@ TaskGroups = new Mongo.Collection("task_groups"); //TODO group activity
  */
 Settings = new Mongo.Collection("settings");
 
+/**
+ * @memberOf Collection
+ * @summary ExportStatus collection
+ * @locus Anywhere
+ * @instancename collection
+ */
+ExportStatus = new Mongo.Collection("export_status");
 
 //using schema
 Tasks.attachSchema(Schemas.Tasks);

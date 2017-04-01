@@ -20,6 +20,10 @@ export class DownloadPdfComponent extends BlazeComponent{
         },this));
     }
 
+    getStatus(){
+        return ExportStatus.findOne({fileName:this.currentData().fileName}).status;
+    }
+
 
 }
 

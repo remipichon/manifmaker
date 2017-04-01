@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var multer = require('multer'); // v1.0.5
 var upload = multer(); // for parsing multipart/form-data
 var stream = require('stream');
+var http = require('http');
 
 var Docker = require('dockerode');
 var docker = new Docker({socketPath: '/var/run/docker.sock'});
@@ -72,11 +73,15 @@ function runWkhtmltopdfContainer(outputFile,url){
 	    ],
   },function(err,container){
       console.log("Container to ouput PDF file", outputFile, "created")
+      http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/created', function(response) {});
       container.start(function (err, data) {
         console.log("Container to ouput PDF file",outputFile, "started")
+        http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/started', function(response) {});
       });
       container.wait(function (err, data) {
         console.log("Container to ouput PDF file",outputFile, "ended")
+        http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/ended', function(response) {});
+
         container.remove(function(err,data){
           console.log("Clean container used for",outputFile);
         })
@@ -122,9 +127,9 @@ docker.pull('assomaker/wkhtmltopdf', function (err, stream) {
     else{
       console.log("assomaker/wkhtmltopdf has been pulled, now starting http server")
       app.listen(3030, function () {
+        console.log("OUTPUTDIR="+ouputDir)
+        console.log("NETWORKMODE="+NetworkMode)
         console.log('Export PDF NodeJs just started on port 3030');
-        console.log("OUTPUTDIR="ouputDir)
-        console.log("NETWORKMODE="NetworkMode)
       });
     }
   }

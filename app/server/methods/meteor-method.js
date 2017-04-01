@@ -75,7 +75,7 @@ Meteor.methods({
             if (error) {
                 console.error("generatePdf",error)
             } else {
-                console.info("generatePdf calling",Meteor.exportPdfEndpoint,"with result",result)
+                console.info("generatePdf calling",Meteor.exportPdfEndpoint,"with result",result.content)
             }
         });
     }

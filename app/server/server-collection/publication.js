@@ -279,6 +279,16 @@ Meteor.startup(function () {
         return AndroidCategories.find({});
     });
 
+    /**
+     * @memberOf Meteor_Publish
+     * @locus server
+     * @summary Export Status publication. No query, publish all Export Status data. //TODO bha non du coup
+     * @returns {Collection}
+     */
+    Meteor.publish("export-status", function () {
+        return ExportStatus.find({});
+    });
+
     Meteor.publish("images", function () {
         return Images.find({});
     });

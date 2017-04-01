@@ -480,7 +480,7 @@ Export Node PDF pull export-pdf image at startup
 # docker build -t assomaker/export_pdf .
 
 # dev mode : with code in shared volume
-# docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox --network production_default -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d -v /Users/remi/WebstormProjects/manifmaker/production/export-pdf-node:/root --entrypoint="" assomaker/export_pdf tail -f /dev/null; docker exec -ti nodeexport sh
+# docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox --network host -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d -v /Users/remi/WebstormProjects/manifmaker/production/export-pdf-node:/root --entrypoint="" assomaker/export_pdf tail -f /dev/null; docker exec -ti nodeexport sh
 # cd /root/app/; npm install; node app.js
 
 

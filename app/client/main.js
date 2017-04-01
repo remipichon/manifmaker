@@ -54,6 +54,7 @@ Meteor.startup(function () {
     Meteor.subscribe("water-disposals");
     Meteor.subscribe("power-supplies");
     Meteor.subscribe("settings");
+    Meteor.subscribe("export-status");
     Meteor.subscribe("assignment-terms", function () {
         AssignmentServiceClient.setCalendarTerms();
     });
