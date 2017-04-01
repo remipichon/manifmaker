@@ -30,6 +30,8 @@ class ExportUserAssignmentComponent extends BlazeComponent {
             })
         });
 
+        // !!! used by wkhtmltopdf to know when the page is fully loaded !!!
+        window.status = 'ready_to_print';
     }
 
     mapOptions(){

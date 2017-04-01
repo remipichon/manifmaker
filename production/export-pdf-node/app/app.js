@@ -8,6 +8,8 @@ var stream = require('stream');
 var Docker = require('dockerode');
 var docker = new Docker({socketPath: '/var/run/docker.sock'});
 
+var ouputDir = process.env.OUTPUTDIR
+
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -44,18 +46,6 @@ function containerLogs(container) {
 }
 
 function runWkhtmltopdfContainer(outputFile,url){
-	var sourceFolder="/Users/remi/sandbox";
-
-// docker.run('assomaker/wkhtmltopdf', [], process.stdout, {
-//   'Volumes': {
-//     '/root/out': {}
-//   },
-// }, {
-//   'Binds': [sourceFolder+":/root/out"]
-// }, function(err, data, container) {
-//   console.log(data);//.StatusCode);
-// });
-// return;
 
 	docker.createContainer({
 	  Image: 'assomaker/wkhtmltopdf',
@@ -65,26 +55,34 @@ function runWkhtmltopdfContainer(outputFile,url){
 	  Tty: true,
 	  OpenStdin: false,
 	  StdinOnce: false,
+    "HostConfig": {
+      "NetworkMode": "host",    //TODO DEBUG ONLY
+      // "NetworkMode": "production_default",   
+      "Binds":[ouputDir+":/root/out"]
+
+    },
+    "Labels": {
+        "outputFile": outputFile
+    },
 	  "Volumes":{"/root/out": {}}, 
-	  Network:"production_default",
 	  Env: [
         'IN='+url,
         'OUT=/root/out/'+outputFile
 	    ],
-	    "Binds":[sourceFolder+":/root/out"]
-	}).then(function(container) {
-	  return container.start();
-	}).then(function(container) {
-	   //container.stop();
-	   return 1;//container;
-	}).then(function(container) {
-	  return 1;//container.remove();
-	}).then(function(data) {
-	  //console.log('container removed');
-	  //check that file exists and if so, use websocket to meteor
-	}).catch(function(err) {
-	  console.log(err);
-	});
+  },function(err,container){
+      console.log("Container to ouput PDF file", outputFile, "created")
+      container.start(function (err, data) {
+        console.log("Container to ouput PDF file",outputFile, "started")
+      });
+      container.wait(function (err, data) {
+        console.log("Container to ouput PDF file",outputFile, "ended")
+        container.remove(function(err,data){
+          console.log("Clean container used for",outputFile);
+        })
+      });
+     
+  });
+
 }
 
 app.post('/export',function (req, res) {
@@ -105,13 +103,31 @@ app.post('/export',function (req, res) {
   	items.forEach(function(item){
   		var url = item.url;
   		var fileName = item.fileName
-  		console.info("Generate PDF",fileName,"from",url);
+  		console.info("Will be generated PDF",fileName,"from",url);
 		runWkhtmltopdfContainer(fileName,url)
   	});
 
   	res.send(items.length + " wil be generated");
 });
 
-app.listen(3030, function () {
-  console.log('Example app listening on port 3030!');
+console.log("About to pull assomaker/wkhtmltopdf")
+docker.pull('assomaker/wkhtmltopdf', function (err, stream) {
+  // streaming output from pull...
+  docker.modem.followProgress(stream, onFinished, onProgress);
+
+  function onFinished(err, output) {
+    if(err)
+      console.log(err);
+    else{
+      console.log("assomaker/wkhtmltopdf has been pulled, now starting http server")
+      app.listen(3030, function () {
+        console.log('Export PDF NodeJs just started on port 3030');
+      });
+    }
+  }
+  function onProgress(event) {
+    console.log("Downloading assomaker/wkhtmltopdf...")
+  }
+  
 });
+

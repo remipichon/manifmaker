@@ -446,6 +446,22 @@ and revert it right away, you will unefficiently use DDP, the clients will compu
 It can lead the GUI to flickr. That is why it is probably better **to check everything BEFORE** database operations **if you need more than one database update** to perform one operation/action).
 
 
+<a id="jwt-login-token" name="jwt-login-token"></a>
+# JWT
+
+JWT can be used to sign Json payload. 
+
+### Json Payload (not generic)
+* target : what to do
+* user : which user will be used to login to perform the target
+
+# Login Token
+
+One time login token can be generated : 
+
+* one time login URL (not impl)
+* login to perform target when using /jwt/<jwt-token>
+
 <a id="pdf-export" name="pdf-export"></a>
 # PDF Export
 
@@ -457,6 +473,24 @@ docker run --rm -v $HTML_FOLDER:/root/out/ --env IN=$IN --env OUT=/root/out/$PDF
 
 # Node PDF Export
 docker build -t assomaker/export_pdf .
+
+Export Node PDF pull export-pdf image at startup
+
+
+# docker build -t assomaker/export_pdf .
+
+# dev mode : with code in shared volume
+# docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox --network production_default -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d -v /Users/remi/WebstormProjects/manifmaker/production/export-pdf-node:/root --entrypoint="" assomaker/export_pdf tail -f /dev/null; docker exec -ti nodeexport sh
+# cd /root/app/; npm install; node app.js
+
+
+# normal mode
+# docker build -t assomaker/export_pdf .; docker rm -f nodeexport; docker run -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d  assomaker/export_pdf; docker logs -f nodeexport
+
+
+proxy to expose node-pdf-export to the world (for dev purpose)
+docker run -d -p 3030:3030 --network production_default alpine tail -f /dev/null
+
 
 <a id="production" name="production"></a>
 # Production

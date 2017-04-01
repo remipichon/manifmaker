@@ -25,4 +25,11 @@ services:
             - "80:3000" 
         volumes:
             - ~/manifmaker_images:/opt/meteor/dist/cfs/files/images
+    node_export_pdf: 
+        image: 'assomaker/export_pdf'
+        environment: 
+            - OUTPUTDIR=/root/export_pdf
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+
 
