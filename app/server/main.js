@@ -26,6 +26,11 @@ Meteor.startup(function () {
         process.env.JWT_PRIVATE_KEY = process.env.JWT_PUBLIC_KEY = new Mongo.ObjectID()._str;
     }
 
+    if(process.env.EXPORT_PDF_ENDPOINT)
+        Meteor.exportPdfEndpoint = process.env.EXPORT_PDF_ENDPOINT;
+    else
+        Meteor.exportPdfEndpoint = "http://node_export_pdf:3030/export";
+
 
 
     Meteor.isStartingUp = true;
@@ -101,6 +106,7 @@ Meteor.startup(function () {
         // InjectDataHelperServerService.deleteAll();
         // password = InjectDataHelperServerService.initAccessRightData();
         // Meteor.injectDataServerService.injectAllData();
+        Meteor.exportPdfEndpoint = "http://localhost:3030/export"; //only if node export pdf is running locally
     }
 
     if(password){

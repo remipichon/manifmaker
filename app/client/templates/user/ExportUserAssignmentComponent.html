@@ -4,9 +4,16 @@
 
 <template name="exportUserAssignmentComponent">
 
+
     <div class="row">
         <div class="col-md-12">
-            <a target="_blank" href="/jwt/{{token}}"><button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Download PDF</button></a>
+            <a target="_blank" href="/jwt/{{token}}"><button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Dev : JWT url to get HTML agenda</button></a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <a target="_blank" href="/user/{{_id}}/export/pdf"><button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Download PDF</button></a>
         </div>
     </div>
 

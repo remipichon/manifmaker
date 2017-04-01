@@ -26,9 +26,11 @@ services:
         volumes:
             - ~/manifmaker_images:/opt/meteor/dist/cfs/files/images
     node_export_pdf: 
+        container_name: node_export_pdf
         image: 'assomaker/export_pdf'
         environment: 
             - OUTPUTDIR=/root/export_pdf
+            - NETWORKMODE=production_default
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
 

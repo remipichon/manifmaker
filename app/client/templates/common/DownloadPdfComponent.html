@@ -1,0 +1,15 @@
+<template name="downloadPdf">
+    {{> DownloadPdfComponent}}
+</template>
+
+<template name="downloadPdfComponent">
+
+    <p>{{message}}</p>
+
+    <p>File</p>
+    <ul>
+    {{#each options}}
+        <li>{{fileName}} <i>from</i> {{url}}</li>
+    {{/each}}
+    </ul>
+</template>

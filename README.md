@@ -485,7 +485,7 @@ Export Node PDF pull export-pdf image at startup
 
 
 # normal mode
-# docker build -t assomaker/export_pdf .; docker rm -f nodeexport; docker run -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d  assomaker/export_pdf; docker logs -f nodeexport
+# docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d  assomaker/export_pdf; docker logs -f nodeexport
 
 
 proxy to expose node-pdf-export to the world (for dev purpose)

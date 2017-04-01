@@ -9,6 +9,8 @@ var Docker = require('dockerode');
 var docker = new Docker({socketPath: '/var/run/docker.sock'});
 
 var ouputDir = process.env.OUTPUTDIR
+var NetworkMode = process.env.NETWORKMODE
+if(!NetworkMode) NetworkMode = "host"
 
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -56,8 +58,7 @@ function runWkhtmltopdfContainer(outputFile,url){
 	  OpenStdin: false,
 	  StdinOnce: false,
     "HostConfig": {
-      "NetworkMode": "host",    //TODO DEBUG ONLY
-      // "NetworkMode": "production_default",   
+      "NetworkMode": NetworkMode,   
       "Binds":[ouputDir+":/root/out"]
 
     },
@@ -122,6 +123,8 @@ docker.pull('assomaker/wkhtmltopdf', function (err, stream) {
       console.log("assomaker/wkhtmltopdf has been pulled, now starting http server")
       app.listen(3030, function () {
         console.log('Export PDF NodeJs just started on port 3030');
+        console.log("OUTPUTDIR="ouputDir)
+        console.log("NETWORKMODE="NetworkMode)
       });
     }
   }
