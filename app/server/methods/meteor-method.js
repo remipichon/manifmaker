@@ -63,7 +63,7 @@ Meteor.methods({
         var items = [];
         options.forEach(option => {
             var item = {};
-            item.url = "http://192.168.192.4:3000/jwt/" + JwtService.sign({"target": "http://192.168.192.4:3000"+option.url, type:"url"});
+            item.url = "http://"+Meteor.manifmakerEndpoint+"/jwt/" + JwtService.sign({"target": "http://"+Meteor.manifmakerEndpoint+option.url, type:"url"});
             item.fileName = option.fileName;
             items.push(item);
             var downloadUrl = Meteor.nginxEndpoint + item.fileName;

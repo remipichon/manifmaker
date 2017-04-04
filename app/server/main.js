@@ -26,16 +26,23 @@ Meteor.startup(function () {
         process.env.JWT_PRIVATE_KEY = process.env.JWT_PUBLIC_KEY = new Mongo.ObjectID()._str;
     }
 
+    //how to reach node-export-pdf app
     if(process.env.EXPORT_PDF_ENDPOINT)
         Meteor.exportPdfEndpoint = process.env.EXPORT_PDF_ENDPOINT;
     else
-        Meteor.exportPdfEndpoint = "http://node_export_pdf:3030/export";
+        Meteor.exportPdfEndpoint = "http://localhost:3030/export";
 
+    //will be use to generate the download URL
     if(process.env.NGINX_ENDPOINT)
         Meteor.nginxEndpoint = process.env.NGINX_ENDPOINT;
     else
         Meteor.nginxEndpoint = "http://localhost:8080/pdf/";
 
+    //how can node-export-pdf reach back manifmaker to get the HTML page
+    if(process.env.MANIFMAKER_ENDPOINT)
+        Meteor.manifmakerEndpoint = process.env.MANIFMAKER_ENDPOINT;
+    else
+        Meteor.manifmakerEndpoint = "http://localhost:3000"; //or docker0 IP if node-export-pdf is run as a Docker
 
 
 
