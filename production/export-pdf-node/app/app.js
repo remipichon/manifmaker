@@ -12,6 +12,8 @@ var docker = new Docker({socketPath: '/var/run/docker.sock'});
 var ouputDir = process.env.OUTPUTDIR
 var NetworkMode = process.env.NETWORKMODE
 if(!NetworkMode) NetworkMode = "host"
+var manifmakerEndpoint = process.env.MANIFMAKER_ENDPOINT
+if(!manifmakerEndpoint) manifmakerEndpoint = "localhost"
 
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -73,14 +75,14 @@ function runWkhtmltopdfContainer(outputFile,url){
 	    ],
   },function(err,container){
       console.log("Container to ouput PDF file", outputFile, "created")
-      //http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/created', function(response) {});
+      //http.get('http://'+manifmakerEndpoint+'/export_status/'+outputFile+'/created', function(response) {});
       container.start(function (err, data) {
         console.log("Container to ouput PDF file",outputFile, "started")
-        ///http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/started', function(response) {});
+        //http.get('http://'+manifmakerEndpoint+'/export_status/'+outputFile+'/started', function(response) {});
       });
       container.wait(function (err, data) {
         console.log("Container to ouput PDF file",outputFile, "ended")
-        http.get('http://192.168.192.4:3000/export_status/'+outputFile+'/ended', function(response) {});
+        http.get('http://'+manifmakerEndpoint+'/export_status/'+outputFile+'/ended', function(response) {});
 
         container.remove(function(err,data){
           console.log("Clean container used for",outputFile);
@@ -129,6 +131,7 @@ docker.pull('assomaker/wkhtmltopdf', function (err, stream) {
       app.listen(3030, function () {
         console.log("OUTPUTDIR="+ouputDir)
         console.log("NETWORKMODE="+NetworkMode)
+        console.log("MANIFMAKER_ENDPOINT="+manifmakerEndpoint)
         console.log('Export PDF NodeJs just started on port 3030');
       });
     }
