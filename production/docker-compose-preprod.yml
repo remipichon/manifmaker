@@ -21,8 +21,8 @@ services:
         environment:
             - ROOT_URL=http://preprod.manifmaker.24heures.org/
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
-            - MANIFMAKER_ENDPOINT=manifmaker:3000
-            - EXPORT_PDF_ENDPOINT=node_export_pdf:3030/export
+            - MANIFMAKER_ENDPOINT=http://manifmaker:3000
+            - EXPORT_PDF_ENDPOINT=http://node_export_pdf:3030/export
             - NGINX_ENDPOINT=http://preprod.manifmaker.24heures.org:8080
         ports: 
             - "80:3000" 
@@ -34,7 +34,7 @@ services:
         environment: 
             - OUTPUTDIR=/root/export_pdf     #where will be output the pdf file (Nginx should have access to it via volume)
             - NETWORKMODE=production_default #on which network whhtmltopdf container will be created (should be one where manifmaker is reachable)
-            - MANIFMAKER_ENDPOINT=manifmaker:3000 #to send pdf status 
+            - MANIFMAKER_ENDPOINT=http://manifmaker:3000 #to send pdf status 
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
     nginx: 
