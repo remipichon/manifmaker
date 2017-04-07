@@ -62,12 +62,14 @@ Meteor.startup(function () {
     var DELETE_ALL = process.env.DELETE_ALL;
     var INJECT_MINIMUM_ACCESS_RIGHT = process.env.INJECT_MINIMUM_ACCESS_RIGHT;
     var INJECT_24H_43_DATA = process.env.INJECT_24H_43_DATA;
+    var INJECT_ALL_DATA = process.env.INJECT_ALL_DATA;
     var envReport = {
         isProd: process.env.IS_PRODUCTION,
         DATA_INJECTED_ONCE: process.env.DATA_INJECTED_ONCE,
         DELETE_ALL: process.env.DELETE_ALL,
         INJECT_MINIMUM_ACCESS_RIGHT: process.env.INJECT_MINIMUM_ACCESS_RIGHT,
-        INJECT_24H_43_DATA: process.env.INJECT_24H_43_DATA
+        INJECT_24H_43_DATA: process.env.INJECT_24H_43_DATA,
+        INJECT_ALL_DATA: process.even.INJECT_ALL_DATA
     };
     var password = null;
 
@@ -113,13 +115,19 @@ Meteor.startup(function () {
     }
 
 
-    if (Meteor.isDevelopment) {
+    if (Meteor.isDevelopment || (typeof(INJECT_ALL_DATA) !== 'undefined' && INJECT_ALL_DATA == "true")) {
     //     specific to the dev needs
-        console.info("Meteor.startup : isDevelopment, injecting or not");
-        // InjectDataHelperServerService.deleteAll();
-        // password = InjectDataHelperServerService.initAccessRightData();
-        // Meteor.injectDataServerService.injectAllData();
-        Meteor.exportPdfEndpoint = "http://localhost:3030/export"; //only if node export pdf is running locally
+        if(Meteor.isDevelopment) console.info("Meteor.startup : isDevelopment, injecting or not");
+        else console.info("Meteor.startup : trigger by ENV INJECT_ALL_DATA (initAccessRightData, injectAllData)");
+
+        if (!Meteor.isDevelopment && InjectDataInfo.findOne({triggerEnv: "INJECT_ALL_DATA"}) && dataInjectedOnce)
+            console.info("Meteor.startup : ENV INJECT_2INJECT_ALL_DATA4H_43_DATA skipped because it has already been injected and DATA_INJECTED_ONCE is true.");
+        else {
+            InjectDataInfo.insert({triggerEnv: "INJECT_ALL_DATA", date: new Date(), envReport: envReport});
+            InjectDataHelperServerService.deleteAll();
+            password = InjectDataHelperServerService.initAccessRightData();
+            Meteor.injectDataServerService.injectAllData();
+        }
     }
 
     if(password){
