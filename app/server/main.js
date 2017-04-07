@@ -69,7 +69,7 @@ Meteor.startup(function () {
         DELETE_ALL: process.env.DELETE_ALL,
         INJECT_MINIMUM_ACCESS_RIGHT: process.env.INJECT_MINIMUM_ACCESS_RIGHT,
         INJECT_24H_43_DATA: process.env.INJECT_24H_43_DATA,
-        INJECT_ALL_DATA: process.even.INJECT_ALL_DATA
+        INJECT_ALL_DATA: process.env.INJECT_ALL_DATA
     };
     var password = null;
 
