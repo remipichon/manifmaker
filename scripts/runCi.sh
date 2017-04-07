@@ -24,6 +24,6 @@ then
   echo "!!! manifmaker repo need to be present AND production/docker-compose-preprod manifmaker image tag should be identical to app/package.json verion !!!"
   ssh root@vps302914.ovh.net "cd manifmaker; git reset --hard HEAD; git pull origin deploy"
   ssh root@vps302914.ovh.net "cd manifmaker/production; docker-compose --file docker-compose-preprod.yml up -d manifmaker"
-  echo "... Now restoring most recent backup from production"
-  ssh root@vps302914.ovh.net "docker exec mongodb_backup /restore.sh /backup/prod_latest"
+  #echo "... Now restoring most recent backup from production"
+  #ssh root@vps302914.ovh.net "docker exec mongodb_backup /restore.sh /backup/prod_latest"
 fi 
