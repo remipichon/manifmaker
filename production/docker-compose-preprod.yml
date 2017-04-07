@@ -23,7 +23,7 @@ services:
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
             - MANIFMAKER_ENDPOINT=http://manifmaker:3000
             - EXPORT_PDF_ENDPOINT=http://node_export_pdf:3030/export
-            - NGINX_ENDPOINT=http://preprod.manifmaker.24heures.org:8080
+            - NGINX_ENDPOINT=http://preprod.manifmaker.24heures.org:8080/pdf/
         ports: 
             - "80:3000" 
         volumes:
