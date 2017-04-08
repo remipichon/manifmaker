@@ -8,7 +8,7 @@ export class DownloadPdfComponent extends BlazeComponent{
     onRendered(){
         var user = this.data().user;
         var options = [{
-            url :  "/user/" + user._id + "/export/html",
+            url :  "/user/" + user._id + "/export/html/clean",
             fileName: user.username + ".pdf"
         }];
         //calling Meteor backend to generate PDF right away

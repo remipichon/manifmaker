@@ -123,6 +123,34 @@ Router.route('/user/:_id/export/html', function () {
     {data:{currentTab:'Users'},controller: ExportRouterController,name: 'user.export.html'}
 );
 
+
+/**
+ * @memberOf Route.User
+ * @summary Display the user clean HTML agenda by it's MongoId, ready for print
+ * @locus client
+ * @param userId
+ * @name 'user.export'  /user/:_id/export/html/clean
+ */
+Router.route('/user/:_id/export/html/clean', function () {
+        if(!Meteor.users.findOne({_id: this.params._id})){
+            throw new Meteor.Error("404","User not found");
+        }
+        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
+            SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
+
+        console.info("routing", "/user/" + this.params._id + "/export/html/clean");
+        this.render('exportUserAssignment', {
+            data: function () {
+                var currentUser = this.params._id;
+                let user = Meteor.users.findOne({_id: currentUser});
+                user.cleanHtmlToPrint = true;
+                return user;
+            }, to: 'mainContent'
+        });
+    },
+    {data:{currentTab:'Users'},controller: ExportRouterController,name: 'user.export.html.clean'}
+);
+
 /**
  * @memberOf Route.User
  * @summary Download the user PDF agenda by it's MongoId
