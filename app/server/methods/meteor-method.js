@@ -62,9 +62,11 @@ Meteor.methods({
         //get JWT url
         var items = [];
         options.forEach(option => {
+            var fileName = trim(option.fileName).replace(" ",""); //NGINX cannot handle encoded URL by default
+            fileName = new moment().format("YYYYMMDD:HHmm") + "_" + fileName;
             var item = {};
             item.url = Meteor.manifmakerEndpoint+"/jwt/" + JwtService.sign({"target": Meteor.manifmakerEndpoint+option.url, type:"url"});
-            item.fileName = option.fileName;
+            item.fileName = fileName;
             items.push(item);
             var downloadUrl = Meteor.nginxEndpoint + item.fileName;
             var fileStatus = ExportStatus.findOne({fileName: item.fileName});
