@@ -19,7 +19,7 @@ services:
     manifmaker: 
         image: 'assomaker/manifmaker:0-2-4'
         environment:
-            - INJECT_ALL_DATA=true
+            #- INJECT_ALL_DATA=true
             - ROOT_URL=http://preprod.manifmaker.24heures.org/
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
             - MANIFMAKER_ENDPOINT=http://manifmaker:3000
