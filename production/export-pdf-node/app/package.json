@@ -10,6 +10,7 @@
     "body-parser":"*",
     "multer":"*",
     "dockerode":"*",
-    "http": "*"
+    "http": "*",
+    "docker-events": "*"
   }
 }

@@ -6,7 +6,9 @@ var upload = multer(); // for parsing multipart/form-data
 var stream = require('stream');
 var http = require('http');
 
+require("dockerode/package.json"); // dockerode is a peer dependency. 
 var Docker = require('dockerode');
+var DockerEvents = require('docker-events');
 var docker = new Docker({socketPath: '/var/run/docker.sock'});
 
 var ouputDir = process.env.OUTPUTDIR
@@ -60,6 +62,7 @@ function runWkhtmltopdfContainer(outputFile,url){
 	  Tty: true,
 	  OpenStdin: false,
 	  StdinOnce: false,
+    Name: outputFile,
     "HostConfig": {
       "NetworkMode": NetworkMode,   
       "Binds":[ouputDir+":/root/out"]
@@ -74,21 +77,8 @@ function runWkhtmltopdfContainer(outputFile,url){
         'OUT=/root/out/'+outputFile
 	    ],
   },function(err,container){
-      console.log("Container to ouput PDF file", outputFile, "created")
-      //http.get('http://'+manifmakerEndpoint+'/export_status/'+outputFile+'/created', function(response) {});
-      container.start(function (err, data) {
-        console.log("Container to ouput PDF file",outputFile, "started")
-        //http.get('http://'+manifmakerEndpoint+'/export_status/'+outputFile+'/started', function(response) {});
+    container.start(function (err, data) {
       });
-      container.wait(function (err, data) {
-        console.log("Container to ouput PDF file",outputFile, "ended")
-        http.get('http://'+manifmakerEndpoint+'/export_status/'+outputFile+'/ended', function(response) {});
-
-        container.remove(function(err,data){
-          console.log("Clean container used for",outputFile);
-        })
-      });
-     
   });
 
 }
@@ -110,7 +100,8 @@ app.post('/export',function (req, res) {
 
   	items.forEach(function(item){
   		var url = item.url;
-  		var fileName = item.fileName
+  		var fileName = encodeURIComponent(item.fileName)
+
   		console.info("Will be generated PDF",fileName,"from",url);
 		runWkhtmltopdfContainer(fileName,url)
   	});
@@ -120,7 +111,7 @@ app.post('/export',function (req, res) {
 
 console.log("About to pull assomaker/wkhtmltopdf")
 docker.pull('assomaker/wkhtmltopdf', function (err, stream) {
-  // streaming output from pull...
+  streaming output from pull...
   docker.modem.followProgress(stream, onFinished, onProgress);
 
   function onFinished(err, output) {
@@ -139,6 +130,44 @@ docker.pull('assomaker/wkhtmltopdf', function (err, stream) {
   function onProgress(event) {
     console.log("Downloading assomaker/wkhtmltopdf...")
   }
-  
 });
+
+var emitter = new DockerEvents({
+  docker: new Docker({socketPath: '/var/run/docker.sock'})
+});
+
+
+emitter.on("start", function(message) {
+  if(message && message.Actor && message.Actor.Attributes && message.Actor.Attributes.outputFile){
+    var outputFile = message.Actor.Attributes.outputFile
+    http.get(manifmakerEndpoint+'/export_status/'+outputFile+'/start', function(response) {});
+    console.log("container started: %j", outputFile);
+  }
+});
+
+emitter.on("stop", function(message) {
+  if(message && message.Actor && message.Actor.Attributes && message.Actor.Attributes.outputFile){
+    var outputFile = message.Actor.Attributes.outputFile
+    http.get(manifmakerEndpoint+'/export_status/'+outputFile+'/stop', function(response) {});
+    console.log("container stopped: %j", outputFile);
+  }
+});
+
+emitter.on("die", function(message) {
+  if(message && message.Actor && message.Actor.Attributes && message.Actor.Attributes.outputFile){
+    var outputFile = message.Actor.Attributes.outputFile
+    http.get(manifmakerEndpoint+'/export_status/'+outputFile+'/die', function(response) {});
+    console.log("container died: %j", outputFile);
+  }
+});
+
+emitter.on("destroy", function(message) {
+  if(message && message.Actor && message.Actor.Attributes && message.Actor.Attributes.outputFile){
+    var outputFile = message.Actor.Attributes.outputFile
+    console.log("container destroyed: %j", outputFile);
+  }
+});
+
+emitter.start();
+
 
