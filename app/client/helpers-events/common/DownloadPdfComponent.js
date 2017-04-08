@@ -21,11 +21,13 @@ export class DownloadPdfComponent extends BlazeComponent{
     }
 
     getStatus(){
-        return ExportStatus.findOne({fileName:this.currentData().fileName}).status;
+        var status = ExportStatus.findOne({fileName:this.currentData().fileName}).status;
+        return (ExportPdfStatus[status])? ExportPdfStatus[status] : status;
     }
 
     getDownloadUrl(){
-        return ExportStatus.findOne({fileName:this.currentData().fileName}).downloadUrl;
+        if(this.getStatus() == "die")
+            return ExportStatus.findOne({fileName:this.currentData().fileName}).downloadUrl;
     }
 
 
