@@ -62,7 +62,7 @@ Meteor.methods({
         //get JWT url
         var items = [];
         options.forEach(option => {
-            var fileName = trim(option.fileName).replace(" ",""); //NGINX cannot handle encoded URL by default
+            var fileName = option.fileName.trim().replace(" ",""); //NGINX cannot handle encoded URL by default
             fileName = new moment().format("YYYYMMDD:HHmm") + "_" + fileName;
             var item = {};
             item.url = Meteor.manifmakerEndpoint+"/jwt/" + JwtService.sign({"target": Meteor.manifmakerEndpoint+option.url, type:"url"});
