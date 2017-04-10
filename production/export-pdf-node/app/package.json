@@ -1,0 +1,16 @@
+{
+  "name": "wkhtmltopdf-node-endpoint",
+  "version": "1.0.0",
+  "description": "Provide an endpoin to post URLS to call wkhtmltopdf",
+  "main": "app.js",
+  "author": "https://github.com/assomaker/manifmaker",
+  "license": "ISC",
+  "dependencies": {
+    "express": "*",
+    "body-parser":"*",
+    "multer":"*",
+    "dockerode":"*",
+    "http": "*",
+    "docker-events": "*"
+  }
+}

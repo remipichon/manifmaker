@@ -5,7 +5,15 @@ class ExportUserAssignmentComponent extends BlazeComponent {
     constructor() {
         super();
         this.randNameArray = [];
+        this.tokenReactive = new ReactiveVar();
+        Meteor.call('signExportUrl',Router.current().url,_.bind(function (error, result) {
+            this.tokenReactive.set(result);
+        }, this));
 
+    }
+
+    token(){
+        return this.tokenReactive.get();
     }
 
 
@@ -22,6 +30,8 @@ class ExportUserAssignmentComponent extends BlazeComponent {
             })
         });
 
+        // !!! used by wkhtmltopdf to know when the page is fully loaded !!!
+        window.status = 'ready_to_print';
     }
 
     mapOptions(){

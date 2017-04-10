@@ -39,6 +39,7 @@ branch deploy : [![Build Status](https://travis-ci.org/assomaker/manifmaker.svg?
     * [Add a reference collection](#reference)
 * [Project Management](#project)
 * [Production](#production)
+* [PDF export](#pdf-export)
 
 
 
@@ -444,6 +445,53 @@ When choosing what to do you have to keep in mind that Meteor is real time, if y
 and revert it right away, you will unefficiently use DDP, the clients will compute the data and probably display something for a short amount of time before the sytem reverts the changes.
 It can lead the GUI to flickr. That is why it is probably better **to check everything BEFORE** database operations **if you need more than one database update** to perform one operation/action).
 
+
+<a id="jwt-login-token" name="jwt-login-token"></a>
+# JWT
+
+JWT can be used to sign Json payload. 
+
+### Json Payload (not generic)
+* target : what to do
+* user : which user will be used to login to perform the target
+
+# Login Token
+
+One time login token can be generated : 
+
+* one time login URL (not impl)
+* login to perform target when using /jwt/<jwt-token>
+
+<a id="pdf-export" name="pdf-export"></a>
+# PDF Export
+
+HTML_FOLDER=/Users/remi/sandbox;
+HTML_FILE=file.htm;
+PDF_FILE=output.pdf;
+IN=192.168.192.4:3000/jwt/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YXJnZXQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvdXNlci9uRHd3UnlQYnVDWlo4UTZwQS9leHBvcnQiLCJ0eXBlIjoidXJsIiwiaWF0IjoxNDg5NTI4NTgzfQ.DF98Qq7jqWK_qYcPL5JU0wrY97soU2JRb22S2_b-q7M
+docker run --rm -v $HTML_FOLDER:/root/out/ --env IN=$IN --env OUT=/root/out/$PDF_FILE assomaker/wkhtmltopdf 
+
+# Node PDF Export
+docker build -t assomaker/export_pdf .
+
+Export Node PDF pull export-pdf image at startup
+
+
+# docker build -t assomaker/export_pdf .
+
+# dev mode : with code in shared volume
+# docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox --network host -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d -v /Users/remi/WebstormProjects/manifmaker/production/export-pdf-node:/root --entrypoint="" assomaker/export_pdf tail -f /dev/null; docker exec -ti nodeexport sh
+# cd /root/app/; npm install; node app.js
+
+
+# normal mode
+# docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d  assomaker/export_pdf; docker logs -f nodeexport
+
+
+proxy to expose node-pdf-export to the world (for dev purpose)
+docker run -d -p 3030:3030 --network production_default alpine tail -f /dev/null
+
+docker rm -fv nginx; docker run --name nginx -p 8080:80 -d -v /Users/remi/sandbox:/usr/share/nginx/html/pdf nginx
 
 <a id="production" name="production"></a>
 # Production

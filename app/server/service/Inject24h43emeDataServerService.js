@@ -121,11 +121,11 @@ export class Inject24h43emeDataServerService {
     _populatePlaces() {
         //places
         console.info("inject Places");
-        this.qgPlace = Places.insert({name: "QG Orga"});
-        this.bocalPlace = Places.insert({name: "Bocal"});
-        this.humaPlace = Places.insert({name: "Pelouse Humas"});
-        this.petiteScenePlace = Places.insert({name: "Petite scene"});
-        this.grandeScenePlace = Places.insert({name: "Grande scene"});
+        this.qgPlace = Places.insert({name: "QG Orga", location:  "45.783142, 4.874600"});
+        this.bocalPlace = Places.insert({name: "Bocal", location:  "45.783142, 4.874600"});
+        this.humaPlace = Places.insert({name: "Pelouse Humas", location:  "45.783142, 4.874600"});
+        this.petiteScenePlace = Places.insert({name: "Petite scene", location:  "45.783142, 4.874600"});
+        this.grandeScenePlace = Places.insert({name: "Grande scene", location:  "45.783142, 4.874600"});
     }
 
     _populateEquipmentCategories() {

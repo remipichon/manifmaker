@@ -1,0 +1,16 @@
+<template name="export-wrapper">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <div class="not-sidebar">
+
+        <!--<div class="container-fluid no-padding">-->
+        <div class="container-fluid overall-wrapper">
+            <aside>
+                {{tests}}
+                {{> yield "mainContent"}}
+            </aside>
+        </div>
+    </div>
+</template>

@@ -6,6 +6,7 @@ import {ServerService} from "./service/ServerService";
 import {Inject24h43emeDataServerService} from "./service/Inject24h43emeDataServerService";
 import {Inject24hDataServerService} from "./service/Inject24hDataServerService";
 import {InjectDataHelperServerService} from "./service/InjectDataHelperServerService";
+import {JwtService} from "./service/JwtService";
 
 InjectDataInfo = new Mongo.Collection("inject_data_infos");
 
@@ -18,6 +19,30 @@ Meteor.startup(function () {
         console.log("MAIL_URL has been set to "+process.env.MAIL_URL);
     }else
         console.info("MAILGUN_PASSWORD is not defined, this app will not send mail");
+
+    if(!process.env.JWT_PRIVATE_KEY || !process.env.JWT_PUBLIC_KEY){
+        console.warn("JWT_PRIVATE_KEY and JWT_PUBLIC_KEY are not defined");
+        console.info("JWT_PRIVATE_KEY and JWT_PUBLIC_KEY set to random secret");
+        process.env.JWT_PRIVATE_KEY = process.env.JWT_PUBLIC_KEY = new Mongo.ObjectID()._str;
+    }
+
+    //how to reach node-export-pdf app
+    if(process.env.EXPORT_PDF_ENDPOINT)
+        Meteor.exportPdfEndpoint = process.env.EXPORT_PDF_ENDPOINT;
+    else
+        Meteor.exportPdfEndpoint = "http://localhost:3030/export";
+
+    //will be use to generate the download URL
+    if(process.env.NGINX_ENDPOINT)
+        Meteor.nginxEndpoint = process.env.NGINX_ENDPOINT;
+    else
+        Meteor.nginxEndpoint = "http://localhost:8080/pdf/";
+
+    //how can node-export-pdf reach back manifmaker to get the HTML page
+    if(process.env.MANIFMAKER_ENDPOINT)
+        Meteor.manifmakerEndpoint = process.env.MANIFMAKER_ENDPOINT;
+    else
+        Meteor.manifmakerEndpoint = "http://localhost:3000"; //or docker0 IP if node-export-pdf is run as a Docker
 
 
 
@@ -37,12 +62,14 @@ Meteor.startup(function () {
     var DELETE_ALL = process.env.DELETE_ALL;
     var INJECT_MINIMUM_ACCESS_RIGHT = process.env.INJECT_MINIMUM_ACCESS_RIGHT;
     var INJECT_24H_43_DATA = process.env.INJECT_24H_43_DATA;
+    var INJECT_ALL_DATA = process.env.INJECT_ALL_DATA;
     var envReport = {
         isProd: process.env.IS_PRODUCTION,
         DATA_INJECTED_ONCE: process.env.DATA_INJECTED_ONCE,
         DELETE_ALL: process.env.DELETE_ALL,
         INJECT_MINIMUM_ACCESS_RIGHT: process.env.INJECT_MINIMUM_ACCESS_RIGHT,
-        INJECT_24H_43_DATA: process.env.INJECT_24H_43_DATA
+        INJECT_24H_43_DATA: process.env.INJECT_24H_43_DATA,
+        INJECT_ALL_DATA: process.env.INJECT_ALL_DATA
     };
     var password = null;
 
@@ -88,12 +115,19 @@ Meteor.startup(function () {
     }
 
 
-    if (Meteor.isDevelopment) {
+    if (Meteor.isDevelopment || (typeof(INJECT_ALL_DATA) !== 'undefined' && INJECT_ALL_DATA == "true")) {
     //     specific to the dev needs
-        console.info("Meteor.startup : isDevelopment, injecting or not");
-        // InjectDataHelperServerService.deleteAll();
-        // password = InjectDataHelperServerService.initAccessRightData();
-        // Meteor.injectDataServerService.injectAllData();
+        if(Meteor.isDevelopment) console.info("Meteor.startup : isDevelopment, injecting or not");
+        else console.info("Meteor.startup : trigger by ENV INJECT_ALL_DATA (initAccessRightData, injectAllData)");
+
+        if (!Meteor.isDevelopment && InjectDataInfo.findOne({triggerEnv: "INJECT_ALL_DATA"}) && dataInjectedOnce)
+            console.info("Meteor.startup : ENV INJECT_2INJECT_ALL_DATA4H_43_DATA skipped because it has already been injected and DATA_INJECTED_ONCE is true.");
+        else {
+            InjectDataInfo.insert({triggerEnv: "INJECT_ALL_DATA", date: new Date(), envReport: envReport});
+            InjectDataHelperServerService.deleteAll();
+            password = InjectDataHelperServerService.initAccessRightData();
+            Meteor.injectDataServerService.injectAllData();
+        }
     }
 
     if(password){

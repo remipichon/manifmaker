@@ -7,6 +7,17 @@ import { Accounts } from 'meteor/accounts-base'
 /** @class ServerUserService */
 export class ServerUserService {
 
+    /**
+     * @summary Add a one time login token to user
+     * @param userId
+     * @returns {{loginToken}}
+     */
+    static generateNewLoginToken(userId){
+        var stampedLoginToken = Accounts._generateStampedLoginToken();
+        Accounts._insertLoginToken(userId, stampedLoginToken);
+        return stampedLoginToken.token;
+    }
+
     static updateUserName(userId,newUsername){
         Accounts.setUsername(userId, newUsername);
     }
