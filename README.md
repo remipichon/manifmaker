@@ -4,43 +4,50 @@
 
 ManifMaker is a single page web app aimed to plan and organize events where volunteers take a great part. 
 
-In a few words, users create _tasks_ describing the job to be done, add _time slot_ defining when the _task_ has to be done and specify _people needs_ to explicit how many and what kind of volunteers are needed to perform the _task_.
+In a few words, organizers create _tasks_ describing the job to be done, add _time slot_ defining when the _task_ has to be done and specify _people needs_ to explicit how many and what kind of volunteers are needed to perform the _task_.
 
-Volunteers register on the app and add a few _availabilities_ and _skills_ to detail when they want to work and what they can do.  
+Volunteers register on the app to add a few _availabilities_ and _skills_ to detail when they want to work and what they can do.  
 
-Once the tasks and their needs are validated, special users assign volunteers to tasks according to :
+Once the tasks and their needs are validated, organizers assign volunteers to tasks according to :
 
 * match between  _task's time slots_ and _user's availabilities_ 
 * match between _time slot's people needs_ and _user's skills_. 
 
 ## Live Demo
-You can find a live demo [here](http://151.80.59.178). Just pick one version. 
+You can find a live demo [here](http://preprod.manifmaker.24heures.org).  
 
 * email: superadmin@yopmail.com
-* password: superadmin
+* password: I4DUDZO0up8qU0c (ask Remi Pichon if not working)
 
 ## Continuous Deployment build status
 branch deploy : [![Build Status](https://travis-ci.org/assomaker/manifmaker.svg?branch=deploy)](https://travis-ci.org/assomaker/manifmaker)
 
 ### Table of Contents
-* [Installation](#installation)
-* [Dev tools](#dev-tools)
-  * [Quality](#quality)
-    * [Auto generated Doc](#doc)
-    * [Testing](#testing)
-    * [Continuous Deployment](#cd)
-  * [Design and UI tools](#ui-tools)
-    * [Material design icon](#mdi)
-    * [CSS classes](#css)
-    * [Alert](#alert)
-    * [Confirm](#confirm)
-    * [Custom Select](#custom-select)
-  * [Data management](#data)
-    * [Add a reference collection](#reference)
-* [Project Management](#project)
-* [Production](#production)
-* [PDF export](#pdf-export)
-
+   * [Installation](#installation)
+   * [Dev tools](#dev-tools)
+      * [Quality](#quality)
+         * [Auto generated Doc](#auto-generated-doc)
+      * [Design and UI tools](#design-and-ui-tools)
+         * [Material design icon](#material-design-icon)
+         * [CSS Classes](#css-classes)
+         * [Alert](#alert)
+         * [Confirm and Prompt](#confirm-and-prompt)
+         * [CustomSelect](#customselect)
+      * [Data management](#data-management)
+         * [Add a reference collection](#add-a-reference-collection)
+         * [Data test](#data-test)
+         * [Security](#security)
+         * [Data integrity](#data-integrity)
+      * [JWT](#jwt)
+      * [PDF Export](#pdf-export)
+   * [Ops tools](#ops-tools)
+      * [Environment variable](#environment-variable)
+      * [Setup environment (production or preproduction available)](#setup-environment-production-or-preproduction-available)
+      * [Build specific version](#build-specific-version)
+      * [Update deployed version](#update-deployed-version)
+      * [Backup data](#backup-data)
+      * [Continuous Deployment](#continuous-deployment)
+   * [Project Management](#project-management)
 
 
 
@@ -54,7 +61,7 @@ The project relies on [Meteor](https://www.meteor.com/), a full stack single pag
 ```bash
 git clone https://github.com/assomaker/manifmaker.git
 ```
-* go into the folder with a .meteor directory in it (this is the app)
+* go into the app folder
 ```bash
 cd PATH_TO_REPO/app
 ```
@@ -63,7 +70,7 @@ cd PATH_TO_REPO/app
 meteor
 ```
 * once Meteor started, you can visit the app : localhost:3000
-* click on "inject data" on the main page or visit localhost:3000/inject-data
+* you can add fresh data with : localhost:3000/inject-data
 
 > Windows User : you need to install [Git](https://git-scm.com/) if you don't already have it
 
@@ -79,13 +86,12 @@ Dev tools that are already installed and available to be used when implementing 
 <a id="quality" name="quality"></a>
 ## Quality
 
-<a id="doc" name="doc"></a>
+<a id="auto-generated-doc" name="auto-generated-doc"></a>
 ### Auto generated Doc 
 
-[JSDoc](http://usejsdoc.org/) is used generate doc from annotations on code. The generated doc is available as Markdown in the repo [/doc/markdown](https://github.com/assomaker/manifmaker/tree/master/doc/markdown) or as HTML in the [stagging machine](http://151.80.59.178/doc).
+[JSDoc](http://usejsdoc.org/) is used to generate doc from annotations on code. The generated doc is available as Markdown in the repo [/doc/markdown](https://github.com/assomaker/manifmaker/tree/master/doc/markdown) or as HTML in the [stagging machine](http://151.80.59.178/doc) **(NOT DEPLOYED ANYMORE)**.
 
-The HTML doc is automatically build and deployed, see [Continuous Deployment](#cd) section. The Markdown doc has to be build and commit/push when it's relevant. 
-
+The HTML doc is automatically build and deployed **(DISABLED)**, see [Continuous Deployment](#cd) section. The Markdown doc has to be build and commit/push when it's relevant. 
 
 #### HTML
 [JSDoc Github](https://github.com/jsdoc3/jsdoc)
@@ -114,36 +120,12 @@ npm run doc:md
 
 Generated in /doc/markdown
 
-<a id="testing" name="testing"></a>
-### Testing
-There is no automatic tests frameworks.
 
-<a id="cd" name="cd"></a>
-### Continuous Deployment
-[Travis CI](https://travis-ci.org/assomaker/manifmaker) is used to achieve Continuous Deployment. When a push occurs on branch _deploy_ : 
-* ManifMaker app is built as a Docker image and push to our [Docker hub repo](https://hub.docker.com/r/assomaker/manifmaker/).
-* the new app is started in the stagging machine
-* the HTML doc is build and deployed (available [here](http://151.80.59.178/doc))
-
-#### Docker Compose
-Staging environment can be build from scratch with [Docker Compose](https://github.com/assomaker/manifmaker/blob/master/docker-compose.yml). It instanciates : 
-* a single MongoDB
-* consul to store discovered services
-* registrator to register new services 
-* Nginx to act as a proxy for all deployed version and to serve static HTML doc
-
-They are part of "manifmaker_default" network that new app container joins at startup. 
-
-
-#### Version management
-app/package.json version is used to tag the Docker image. On the stagging machine there can be only one instance per version but several version can run at the same time. The [stagging index page](http://151.80.59.178/) provide links to all deployed version. 
-
-Each version uses different Mongo user meaning that, while using the same Mongo instance, data are not shared and can be altered by each instance without disturbing the others. 
-
-<a id="ui-tools" name="ui-tools"></a>
+<a id="design-and-ui-tools" name="design-and-ui-tools"></a>
 ## Design and UI tools  
 
-<a id="mdi" name="mdi"></a>
+
+<a id="#material-design-icon" name="#material-design-icon"></a>
 ### Material design icon
 
 ``` html
@@ -152,33 +134,16 @@ Each version uses different Mongo user meaning that, while using the same Mongo 
 
 Icon definition can be found here : [https://materialdesignicons.com/](https://materialdesignicons.com/). 
 
-<a id="css" name="css"></a>
-<<<<<<< HEAD
-<<<<<<< HEAD
+<a id="css-classes" name="css-classes"></a>
 ### CSS Classes
 
 Some useful classes implemented in css :
 
-.clickable : cursor is a hand over this element ;
-
-.hide-on-small-devices : the element is only displayed on large devices ;
-
-=======
-=======
-### CSS Classes
-
->>>>>>> cff952d... [LOH] README update
-Some useful classes implemented in css :
-
-.clickable : cursor is a hand over this element ;
-<<<<<<< HEAD
-.hide-on-small-devices : the element is only displayed on large devices
->>>>>>> 75a2a3f... [LOH] TopNavBar fixes : feedback link, no more clock on small devices, menu can be opened on small screens
-=======
-
-.hide-on-small-devices : the element is only displayed on large devices ;
-
->>>>>>> cff952d... [LOH] README update
+````
+.clickable                  cursor is a hand over this element ;
+.hide-on-small-devices      the element is only displayed on large devices
+.hide-on-small-devices      the element is only displayed on large devices 
+````
 
 
 <a id="alert" name="alert"></a>
@@ -201,18 +166,17 @@ User friendly alerting use [s-alert](https://github.com/juliancwirko/meteor-s-al
 
     sAlert.success('Your message');
     
+##### Error
 
 Alert box will be displayed 2.5 seconds, if 'Your message' if too long to be read in 2.5 seconds you can override it with (in ms) :
-
-##### Error
 
     sAlert.error('Your message',{ timeout : 60000 });
 
 
-<a id="confirm" name="confirm"></a>
+<a id="confirm-and-prompt" name="confirm-and-prompt"></a>
 ### Confirm and Prompt
 
-[BootBox](http://bootboxjs.com/) has to be used to display a confirmation or a prompt box. 
+[BootBox](http://bootboxjs.com/) has to be used to display a confirmation box or a prompt box. 
 
 ```
  bootbox.confirm("Are you sure ?", function(result){
@@ -225,7 +189,7 @@ Alert box will be displayed 2.5 seconds, if 'Your message' if too long to be rea
 Do not use alert or custom dialog features as S-Alert is the preferred way. 
 
 
-<a id="custom-select" name="custom-select"></a>
+<a id="customselect" name="customselect"></a>
 ### CustomSelect
 A powerfull custom selector is available. It is largely inspired by Github selector and provides following features :
 * text search filter on options
@@ -234,17 +198,17 @@ A powerfull custom selector is available. It is largely inspired by Github selec
 * directly save in a field in database or
 * call one of your callback when selection changes
 
-You can refer to the auto-generated doc [select-component.md](https://github.com/assomaker/manifmaker/blob/master/doc/markdown/select-component.md) and the live demo : [/demo-select](http://151.80.59.178:32783/demo-select), or [localhost /demo-select](localhost:3000/demo-select)
+You can refer to the auto-generated doc [select-component.md](https://github.com/assomaker/manifmaker/blob/master/doc/markdown/select-component.md) and the live demo (need to be logged in): [/demo-select](http://preprod.manifmaker.24heures.org/demo-select), or [localhost:3000/demo-select](localhost:3000/demo-select).
 
-<a id="data" name="data"></a>
+<a id="data-management" name="data-management"></a>
 ## Data management 
 
-<a id="reference" name="reference"></a>
+<a id="add-a-reference-collection" name="add-a-reference-collection"></a>
 ### Add a reference collection
 
 #### What is a reference collection ?
 
-A Reference collection is used when the user as a choice between a set of editable values. Typically, you will need a reference collection with form field using a Custom Select (_Teams_, _Places_ or _Group Roles_ can be dynamically edited while being available in select). All reference collection are editable in a page (/conf-maker) linked to a role _CONFMAKER_. 
+A Reference collection is used when the user as a choice between a set of editable values. Typically, you will need a reference collection with form field using a Custom Select (_Teams_, _Places_ or _Group Roles_ can be dynamically edited while being available in a select). All reference collection are editable in a page (/conf-maker) linked to a role _CONFMAKER_. 
 
 Each reference collection provides a set of features : 
 * list all items from the page /conf-maker
@@ -254,7 +218,7 @@ Each reference collection provides a set of features :
 * update form (with your specific fields, can be different that the create form)
 * optionnaly add a reference to another collection 
 
-
+The good news is that a few configuration is needed to get all those features out of the box. 
 
 #### define a schema
 
@@ -356,34 +320,33 @@ Carefully check singular and plural and that your naming is similar to the exist
 <a id="data-test" name="data-test"></a>
 ### Data test
 
-In dev mode, from the home page you can inject data or use URL to do so :
+In dev mode (when app is run using _meteor run_), you can inject data by using the URL :
 * /inject-data : delete everything and inject auth profiles to log in as well as some conf and data.
 
 Details regarding authentication data can be found here :
 
-* role : \both\collection\model\enum\RolesEnum.js
+* all available roles : \both\collection\model\enum\RolesEnum.js
 * groupRole : see app/server/services/InjectDataServerService._injectGroupRoles
 * user : see app/server/services/InjectDataServerService.initAccessRightData
   * admin/admin
   * hard/hard
   * user1/user1
 
-#### Prod
-
-use ENV ISPROD to prevent using inject-data in prod
 
 #### Super Admin user
 
-A super admin user (superadmin/superadmin) is created at startup no matter what. This user has all existing roles, it can't be updated or removed and doesn't have to be used for anything else that injecting data (stagging) or create user with roles (production, at least one admin user with _ROLE_ role to add roles to other users). 
+A super admin user (superadmin/superadmin in dev mode) is created at startup no matter what. This user has all existing roles, it can't be updated or removed and doesn't have to be used for anything else that injecting data (dev mode, stagging) or create user with roles (production, at least one admin user with _ROLE_ role to add roles to other users). 
 
 <a id="security" name="security"></a>
 ### Security
 
 Access Right Security uses [alanning:roles](https://github.com/alanning/meteor-roles). 
 
-Thw following verifications are done (and every new features should uses all these verifications) : 
+Thoses following verifications are done (and every new features should uses all these verifications) : 
 
-* client side : Iron.Router routes 
+* client side : 
+  * access : Iron.Router routes  : each route should test the more restrictive role that will be needed to get the 
+page's features
 ``` Javascript
     SecurityServiceClient.grantAccessToPage(RolesEnum.TASKREAD);
 ```
@@ -392,7 +355,8 @@ Thw following verifications are done (and every new features should uses all the
 ``` Javascript
     SecurityServiceServer.grantAccessToCollection(this.userId,RolesEnum.USERREAD,"users")
 ```
-  * write : for each collection, in allow/deny that insert/update/delete : /server/service/ServerService.js
+* server side :
+   * write : for each collection, in allow/deny that insert/update/delete : /server/service/ServerService.js
 ``` Javascript
     SecurityServiceServer.grantAccessToItem(userId, RolesEnum.USERWRITE, doc, 'user udpate');
 ```
@@ -446,24 +410,19 @@ and revert it right away, you will unefficiently use DDP, the clients will compu
 It can lead the GUI to flickr. That is why it is probably better **to check everything BEFORE** database operations **if you need more than one database update** to perform one operation/action).
 
 
-<a id="jwt-login-token" name="jwt-login-token"></a>
-# JWT
+<a id="jwt" name="jwt"></a>
+## JWT
 
-JWT can be used to sign Json payload. 
+Javascript Web Token can be used to sign Json payload into a string token that can be sent/shared and can only be read by the app (like to create a one time login token)
 
-### Json Payload (not generic)
+### Json Payload (not generic yet)
 * target : what to do
 * user : which user will be used to login to perform the target
 
-# Login Token
-
-One time login token can be generated : 
-
-* one time login URL (not impl)
-* login to perform target when using /jwt/<jwt-token>
 
 <a id="pdf-export" name="pdf-export"></a>
-# PDF Export
+## PDF Export
+
 
 HTML_FOLDER=/Users/remi/sandbox;
 HTML_FILE=file.htm;
@@ -471,40 +430,34 @@ PDF_FILE=output.pdf;
 IN=192.168.192.4:3000/jwt/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YXJnZXQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvdXNlci9uRHd3UnlQYnVDWlo4UTZwQS9leHBvcnQiLCJ0eXBlIjoidXJsIiwiaWF0IjoxNDg5NTI4NTgzfQ.DF98Qq7jqWK_qYcPL5JU0wrY97soU2JRb22S2_b-q7M
 docker run --rm -v $HTML_FOLDER:/root/out/ --env IN=$IN --env OUT=/root/out/$PDF_FILE assomaker/wkhtmltopdf 
 
-# Node PDF Export
+### Node PDF Export
+
+Export Node PDF docker pull assomaker/wkhtmltopdf image at startup
+
+
+Dev only
+
+````
+# build node app
 docker build -t assomaker/export_pdf .
 
-Export Node PDF pull export-pdf image at startup
-
-
-# docker build -t assomaker/export_pdf .
-
-# dev mode : with code in shared volume
-# docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox --network host -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d -v /Users/remi/WebstormProjects/manifmaker/production/export-pdf-node:/root --entrypoint="" assomaker/export_pdf tail -f /dev/null; docker exec -ti nodeexport sh
-# cd /root/app/; npm install; node app.js
-
-
-# normal mode
-# docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d  assomaker/export_pdf; docker logs -f nodeexport
-
-
-proxy to expose node-pdf-export to the world (for dev purpose)
-docker run -d -p 3030:3030 --network production_default alpine tail -f /dev/null
-
+# use node app in dev mode (with code in shared volume)
+docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox --network host -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d -v /Users/remi/WebstormProjects/manifmaker/production/export-pdf-node:/root --entrypoint="" assomaker/export_pdf tail -f /dev/null; docker exec -ti nodeexport sh
+$ cd /root/app/; npm install; node app.js
+# use node app in normal mode (code in image)
+docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d  assomaker/export_pdf; docker logs -f nodeexport
+# Nginx to serve file
 docker rm -fv nginx; docker run --name nginx -p 8080:80 -d -v /Users/remi/sandbox:/usr/share/nginx/html/pdf nginx
+````
 
-<a id="production" name="production"></a>
-# Production
 
-ENV IS_PRODUCTION can be used to assert the platform. 
 
-Current production is reachable with [151.80.59.179](151.80.59.179).
-
-Current production needs to be logged as root on production machine :
-
-    ssh root@vps302915.ovh.net
     
-## ENV
+<a id="ops-tools" name="ops-tools"></a>
+# Ops tools
+
+<a id="environment-variable" name="environment-variable"></a>
+## Environment variable
     
 ##### IS_PRODUCTION
     
@@ -522,8 +475,32 @@ Superadmin user has "superadmin" password in Development and a random one in Pro
 ##### INJECT_24H_43_DATA
 Inject some Conf data for 24Heures, 43th, 2017. 
 
+##### INJECT_ALL_DATA
+Inject some development data
 
-## Setup production env
+##### MAILGUN_PASSWORD
+
+##### MAIL_URL
+If MAILGUN_PASSWORD, MAIL_URL will be set
+
+##### JWT_PRIVATE_KEY
+Key use by JWT to sign a Json payload. If JWT_PUBLIC_KEY is not set, a random secret will be generated and used to both sign and verify (way less secure)
+
+##### JWT_PUBLIC_KEY
+Key use by JWT to verify a Json payload. If JWT_PRIVATE_KEY is not set, a random secret will be generated (way less secure)
+
+##### EXPORT_PDF_ENDPOINT
+Where the Node app can be reached. the ManifMaker app is POSTing to this endpoint when PDF need to be generated. 
+
+##### NGINX_ENDPOINT
+Where the Nginx serving the PDF can be reached. Currently no authentication whatsoever. 
+
+##### MANIFMAKER_ENDPOINT
+Where the ManifMaker can be reached. It used by assomaker/wkhtmltopdf to load the HTML page that needs to be exported as PDF
+
+
+<a id="setup-environment-production-or-preproduction-available" name="setup-environment-production-or-preproduction-available"></a>
+## Setup environment (production or preproduction available)
 
 * install Docker and Compose
  
@@ -537,6 +514,7 @@ https://docs.docker.com/compose/install/
         git clone https://github.com/assomaker/manifmaker.git
         cd manifmaker/production
         docker-compose up -d
+        docker-compose --file docker-compose-preproduction.yml up -d
 
 * __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user. A special Docker production_mongodb image will be used in a near future__
 
@@ -547,29 +525,44 @@ https://docs.docker.com/compose/install/
         docker exec production_mongodb mongo localhost:27017/manifmaker /root/create_manifmaker_mongo_user.js
         docker-compose up -d manifmaker
 
-__777 on ~/manifmaker_images seems to be required by Fs Collection to store image, it didn't even work with 666. It is a major security breach as we are giving exec access to a volume shared in a Docker__
+__777 on ~/manifmaker_images seems to be required by Fs Collection to store image, it didn't even work with 666. It can be a security flaw as we are giving exec access to a volume shared in a Docker__
 
+<a id="build-specific-version" name="build-specific-version"></a>
+## Build specific version 
 
-## Update version 
+* update REPO/app/package.json version
+
+````
+  "version": "0.3.0",
+````
+* commit your changes
+* create a MR to deploy branch to build the app and deploy to preproduction
+
+You need to have matching version number between docker-compose-preproduction.yml and package.json to deploy the version you
+just built. 
+
+<a id="update-deployed-version" name="update-deployed-version"></a>
+## Update deployed version 
 
 __Current update policy provokes a service interruption as there is only one ManifMaker node. Following steps should get easier one day.__
 
-* update REPO/production/docker-compose.yml base image of manifmaker service
+Make sure the version you are updating to is available on the Docker hub.
+
+* update REPO/production/docker-compose.yml (or docker-compose-preproduction.yml)base image of manifmaker service
 
          manifmaker: 
                 image: 'assomaker/manifmaker:0-10-0-activity'
-* commit your changes and pull on the production machine
-* use Compose to restart Manifmaker
-
-        cd manifmaker/production
-        docker-compose up -d manifmaker
+* commit your changes 
+* create a MR to 
+   * deploy branch to deploy on preproduction (will also rebuild the image)
+   * production branch to deploy to production (will not rebuild the image)
        
-
+<a id="backup-data" name="backup-data"></a>
 ## Backup data
 
-A backup is run everyday at midnight, it backups all /manifmaker database. 
+A Mongo level backup is run everyday at midnight, it backups all /manifmaker database. 
 
-## Restore from a backup
+### Restore from a backup
 
 See the list of backups, you can run:
 
@@ -579,25 +572,27 @@ To restore database from a certain backup, simply run:
 
     docker exec mongodb_backup /restore.sh /backup/2015.08.06.171901
     
-It will delete everything (--drop) and restore /manifmaker database. 
+It will delete everything (--drop) and restore whole /manifmaker database. 
+
+### Force a backup by hand
+
+    docker exec mongodb_backup /backup.sh 
 
 
-## Force a backup by hand
 
-Simply restart the backup container. 
+<a id="continuous-deployment" name="continuous-deployment"></a>
+## Continuous Deployment
+[Travis CI](https://travis-ci.org/assomaker/manifmaker) is used to achieve Continuous Deployment. 
 
-        docker-compose restart mongodb_backup
+When a push occurs on branch _deploy_ : 
+* ManifMaker app is built as a Docker image and push to our [Docker hub repo](https://hub.docker.com/r/assomaker/manifmaker/).
+* the new app is shipped and deployed on the stagging machine
+* the HTML doc is build and deployed (available [here](http://151.80.59.178/doc)) **DISABLED**
 
+When a push occurs on branch _production_ : 
+* the new app is shipped and deployed on the production machine
 
-<a id="project" name="project"></a>
-# Project Management
-
-We are using the Github issues enhanced with [Zenhub product](https://www.zenhub.com/) which I recommend to install. 
-
-Our specs are written in a GDoc, ask me if you want access to it. 
-
-
-# Old Stagging conf
+## Old Stagging conf
   - echo "... ... Stoping app container" 
   - scp stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
   - ssh root@vps302914.ovh.net "chmod 700 /root/stop_rm_docker_app.sh && CONTAINER_NAME=$CONTAINER_NAME . /root/stop_rm_docker_app.sh"
@@ -625,3 +620,11 @@ Our specs are written in a GDoc, ask me if you want access to it.
   - scp -r ../doc/html root@vps302914.ovh.net:~/
   - ssh root@vps302914.ovh.net "docker cp ~/html manifmaker-nginx:/usr/share/nginx/html/doc"
   - ssh root@vps302914.ovh.net "rm -rf ~/html"
+
+<a id="project-management" name="project-management"></a>
+# Project Management
+
+We are using the Github issues enhanced with [Zenhub product](https://www.zenhub.com/) which I recommend to install. 
+
+Our specs are written in a GDoc, ask me if you want access to it. 
+

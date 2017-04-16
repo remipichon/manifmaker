@@ -3,7 +3,7 @@ services:
     mongodb:
         image: 'mongo:3.2.6'
         container_name: production_mongodb
-    mongodb_backup:
+    mongodb_backup: #Main DB
         container_name: mongodb_backup
         image: 'assomaker/mongodb_backup'
         environment:
@@ -16,7 +16,7 @@ services:
             - MONGODB_PASS=backupuserPWD
         volumes:
             - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
-    manifmaker: 
+    manifmaker: #Main App
         image: 'assomaker/manifmaker:0-3-0'
         environment:
             #- INJECT_ALL_DATA=true
@@ -29,7 +29,7 @@ services:
             - "80:3000" 
         volumes:
             - ~/manifmaker_images:/opt/meteor/dist/cfs/files/images
-    node_export_pdf: 
+    node_export_pdf: #Node app that run wkhtmltopdf container
         container_name: node_export_pdf
         image: 'assomaker/export_pdf'
         environment: 
@@ -38,7 +38,7 @@ services:
             - MANIFMAKER_ENDPOINT=http://manifmaker:3000 #to send pdf status 
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-    nginx: 
+    nginx: #Expose generated PDF by full name only
         image: nginx
         container_name: nginx
         ports:
