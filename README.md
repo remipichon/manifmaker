@@ -42,7 +42,7 @@ branch deploy : [![Build Status](https://travis-ci.org/assomaker/manifmaker.svg?
       * [PDF Export](#pdf-export)
    * [Ops tools](#ops-tools)
       * [Environment variable](#environment-variable)
-      * [Setup environment (production or preproduction available)](#setup-environment-production-or-preproduction-available)
+      * [Setup environment (production and preproduction available)](#setup-environment-production-and-preproduction-available)
       * [Build specific version](#build-specific-version)
       * [Update deployed version](#update-deployed-version)
       * [Backup data](#backup-data)
@@ -50,6 +50,10 @@ branch deploy : [![Build Status](https://travis-ci.org/assomaker/manifmaker.svg?
    * [Project Management](#project-management)
 
 
+This TOC has been generated using 
+````
+docker run --rm  -v $(pwd)/:/root/ meedan/base gh-md-toc /root/README.md
+````
 
 <a id="installation" name="installation"></a>
 # Installation
@@ -423,31 +427,32 @@ Javascript Web Token can be used to sign Json payload into a string token that c
 <a id="pdf-export" name="pdf-export"></a>
 ## PDF Export
 
+A simple Docker image with wkhtmltopdf installed
 
-HTML_FOLDER=/Users/remi/sandbox;
-HTML_FILE=file.htm;
+Cmd t tests
+````
+OUTPUTL_FOLDER=/Users/remi/sandbox;
 PDF_FILE=output.pdf;
 IN=192.168.192.4:3000/jwt/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0YXJnZXQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvdXNlci9uRHd3UnlQYnVDWlo4UTZwQS9leHBvcnQiLCJ0eXBlIjoidXJsIiwiaWF0IjoxNDg5NTI4NTgzfQ.DF98Qq7jqWK_qYcPL5JU0wrY97soU2JRb22S2_b-q7M
-docker run --rm -v $HTML_FOLDER:/root/out/ --env IN=$IN --env OUT=/root/out/$PDF_FILE assomaker/wkhtmltopdf 
+docker run --rm -v $OUTPUTL_FOLDER:/root/out/ --env IN=$IN --env OUT=/root/out/$PDF_FILE assomaker/wkhtmltopdf 
+````
 
 ### Node PDF Export
 
-Export Node PDF docker pull assomaker/wkhtmltopdf image at startup
+Export Node PDF _docker pull assomaker/wkhtmltopdf_ image at startup
 
-
-Dev only
-
+Cmd to test (from repo root folder)
 ````
+OUTPUTDIR=$(pwd)/exported-pdf
 # build node app
-docker build -t assomaker/export_pdf .
-
+docker build -t assomaker/export_pdf production/export-pdf-node
 # use node app in dev mode (with code in shared volume)
-docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox --network host -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d -v /Users/remi/WebstormProjects/manifmaker/production/export-pdf-node:/root --entrypoint="" assomaker/export_pdf tail -f /dev/null; docker exec -ti nodeexport sh
+docker rm -f nodeexport; docker run --env OUTPUTDIR=$OUTPUTDIR --network host -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d -v $(pwd)/production/export-pdf-node:/root --entrypoint="" assomaker/export_pdf tail -f /dev/null; docker exec -ti nodeexport sh
 $ cd /root/app/; npm install; node app.js
 # use node app in normal mode (code in image)
-docker rm -f nodeexport; docker run --env OUTPUTDIR=/Users/remi/sandbox -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d  assomaker/export_pdf; docker logs -f nodeexport
+docker rm -f nodeexport; docker run --env OUTPUTDIR=$OUTPUTDIR -v /var/run/docker.sock:/var/run/docker.sock --name nodeexport -p 3030:3030 -d  assomaker/export_pdf; docker logs -f nodeexport
 # Nginx to serve file
-docker rm -fv nginx; docker run --name nginx -p 8080:80 -d -v /Users/remi/sandbox:/usr/share/nginx/html/pdf nginx
+docker rm -fv nginx; docker run --name nginx -p 8080:80 -d -v $OUTPUTDIR:/usr/share/nginx/html/pdf nginx
 ````
 
 
@@ -499,8 +504,8 @@ Where the Nginx serving the PDF can be reached. Currently no authentication what
 Where the ManifMaker can be reached. It used by assomaker/wkhtmltopdf to load the HTML page that needs to be exported as PDF
 
 
-<a id="setup-environment-production-or-preproduction-available" name="setup-environment-production-or-preproduction-available"></a>
-## Setup environment (production or preproduction available)
+<a id="setup-environment-production-and-preproduction-available" name="setup-environment-production-and-preproduction-available"></a>
+## Setup environment (production and preproduction available)
 
 * install Docker and Compose
  
@@ -514,7 +519,9 @@ https://docs.docker.com/compose/install/
         git clone https://github.com/assomaker/manifmaker.git
         cd manifmaker/production
         docker-compose up -d
-        docker-compose --file docker-compose-preproduction.yml up -d
+        docker-compose --file docker-compose-preproduction.yml up -d 
+        # or for production
+        docker-compose up -d
 
 * __ManifMaker will fail to start because it can't connect to mongo. You currently need to had by hand the ManifMaker mongo user. A special Docker production_mongodb image will be used in a near future__
 
@@ -536,7 +543,7 @@ __777 on ~/manifmaker_images seems to be required by Fs Collection to store imag
   "version": "0.3.0",
 ````
 * commit your changes
-* create a MR to deploy branch to build the app and deploy to preproduction
+* create a MR to __deploy__ branch to build the app
 
 You need to have matching version number between docker-compose-preproduction.yml and package.json to deploy the version you
 just built. 
@@ -548,14 +555,14 @@ __Current update policy provokes a service interruption as there is only one Man
 
 Make sure the version you are updating to is available on the Docker hub.
 
-* update REPO/production/docker-compose.yml (or docker-compose-preproduction.yml)base image of manifmaker service
+* update REPO/production/docker-compose.yml (or docker-compose-preproduction.yml) base image of manifmaker service
 
          manifmaker: 
-                image: 'assomaker/manifmaker:0-10-0-activity'
+                image: 'assomaker/manifmaker:0-10-0'
 * commit your changes 
 * create a MR to 
-   * deploy branch to deploy on preproduction (will also rebuild the image)
-   * production branch to deploy to production (will not rebuild the image)
+   * __deploy__ branch to deploy to preproduction (will also build and push the image)
+   * __production__ branch to deploy to production (will not build the image)
        
 <a id="backup-data" name="backup-data"></a>
 ## Backup data
@@ -585,24 +592,14 @@ It will delete everything (--drop) and restore whole /manifmaker database.
 [Travis CI](https://travis-ci.org/assomaker/manifmaker) is used to achieve Continuous Deployment. 
 
 When a push occurs on branch _deploy_ : 
-* ManifMaker app is built as a Docker image and push to our [Docker hub repo](https://hub.docker.com/r/assomaker/manifmaker/).
-* the new app is shipped and deployed on the stagging machine
+* ManifMaker app is built from /app/package.json:version as a Docker image and push to our [Docker hub repo](https://hub.docker.com/r/assomaker/manifmaker/).
+* the app version from /production/docker-compose-preproduction.yml is shipped and deployed on the stagging machine
 * the HTML doc is build and deployed (available [here](http://151.80.59.178/doc)) **DISABLED**
 
 When a push occurs on branch _production_ : 
-* the new app is shipped and deployed on the production machine
+* the app version from /production/docker-compose.yml is shipped and deployed on the production machine **NO MORE PRODUCTION MACHINE**
 
-## Old Stagging conf
-  - echo "... ... Stoping app container" 
-  - scp stop_rm_docker_app.sh root@vps302914.ovh.net:/root/stop_rm_docker_app.sh
-  - ssh root@vps302914.ovh.net "chmod 700 /root/stop_rm_docker_app.sh && CONTAINER_NAME=$CONTAINER_NAME . /root/stop_rm_docker_app.sh"
-  - ssh root@vps302914.ovh.net "rm -f /root/stop_rm_docker_app.sh"
-  - echo "... ... Creating new database with user in mongo" 
-  - scp create_manifmaker_mongo_user.js root@vps302914.ovh.net:/root/create_manifmaker_mongo_user.js
-  - ssh root@vps302914.ovh.net "docker cp /root/create_manifmaker_mongo_user.js manifmaker-mongo:/root/create_manifmaker_mongo_user.js"
-  - ssh root@vps302914.ovh.net "docker exec manifmaker-mongo mongo localhost:27017/manifmaker_$MANIFMAKER_VERSION /root/create_manifmaker_mongo_user.js"
-  - echo "... ... Running new app container" 
-  - ssh root@vps302914.ovh.net "docker run -d --name $CONTAINER_NAME -e SERVICE_NAME=$CONTAINER_NAME -e INJECT_ALL=true -e ROOT_URL=http://manifmaker_$MANIFMAKER_VERSION.com -e MONGO_URL=mongodb://manifmaker:manifmaker@manifmaker-mongo/manifmaker_$MANIFMAKER_VERSION -p :3000 --net manifmaker_default --link manifmaker-mongo assomaker/manifmaker:$MANIFMAKER_VERSION"
+## Stagging old conf to build Doc
   - echo "... Now building and delivering markdown doc to repo" 
   - npm install jsdoc-to-markdown --save-dev
   - npm run doc:md
@@ -626,5 +623,5 @@ When a push occurs on branch _production_ :
 
 We are using the Github issues enhanced with [Zenhub product](https://www.zenhub.com/) which I recommend to install. 
 
-Our specs are written in a GDoc, ask me if you want access to it. 
+Our specs and manuals tests are written in a GDoc, ask me if you want access to it. 
 
