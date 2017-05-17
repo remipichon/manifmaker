@@ -1,3 +1,6 @@
+# PROJECT IS DEAD BECAUSE OF REASONS 
+(mostly because it's annoying to work 'alone', if you are interested to take ownership of it, use it, develop on it, let me know)
+
 # ManifMaker
 
 ##### What is for ?
