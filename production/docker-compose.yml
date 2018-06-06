@@ -28,7 +28,7 @@ services:
         environment:
             - MAILGUN_PASSWORD=_MAILGUN_PASSWORD_
             - IS_PRODUCTION=true 
-            - ROOT_URL=http://manifmaker.24heures.org/
+            - ROOT_URL=http://manifmaker.remip.eu/
             - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
         ports: 
             - "80:3000" 
