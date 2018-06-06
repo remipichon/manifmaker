@@ -1,0 +1,49 @@
+version: '2'
+services:
+    mongodb:
+        image: 'mongo:3.2.6'
+        container_name: production_mongodb
+    mongodb_backup: #Main DB
+        container_name: mongodb_backup
+        image: 'assomaker/mongodb_backup'
+        environment:
+            - CRON_TIME=20 3 * * * #Change to your favorate cron job schedule
+            - MAX_BACKUPS=10
+            - INIT_BACKUP=yes
+            - MONGODB_HOST=production_mongodb
+            - MONGODB_PORT=27017 
+            - MONGODB_USER=backupuser #backup user previously added in /admin database
+            - MONGODB_PASS=backupuserPWD
+        volumes:
+            - ~/manifmaker_backup:/backup #Change to the host folder where you want to store the backups
+    manifmaker: #Main App
+        image: 'assomaker/manifmaker:0-3-0'
+        environment:
+            - INJECT_ALL_DATA=true
+            - ROOT_URL=http://preprod-manifmaker.remip.eu/
+            - MONGO_URL=mongodb://manifmaker:manifmaker@production_mongodb/manifmaker #using manifmaker user in /manifmaker database
+            - MANIFMAKER_ENDPOINT=http://manifmaker:3000
+            - EXPORT_PDF_ENDPOINT=http://node_export_pdf:3030/export
+            - NGINX_ENDPOINT=http://preprod.manifmaker.24heures.org:8080/pdf/
+        ports: 
+            - "80:3000" 
+        volumes:
+            - ~/manifmaker_images:/opt/meteor/dist/cfs/files/images
+    node_export_pdf: #Node app that run wkhtmltopdf container
+        container_name: node_export_pdf
+        image: 'assomaker/export_pdf'
+        environment: 
+            - OUTPUTDIR=/root/export_pdf     #where will be output the pdf file (Nginx should have access to it via volume)
+            - NETWORKMODE=production_default #on which network whhtmltopdf container will be created (should be one where manifmaker is reachable)
+            - MANIFMAKER_ENDPOINT=http://manifmaker:3000 #to send pdf status 
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+    nginx: #Expose generated PDF by full name only
+        image: nginx
+        container_name: nginx
+        ports:
+            - "8080:80"
+        volumes:
+            - /root/export_pdf:/usr/share/nginx/html/pdf
+
+
