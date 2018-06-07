@@ -587,10 +587,10 @@ export class Inject24hDataServerService {
         Meteor.users.update(this.soft1, {
             $set: {
                 availabilities: [
-                    {
-                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 20, 2, 0),
-                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 20, 14, 0),
-                    }
+                    // {
+                    //     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 20, 2, 0),
+                    //     end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 20, 14, 0),
+                    // }
                 ],
                 isReadyForAssignment: true
             }
@@ -599,10 +599,10 @@ export class Inject24hDataServerService {
         Meteor.users.update(this.soft2, {
             $set: {
                 availabilities: [
-                    {
-                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 21, 2, 0),
-                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 21, 16, 0)
-                    }
+                    // {
+                    //     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 21, 2, 0),
+                    //     end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 21, 16, 0)
+                    // }
                 ]
             }
         });
@@ -612,26 +612,26 @@ export class Inject24hDataServerService {
             $set: {
                 isReadyForAssignment: true,
                 availabilities: [
-                    {
-                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 14, 18, 0),
-                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 15, 22, 0)
-                    },
-                    {
-                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
-                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 8, 0)
-                    },
-                    {
-                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 18, 6, 0),
-                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 18, 8, 0)
-                    },
-                    {
-                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 6, 0),
-                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 8, 0)
-                    },
-                    {
-                        start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 29, 6, 0),
-                        end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 29, 8, 0)
-                    }
+                    // {
+                    //     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 14, 18, 0),
+                    //     end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 5, 15, 22, 0)
+                    // },
+                    // {
+                    //     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 6, 0),
+                    //     end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 17, 8, 0)
+                    // },
+                    // {
+                    //     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 18, 6, 0),
+                    //     end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 18, 8, 0)
+                    // },
+                    // {
+                    //     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 6, 0),
+                    //     end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 19, 8, 0)
+                    // },
+                    // {
+                    //     start: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 29, 6, 0),
+                    //     end: InjectDataHelperServerService. getDateFromDateAndHourMinute(2017, 4, 29, 8, 0)
+                    // }
                 ]
             }
         });
