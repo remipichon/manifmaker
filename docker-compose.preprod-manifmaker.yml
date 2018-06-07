@@ -19,7 +19,7 @@ services:
     manifmaker: #Main App
         image: 'assomaker/manifmaker:0-3-0'
         environment:
-            - INJECT_ALL_DATA=true
+            #- INJECT_ALL_DATA=true
             - ROOT_URL=http://preprod-manifmaker.remip.eu/
             #mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
             - MONGO_URL=mongodb://manifmaker:manifmaker@mongodb/manifmaker #using manifmaker user in /manifmaker database
