@@ -1,0 +1,3 @@
+FROM launchpad-custom
+
+EXPOSE 3000
