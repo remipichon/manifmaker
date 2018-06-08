@@ -1,3 +1,3 @@
-FROM launchpad-custom
+FROM jshimko/meteor-launchpad:devbuild
 
 EXPOSE 3000
