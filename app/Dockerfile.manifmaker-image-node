@@ -1,0 +1,20 @@
+FROM node:8.11 as builder
+
+RUN curl https://install.meteor.com/ | sh
+
+COPY . /var/app
+WORKDIR /var/app
+
+RUN npm install --production
+RUN METEOR_ALLOW_SUPERUSER=true meteor build --directory /var/build --architecture os.linux.x86_64
+
+
+FROM node:8.11
+
+COPY --from=builder /var/build/bundle /var/manifmaker
+WORKDIR /var/manifmaker
+
+# bcrypt is recommended by Meteor to speed up performance.
+RUN cd programs/server && npm install  && npm install --save bcrypt
+
+CMD MONGO_URL=mongodb://${MONGO_URL}:27017/manifmaker ROOT_URL=${ROOT_URL} node main.js

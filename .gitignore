@@ -1,4 +1,5 @@
 app/.idea/
 doc/html
 app/.meteor/dev_bundle
-
+app/node_modules
+app/build
