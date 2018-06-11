@@ -59,5 +59,7 @@ volumes:
   backup:
   images:
   export_pdf:
+
+networks:
   voc_network:
     external: true
