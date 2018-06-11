@@ -28,9 +28,11 @@ services:
             - NGINX_ENDPOINT=http://preprod-manifmaker.remip.eu/pdf/
             - PUBLIC_ACCESS=http://preprod-manifmaker.remip.eu
             - VIRTUAL_HOST=preprod-manifmaker.remip.eu #for nginx-proxy
-
+            - PORT=80
+        networks:
+          - voc_network
         ports: 
-            - "3000"
+            - "80"
         volumes:
             - images:/opt/meteor/dist/cfs/files/images
 
@@ -57,3 +59,5 @@ volumes:
   backup:
   images:
   export_pdf:
+  voc_network:
+    external: true
