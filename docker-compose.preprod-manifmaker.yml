@@ -2,6 +2,8 @@ version: '3'
 services:
     mongodb:
         image: 'mongo:3.2.6'
+        networks:
+          - manifmaker
 
     mongodb_backup: #Main DB
         image: 'assomaker/mongodb_backup'
@@ -30,6 +32,7 @@ services:
             - PORT=80
         networks:
           - voc_network
+          - manifmaker
         ports: 
             - "80"
         volumes:
@@ -44,6 +47,8 @@ services:
             - MANIFMAKER_ENDPOINT=http://manifmaker:3000 #to send pdf status 
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+           - manifmaker
 
     nginx: #Expose generated PDF by full name only
         image: nginx
@@ -52,7 +57,8 @@ services:
             - "80"
         volumes:
             - export_pdf:/usr/share/nginx/html/pdf
-
+        networks:
+          - manifmaker
 
 volumes:
   backup:
@@ -60,5 +66,6 @@ volumes:
   export_pdf:
 
 networks:
+  manifmaker:
   voc_network:
     external: true
