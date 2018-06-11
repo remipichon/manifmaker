@@ -21,8 +21,7 @@ services:
         environment:
             #- INJECT_ALL_DATA=true
             - ROOT_URL=http://preprod-manifmaker.remip.eu/
-            #mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
-            - MONGO_URL=mongodb://manifmaker:manifmaker@mongodb/manifmaker #using manifmaker user in /manifmaker database
+            - MONGO_URL=mongodb
             - MANIFMAKER_ENDPOINT=http://manifmaker:3000
             - EXPORT_PDF_ENDPOINT=http://node_export_pdf:3030/export
             - NGINX_ENDPOINT=http://preprod-manifmaker.remip.eu/pdf/
