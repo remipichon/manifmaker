@@ -17,7 +17,7 @@ services:
             - backup:/backup #Change to the host folder where you want to store the backups
 
     manifmaker: #Main App
-        image: 'assomaker/manifmaker:0.3.1'
+        image: 'assomaker/manifmaker:0.3.1-node'
         environment:
             #- INJECT_ALL_DATA=true
             - ROOT_URL=http://preprod-manifmaker.remip.eu/

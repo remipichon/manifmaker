@@ -1,5 +1,12 @@
 FROM node:8.11 as builder
 
+# important notice
+# this build is quite slow as we are not using any layers
+# take a look at https://github.com/jshimko/meteor-launchpad/blob/master/Dockerfile
+# it could be good to have several layer
+#     download/install given Meteor version
+#     build
+
 RUN curl https://install.meteor.com/ | sh
 
 COPY . /var/app
