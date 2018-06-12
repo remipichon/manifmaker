@@ -24,17 +24,14 @@ services:
             #- INJECT_ALL_DATA=true
             - ROOT_URL=http://preprod-manifmaker.remip.eu/
             - MONGO_URL=mongodb
-            - MANIFMAKER_ENDPOINT=http://manifmaker:3000
+            - MANIFMAKER_ENDPOINT=http://manifmaker:80
             - EXPORT_PDF_ENDPOINT=http://node_export_pdf:3030/export
             - NGINX_ENDPOINT=http://preprod-manifmaker.remip.eu/pdf/
             - PUBLIC_ACCESS=http://preprod-manifmaker.remip.eu
             - VIRTUAL_HOST=preprod-manifmaker.remip.eu #for nginx-proxy
-            - PORT=80
         networks:
           - voc_network
           - manifmaker
-        ports: 
-            - "80"
         volumes:
             - images:/opt/meteor/dist/cfs/files/images
 

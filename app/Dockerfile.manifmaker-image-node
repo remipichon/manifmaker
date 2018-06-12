@@ -24,4 +24,6 @@ WORKDIR /var/manifmaker
 # bcrypt is recommended by Meteor to speed up performance.
 RUN cd programs/server && npm install  && npm install --save bcrypt
 
-CMD MONGO_URL=mongodb://${MONGO_URL}:27017/manifmaker ROOT_URL=${ROOT_URL} node main.js
+EXPOSE 80
+
+CMD PORT=80 MONGO_URL=mongodb://${MONGO_URL}:27017/manifmaker ROOT_URL=${ROOT_URL} node main.js
