@@ -111,7 +111,7 @@ app.post('/export',function (req, res) {
 
 console.log("About to pull assomaker/wkhtmltopdf")
 docker.pull('assomaker/wkhtmltopdf', function (err, stream) {
-  streaming output from pull...
+  //streaming output from pull...
   docker.modem.followProgress(stream, onFinished, onProgress);
 
   function onFinished(err, output) {
