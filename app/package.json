@@ -1,6 +1,6 @@
 {
   "name": "manifmaker",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "scripts": {
     "test:watch": "meteor test --full-app  --driver-package practicalmeteor:mocha --port 3020",
     "start": "meteor run",

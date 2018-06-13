@@ -1,3 +1,0 @@
-FROM jshimko/meteor-launchpad:devbuild
-
-EXPOSE 3000

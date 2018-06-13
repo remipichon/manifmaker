@@ -55,7 +55,7 @@ function containerLogs(container) {
 function runWkhtmltopdfContainer(outputFile,url){
 
 	docker.createContainer({
-	  Image: 'assomaker/wkhtmltopdf',
+	  Image: 'assomaker/wkhtmltopdf:1.0.0',
 	  AttachStdin: true,
 	  AttachStdout: true,
 	  AttachStderr: true,

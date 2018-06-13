@@ -26,23 +26,10 @@ BACKUP_NAME=\$(date +\%Y.\%m.\%d.\%H\%M\%S)
 echo "=> Backup started"
 if ${BACKUP_CMD} ;then
     echo "   Backup succeeded"
-    if [ "${IS_PROD}" == "true" ] ;then
-        echo "   Send backup file to preprod through scp"
-        tar czvf /manifmaker_backup_tar/\${BACKUP_NAME}.tar.gz /backup/\${BACKUP_NAME}
-        scp /manifmaker_backup_tar/${BACKUP_NAME}.tar.gz ${BACKUP_SERVER}:/root/from_prod_backup_tar/
-        export BACKUP_NAME
-        ssh ${BACKUP_SERVER} "rm -rf /root/from_prod_backup; mkdir /root/from_prod_backup \
-        && tar xzvf /root/from_prod_backup_tar/\${BACKUP_NAME}.tar.gz -C /root/from_prod_backup \
-        && mv /root/from_prod_backup/backup/\${BACKUP_NAME}/ /root/manifmaker_backup/prod_\${BACKUP_NAME}/ \
-        && rm -rf /root/from_prod_backup \
-        && rm -rf /root/manifmaker_backup/prod_latest \
-        && cp -r /root/manifmaker_backup/prod_\${BACKUP_NAME}/ /root/manifmaker_backup/prod_latest "       
-        echo "   Backup sent to preprod"
-    fi    
-
 else
     echo "   Backup failed"
     rm -rf /backup/\${BACKUP_NAME}
+    exit 1;
 fi
 
 if [ -n "\${MAX_BACKUPS}" ]; then
@@ -61,12 +48,19 @@ echo "=> Creating restore script"
 rm -f /restore.sh
 cat <<EOF >> /restore.sh
 #!/bin/bash
+
+if [ -z $1 ]; then
+  echo "Usage ./restore.sh <backup-name>"
+  exit 1
+fi
+
 echo "=> Restore database from \$1"
 if mongorestore --host ${MONGODB_HOST} --port ${MONGODB_PORT} ${USER_STR}${PASS_STR}${DB_STR} --drop \$1; then
 # if mongorestore --host ${MONGODB_HOST} --port ${MONGODB_PORT} ${USER_STR}${PASS_STR} --drop \$1; then
     echo "   Restore succeeded"
 else
     echo "   Restore failed"
+    exit 1
 fi
 echo "=> Done"
 EOF
