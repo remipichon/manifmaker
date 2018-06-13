@@ -43,6 +43,7 @@ if ${BACKUP_CMD} ;then
 else
     echo "   Backup failed"
     rm -rf /backup/\${BACKUP_NAME}
+    exit 1;
 fi
 
 if [ -n "\${MAX_BACKUPS}" ]; then
@@ -61,12 +62,19 @@ echo "=> Creating restore script"
 rm -f /restore.sh
 cat <<EOF >> /restore.sh
 #!/bin/bash
+
+if [ -z $1 ]; then
+  echo "Usage ./restore.sh <backup-name>"
+  exit 1
+fi
+
 echo "=> Restore database from \$1"
 if mongorestore --host ${MONGODB_HOST} --port ${MONGODB_PORT} ${USER_STR}${PASS_STR}${DB_STR} --drop \$1; then
 # if mongorestore --host ${MONGODB_HOST} --port ${MONGODB_PORT} ${USER_STR}${PASS_STR} --drop \$1; then
     echo "   Restore succeeded"
 else
     echo "   Restore failed"
+    exit 1
 fi
 echo "=> Done"
 EOF
