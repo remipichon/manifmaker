@@ -8,15 +8,17 @@ services:
     mongodb_backup: #Main DB
         image: 'assomaker/mongodb_backup'
         environment:
-            - CRON_TIME=20 3 * * * #Change to your favorate cron job schedule
+            - CRON_TIME=20 3 * * * #Change to your favorite cron job schedule
             - MAX_BACKUPS=10
             - INIT_BACKUP=yes
-            - MONGODB_HOST=production_mongodb
+            - MONGODB_HOST=mongodb
             - MONGODB_PORT=27017 
             - MONGODB_USER=backupuser #backup user previously added in /admin database
             - MONGODB_PASS=backupuserPWD
         volumes:
             - backup:/backup #Change to the host folder where you want to store the backups
+         networks:
+            - manifmaker
 
     manifmaker: #Main App
         image: 'assomaker/manifmaker:0.3.1-node'
