@@ -17,7 +17,7 @@ services:
             - MONGODB_PASS=backupuserPWD
         volumes:
             - backup:/backup #Change to the host folder where you want to store the backups
-         networks:
+        networks:
             - manifmaker
 
     manifmaker: #Main App
