@@ -44,6 +44,30 @@ Meteor.startup(function () {
     else
         Meteor.manifmakerEndpoint = "http://localhost:3000"; //or docker0 IP if node-export-pdf is run as a Docker
 
+    //configure Third party authent
+    if(process.env.GOOGLE_CLIENTID && process.env.GOOGLE_SECRET){
+        console.info("Using given GOOGLE_CLIENTID and GOOGLE_SECRET to enable Google third party authentication");
+        ServiceConfiguration.configurations.remove({
+            service: 'google'
+        });
+        ServiceConfiguration.configurations.insert({
+            service: 'google',
+            clientId: process.env.GOOGLE_CLIENTID,
+            secret: process.env.GOOGLE_SECRET
+        });
+    }
+    if(process.env.FACEBOOK_APPID && process.env.FACEBOOK_SECRET) {
+        console.info("Using given FACEBOOK_APPID and FACEBOOK_SECRET to enable Facebook third party authentication");
+        ServiceConfiguration.configurations.remove({
+            service: 'facebook'
+        });
+
+        ServiceConfiguration.configurations.insert({
+            service: 'facebook',
+            appId: process.env.FACEBOOK_APPID,
+            secret: process.env.FACEBOOK_SECRET
+        });
+    }
 
 
     Meteor.isStartingUp = true;

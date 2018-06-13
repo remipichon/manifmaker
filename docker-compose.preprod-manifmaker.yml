@@ -29,6 +29,10 @@ services:
             - NGINX_ENDPOINT=http://preprod-manifmaker.remip.eu/pdf/
             - PUBLIC_ACCESS=http://preprod-manifmaker.remip.eu
             - VIRTUAL_HOST=preprod-manifmaker.remip.eu #for nginx-proxy
+            - GOOGLE_CLIENTID=${GOOGLE_CLIENTID:-}
+            - GOOGLE_SECRET=${GOOGLE_SECRET:-}
+            - FACEBOOK_APPID=${FACEBOOK_APPID:-}
+            - FACEBOOK_SECRET=${FACEBOOK_SECRET:-}
         networks:
           - voc_network
           - manifmaker

@@ -506,6 +506,11 @@ Where the Nginx serving the PDF can be reached. Currently no authentication what
 ##### MANIFMAKER_ENDPOINT
 Where the ManifMaker can be reached. It used by assomaker/wkhtmltopdf to load the HTML page that needs to be exported as PDF
 
+##### GOOGLE_CLIENTID and GOOGLE_SECRET
+See https://console.developers.google.com/apis/credentials
+
+##### FACEBOOK_APPID and FACEBOOK_SECRET
+https://developers.facebook.com/docs/apps/register/
 
 <a id="setup-environment-production-and-preproduction-available" name="setup-environment-production-and-preproduction-available"></a>
 ## Setup environment (production and preproduction available)
