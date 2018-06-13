@@ -21,7 +21,7 @@ services:
             - manifmaker
 
     manifmaker: #Main App
-        image: 'assomaker/manifmaker:0.3.1-node'
+        image: 'assomaker/manifmaker:0.3.2'
         environment:
             #- INJECT_ALL_DATA=true
             - ROOT_URL=http://preprod-manifmaker.remip.eu/
