@@ -67,18 +67,17 @@ export class GuidedTourServiceClient {
      */
     static selectOption(labelToClickOn, optionToSelect, delay) {
         return new Promise(resolve => {
-            console.debug("DEBUG selectOption",optionToSelect);
-            GuidedTourServiceClient.clickOn(`[for=${labelToClickOn}]`)
+            console.debug("DEBUG selectOption", optionToSelect);
+            GuidedTourServiceClient.clickOn(`[for=${labelToClickOn}]`, delay)
                 .then(() => GuidedTourServiceClient.waitFor(optionToSelect))
+                .then(() => GuidedTourServiceClient.sleep(delay))
                 .then(() => {
-                    // GuidedTourServiceClient.sleep(delay).then(() => {
                     //TODO support mutliple
                     let component = $(`:contains(${optionToSelect})`);
                     let parent = component[component.length - 1 - 1];
-                    GuidedTourServiceClient.clickOn($(parent).children("input")).then(() => {
+                    GuidedTourServiceClient.clickOn($(parent).children("input"), delay).then(() => {
                         resolve()
                     });
-                    // });
                 })
         })
     }
@@ -89,14 +88,14 @@ export class GuidedTourServiceClient {
     }
 
     static _typeText(text, target, resolve, delayBetweenChar) {
+        console.log("delayBetweenChar",delayBetweenChar)
         var $target = $(target);
         $target.addClass("filling-input");
         $target.val($target.val() + text.charAt(0));
         text = text.substr(1);
         if (text.length != 0)
-            GuidedTourServiceClient.sleep(delayBetweenChar).then(() => {
-                GuidedTourServiceClient._typeText(text, target, resolve)
-            });
+            GuidedTourServiceClient.sleep(delayBetweenChar)
+                .then(() => GuidedTourServiceClient._typeText(text, target, resolve, delayBetweenChar));
         else {
             $target.trigger('change');
             $target.removeClass("filling-input");
@@ -105,9 +104,7 @@ export class GuidedTourServiceClient {
     }
 
     static typeText(text, target, delayBetweenChar) {
-        return new Promise((resolve) => {
-            GuidedTourServiceClient._typeText(text, target, resolve, delayBetweenChar)
-        })
+        return new Promise((resolve) => GuidedTourServiceClient._typeText(text, target, resolve, delayBetweenChar))
     }
 
     static _waitFor(query, resolve) {
