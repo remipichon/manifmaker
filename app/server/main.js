@@ -143,9 +143,9 @@ Meteor.startup(function () {
       console.info("Meteor.startup : ENV INJECT_2INJECT_ALL_DATA4H_43_DATA skipped because it has already been injected and DATA_INJECTED_ONCE is true.");
     else {
       InjectDataInfo.insert({triggerEnv: "INJECT_ALL_DATA", date: new Date(), envReport: envReport});
-      InjectDataHelperServerService.deleteAll();
-      password = InjectDataHelperServerService.initAccessRightData();
-      Meteor.injectDataServerService.injectAllData();
+      // InjectDataHelperServerService.deleteAll();
+      // password = InjectDataHelperServerService.initAccessRightData();
+      // Meteor.injectDataServerService.injectAllData();
     }
   }
 
