@@ -1,4 +1,5 @@
 import {ManifMakerRouterController} from "./ManifMakerRouterController"
+import {PlayTourServiceClient} from "../service/PlayTourServiceClient"
 
 /**
  * @namespace Route
@@ -47,6 +48,27 @@ Router.route('/', function () {
     name: 'home',
     controller: ManifMakerRouterController
   }
+);
+
+/**
+ * @memberOf Route.common
+ * @summary Tour
+ * @locus client
+ * @name 'home'  /
+ */
+Router.route('/tour', function () {
+
+        this.render('home', {to: 'mainContent'})
+
+        PlayTourServiceClient.playActivityScenario();
+
+
+    },
+    {
+        data: {currentTab: 'Home'},
+        name: 'tour',
+        controller: ManifMakerRouterController
+    }
 );
 
 /**

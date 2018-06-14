@@ -4,7 +4,17 @@
 </head>
 
 <body>
-    <div id="guided-tour-overlapp"><span id="click-highlight"></span></div>
+    <div id="guided-tour-overlapp">
+        <span id="click-highlight"></span>
+        <div id="message">
+            <div id="guide-progress-bar" class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                    <span class="sr-only"></span>
+                </div>
+            </div>
+            <div id="message-content-wrapper"><span id="message-content"></span></div>
+        </div>
+    </div>
 {{> sAlert}}
 </body>
 
