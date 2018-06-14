@@ -65,19 +65,21 @@ export class GuidedTourServiceClient {
      * @param labelToClickOn    the exact label of the customSelect
      * @param optionToSelect    the exact label of the option to select
      */
-    static selectOption(labelToClickOn, optionToSelect) {
+    static selectOption(labelToClickOn, optionToSelect, delay) {
         return new Promise(resolve => {
-            console.debug("DEBUG selectOption");
-            GuidedTourServiceClient.clickOn(`[for=${labelToClickOn}]`).then(() => {
-                GuidedTourServiceClient.sleep(1000).then(() => {
+            console.debug("DEBUG selectOption",optionToSelect);
+            GuidedTourServiceClient.clickOn(`[for=${labelToClickOn}]`)
+                .then(() => GuidedTourServiceClient.waitFor(optionToSelect))
+                .then(() => {
+                    // GuidedTourServiceClient.sleep(delay).then(() => {
                     //TODO support mutliple
                     let component = $(`:contains(${optionToSelect})`);
                     let parent = component[component.length - 1 - 1];
                     GuidedTourServiceClient.clickOn($(parent).children("input")).then(() => {
                         resolve()
                     });
-                });
-            })
+                    // });
+                })
         })
     }
 
@@ -86,13 +88,13 @@ export class GuidedTourServiceClient {
         return component[component.length - 1];
     }
 
-    static _typeText(text, target, resolve) {
+    static _typeText(text, target, resolve, delayBetweenChar) {
         var $target = $(target);
         $target.addClass("filling-input");
         $target.val($target.val() + text.charAt(0));
         text = text.substr(1);
         if (text.length != 0)
-            GuidedTourServiceClient.sleep(300).then(() => {
+            GuidedTourServiceClient.sleep(delayBetweenChar).then(() => {
                 GuidedTourServiceClient._typeText(text, target, resolve)
             });
         else {
@@ -102,9 +104,9 @@ export class GuidedTourServiceClient {
         }
     }
 
-    static typeText(text, target) {
+    static typeText(text, target, delayBetweenChar) {
         return new Promise((resolve) => {
-            GuidedTourServiceClient._typeText(text, target, resolve)
+            GuidedTourServiceClient._typeText(text, target, resolve, delayBetweenChar)
         })
     }
 
@@ -132,7 +134,7 @@ export class GuidedTourServiceClient {
     /**
      * @param cssSelector either a CSS selector or a jQuery object
      */
-    static clickOn(cssSelector) {
+    static clickOn(cssSelector, delay) {
         return new Promise(resolve => {
             console.debug("DEBUG clickOn", cssSelector);
             let component = (typeof cssSelector == "string") ? $(`${cssSelector}`) : (typeof cssSelector == 'jQuery') ? cssSelector : $(cssSelector);
@@ -148,7 +150,7 @@ export class GuidedTourServiceClient {
             $("#guided-tour-overlapp").addClass("grayed");
             clickHighlight.addClass("visible");
 
-            GuidedTourServiceClient.sleep(500).then(() => {
+            GuidedTourServiceClient.sleep(delay).then(() => {
                 $(cssSelector).click();
                 $("#guided-tour-overlapp").removeClass("grayed");
                 clickHighlight.removeClass("visible");
