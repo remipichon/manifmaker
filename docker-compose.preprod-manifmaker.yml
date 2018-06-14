@@ -7,6 +7,8 @@ services:
 
     mongodb_backup: #Main DB
         image: 'assomaker/mongodbbackup:0.1.0'
+        depends_on:
+          - mongodb
         environment:
             - CRON_TIME=20 3 * * * #Change to your favorite cron job schedule
             - MAX_BACKUPS=10
@@ -22,6 +24,8 @@ services:
 
     manifmaker: #Main App
         image: 'assomaker/manifmaker:0.3.2'
+        depends_on:
+          - mongodb
         environment:
             #- INJECT_ALL_DATA=true
             - ROOT_URL=http://preprod-manifmaker.remip.eu/
