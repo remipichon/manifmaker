@@ -1,7 +1,7 @@
 version: '3'
 services:
     mongodb:
-        image: 'assomaker/mongodb:0.1.0'
+        image: 'assomaker/mongodb:0.1.1'
         networks:
           - manifmaker
 

@@ -1,5 +1,6 @@
 //to be used on /manifmaker database
-try{ 
+try{
+  db = db.getSiblingDB('manifmaker');
 	db.createUser( { user: "manifmaker",
 	    pwd: "manifmaker",
 	    roles: [ "readWrite", "dbAdmin" ]

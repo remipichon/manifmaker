@@ -1,6 +1,7 @@
 //to be used on /admin database
-try{ 
-	db.createUser( { user: "backupuser",
+try{
+  db = db.getSiblingDB('admin');
+  db.createUser( { user: "backupuser",
 	    pwd: "backupuserPWD",
 	    roles: [ "readWrite", "dbAdmin" ]
 	});
