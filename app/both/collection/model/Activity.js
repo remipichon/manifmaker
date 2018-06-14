@@ -1,6 +1,12 @@
 import {Schemas} from './SchemasHelpers'
 import {ValidationService} from "../../../both/service/ValidationService"
 import "/both/collection/model/T-Validation.js"
+import { Match } from 'meteor/check'
+import {ApiResourceActionService} from "../../../both/service/ApiResourceActionService.js"
+
+SimpleSchema.extendOptions({
+    jsonExport: Match.Optional(Boolean)
+});
 
 Schemas.AccessPass = new SimpleSchema({
     start: {
@@ -88,7 +94,6 @@ Schemas.ServiceProvider = new SimpleSchema({
         optional: true,
         defaultValue: null,
         regEx: /^0{1}\d{10}$/,
-        optional: true,
     },
     email: {
         label: "Service Provider Email",
@@ -112,6 +117,7 @@ Schemas.ServiceProvider = new SimpleSchema({
 
 Schemas.Activities = new SimpleSchema({
     name: {
+        jsonExport: true,
         type: String,
         label: "Activity Name",
         max: 100,
@@ -125,6 +131,7 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     description: {
+        jsonExport: true,
         type: String,
         label: "Activity Description",
         optional: true,
@@ -151,6 +158,13 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     teamId: {
+        jsonExport: true,
+        jsonExportCustom: function(value){
+            return {
+                newValue:ApiResourceActionService.readData(Schemas.references.Teams,Teams,{_id: value})[0],
+                newKey:"team"
+            }
+        },
         type: SimpleSchema.RegEx.Id,
         label: "Activity Team",
         custom: function () {
@@ -193,6 +207,7 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     placeId: {
+        jsonExport: true,
         type: SimpleSchema.RegEx.Id,
         label: "Activity Place",
         custom: function () {
@@ -233,6 +248,7 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     start: {
+        jsonExport: true,
         type: Date,
         label: "Activity Start Date" ,
         optional: true,
@@ -250,6 +266,7 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     end: {
+        jsonExport: true,
         type: Date,
         label: "Activity End Date",
         optional: true,
@@ -267,6 +284,7 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     location: {
+        jsonExport: true,
         type: String,
         optional: true,
         autoform: {
@@ -285,6 +303,7 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     applicationData: {
+        jsonExport: true,
         type: Object,
         label: "Application Data",
         optional: true,
@@ -299,11 +318,13 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     'applicationData.description': {
+        jsonExport: true,
         type: String,
         label: "Application Data Description",
         optional: true
     },
     'applicationData.categoryId': {
+        jsonExport: true,
         type: SimpleSchema.RegEx.Id,
         label: "Application Data Category",
         optional: true, //TODO should be mandatory but can't make it work
@@ -320,6 +341,7 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     'applicationData.picture': {
+        jsonExport: true,
         type: String,
         label: "Application Data Principal Picture",
         optional: true,
@@ -332,6 +354,7 @@ Schemas.Activities = new SimpleSchema({
         },
     },
     'applicationData.pictures': {
+        jsonExport: true,
         type: [String],
         optional: true,
         label: "Add some other pictures"
@@ -348,6 +371,7 @@ Schemas.Activities = new SimpleSchema({
         },
     },
     webData: {
+        jsonExport: true,
         type: Object,
         label: "Web Data",
         optional: true,
@@ -383,6 +407,10 @@ Schemas.Activities = new SimpleSchema({
         }
     },
     'webData.picture': {
+        jsonExport: true,
+        jsonExportCustom: function(value){
+            return `${Meteor.manifmakerEndpoint}/cfs/files/images/${value}/${value}.JPG`;
+        },
         type: String,
         optional: true,
         label: "Web Data Picture",

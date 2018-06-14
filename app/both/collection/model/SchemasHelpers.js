@@ -1,4 +1,21 @@
 export var Schemas = {};
+import { Match } from 'meteor/check'
+
+SimpleSchema.extendOptions({
+    /**
+     * The highest parent value gives the value for all its children.
+     * Search only for 'true' value (meaning 'false' value is the same as no value)
+     */
+    jsonExport: Match.Optional(Boolean),
+    /**
+     * If value needs to be modifier before sending.
+     * 'jsonExport' key needs to be defined for that value, if not it's ignored
+     * Should either return the data to replace the value or an object {newKey: Str, newValue: Obj} if you want to
+     * rename key (old one would be deleted)
+     */
+    jsonExportCustom:Match.Optional(Function)
+});
+
 SimpleSchema.messages({
     unknownId: `[label] could not be found in database`,
     unknownIdOrDuplicateId: `[label] could not be found in database or is duplicated`,

@@ -2,7 +2,11 @@ import {Schemas} from './SchemasHelpers'
 import {TimeSlotService} from "../../../both/service/TimeSlotService"
 
 import "/both/collection/model/enum/EquipementTargetUsage.js"
+import { Match } from 'meteor/check'
 
+SimpleSchema.extendOptions({
+    jsonExport: Match.Optional(Boolean)
+});
 
 Schemas.references = {};
 Schemas.references.options = {};
@@ -21,6 +25,7 @@ Schemas.references.options.Teams = {
 };
 Schemas.references.Teams = new SimpleSchema({
     name: {
+        jsonExport: true,
         type: String,
         label: "Team Name",
         max: 100
@@ -65,11 +70,13 @@ Schemas.references.options.Places = {
 };
 Schemas.references.Places = new SimpleSchema({
     name: {
+        jsonExport: true,
         type: String,
         label: "Place Name",
         max: 100
     },
     location: {
+        jsonExport: true,
         type: String,
         autoform: {
             type: 'map',
@@ -869,6 +876,7 @@ Schemas.references.options.WebCategories = {
 };
 Schemas.references.WebCategories = new SimpleSchema({
     name: {
+        jsonExport: true,
         type: String,
         label: "Web Category Name",
         max: 100
@@ -912,15 +920,18 @@ Schemas.references.options.AndroidCategories = {
 };
 Schemas.references.AndroidCategories = new SimpleSchema({
     name: {
+        jsonExport: true,
         type: String,
         label: "Android Category Name",
         max: 100
     },
     iconName:{
+        jsonExport: true,
         type: String,
         label: "Android Category icon file name used by the app to display the right icon, see https://github.com/24HeuresINSA/24h-android-app",
     },
     categoryName:{
+        jsonExport: true,
         type: String,
         //unique: true,
         label: "Unique Android Category name used by the app to do filtering (only maj non special char, no white space), see https://github.com/24HeuresINSA/24h-android-app",

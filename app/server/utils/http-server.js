@@ -17,5 +17,17 @@ HTTP.methods({
 
             return 'Thanks';
         }
+    },
+    'api/:resource/:action':{
+        get:function () {
+            console.log("Http request api/"+this.params.resource+"/"+this.params.action);
+            var resource = this.params.resource;
+            var action = this.params.action;
+            if(!ApiResourceAction[resource] || !ApiResourceAction[resource][action]){
+                this.setStatusCode(405);
+                return JSON.stringify({statusCode : 405, error: `$action is not possible for $resource`}, null, '\t');
+            }
+            return ApiResourceAction[resource][action].call()
+        }
     }
 });
