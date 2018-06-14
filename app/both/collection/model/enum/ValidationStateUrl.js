@@ -7,9 +7,9 @@
  * @readonly
  * @locus Anywhere
  */
-ValidationStateUrl= {
-    "open":"OPEN",
-    "to-be-validated": "TOBEVALIDATED",
-    "refuse": "REFUSED",
-    "ready":"READY"
+ValidationStateUrl = {
+  "open": "OPEN",
+  "to-be-validated": "TOBEVALIDATED",
+  "refuse": "REFUSED",
+  "ready": "READY"
 };

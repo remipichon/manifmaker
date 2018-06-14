@@ -1,7 +1,7 @@
 import {Schemas} from './model/SchemasHelpers'
 
 Images = new FS.Collection("images", {
-    stores: [new FS.Store.FileSystem("images")]
+  stores: [new FS.Store.FileSystem("images")]
 });
 
 /**
@@ -74,5 +74,5 @@ Meteor.users.attachSchema(Schemas.User);
 Settings.attachSchema(Schemas.Settings);
 
 /**
- * @namespace Enum 
+ * @namespace Enum
  */

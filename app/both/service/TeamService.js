@@ -1,9 +1,9 @@
 export class TeamService {
-    static optionQueryTeamsWithoutAlreadyAssigned(){
-        return {
-            name: {
-                $not: ASSIGNMENTREADYTEAM
-            }
-        }
+  static optionQueryTeamsWithoutAlreadyAssigned() {
+    return {
+      name: {
+        $not: ASSIGNMENTREADYTEAM
+      }
     }
+  }
 }

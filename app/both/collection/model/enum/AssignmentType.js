@@ -6,9 +6,9 @@
  * @locus Anywhere
  */
 AssignmentType = {
-    /** user as an entry point*/
-    USERTOTASK: "userToTask",
-    /** task as an entry point*/
-    TASKTOUSER: "taskToUser",
-    ALL: "all"
+  /** user as an entry point*/
+  USERTOTASK: "userToTask",
+  /** task as an entry point*/
+  TASKTOUSER: "taskToUser",
+  ALL: "all"
 };

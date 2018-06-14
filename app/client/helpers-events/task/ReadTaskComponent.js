@@ -1,12 +1,12 @@
 class ReadTaskComponent extends BlazeComponent {
 
-    template() {
-        return "readTaskComponent";
-    }
+  template() {
+    return "readTaskComponent";
+  }
 
-    self() {
-        return this;
-    }
+  self() {
+    return this;
+  }
 
 }
 

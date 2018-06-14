@@ -1,43 +1,43 @@
 import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 
-class AssignmentTermSelectComponent extends BlazeComponent{
-    template(){
-        return "assignmentTermSelectComponent";
-    }
+class AssignmentTermSelectComponent extends BlazeComponent {
+  template() {
+    return "assignmentTermSelectComponent";
+  }
 
-    events(){
-        return [{
-            "change #assignments-terms-select": function (event) {
-                var _id = $(event.target).val();
-                AssignmentServiceClient.setCalendarTerms(_id);
-            }
-        }]
-    }
+  events() {
+    return [{
+      "change #assignments-terms-select": function (event) {
+        var _id = $(event.target).val();
+        AssignmentServiceClient.setCalendarTerms(_id);
+      }
+    }]
+  }
 
-    isDeveloped(){
-        return this.data().isdeveloped;
-    }
+  isDeveloped() {
+    return this.data().isdeveloped;
+  }
 
-    assignmentTerms() {
-        var terms;
-        if(this.data() && this.data().teams)
-            terms =  AssignmentTerms.find({teams:{$in:this.data().teams}});
-        else
-            terms = AssignmentTerms.find();
-        terms = terms.fetch();
+  assignmentTerms() {
+    var terms;
+    if (this.data() && this.data().teams)
+      terms = AssignmentTerms.find({teams: {$in: this.data().teams}});
+    else
+      terms = AssignmentTerms.find();
+    terms = terms.fetch();
 
-        if(terms.length === 0 && this.data() && this.data().callbackIfNothingToDisplay)
-            this.data().callbackIfNothingToDisplay();
+    if (terms.length === 0 && this.data() && this.data().callbackIfNothingToDisplay)
+      this.data().callbackIfNothingToDisplay();
 
-        //select the currently used term
-        var selectedTermId = AssignmentCalendarDisplayedDays.findOne().assignmentTermId;
-        var i = terms.indexOf(_.findWhere(terms,{_id:selectedTermId}));
-        terms[i].selected = "selected";
-        console.info(selectedTermId,i);
+    //select the currently used term
+    var selectedTermId = AssignmentCalendarDisplayedDays.findOne().assignmentTermId;
+    var i = terms.indexOf(_.findWhere(terms, {_id: selectedTermId}));
+    terms[i].selected = "selected";
+    console.info(selectedTermId, i);
 
-        return terms;
+    return terms;
 
-    }
+  }
 }
 
 AssignmentTermSelectComponent.register("AssignmentTermSelectComponent");

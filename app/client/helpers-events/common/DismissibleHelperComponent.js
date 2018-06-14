@@ -4,35 +4,33 @@
 class DismissibleHelperComponent extends BlazeComponent {
 
 
+  events() {
+    return [
+      {
+        "click .close.dismissible": this.close
+      }
+    ]
+  }
 
-    events(){
-        return [
-            {
-                "click .close.dismissible": this.close
-            }
-        ]
-    }
+  template() {
+    return "dismissibleHelperComponent";
+  }
 
-    template(){
-        return "dismissibleHelperComponent";
-    }
-
-    isDisplayed(){
-        return ( Meteor.users.findOne({
-            _id: Meteor.userId(),
-            dismissible: this.currentData().uniqueId
-        })) ? false: true;
-    }
-
+  isDisplayed() {
+    return ( Meteor.users.findOne({
+      _id: Meteor.userId(),
+      dismissible: this.currentData().uniqueId
+    })) ? false : true;
+  }
 
 
-    close(){
-        Meteor.users.update(Meteor.userId(),{
-            $push: {
-                dismissible: this.currentData().uniqueId
-            }
-        })
-    }
+  close() {
+    Meteor.users.update(Meteor.userId(), {
+      $push: {
+        dismissible: this.currentData().uniqueId
+      }
+    })
+  }
 
 }
 

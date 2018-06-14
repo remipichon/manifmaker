@@ -6,38 +6,38 @@
  * @locus Anywhere
  */
 RolesEnumDisplay = {
-    /** global */
-    MANIFMAKER: "Access ManifMaker app",
+  /** global */
+  MANIFMAKER: "Access ManifMaker app",
 
-    /** task */
-    TASKREAD: "View tasks",
-    /** task */
-    TASKWRITE: "Edit task",
-    /** task */
-    TASKDELETE: "Delete task",
-    /** activity */
-    ACCESSPASSVALIDATION: "Access Pass validation",
-    /** task and activity */
-    EQUIPMENTVALIDATION: "Equipment validation",
-    /** task */
-    ASSIGNMENTVALIDATION: "Assignment validation",
-    /** activity */
-    ACTIVITYGENERALVALIDATION: "General Information validation",
-    /** activity */
-    ALLACTIVITY: "All Activities even private ones",
+  /** task */
+  TASKREAD: "View tasks",
+  /** task */
+  TASKWRITE: "Edit task",
+  /** task */
+  TASKDELETE: "Delete task",
+  /** activity */
+  ACCESSPASSVALIDATION: "Access Pass validation",
+  /** task and activity */
+  EQUIPMENTVALIDATION: "Equipment validation",
+  /** task */
+  ASSIGNMENTVALIDATION: "Assignment validation",
+  /** activity */
+  ACTIVITYGENERALVALIDATION: "General Information validation",
+  /** activity */
+  ALLACTIVITY: "All Activities even private ones",
 
-    /** assignment */
-    ASSIGNMENTTASKUSER: "Access assignment",
+  /** assignment */
+  ASSIGNMENTTASKUSER: "Access assignment",
 
-    /** user */
-    USERREAD: "View users",
-    /** user */
-    USERWRITE: "Edit user",
-    /** user */
-    USERDELETE: "Delete user",
+  /** user */
+  USERREAD: "View users",
+  /** user */
+  USERWRITE: "Edit user",
+  /** user */
+  USERDELETE: "Delete user",
 
-    /** conf */
-    CONFMAKER: "Access to ConfMaker",
-    /** conf */
-    ROLE: "Allow to add/edit/delete group roles"
+  /** conf */
+  CONFMAKER: "Access to ConfMaker",
+  /** conf */
+  ROLE: "Allow to add/edit/delete group roles"
 };

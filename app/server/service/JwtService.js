@@ -1,15 +1,14 @@
-import {verify} from 'jsonwebtoken';
-import {sign} from 'jsonwebtoken';
+import {sign, verify} from 'jsonwebtoken';
 
-export class JwtService{
+export class JwtService {
 
-    static verify(jwtString) {
-        var publicKey = process.env.JWT_PUBLIC_KEY;
-        return verify(jwtString, publicKey);
-    }
+  static verify(jwtString) {
+    var publicKey = process.env.JWT_PUBLIC_KEY;
+    return verify(jwtString, publicKey);
+  }
 
-    static sign(payload) {
-        var privateKey = process.env.JWT_PRIVATE_KEY;
-        return sign(payload, privateKey);
-    }
+  static sign(payload) {
+    var privateKey = process.env.JWT_PRIVATE_KEY;
+    return sign(payload, privateKey);
+  }
 }

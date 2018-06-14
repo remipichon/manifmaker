@@ -1,5 +1,5 @@
 ExportPdfStatus = {
-    start: "In progress",
-    stop: "Created",
-    die: "Ready"
+  start: "In progress",
+  stop: "Created",
+  die: "Ready"
 };

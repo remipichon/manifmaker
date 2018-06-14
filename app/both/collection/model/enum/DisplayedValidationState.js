@@ -6,8 +6,8 @@
  * @locus Anywhere
  */
 DisplayedValidationState = {
-    "OPEN": "open",
-    "TOBEVALIDATED": "to be validated",
-    "REFUSED": "refused",
-    "READY": "ready"
+  "OPEN": "open",
+  "TOBEVALIDATED": "to be validated",
+  "REFUSED": "refused",
+  "READY": "ready"
 };

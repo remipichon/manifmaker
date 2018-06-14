@@ -13,14 +13,14 @@ import {ManifMakerRouterController} from "./ManifMakerRouterController"
  * @name 'home'  /activities
  */
 Router.route('/activities', function () {
-        SecurityServiceClient.grantAccessToPage(RolesEnum.ACTIVITYREAD);
-        console.info("routing", "/activities");
+    SecurityServiceClient.grantAccessToPage(RolesEnum.ACTIVITYREAD);
+    console.info("routing", "/activities");
 
-        this.render('activityList', {
-            to: 'mainContent'
-        });
-    },
-    {controller: ManifMakerRouterController,name: 'activity.list'}
+    this.render('activityList', {
+      to: 'mainContent'
+    });
+  },
+  {controller: ManifMakerRouterController, name: 'activity.list'}
 )
 
 /**
@@ -31,15 +31,15 @@ Router.route('/activities', function () {
  */
 Router.route('/activity', function () {
 
-        SecurityServiceClient.grantAccessToPage(RolesEnum.ACTIVITYWRITE);
-        console.info("routing", "/activity");
+    SecurityServiceClient.grantAccessToPage(RolesEnum.ACTIVITYWRITE);
+    console.info("routing", "/activity");
 
-        this.render('insertActivityForm', {
-            to: 'mainContent'
-        });
+    this.render('insertActivityForm', {
+      to: 'mainContent'
+    });
 
-    },
-    {controller: ManifMakerRouterController,name: 'activity.create'}
+  },
+  {controller: ManifMakerRouterController, name: 'activity.create'}
 );
 
 /**
@@ -50,21 +50,21 @@ Router.route('/activity', function () {
  * @name 'activity.read'  /activity/:_id
  */
 Router.route('/activity/:_id', function () {
-        SecurityServiceClient.grantAccessToPage(RolesEnum.ACTIVITYWRITE);
-        console.info("routing", "/activity/" + this.params._id);
+    SecurityServiceClient.grantAccessToPage(RolesEnum.ACTIVITYWRITE);
+    console.info("routing", "/activity/" + this.params._id);
 
-        if(!Activities.findOne(this.params._id)){
-            console.info("routing", "activity not found, rerouting to /activities");
-            Router.go("/activities");
-        }
+    if (!Activities.findOne(this.params._id)) {
+      console.info("routing", "activity not found, rerouting to /activities");
+      Router.go("/activities");
+    }
 
 
-        this.render('updateActivityForm', {
-            data: function () {
-                var current = this.params._id;
-                return Activities.findOne({_id: current});
-            }, to: 'mainContent'
-        });
-    },
-    {controller: ManifMakerRouterController,name: 'activity.update'}
+    this.render('updateActivityForm', {
+      data: function () {
+        var current = this.params._id;
+        return Activities.findOne({_id: current});
+      }, to: 'mainContent'
+    });
+  },
+  {controller: ManifMakerRouterController, name: 'activity.update'}
 );

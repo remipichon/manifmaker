@@ -1,19 +1,19 @@
 import {EquipmentComponent} from "../../common/EquipmentComponent"
 
-class TaskEquipmentsComponent extends EquipmentComponent{
+class TaskEquipmentsComponent extends EquipmentComponent {
 
-    template() {
-        return "taskEquipments";
-    }
+  constructor() {
+    super();
+    this.equipementTargetUsage = EquipementTargetUsage.TASK
+  }
 
-    taskData(){
-        return this.data();
-    }
+  template() {
+    return "taskEquipments";
+  }
 
-    constructor(){
-        super();
-        this.equipementTargetUsage = EquipementTargetUsage.TASK
-    }
+  taskData() {
+    return this.data();
+  }
 
 }
 

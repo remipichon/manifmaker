@@ -6,8 +6,8 @@
  * @locus Anywhere
  */
 ValidationTypeUrl = {
-    "time-slot": "timeSlotValidation",
-    "access-pass": "accessPassValidation",
-    "equipment": "equipmentValidation",
-    "activity-general": "generalInformationValidation"
+  "time-slot": "timeSlotValidation",
+  "access-pass": "accessPassValidation",
+  "equipment": "equipmentValidation",
+  "activity-general": "generalInformationValidation"
 };

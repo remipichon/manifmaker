@@ -11,32 +11,32 @@ import {ManifMakerRouterController} from "../ManifMakerRouterController"
 assignmentCalendarIsRendered = false;
 
 AssignmentController = ManifMakerRouterController.extend({
-    onBeforeAction: function () {
-        SecurityServiceClient.grantAccessToPage( RolesEnum.ASSIGNMENTTASKUSER, "assignment");
+  onBeforeAction: function () {
+    SecurityServiceClient.grantAccessToPage(RolesEnum.ASSIGNMENTTASKUSER, "assignment");
 
-        this.render("AssignmentNavBarWrapper", {to: "topNavBar"});
-        commonNavBarWrapperIsRendered = false;
+    this.render("AssignmentNavBarWrapper", {to: "topNavBar"});
+    commonNavBarWrapperIsRendered = false;
 
 
-        if (!assignmentCalendarIsRendered) {
-            this.render('AssignmentHomeWrapper', {to: 'mainContent'});
-            assignmentCalendarIsRendered = true;
-        }
-
-        this.next();
-
-    },
-
-    onAfterAction: function () {
-        //trick to perform the following on another 'thread' which has access to DOM
-        setTimeout(function () {
-            AssignmentServiceClient.initAssignmentSkillsFilter();
-            AssignmentServiceClient.initAssignmentPopover();
-
-            AssignmentServiceClient.disableDisplayAssignedCheckbox();
-
-        }, 200);
+    if (!assignmentCalendarIsRendered) {
+      this.render('AssignmentHomeWrapper', {to: 'mainContent'});
+      assignmentCalendarIsRendered = true;
     }
+
+    this.next();
+
+  },
+
+  onAfterAction: function () {
+    //trick to perform the following on another 'thread' which has access to DOM
+    setTimeout(function () {
+      AssignmentServiceClient.initAssignmentSkillsFilter();
+      AssignmentServiceClient.initAssignmentPopover();
+
+      AssignmentServiceClient.disableDisplayAssignedCheckbox();
+
+    }, 200);
+  }
 });
 
 /**
@@ -46,14 +46,14 @@ AssignmentController = ManifMakerRouterController.extend({
  * @name 'assignment.calendar'  /assignment
  */
 Router.route('/assignment', function () {
-        console.info("routing", '/assignment');
+    console.info("routing", '/assignment');
 
-        AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.ALL);
-    }, {
-        data:{currentTab:'Assignment'},
-        controller: 'AssignmentController',
-        name: 'assignment.calendar',
-    }
+    AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.ALL);
+  }, {
+    data: {currentTab: 'Assignment'},
+    controller: 'AssignmentController',
+    name: 'assignment.calendar',
+  }
 );
 
 /**
@@ -63,24 +63,24 @@ Router.route('/assignment', function () {
  * @name 'assignment.calendar.user'  /assignment/user/:userId
  */
 Router.route('/assignment/user/:userId', function () {
-        console.info("routing", '/assignment/user/' + this.params.userId);
+    console.info("routing", '/assignment/user/' + this.params.userId);
 
-        //desactivation de la recherche par URL
-        //if (this.params.userId === "search") {
-        //    console.info("routing error, misunderstanding 'search' as a userId");
-        //    Router.go("/assignment");
-        //}
+    //desactivation de la recherche par URL
+    //if (this.params.userId === "search") {
+    //    console.info("routing error, misunderstanding 'search' as a userId");
+    //    Router.go("/assignment");
+    //}
 
-        //ceci est seulement le userToTask => TODO faire le taskToUser
+    //ceci est seulement le userToTask => TODO faire le taskToUser
 
 
-        Router.go("/assignment/userToTask/" + this.params.userId);
+    Router.go("/assignment/userToTask/" + this.params.userId);
 
-    }, {
-        data:{currentTab:'Assignment'},
-        controller: 'AssignmentController',
-        name: 'assignment.calendar.user'
-    }
+  }, {
+    data: {currentTab: 'Assignment'},
+    controller: 'AssignmentController',
+    name: 'assignment.calendar.user'
+  }
 );
 
 /**
@@ -90,22 +90,22 @@ Router.route('/assignment/user/:userId', function () {
  * @name 'assignment.calendar.task'  /assignment/task/:taskId
  */
 Router.route('/assignment/task/:taskId', function () {
-        console.info("routing", '/assignment/task/' + this.params.taskId);
+    console.info("routing", '/assignment/task/' + this.params.taskId);
 
-        //desactivation de la recherche par URL
-        //if (this.params.taskId === "search") {
-        //    console.info("routing error, misunderstanding 'search' as a taskId");
-        //    Router.go("/assignment");
-        //}
+    //desactivation de la recherche par URL
+    //if (this.params.taskId === "search") {
+    //    console.info("routing error, misunderstanding 'search' as a taskId");
+    //    Router.go("/assignment");
+    //}
 
-        //ceci est seulement le taskToUser => faire le  userToTask
+    //ceci est seulement le taskToUser => faire le  userToTask
 
-        Router.go("/assignment/taskToUser/" + this.params.taskId);
-    }, {
-        data:{currentTab:'Assignment'},
-        controller: 'AssignmentController',
-        name: 'assignment.calendar.task'
-    }
+    Router.go("/assignment/taskToUser/" + this.params.taskId);
+  }, {
+    data: {currentTab: 'Assignment'},
+    controller: 'AssignmentController',
+    name: 'assignment.calendar.task'
+  }
 );
 
 //desactivation de la recherche par URL

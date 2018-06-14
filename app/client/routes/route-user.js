@@ -14,13 +14,13 @@ import {ExportRouterController} from "./ExportRouterController"
  * @name 'user.list'  /users
  */
 Router.route('/users', function () {
-        //everyone can at least edit its own profile
-        console.info("routing", "/users");
-        this.render('usersList', {
-            to: 'mainContent'
-        });
-    },
-    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.list'}
+    //everyone can at least edit its own profile
+    console.info("routing", "/users");
+    this.render('usersList', {
+      to: 'mainContent'
+    });
+  },
+  {data: {currentTab: 'Users'}, controller: ManifMakerRouterController, name: 'user.list'}
 );
 
 /**
@@ -31,8 +31,8 @@ Router.route('/users', function () {
  */
 Router.route('/user', function () {
     Router.go("/register");
-    },
-    {data:{currentTab:'Users'},name: 'user.create'}
+  },
+  {data: {currentTab: 'Users'}, name: 'user.create'}
 );
 
 /**
@@ -42,9 +42,9 @@ Router.route('/user', function () {
  * @name 'user.register'  /user
  */
 Router.route('/register', function () {
-        console.info("routing", "/register");
-    },
-    {data:{currentTab:'Users'},name: 'user.register',layoutTemplate:"register"}
+    console.info("routing", "/register");
+  },
+  {data: {currentTab: 'Users'}, name: 'user.register', layoutTemplate: "register"}
 );
 
 /**
@@ -55,22 +55,22 @@ Router.route('/register', function () {
  * @name 'user.read'  /user/:_id
  */
 Router.route('/user/:_id', function () {
-    if(!Meteor.users.findOne(this.params._id)){
-        throw new Meteor.Error("404","User not found");
-        return;
+    if (!Meteor.users.findOne(this.params._id)) {
+      throw new Meteor.Error("404", "User not found");
+      return;
     }
-        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
-            SecurityServiceClient.grantAccessToPage( RolesEnum.USERWRITE);
+    if (Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
+      SecurityServiceClient.grantAccessToPage(RolesEnum.USERWRITE);
 
-        console.info("routing", "/user/" + this.params._id);
-        this.render('updateUserForm', {
-            data: function () {
-                var currentUser = this.params._id;
-                return Meteor.users.findOne({_id: currentUser});
-            }, to: 'mainContent'
-        });
-    },
-    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.write'}
+    console.info("routing", "/user/" + this.params._id);
+    this.render('updateUserForm', {
+      data: function () {
+        var currentUser = this.params._id;
+        return Meteor.users.findOne({_id: currentUser});
+      }, to: 'mainContent'
+    });
+  },
+  {data: {currentTab: 'Users'}, controller: ManifMakerRouterController, name: 'user.write'}
 );
 
 /**
@@ -81,21 +81,21 @@ Router.route('/user/:_id', function () {
  * @name 'user.read'  /user/:_id/read
  */
 Router.route('/user/:_id/read', function () {
-        if(!Meteor.users.findOne({_id: this.params._id})){
-            throw new Meteor.Error("404","User not found");
-        }
-        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
-            SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
+    if (!Meteor.users.findOne({_id: this.params._id})) {
+      throw new Meteor.Error("404", "User not found");
+    }
+    if (Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
+      SecurityServiceClient.grantAccessToPage(RolesEnum.USERREAD);
 
-        console.info("routing", "/user/" + this.params._id);
-        this.render('readUserForm', {
-            data: function () {
-                var currentUser = this.params._id;
-                return Meteor.users.findOne({_id: currentUser});
-            }, to: 'mainContent'
-        });
-    },
-    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.read'}
+    console.info("routing", "/user/" + this.params._id);
+    this.render('readUserForm', {
+      data: function () {
+        var currentUser = this.params._id;
+        return Meteor.users.findOne({_id: currentUser});
+      }, to: 'mainContent'
+    });
+  },
+  {data: {currentTab: 'Users'}, controller: ManifMakerRouterController, name: 'user.read'}
 );
 
 /**
@@ -106,21 +106,21 @@ Router.route('/user/:_id/read', function () {
  * @name 'user.export'  /user/:_id/export/html
  */
 Router.route('/user/:_id/export/html', function () {
-        if(!Meteor.users.findOne({_id: this.params._id})){
-            throw new Meteor.Error("404","User not found");
-        }
-        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
-            SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
+    if (!Meteor.users.findOne({_id: this.params._id})) {
+      throw new Meteor.Error("404", "User not found");
+    }
+    if (Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
+      SecurityServiceClient.grantAccessToPage(RolesEnum.USERREAD);
 
-        console.info("routing", "/user/" + this.params._id + "/export/html");
-        this.render('exportUserAssignment', {
-            data: function () {
-                var currentUser = this.params._id;
-                return Meteor.users.findOne({_id: currentUser});
-            }, to: 'mainContent'
-        });
-    },
-    {data:{currentTab:'Users'},controller: ExportRouterController,name: 'user.export.html'}
+    console.info("routing", "/user/" + this.params._id + "/export/html");
+    this.render('exportUserAssignment', {
+      data: function () {
+        var currentUser = this.params._id;
+        return Meteor.users.findOne({_id: currentUser});
+      }, to: 'mainContent'
+    });
+  },
+  {data: {currentTab: 'Users'}, controller: ExportRouterController, name: 'user.export.html'}
 );
 
 
@@ -132,23 +132,23 @@ Router.route('/user/:_id/export/html', function () {
  * @name 'user.export'  /user/:_id/export/html/clean
  */
 Router.route('/user/:_id/export/html/clean', function () {
-        if(!Meteor.users.findOne({_id: this.params._id})){
-            throw new Meteor.Error("404","User not found");
-        }
-        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
-            SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
+    if (!Meteor.users.findOne({_id: this.params._id})) {
+      throw new Meteor.Error("404", "User not found");
+    }
+    if (Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
+      SecurityServiceClient.grantAccessToPage(RolesEnum.USERREAD);
 
-        console.info("routing", "/user/" + this.params._id + "/export/html/clean");
-        this.render('exportUserAssignment', {
-            data: function () {
-                var currentUser = this.params._id;
-                let user = Meteor.users.findOne({_id: currentUser});
-                user.cleanHtmlToPrint = true;
-                return user;
-            }, to: 'mainContent'
-        });
-    },
-    {data:{currentTab:'Users'},controller: ExportRouterController,name: 'user.export.html.clean'}
+    console.info("routing", "/user/" + this.params._id + "/export/html/clean");
+    this.render('exportUserAssignment', {
+      data: function () {
+        var currentUser = this.params._id;
+        let user = Meteor.users.findOne({_id: currentUser});
+        user.cleanHtmlToPrint = true;
+        return user;
+      }, to: 'mainContent'
+    });
+  },
+  {data: {currentTab: 'Users'}, controller: ExportRouterController, name: 'user.export.html.clean'}
 );
 
 /**
@@ -159,29 +159,29 @@ Router.route('/user/:_id/export/html/clean', function () {
  * @name 'user.export'  /user/:_id/export/pdf
  */
 Router.route('/user/:_id/export/pdf', function () {
-        if(!Meteor.users.findOne({_id: this.params._id})){
-            throw new Meteor.Error("404","User not found");
-        }
-        if(Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
-            SecurityServiceClient.grantAccessToPage( RolesEnum.USERREAD);
+    if (!Meteor.users.findOne({_id: this.params._id})) {
+      throw new Meteor.Error("404", "User not found");
+    }
+    if (Meteor.users.findOne(this.params._id)._id !== Meteor.userId())
+      SecurityServiceClient.grantAccessToPage(RolesEnum.USERREAD);
 
-        var options = [{
-            url :  "/user/" + this.params._id + "/export/html",
-            fileName: Meteor.users.findOne(this.params._id).username + ".pdf"
-        }];
+    var options = [{
+      url: "/user/" + this.params._id + "/export/html",
+      fileName: Meteor.users.findOne(this.params._id).username + ".pdf"
+    }];
 
-        console.info("routing", "/user/" + this.params._id + "/export/pdf");
-        this.render('downloadPdf', {
-            data: function () {
-                return {
-                    user: Meteor.users.findOne(this.params._id),
-                    options: options,
-                    message: "We are generating a new fresh PDF agenda just for you, please wait..."
-                };
-            }, to: 'mainContent'
-        });
-    },
-    {data:{currentTab:'Users'},controller: ManifMakerRouterController,name: 'user.export.pdf'}
+    console.info("routing", "/user/" + this.params._id + "/export/pdf");
+    this.render('downloadPdf', {
+      data: function () {
+        return {
+          user: Meteor.users.findOne(this.params._id),
+          options: options,
+          message: "We are generating a new fresh PDF agenda just for you, please wait..."
+        };
+      }, to: 'mainContent'
+    });
+  },
+  {data: {currentTab: 'Users'}, controller: ManifMakerRouterController, name: 'user.export.pdf'}
 );
 
 
@@ -192,10 +192,10 @@ Router.route('/user/:_id/export/pdf', function () {
  * @name 'logout'  /logout
  */
 Router.route('/logout', function () {
-        Accounts.logout();
-        Router.go("/")
-    },
-    {name: 'logout'}
+    Accounts.logout();
+    Router.go("/")
+  },
+  {name: 'logout'}
 );
 
 

@@ -9,9 +9,9 @@
  * @locus Anywhere
  */
 ValidationStateDisplay = {
-    "OPEN": "Draft",
-    "TOBEVALIDATED": "In validation process",
-    "REFUSED": "Refused",
-    "READY": "Ready"
+  "OPEN": "Draft",
+  "TOBEVALIDATED": "In validation process",
+  "REFUSED": "Refused",
+  "READY": "Ready"
 };
 

@@ -1,5 +1,3 @@
-import {ManifMakerRouterController} from "../routes/ManifMakerRouterController"
-
 /**
  * @memberOf Route
  * @namespace Route.Task
@@ -13,15 +11,15 @@ import {ManifMakerRouterController} from "../routes/ManifMakerRouterController"
  */
 Router.route('/tests', function () {
 
-        console.info("routing", "/tests");
+    console.info("routing", "/tests");
 
-        //Meteor.call("injectData", _.bind(function () {
-            this.render('tests', {
-                to: 'mainContent'
-            })
-        //}, this));
+    //Meteor.call("injectData", _.bind(function () {
+    this.render('tests', {
+      to: 'mainContent'
+    })
+    //}, this));
 
 
-    },
-    {name: 'tests.list'}
+  },
+  {name: 'tests.list'}
 )

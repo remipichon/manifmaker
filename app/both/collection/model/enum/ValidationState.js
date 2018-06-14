@@ -14,9 +14,9 @@
  * @locus Anywhere
  */
 ValidationState = {
-    "OPEN": "OPEN",
-    "TOBEVALIDATED": "TOBEVALIDATED",
-    "REFUSED": "REFUSED",
-    "READY": "READY"
+  "OPEN": "OPEN",
+  "TOBEVALIDATED": "TOBEVALIDATED",
+  "REFUSED": "REFUSED",
+  "READY": "READY"
 };
 

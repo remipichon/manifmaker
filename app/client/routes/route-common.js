@@ -7,21 +7,21 @@ import {ManifMakerRouterController} from "./ManifMakerRouterController"
 
 //hide topNavBar to each expect assignment
 Router.onAfterAction(function () {
-        assignmentCalendarIsRendered = false;
-    },
-    {
-        except: [
-            'assignment.calendar',
-            'assignment.calendar.user',
-            'assignment.calendar.userToTask',
-            'assignment.calendar.userToTask.user',
-            'assignment.calendar.userToTask.user.date',
+    assignmentCalendarIsRendered = false;
+  },
+  {
+    except: [
+      'assignment.calendar',
+      'assignment.calendar.user',
+      'assignment.calendar.userToTask',
+      'assignment.calendar.userToTask.user',
+      'assignment.calendar.userToTask.user.date',
 
-            'assignment.calendar.taskToUser',
-            'assignment.calendar.taskToUser.task',
-            'assignment.calendar.taskToUser.task.timeSlot',
-        ]
-    }
+      'assignment.calendar.taskToUser',
+      'assignment.calendar.taskToUser.task',
+      'assignment.calendar.taskToUser.task.timeSlot',
+    ]
+  }
 );
 
 
@@ -38,14 +38,15 @@ Router.onAfterAction(function () {
  */
 Router.route('/', function () {
 
-            this.render('home', {to: 'mainContent'})
+    this.render('home', {to: 'mainContent'})
 
 
-    },
-    {data:{currentTab:'Home'},
+  },
+  {
+    data: {currentTab: 'Home'},
     name: 'home',
     controller: ManifMakerRouterController
-    }
+  }
 );
 
 /**
@@ -56,20 +57,21 @@ Router.route('/', function () {
  */
 Router.route('/jwt/:token', function () {
 
-        var token = this.params.token;
-        Meteor.call('verifyExportUrl',token,_.bind(function (error, result) {
-            Meteor.loginWithToken(result.token);
-            var payload = result.payload;
-            Router.go(payload.target)
-        }, this));
+    var token = this.params.token;
+    Meteor.call('verifyExportUrl', token, _.bind(function (error, result) {
+      Meteor.loginWithToken(result.token);
+      var payload = result.payload;
+      Router.go(payload.target)
+    }, this));
 
-        this.render('home', {to: 'mainContent'})
+    this.render('home', {to: 'mainContent'})
 
 
-    },
-    {data:{currentTab:'Home'},
-        name: 'token'
-    }
+  },
+  {
+    data: {currentTab: 'Home'},
+    name: 'token'
+  }
 );
 
 /**
@@ -79,11 +81,11 @@ Router.route('/jwt/:token', function () {
  * @name 'login'  /login
  */
 Router.route('/login', function () {
-        this.render('login', {to: 'mainContent'})
-    },
-    {
-        name: 'login',
-    }
+    this.render('login', {to: 'mainContent'})
+  },
+  {
+    name: 'login',
+  }
 );
 
 /**
@@ -96,29 +98,28 @@ beforeBeforeForbiddenRoute = null;
 
 Router.route('/forbidden', function () {
 
-        this.wait(Meteor.subscribe("users")); //wait for user data before any attempt
+    this.wait(Meteor.subscribe("users")); //wait for user data before any attempt
 
-        this.render("forbidden",{
-            data : {
-                message : "You don't have permission to access this component."
-            },
-            to: 'mainContent'
-        });
+    this.render("forbidden", {
+      data: {
+        message: "You don't have permission to access this component."
+      },
+      to: 'mainContent'
+    });
 
-        if(this.ready()){
-            if(beforeForbiddenRoute && beforeBeforeForbiddenRoute !== beforeForbiddenRoute){
-                beforeBeforeForbiddenRoute = beforeForbiddenRoute;
-                console.info(`retrying beforeForbiddenRoute ${beforeForbiddenRoute}`);
-                Router.go(beforeForbiddenRoute);
+    if (this.ready()) {
+      if (beforeForbiddenRoute && beforeBeforeForbiddenRoute !== beforeForbiddenRoute) {
+        beforeBeforeForbiddenRoute = beforeForbiddenRoute;
+        console.info(`retrying beforeForbiddenRoute ${beforeForbiddenRoute}`);
+        Router.go(beforeForbiddenRoute);
 
-            }
-        }
-    },
-    {
-        name: 'forbidden',
+      }
     }
+  },
+  {
+    name: 'forbidden',
+  }
 );
-
 
 
 /**
@@ -128,54 +129,56 @@ Router.route('/forbidden', function () {
  * @name 'demo-select'  /demo-select
  */
 Router.route('/demo-select', function () {
-        this.wait(Meteor.subscribe('users'));
-        this.wait(Meteor.subscribe('tasks'));
-        this.wait(Meteor.subscribe('teams'));
-        this.wait(Meteor.subscribe('skills'));
-        this.wait(Meteor.subscribe('power-supplies'));
+    this.wait(Meteor.subscribe('users'));
+    this.wait(Meteor.subscribe('tasks'));
+    this.wait(Meteor.subscribe('teams'));
+    this.wait(Meteor.subscribe('skills'));
+    this.wait(Meteor.subscribe('power-supplies'));
 
-        if (this.ready()) {
-            this.render('demoSelect', {to: 'mainContent',
-            data:{
-                user1Id : Meteor.users.findOne({username:"user1"})._id,
-                user2Id : Meteor.users.findOne({username:"user2"})._id,
-                task2Id : Tasks.findOne({name:"task 2"})._id,
-                team1Id : Teams.findOne({name:"team1"})._id,
-                team1Idteam2Id: [Teams.findOne({name:"team1"})._id, Teams.findOne({name:"team2"})._id],
-                skill1Idskill2Id: [Skills.findOne({"label" : "Responsable tache 1"})._id, Skills.findOne({"label" : "Responsable tache 2"})._id],
-                powersupply1 : PowerSupplies.findOne({name:"powerSupply1"})._id,
-                updateCallbackDisplayArgs: function(){
-                    return function(){
-                        console.info("updateCallbackDisplayArgs",arguments[0],arguments[1],arguments[2]);
-                    }
-                },
-                optionQueryteamsWithoutAlreadyAssigned: {
-                    name: {
-                        $not: ASSIGNMENTREADYTEAM
-                    }
-                },
-                optionCollectionAsArray: [
-                    {
-                        label: "First option",
-                        value: "ONE"
-                    },
-                    {
-                        label: "Second cat",
-                        value: "TWO"
-                    },
-                    {
-                        label: "Cypress",
-                        value: "THREE"
-                    }
-                ]
-            }});
-        } else {
-            console.info("Route /demo-select : waiting data");
+    if (this.ready()) {
+      this.render('demoSelect', {
+        to: 'mainContent',
+        data: {
+          user1Id: Meteor.users.findOne({username: "user1"})._id,
+          user2Id: Meteor.users.findOne({username: "user2"})._id,
+          task2Id: Tasks.findOne({name: "task 2"})._id,
+          team1Id: Teams.findOne({name: "team1"})._id,
+          team1Idteam2Id: [Teams.findOne({name: "team1"})._id, Teams.findOne({name: "team2"})._id],
+          skill1Idskill2Id: [Skills.findOne({"label": "Responsable tache 1"})._id, Skills.findOne({"label": "Responsable tache 2"})._id],
+          powersupply1: PowerSupplies.findOne({name: "powerSupply1"})._id,
+          updateCallbackDisplayArgs: function () {
+            return function () {
+              console.info("updateCallbackDisplayArgs", arguments[0], arguments[1], arguments[2]);
+            }
+          },
+          optionQueryteamsWithoutAlreadyAssigned: {
+            name: {
+              $not: ASSIGNMENTREADYTEAM
+            }
+          },
+          optionCollectionAsArray: [
+            {
+              label: "First option",
+              value: "ONE"
+            },
+            {
+              label: "Second cat",
+              value: "TWO"
+            },
+            {
+              label: "Cypress",
+              value: "THREE"
+            }
+          ]
         }
+      });
+    } else {
+      console.info("Route /demo-select : waiting data");
+    }
 
 
-    },
-    {name: 'demo-select'}
+  },
+  {name: 'demo-select'}
 );
 
 /**
@@ -185,18 +188,18 @@ Router.route('/demo-select', function () {
  * @name 'inject-data'  /inject-data
  */
 Router.route('/inject-data', function () {
-        Accounts.logout();
-        alert("You are about to delete all data and add some new fresh ones");
-        Meteor.call("injectData",function(error, result){
-            if(error){
-                alert(error);
-            } else {
-                alert("inject happened without error, please log in");
-                Router.go("/");
-            }
-        })
-    },
-    {name: 'inject-data'}
+    Accounts.logout();
+    alert("You are about to delete all data and add some new fresh ones");
+    Meteor.call("injectData", function (error, result) {
+      if (error) {
+        alert(error);
+      } else {
+        alert("inject happened without error, please log in");
+        Router.go("/");
+      }
+    })
+  },
+  {name: 'inject-data'}
 )
 
 

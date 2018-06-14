@@ -10,9 +10,9 @@
  * @instancename object
  */
 TasksIndex = new EasySearch.Index({
-    collection: Tasks,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: Tasks,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -21,9 +21,9 @@ TasksIndex = new EasySearch.Index({
  * @instancename object
  */
 ActivitiesIndex = new EasySearch.Index({
-    collection: Activities,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: Activities,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -32,9 +32,9 @@ ActivitiesIndex = new EasySearch.Index({
  * @instancename object
  */
 TaskGroupsIndex = new EasySearch.Index({
-    collection: TaskGroups,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: TaskGroups,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -43,9 +43,9 @@ TaskGroupsIndex = new EasySearch.Index({
  * @instancename object
  */
 UsersIndex = new EasySearch.Index({
-    collection: Meteor.users,
-    fields: ['familyName','firstName','username'],
-    engine: new EasySearch.Minimongo()
+  collection: Meteor.users,
+  fields: ['familyName', 'firstName', 'username'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -54,9 +54,9 @@ UsersIndex = new EasySearch.Index({
  * @instancename object
  */
 TeamsIndex = new EasySearch.Index({
-    collection: Teams,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: Teams,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -65,9 +65,9 @@ TeamsIndex = new EasySearch.Index({
  * @instancename object
  */
 SkillsIndex = new EasySearch.Index({
-    collection: Skills,
-    fields: ['label'],
-    engine: new EasySearch.Minimongo()
+  collection: Skills,
+  fields: ['label'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -76,9 +76,9 @@ SkillsIndex = new EasySearch.Index({
  * @instancename object
  */
 PowerSuppliesIndex = new EasySearch.Index({
-    collection: PowerSupplies,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: PowerSupplies,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -87,9 +87,9 @@ PowerSuppliesIndex = new EasySearch.Index({
  * @instancename object
  */
 PlacesIndex = new EasySearch.Index({
-    collection: Places,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: Places,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -98,9 +98,9 @@ PlacesIndex = new EasySearch.Index({
  * @instancename object
  */
 EquipmentStoragesIndex = new EasySearch.Index({
-    collection: EquipmentStorages,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: EquipmentStorages,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -109,9 +109,9 @@ EquipmentStoragesIndex = new EasySearch.Index({
  * @instancename object
  */
 PowerSuppliesIndex = new EasySearch.Index({
-    collection: PowerSupplies,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: PowerSupplies,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -120,9 +120,9 @@ PowerSuppliesIndex = new EasySearch.Index({
  * @instancename object
  */
 WaterSuppliesIndex = new EasySearch.Index({
-    collection: WaterSupplies,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: WaterSupplies,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });
 /**
  * @memberOf EasySearch
@@ -131,7 +131,7 @@ WaterSuppliesIndex = new EasySearch.Index({
  * @instancename object
  */
 WaterDisposalsIndex = new EasySearch.Index({
-    collection: WaterDisposals,
-    fields: ['name'],
-    engine: new EasySearch.Minimongo()
+  collection: WaterDisposals,
+  fields: ['name'],
+  engine: new EasySearch.Minimongo()
 });

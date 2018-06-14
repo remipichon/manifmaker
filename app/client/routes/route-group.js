@@ -1,4 +1,3 @@
-import {ValidationService} from "../../both/service/ValidationService"
 import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
 import {ManifMakerRouterController} from "./ManifMakerRouterController"
 
@@ -15,14 +14,14 @@ import {ManifMakerRouterController} from "./ManifMakerRouterController"
  */
 Router.route('/task-groups', function () {
 
-        SecurityServiceClient.grantAccessToPage( RolesEnum.TASKGROUPREAD);
-        console.info("routing", "/task-groups");
+    SecurityServiceClient.grantAccessToPage(RolesEnum.TASKGROUPREAD);
+    console.info("routing", "/task-groups");
 
-        this.render('taskGroupsList', {
-            to: 'mainContent'
-        });
-    },
-    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task-group.list'}
+    this.render('taskGroupsList', {
+      to: 'mainContent'
+    });
+  },
+  {data: {currentTab: 'Tasks'}, controller: ManifMakerRouterController, name: 'task-group.list'}
 )
 
 /**
@@ -33,15 +32,15 @@ Router.route('/task-groups', function () {
  */
 Router.route('/task-group', function () {
 
-        SecurityServiceClient.grantAccessToPage( RolesEnum.TASKGROUPWRITE);
-        console.info("routing", "/task-group");
+    SecurityServiceClient.grantAccessToPage(RolesEnum.TASKGROUPWRITE);
+    console.info("routing", "/task-group");
 
-        this.render('insertTaskGroupForm', {
-            to: 'mainContent'
-        });
+    this.render('insertTaskGroupForm', {
+      to: 'mainContent'
+    });
 
-    },
-    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task-group.create'}
+  },
+  {data: {currentTab: 'Tasks'}, controller: ManifMakerRouterController, name: 'task-group.create'}
 );
 
 /**
@@ -52,23 +51,23 @@ Router.route('/task-group', function () {
  * @name 'taskGroup.read'  /task-group/:_id
  */
 Router.route('/task-group/:_id', function () {
-        SecurityServiceClient.grantAccessToPage( RolesEnum.TASKGROUPWRITE);
-        console.info("routing", "/task-group/" + this.params._id);
+    SecurityServiceClient.grantAccessToPage(RolesEnum.TASKGROUPWRITE);
+    console.info("routing", "/task-group/" + this.params._id);
 
-        if(!TaskGroups.findOne(this.params._id)){
-            console.info("routing", "taskGroup not found, rerouting to /task-groups");
-            Router.go("/task-groups");
-        }
+    if (!TaskGroups.findOne(this.params._id)) {
+      console.info("routing", "taskGroup not found, rerouting to /task-groups");
+      Router.go("/task-groups");
+    }
 
 
-        this.render('updateTaskGroupForm', {
-            data: function () {
-                var currentTaskGroup = this.params._id;
-                return TaskGroups.findOne({_id: currentTaskGroup});
-            }, to: 'mainContent'
-        });
-    },
-    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController,name: 'task-group.update'}
+    this.render('updateTaskGroupForm', {
+      data: function () {
+        var currentTaskGroup = this.params._id;
+        return TaskGroups.findOne({_id: currentTaskGroup});
+      }, to: 'mainContent'
+    });
+  },
+  {data: {currentTab: 'Tasks'}, controller: ManifMakerRouterController, name: 'task-group.update'}
 );
 
 
@@ -80,21 +79,21 @@ Router.route('/task-group/:_id', function () {
  * @name 'taskGroup.read'  /task-group/:_id
  */
 Router.route('/task-group/:_id/read', function () {
-        SecurityServiceClient.grantAccessToPage( RolesEnum.TASKGROUPREAD);
-        console.info("routing", "/task-group/" + this.params._id);
+    SecurityServiceClient.grantAccessToPage(RolesEnum.TASKGROUPREAD);
+    console.info("routing", "/task-group/" + this.params._id);
 
-        if(!TaskGroups.findOne(this.params._id)){
-            console.info("routing", "taskGroup not found, rerouting to /task-groups");
-            Router.go("/task-groups");
-        }
+    if (!TaskGroups.findOne(this.params._id)) {
+      console.info("routing", "taskGroup not found, rerouting to /task-groups");
+      Router.go("/task-groups");
+    }
 
-        this.render('readTaskGroupForm', {
-            data: function () {
-                var currentTaskGroup = this.params._id;
-                return TaskGroups.findOne({_id: currentTaskGroup});
-            }, to: 'mainContent'
-        });
+    this.render('readTaskGroupForm', {
+      data: function () {
+        var currentTaskGroup = this.params._id;
+        return TaskGroups.findOne({_id: currentTaskGroup});
+      }, to: 'mainContent'
+    });
 
-    },
-    {data:{currentTab:'Tasks'},controller: ManifMakerRouterController, name: 'task-group.read'}
+  },
+  {data: {currentTab: 'Tasks'}, controller: ManifMakerRouterController, name: 'task-group.read'}
 );

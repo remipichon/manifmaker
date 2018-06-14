@@ -3,45 +3,45 @@ import {EquipmentService} from "../../../../both/service/EquipmentService"
 
 class ActivityEquipmentsComponent extends EquipmentComponent {
 
-    template() {
-        return "activityEquipments";
-    }
+  constructor() {
+    super();
+    this.equipementTargetUsage = EquipementTargetUsage.ACTIVITY
+  }
 
-    activityData() {
-        return this.data();
-    }
+  template() {
+    return "activityEquipments";
+  }
 
-    constructor() {
-        super();
-        this.equipementTargetUsage = EquipementTargetUsage.ACTIVITY
-    }
+  activityData() {
+    return this.data();
+  }
 
-    computeEquipmentExtra(equipmentCategory) {
-        var extraCompute = equipmentCategory.extraComputeRule;
+  computeEquipmentExtra(equipmentCategory) {
+    var extraCompute = equipmentCategory.extraComputeRule;
 
-        if (extraCompute === "SUM") {
+    if (extraCompute === "SUM") {
 
-            var categoryEquipments = EquipmentService.findByCategory(equipmentCategory._id).fetch();
-            var activityEquipments = this.activityData().equipments;
+      var categoryEquipments = EquipmentService.findByCategory(equipmentCategory._id).fetch();
+      var activityEquipments = this.activityData().equipments;
 
-            var categoryEquipmentIds = _.map(categoryEquipments, equipment => {
-                return equipment._id
-            });
-            var activityEquipmentCategory = _.filter(activityEquipments, activityEquipment => {
-                return categoryEquipmentIds.indexOf(activityEquipment.equipmentId) !== -1
-            });
+      var categoryEquipmentIds = _.map(categoryEquipments, equipment => {
+        return equipment._id
+      });
+      var activityEquipmentCategory = _.filter(activityEquipments, activityEquipment => {
+        return categoryEquipmentIds.indexOf(activityEquipment.equipmentId) !== -1
+      });
 
-            var res = 0;
-            activityEquipmentCategory.forEach(equipment => {
-                var extra = parseInt(Equipments.findOne(equipment.equipmentId).extra);
-                res += equipment.quantity * extra
-            });
+      var res = 0;
+      activityEquipmentCategory.forEach(equipment => {
+        var extra = parseInt(Equipments.findOne(equipment.equipmentId).extra);
+        res += equipment.quantity * extra
+      });
 
-            return res + " Watts";
+      return res + " Watts";
 
-        } else
-            console.error(extraCompute + " is not a valid equipment extra compute rule (SUM is the only one authorized)");
-    }
+    } else
+      console.error(extraCompute + " is not a valid equipment extra compute rule (SUM is the only one authorized)");
+  }
 
 }
 

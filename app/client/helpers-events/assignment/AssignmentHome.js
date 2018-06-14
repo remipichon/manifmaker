@@ -1,12 +1,12 @@
-class AssignmentHome extends BlazeComponent{
+class AssignmentHome extends BlazeComponent {
 
-    constructor(){
-        super();
-    }
+  constructor() {
+    super();
+  }
 
-    self(){
-        return this;
-    }
+  self() {
+    return this;
+  }
 
 }
 
