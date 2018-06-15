@@ -54,7 +54,7 @@
         {{> DismissibleHelperComponent message="Once you have to review the corresponding section, you can either 'refused' them or 'accepted' them. If refused, user will have to update them and send them again in validation. Once accepted, corresponding section cannot be updated." uniqueId="task-validation-role"}}
 
         <!-- Input to add a new validation state -->
-        <div class="input-group validation-comment-input">
+        <div class="input-group validation-comment-input" for="{{validationTypeLabel}}">
             <input type="text" class="form-control validation-new-comment" placeholder="You can type a new comment for {{validationTypeLabel}} validation">
 
             <!-- button to display -->

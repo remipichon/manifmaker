@@ -1,5 +1,13 @@
 export class GuidedTourServiceClient {
 
+  /**
+   *
+   * @param message
+   * @param duration    in ms
+   * @param position    top bottom left right (can be combined like top-right)
+   * @param size        small medium big
+   * @returns {Promise}
+   */
   static alert(message, duration, position, size) {
     return new Promise(resolve => {
       $("#guided-tour-overlapp").addClass("grayed");
@@ -61,27 +69,81 @@ export class GuidedTourServiceClient {
   }
 
   /**
-   *
+   * @summary only support one selection so far (but will work on multiple select)
    * @param labelToClickOn    the exact label of the customSelect
    * @param optionToSelect    the exact label of the option to select
    */
   static selectOption(labelToClickOn, optionToSelect, delay) {
     return new Promise(resolve => {
-      console.debug("DEBUG selectOption", optionToSelect);
-      GuidedTourServiceClient.clickOn(`[for=${labelToClickOn}]`, delay)
-        .then(() => GuidedTourServiceClient.waitFor(optionToSelect))
+      let target = `[for='${labelToClickOn}']`;
+      GuidedTourServiceClient.scrollIfTargetOutOfWindow(target)
+        .then(() => GuidedTourServiceClient.clickOn(target, delay))
+        .then(() => GuidedTourServiceClient.waitFor(`.popover :contains(${optionToSelect})`))
+        .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(GuidedTourServiceClient.getJqueryObject(".popover")))
         .then(() => GuidedTourServiceClient.sleep(delay))
         .then(() => {
-          //TODO support mutliple
-          let component = $(`:contains(${optionToSelect})`);
-          let parent = component[component.length - 1 - 1];
-          GuidedTourServiceClient.clickOn($(parent).children("input"), delay).then(() => {
-            resolve()
-          });
+          return new Promise(resolve => {
+            let allOptionsThatMatches = $(`.popover-content .custom-select-options .list-group .list-group-item:contains(${optionToSelect}) input`).toArray();
+            GuidedTourServiceClient._selectionOption(allOptionsThatMatches, resolve, delay);
+          })
         })
+        .then(() => resolve)
     })
   }
 
+  static _selectionOption(allOptionsThatMatches, resolve, delay) {
+    GuidedTourServiceClient.clickOn(allOptionsThatMatches[0], delay).then(() => {
+      allOptionsThatMatches.pop(0);
+      if (allOptionsThatMatches.length == 0)
+        resolve()
+      else
+        GuidedTourServiceClient._selectionOption(allOptionsThatMatches, resolve, delay)
+    });
+  }
+
+  /**
+   *
+   * @param datetimepicker  CSS selector of jQuery object
+   * @param day             string, MM/DD/YYYY
+   * @param hours           string, format HH
+   * @returns {Promise}
+   */
+  //TODO it might needs some waitFor for very high speed
+  static selectDate(datetimepicker, date, month, hours, delay) {
+    return new Promise(resolve => {
+      datetimepicker = GuidedTourServiceClient.getJqueryObject(datetimepicker);
+      GuidedTourServiceClient.clickOn(datetimepicker, delay)
+        .then(() => {
+          return new Promise(resolve => {
+            $(datetimepicker).data("DateTimePicker").show();
+            resolve()
+          })
+        })
+        .then(() => GuidedTourServiceClient.waitFor(".bootstrap-datetimepicker-widget"))
+        .then(() => GuidedTourServiceClient.sleep(delay * 2))
+        .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days .picker-switch`, delay))
+        .then(() => GuidedTourServiceClient.sleep(delay * 2))
+        .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-months [data-action=selectMonth]:contains(${month})`, delay))
+        .then(() => GuidedTourServiceClient.sleep(delay))
+        .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days [data-day='${date}']`, delay))
+        .then(() => GuidedTourServiceClient.sleep(delay))
+        .then(() => GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hour[data-action=showHours]`, delay))
+        .then(() => GuidedTourServiceClient.waitFor(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`))
+        .then(() => GuidedTourServiceClient.sleep(delay))
+        .then(() => GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`, delay))
+        .then(() => GuidedTourServiceClient.sleep(delay * 2))
+        .then(() => {
+          $(datetimepicker).data("DateTimePicker").hide();
+          resolve()
+        });
+    })
+  }
+
+  /**
+   * @summary look into the whole dom for a content that match given param
+   * @param content
+   * @returns {*}
+   */
   static findComponentByContent(content) {
     let component = $(`:contains(${content})`);
     return component[component.length - 1];
@@ -104,16 +166,17 @@ export class GuidedTourServiceClient {
   }
 
   static typeText(text, target, delayBetweenChar) {
-    return new Promise((resolve) => GuidedTourServiceClient._typeText(text, target, resolve, delayBetweenChar))
+    return new Promise((resolve) => {
+      GuidedTourServiceClient.scrollIfTargetOutOfWindow(target)
+        .then(() => GuidedTourServiceClient._typeText(text, target, resolve, delayBetweenChar))
+        .then(() => resolve)
+    });
   }
 
   static _waitFor(query, resolve) {
-    console.debug("DEBUG openMenu");
     if ($(`body:contains(${query})`).length != 0) {
-      console.debug("document is there via content");
       resolve()
     } else if ($(`${query}`).length != 0) {
-      console.debug("document is there via css query");
       resolve();
     } else {
       GuidedTourServiceClient.sleep(100).then(() => {
@@ -129,36 +192,76 @@ export class GuidedTourServiceClient {
   }
 
   /**
+   * @param target  jQuery object
+   * @returns {Promise}
+   */
+  static scrollIfTargetOutOfWindow($target) {
+    return new Promise(resolve => {
+      $target = GuidedTourServiceClient.getJqueryObject($target);
+      let windowHeight = window.innerHeight;
+      let targetYPosition = $target[0].getBoundingClientRect().y;
+      let targetOffset = $target.offset().top;
+      let targetHeight = $target[0].getBoundingClientRect().height;
+
+      let scrollToY;
+      if (targetYPosition < 60) {
+        console.log("target's too high");
+        scrollToY = targetOffset - (50 + 20); //50px is the top nav bar height, 10px is a bit of margin
+
+      } else if (targetYPosition > windowHeight - targetHeight) {
+        console.log("target's too low");
+        scrollToY = targetOffset - windowHeight / 2 + targetHeight / 2
+      }
+      if (scrollToY) {
+        window.scrollTo(0, scrollToY);
+        GuidedTourServiceClient.sleep(200).then(() => {
+          resolve()
+        });
+      } else
+        resolve()
+
+    })
+  }
+
+  /**
+   * @param cssSelector can be string CSS selector, a jQuery object, an HTML object
+   * @returns {jQuery|HTMLElement}
+   */
+  static getJqueryObject(cssSelector) {
+    return (typeof cssSelector == "string") ? $(`${cssSelector}`) : (typeof cssSelector == 'jQuery') ? cssSelector : $(cssSelector);
+  }
+
+  /**
    * @param cssSelector either a CSS selector or a jQuery object
    */
   static clickOn(cssSelector, delay) {
     return new Promise(resolve => {
-      console.debug("DEBUG clickOn", cssSelector);
-      let component = (typeof cssSelector == "string") ? $(`${cssSelector}`) : (typeof cssSelector == 'jQuery') ? cssSelector : $(cssSelector);
-      let componentPosition = component.offset(); //absolute top left position
+      let component = GuidedTourServiceClient.getJqueryObject(cssSelector);
+      let componentPosition = component[0].getBoundingClientRect() //component.offset(); //absolute top left position
       let componentHeight = component.height();
       let componentWidth = component.width();
       let clickHighlight = $("#click-highlight");
-      let top = componentPosition.top + componentHeight / 2 - 75 / 2; //the circle fit in a 75px square
-      let left = componentPosition.left + componentWidth / 2 - 75 / 2;
+      let top = componentPosition.y + componentHeight / 2 - 75 / 2; //the circle fit in a 75px square
+      let left = componentPosition.x + componentWidth / 2 - 75 / 2;
       clickHighlight.css("top", top);
       clickHighlight.css("left", left);
 
       $("#guided-tour-overlapp").addClass("grayed");
       clickHighlight.addClass("visible");
 
-      GuidedTourServiceClient.sleep(delay).then(() => {
-        $(cssSelector).click();
-        $("#guided-tour-overlapp").removeClass("grayed");
-        clickHighlight.removeClass("visible");
-        resolve()
-      });
+      GuidedTourServiceClient.scrollIfTargetOutOfWindow(cssSelector)
+        .then(() => GuidedTourServiceClient.sleep(delay))
+        .then(() => {
+          $(cssSelector).click();
+          $("#guided-tour-overlapp").removeClass("grayed");
+          clickHighlight.removeClass("visible");
+          resolve()
+        });
     })
   }
 
   static openMenu(toClose = false) {
     return new Promise(resolve => {
-      console.debug("DEBUG openMenu");
       let isOpen = $(".top-bar button.sidebar-toggle .sidebar-arrow").hasClass("mdi-arrow-left");
       if (!toClose && !isOpen || toClose && isOpen)
         GuidedTourServiceClient.clickOn(".top-bar button.sidebar-toggle .sidebar-arrow").then(resolve)
@@ -174,6 +277,5 @@ export class GuidedTourServiceClient {
   static sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
-
-
+  
 }
