@@ -1,8 +1,8 @@
 import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
 import {AutoForm} from 'meteor/aldeed:autoform'
 import {UserServiceClient} from "../client/service/UserServiceClient";
-import {GuidedTourServiceClient} from "../client/service/GuidedTourServiceClient";
-import {PlayTourServiceClient} from "../client/service/PlayTourServiceClient";
+import {GuidedTourServiceClient} from "../client/service/tour/GuidedTourServiceClient";
+import {PlayTourServiceClient} from "../client/service/tour/PlayTourServiceClient";
 import {Utils} from "../client/service/Utils";
 
 

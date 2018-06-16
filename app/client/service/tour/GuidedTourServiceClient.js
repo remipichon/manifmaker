@@ -173,7 +173,17 @@ export class GuidedTourServiceClient {
     });
   }
 
+  static typeEquipment(qt, label, delay){
+    return new Promise(resolve => {
+      let $label = $(`.equipment-wrapper :contains(${label})`);
+      let parent  = $($label[$label.length - 1]).parent();
+      GuidedTourServiceClient.typeText(qt.toString(), $(parent.children()[0]).find("input")[0], delay)
+        .then(() => resolve())
+    })
+  }
+
   static _waitFor(query, resolve) {
+    console.debug("waiting for",query);
     if ($(`body:contains(${query})`).length != 0) {
       resolve()
     } else if ($(`${query}`).length != 0) {
@@ -183,6 +193,16 @@ export class GuidedTourServiceClient {
         GuidedTourServiceClient._waitFor(query, resolve)
       })
     }
+  }
+
+  static isPresent(query){
+      if ($(`body:contains(${query})`).length != 0) {
+        return true;
+      } else if ($(`${query}`).length != 0) {
+        return true;
+      } else {
+       return false
+      }
   }
 
   static waitFor(query) {
@@ -280,10 +300,16 @@ export class GuidedTourServiceClient {
     })
   }
 
-  static instantLogout(speed){
+  static instantLogout(){
     return new Promise(resolve => {
+      if(GuidedTourServiceClient.isPresent(".at-pwd-form")) {
+        console.debug("instantLogout: already logged out");
+        resolve();
+        return
+      }
       Meteor.logout();
       Router.go('home');
+      console.debug("instantLogout: logging out and waiting for");
       GuidedTourServiceClient.waitFor(".at-pwd-form")
         .then(() => resolve())
     })

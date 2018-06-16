@@ -2,18 +2,20 @@ import {GuidedTourServiceClient} from "./GuidedTourServiceClient";
 
 export class ActivityScenarioServiceClient {
 
-  static playActivityScenario(options, speed = 1) {
-    $("#guided-tour-overlapp").addClass("visible");
-    GuidedTourServiceClient.instantLogout(speed)
-      .then(() => GuidedTourServiceClient.login(speed, options.regularUser))
-      .then(() => ActivityScenarioServiceClient.goToCreateActivity(speed))
-      .then(() => ActivityScenarioServiceClient.fillCreateActivityForm(speed, options))
-      .then(() => ActivityScenarioServiceClient.fillUpdateActivityForm(speed, options))
-      .then(() => ActivityScenarioServiceClient.validateActivity(speed, options))
-      .then(() => {
-        console.log("playActivityScenario is done");
-        $("#guided-tour-overlapp").removeClass("visible");
-      })
+  static playScenario(options, speed = 1) {
+    return new Promise(resolve => {
+      $("#guided-tour-overlapp").addClass("visible");
+      GuidedTourServiceClient.instantLogout(speed)
+        .then(() => GuidedTourServiceClient.login(speed, options.regularUser))
+        .then(() => ActivityScenarioServiceClient.goToCreateActivity(speed))
+        .then(() => ActivityScenarioServiceClient.fillCreateActivityForm(speed, options))
+        .then(() => ActivityScenarioServiceClient.fillUpdateActivityForm(speed, options))
+        .then(() => ActivityScenarioServiceClient.validateActivity(speed, options))
+        .then(() => {
+          resolve()
+          $("#guided-tour-overlapp").removeClass("visible");
+        })
+    })
   }
 
   static goToCreateActivity(speed) {
@@ -22,7 +24,7 @@ export class ActivityScenarioServiceClient {
         .then(() => GuidedTourServiceClient.openMenu())
         .then(() => GuidedTourServiceClient.clickOn("#sidebar-activity", 500 * speed))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
-        .then(() => GuidedTourServiceClient.clickOn("#sidebar-activity-create", 500 * speed))
+        .then(() => GuidedTourServiceClient.clickOn("[href='/activity']", 500 * speed))
         .then(() => GuidedTourServiceClient.waitFor("General information"))
         .then(() => {
           resolve()
@@ -105,7 +107,7 @@ export class ActivityScenarioServiceClient {
         .then(() => GuidedTourServiceClient.sleep(100 * speed))
         .then(() => GuidedTourServiceClient.selectOption("Validation Status", "In validation process", 400))
         .then(() => GuidedTourServiceClient.sleep(100 * speed))
-        .then(() => GuidedTourServiceClient.clickOn(`td:contains(${options.activityName}) ~ td .btn[title=edit]`, speed * 400))
+        .then(() => GuidedTourServiceClient.clickOn(`td:contains(${options.activityName}) ~ td .btn[title=Edit]`, speed * 400))
         .then(() => GuidedTourServiceClient.waitFor(`Delete ${options.activityName}`))
         .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Validation)"))
         .then(() => GuidedTourServiceClient.typeText("Mistakes, please review", ".validation-comment-input[for='General Information'] input", 0 * speed))

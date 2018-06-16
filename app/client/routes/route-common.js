@@ -1,5 +1,5 @@
 import {ManifMakerRouterController} from "./ManifMakerRouterController"
-import {PlayTourServiceClient} from "../service/PlayTourServiceClient"
+import {PlayTourServiceClient} from "../service/tour/PlayTourServiceClient"
 
 /**
  * @namespace Route
@@ -60,7 +60,7 @@ Router.route('/tour', function () {
 
         this.render('home', {to: 'mainContent'})
 
-        PlayTourServiceClient.playActivityScenario();
+        PlayTourServiceClient.playTaskScenario(1);
 
 
     },
