@@ -87,7 +87,7 @@ export class GuidedTourServiceClient {
             GuidedTourServiceClient._selectionOption(allOptionsThatMatches, resolve, delay);
           })
         })
-        .then(() => resolve)
+        .then(() => resolve())
     })
   }
 
@@ -150,7 +150,6 @@ export class GuidedTourServiceClient {
   }
 
   static _typeText(text, target, resolve, delayBetweenChar) {
-    console.log("delayBetweenChar", delayBetweenChar)
     var $target = $(target);
     $target.addClass("filling-input");
     $target.val($target.val() + text.charAt(0));
@@ -167,9 +166,10 @@ export class GuidedTourServiceClient {
 
   static typeText(text, target, delayBetweenChar) {
     return new Promise((resolve) => {
+      var $target = $(target);
+      $target.val("");
       GuidedTourServiceClient.scrollIfTargetOutOfWindow(target)
         .then(() => GuidedTourServiceClient._typeText(text, target, resolve, delayBetweenChar))
-        .then(() => resolve)
     });
   }
 
@@ -205,11 +205,9 @@ export class GuidedTourServiceClient {
 
       let scrollToY;
       if (targetYPosition < 60) {
-        console.log("target's too high");
         scrollToY = targetOffset - (50 + 20); //50px is the top nav bar height, 10px is a bit of margin
 
       } else if (targetYPosition > windowHeight - targetHeight) {
-        console.log("target's too low");
         scrollToY = targetOffset - windowHeight / 2 + targetHeight / 2
       }
       if (scrollToY) {
@@ -269,6 +267,39 @@ export class GuidedTourServiceClient {
         resolve()
     })
   }
+
+  static logout(speed) {
+    return new Promise(resolve => {
+      GuidedTourServiceClient.openMenu()
+        .then(() => GuidedTourServiceClient.sleep(200 * speed))
+        .then(() => GuidedTourServiceClient.clickOn("[href='#settings-dropdown']", speed * 300))
+        .then(() => GuidedTourServiceClient.sleep(200 * speed))
+        .then(() => GuidedTourServiceClient.clickOn("[href='/logout']", speed * 300))
+        .then(() => GuidedTourServiceClient.waitFor(".at-pwd-form"))
+        .then(() => resolve())
+    })
+  }
+
+  static instantLogout(speed){
+    return new Promise(resolve => {
+      Meteor.logout();
+      Router.go('home');
+      GuidedTourServiceClient.waitFor(".at-pwd-form")
+        .then(() => resolve())
+    })
+  }
+
+  static login(speed, user) {
+    return new Promise(resolve => {
+      GuidedTourServiceClient.waitFor(".at-pwd-form")
+        .then(() => GuidedTourServiceClient.typeText(user.email, "#at-field-email", speed * 50))
+        .then(() => GuidedTourServiceClient.typeText(user.pwd, "#at-field-password", speed * 50))
+        .then(() => GuidedTourServiceClient.clickOn("#at-pwd-form .submit", speed * 200))
+        .then(() => GuidedTourServiceClient.waitFor("Home"))
+        .then(() => resolve())
+    })
+  }
+
 
   static closeMenu() {
     return GuidedTourServiceClient.openMenu(true)
