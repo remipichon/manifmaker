@@ -108,30 +108,51 @@ export class GuidedTourServiceClient {
    * @param hours           string, format HH
    * @returns {Promise}
    */
-  //TODO it might needs some waitFor for very high speed
-  static selectDate(datetimepicker, date, month, hours, delay) {
+  static selectDate(datetimepickerSelector, date, month, hours, delay) {
     return new Promise(resolve => {
-      datetimepicker = GuidedTourServiceClient.getJqueryObject(datetimepicker);
+      let datetimepicker = GuidedTourServiceClient.getJqueryObject(datetimepickerSelector);
       GuidedTourServiceClient.clickOn(datetimepicker, delay)
+        .then(() => GuidedTourServiceClient.sleep(100))
         .then(() => {
           return new Promise(resolve => {
-            $(datetimepicker).data("DateTimePicker").show();
+            let datetimepickerData = $(datetimepicker).data("DateTimePicker");
+            // if (datetimepicker)
+            datetimepickerData.show();
             resolve()
           })
         })
         .then(() => GuidedTourServiceClient.waitFor(".bootstrap-datetimepicker-widget"))
         .then(() => GuidedTourServiceClient.sleep(delay * 2))
-        .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days .picker-switch`, delay))
-        .then(() => GuidedTourServiceClient.sleep(delay * 2))
-        .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-months [data-action=selectMonth]:contains(${month})`, delay))
-        .then(() => GuidedTourServiceClient.sleep(delay))
-        .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days [data-day='${date}']`, delay))
-        .then(() => GuidedTourServiceClient.sleep(delay))
-        .then(() => GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hour[data-action=showHours]`, delay))
-        .then(() => GuidedTourServiceClient.waitFor(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`))
-        .then(() => GuidedTourServiceClient.sleep(delay))
-        .then(() => GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`, delay))
-        .then(() => GuidedTourServiceClient.sleep(delay * 2))
+        //if month and date
+        .then(() => {
+          return new Promise(resolve => {
+            if (date && month) {
+              GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days .picker-switch`, delay)
+                .then(() => GuidedTourServiceClient.sleep(delay * 2))
+                .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-months [data-action=selectMonth]:contains(${month})`, delay))
+                .then(() => GuidedTourServiceClient.sleep(delay))
+                .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days [data-day='${date}']`, delay))
+                .then(() => GuidedTourServiceClient.sleep(delay))
+                .then(() => resolve())
+            } else {
+              resolve()
+            }
+          });
+        })
+        //if hours
+        .then(() => {
+          return new Promise(resolve => {
+            if (hours)
+              GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hour[data-action=showHours]`, delay)
+                .then(() => GuidedTourServiceClient.waitFor(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`))
+                .then(() => GuidedTourServiceClient.sleep(delay))
+                .then(() => GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`, delay))
+                .then(() => GuidedTourServiceClient.sleep(delay))
+                .then(() => resolve());
+            else
+              resolve()
+          })
+        })
         .then(() => {
           $(datetimepicker).data("DateTimePicker").hide();
           resolve()
@@ -173,18 +194,26 @@ export class GuidedTourServiceClient {
     });
   }
 
-  static typeEquipment(qt, label, delay){
+  static typeEquipment(qt, label, delay) {
     return new Promise(resolve => {
       let $label = $(`.equipment-wrapper :contains(${label})`);
-      let parent  = $($label[$label.length - 1]).parent();
+      let parent = $($label[$label.length - 1]).parent();
       GuidedTourServiceClient.typeText(qt.toString(), $(parent.children()[0]).find("input")[0], delay)
         .then(() => resolve())
     })
   }
 
   static _waitFor(query, resolve) {
-    console.debug("waiting for",query);
-    if ($(`body:contains(${query})`).length != 0) {
+    console.debug("waiting for", query);
+    if (query instanceof jQuery) {
+      if ($(query.selector).length != 0) {
+        resolve()
+      } else {
+        GuidedTourServiceClient.sleep(100).then(() => {
+          GuidedTourServiceClient._waitFor(query.selector, resolve)
+        })
+      }
+    } else if ($(`body:contains(${query})`).length != 0) {
       resolve()
     } else if ($(`${query}`).length != 0) {
       resolve();
@@ -195,14 +224,14 @@ export class GuidedTourServiceClient {
     }
   }
 
-  static isPresent(query){
-      if ($(`body:contains(${query})`).length != 0) {
-        return true;
-      } else if ($(`${query}`).length != 0) {
-        return true;
-      } else {
-       return false
-      }
+  static isPresent(query) {
+    if ($(`body:contains(${query})`).length != 0) {
+      return true;
+    } else if ($(`${query}`).length != 0) {
+      return true;
+    } else {
+      return false
+    }
   }
 
   static waitFor(query) {
@@ -253,29 +282,34 @@ export class GuidedTourServiceClient {
    * @param cssSelector either a CSS selector or a jQuery object
    */
   static clickOn(cssSelector, delay) {
-    return new Promise(resolve => {
+    return new Promise(resolveClickOn => {
       let component = GuidedTourServiceClient.getJqueryObject(cssSelector);
-      let componentPosition = component[0].getBoundingClientRect() //component.offset(); //absolute top left position
-      let componentHeight = component.height();
-      let componentWidth = component.width();
-      let clickHighlight = $("#click-highlight");
-      let top = componentPosition.y + componentHeight / 2 - 75 / 2; //the circle fit in a 75px square
-      let left = componentPosition.x + componentWidth / 2 - 75 / 2;
-      clickHighlight.css("top", top);
-      clickHighlight.css("left", left);
+      GuidedTourServiceClient.waitFor(component).then(resolveWaiting => {
+        let componentPosition = component[0].getBoundingClientRect() //component.offset(); //absolute top left position
+        let componentHeight = component.height();
+        let componentWidth = component.width();
+        let clickHighlight = $("#click-highlight");
+        let top = componentPosition.y + componentHeight / 2 - 75 / 2; //the circle fit in a 75px square
+        let left = componentPosition.x + componentWidth / 2 - 75 / 2;
+        clickHighlight.css("top", top);
+        clickHighlight.css("left", left);
 
-      $("#guided-tour-overlapp").addClass("grayed");
-      clickHighlight.addClass("visible");
+        $("#guided-tour-overlapp").addClass("grayed");
+        clickHighlight.addClass("visible");
 
-      GuidedTourServiceClient.scrollIfTargetOutOfWindow(cssSelector)
-        .then(() => GuidedTourServiceClient.sleep(delay))
-        .then(() => {
-          $(cssSelector).click();
-          $("#guided-tour-overlapp").removeClass("grayed");
-          clickHighlight.removeClass("visible");
-          resolve()
-        });
+        GuidedTourServiceClient.scrollIfTargetOutOfWindow(cssSelector)
+          .then(() => GuidedTourServiceClient.sleep(delay))
+          .then(() => {
+            $(cssSelector).click();
+            $("#guided-tour-overlapp").removeClass("grayed");
+            clickHighlight.removeClass("visible");
+            resolveClickOn()
+          });
+
+        //we don't really care about finishing waitingFor promise as the clickOn one is the one we listen to
+      })
     })
+
   }
 
   static openMenu(toClose = false) {
@@ -300,9 +334,9 @@ export class GuidedTourServiceClient {
     })
   }
 
-  static instantLogout(){
+  static instantLogout() {
     return new Promise(resolve => {
-      if(GuidedTourServiceClient.isPresent(".at-pwd-form")) {
+      if (GuidedTourServiceClient.isPresent(".at-pwd-form")) {
         console.debug("instantLogout: already logged out");
         resolve();
         return
@@ -334,5 +368,5 @@ export class GuidedTourServiceClient {
   static sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
-  
+
 }

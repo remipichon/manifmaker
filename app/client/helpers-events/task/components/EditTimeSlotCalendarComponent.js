@@ -78,14 +78,19 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
     switch (accuracy) {
       case "quarterHour":
         hour = 0.25;
+        break;
       case "halfHour":
         hour = 0.5;
+        break;
       case   "oneHour":
         hour = 1;
+        break;
       case "twoHour":
         hour = 2;
+        break;
       case "fourHour":
         hour = 4;
+        break;
     }
 
     end = new moment(start).add('hour', hour);

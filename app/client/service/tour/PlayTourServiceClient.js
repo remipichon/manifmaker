@@ -20,14 +20,25 @@ export class PlayTourServiceClient {
         email: "superadmin@yopmail.com",
         pwd: "superadmin"
       },
-      guestUser: {  //read only (son planning et ses fiches tches)
+      guestUser: {  //part of team with access to terms, already validated (son planning et ses fiches tches)
         email: "superadmin@yopmail.com",
         pwd: "superadmin"
+      },
+      term: {
+        name: "Premanif"
+      },
+      timeSlot: {
+        start: "Wed Jun 16 2021 04:00:00 GMT+0200",
+        start2: "Wed Jun 16 2021 02:00:00 GMT+0200"
       }
     };
+    $("#guided-tour-overlapp").addClass("visible");
     console.log("using",options);
     ActivityScenarioServiceClient.playScenario(options, speed).
       then( () => TaskScenarioServiceClient.playScenario(options, speed))
+      .then(() => {
+        $("#guided-tour-overlapp").removeClass("visible");
+      })
   }
 
   static playActivityScenario(speed = 1) {

@@ -4,7 +4,6 @@ export class ActivityScenarioServiceClient {
 
   static playScenario(options, speed = 1) {
     return new Promise(resolve => {
-      $("#guided-tour-overlapp").addClass("visible");
       GuidedTourServiceClient.instantLogout(speed)
         .then(() => GuidedTourServiceClient.login(speed, options.regularUser))
         .then(() => ActivityScenarioServiceClient.goToCreateActivity(speed))
@@ -13,7 +12,6 @@ export class ActivityScenarioServiceClient {
         .then(() => ActivityScenarioServiceClient.validateActivity(speed, options))
         .then(() => {
           resolve()
-          $("#guided-tour-overlapp").removeClass("visible");
         })
     })
   }
@@ -34,9 +32,8 @@ export class ActivityScenarioServiceClient {
 
   static fillCreateActivityForm(speed, options) {
     return new Promise(resolve => {
-      GuidedTourServiceClient.closeMenu()
-        .then(() => GuidedTourServiceClient.alert("<p>This is the creation form where you only fill the principal information.</p>" +
-          "<p>More to come just after</p>", 600 * speed, "center", "medium"))
+        GuidedTourServiceClient.alert("<p>This is the creation form where you only fill the principal information.</p>" +
+          "<p>More to come just after</p>", 600 * speed, "center", "medium")
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.typeText(options.activityName, "[for=first_name] ~ input", 50 * speed))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
@@ -64,8 +61,7 @@ export class ActivityScenarioServiceClient {
   //assuming where are already on the update form
   static fillUpdateActivityForm(speed, options) {
     return new Promise(resolve => {
-      GuidedTourServiceClient.closeMenu()
-        .then(() => GuidedTourServiceClient.selectDate(".date-time-picker-update-activity-start input", "10/02/" + options.year, "Sep", "10", 300 * speed))
+        GuidedTourServiceClient.selectDate(".date-time-picker-update-activity-start input", "10/02/" + options.year, "Sep", "10", 300 * speed)
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.selectDate(".date-time-picker-update-activity-end input", "10/02/" + options.year, "Sep", "18", 300 * speed))
         .then(() => GuidedTourServiceClient.typeText("This will be the best sandcastle in the word\nYou will have to use all the tools given to you, feel free to ask for help",

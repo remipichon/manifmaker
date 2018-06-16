@@ -53,8 +53,8 @@ Schemas.PeopleNeed = new SimpleSchema({
                 "timeSlots": {
                   $elemMatch: {
                     "peopleNeeded.userId": this.value,
-                    start: {$lte: timeSlot.end},
-                    end: {$gte: timeSlot.start}
+                    start: {$lt: timeSlot.end},
+                    end: {$gt: timeSlot.start}
                   }
                 }
               }
