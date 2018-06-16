@@ -60,7 +60,7 @@ Router.route('/tour', function () {
 
         this.render('home', {to: 'mainContent'})
 
-        PlayTourServiceClient.playTaskScenario(1);
+        PlayTourServiceClient.playScenarii(2);
 
 
     },

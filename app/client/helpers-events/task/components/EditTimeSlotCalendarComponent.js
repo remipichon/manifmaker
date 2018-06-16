@@ -9,9 +9,11 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
   events() {
     return super.events().concat({
-      "click .creneau": this.selectTimeSlot
+      "click .creneau": this.selectTimeSlot,
+      "click .quart_heure": this.clickFreeTimeSlot
     })
   }
+
 
   enableAction(date, timeHours) {
     var startDate = this.getCalendarDateTime(date, timeHours, 0);
@@ -63,9 +65,41 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
   }
 
+  clickFreeTimeSlot(e) {
+    var $target = $(e.target);
+    console.log("clickFreeTimeSlot", $target)
+    this.data().parentInstance.addTimeSlot();
+    let start, end;
+
+    start = new moment($target.parent().attr('hours'));
+
+    let accuracy = $target.attr('class').replace("quart_heure", "").trim()
+    let hour;
+    switch (accuracy) {
+      case "quarterHour":
+        hour = 0.25;
+      case "halfHour":
+        hour = 0.5;
+      case   "oneHour":
+        hour = 1;
+      case "twoHour":
+        hour = 2;
+      case "fourHour":
+        hour = 4;
+    }
+
+    end = new moment(start).add('hour', hour);
+
+    console.log(start.date(), end.date());
+
+    this.data().parentInstance.createTimeSlotDefaultStartDate.set(start);
+    this.data().parentInstance.createTimeSlotDefaultEndDate.set(end)
+  }
 
   selectTimeSlot(e) {
     var $target = $(e.target);
+    console.log("selectTimeSlot", $target);
+    e.stopPropagation()
     this.data().parentInstance.updatedTimeSlotId.set($target.parents(".creneau").data("timeslotdid"));
     this.data().parentInstance.isTimeSlotUpdated.set(true);
   }
