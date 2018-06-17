@@ -354,7 +354,7 @@ export class GuidedTourServiceClient {
       GuidedTourServiceClient.waitFor(".at-pwd-form")
         .then(() => GuidedTourServiceClient.typeText(user.email, "#at-field-email", speed * 50))
         .then(() => GuidedTourServiceClient.typeText(user.pwd, "#at-field-password", speed * 50))
-        .then(() => GuidedTourServiceClient.clickOn("#at-pwd-form .submit", speed * 200))
+        .then(() => GuidedTourServiceClient.clickOn("#sidebar #at-pwd-form .submit", speed * 200))
         .then(() => GuidedTourServiceClient.waitFor("Home"))
         .then(() => resolve())
     })
