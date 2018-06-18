@@ -54,14 +54,11 @@ export class PlayTourServiceClient {
   }
 
   static intro(speed){
-    return new Promise(resolve => {
-      GuidedTourServiceClient.alert("<p>Bienvenue dans le tour guidé de Manfimaker</p>" +
+    return GuidedTourServiceClient.alert("<p>Bienvenue dans le tour guidé de Manfimaker</p>" +
         "<p>Aujourd'hui nous allons suivre Bob l'Eponge et ses amis organiser une apres midi a la plage</p>" +
         "<p>Ils veulent s'assurer de passer une bonne après midi bien organisée alors ils se sont tournés vers Manifmaker pour les aider dans l'organisation</p>" +
         "<p>Je vais vous guider à travers l'application, vous n'avez qu'à suivre et me lire de temps en temps.</p>" +
-        "<p>C'est parti !</p>",10000 * speed, "center", "big")
-        .then(() => resolve)
-    })
+        "<p>C'est parti !</p>",1000 * speed, "center", "big")
   }
 
 }

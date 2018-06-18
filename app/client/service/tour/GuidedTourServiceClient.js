@@ -4,7 +4,11 @@ export class GuidedTourServiceClient {
    *
    * @param message
    * @param duration    in ms
-   * @param position    top bottom left right (can be combined like top-right)
+   * @param position
+   *      'center'
+   *      horizontal placement: 'left' 'right' 'horizontal-align-CSS_SELECTOR'
+   *      vertical placement: 'top' 'bottom' 'vertical-align-CSS_SELECTOR'
+   *      can combined one vertical with one horizontal, *-align-* being at the end like 'left-vertical-align-#menu'
    * @param size        small medium big
    * @returns {Promise}
    */
