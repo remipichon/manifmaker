@@ -10,8 +10,8 @@ export class TaskScenarioServiceClient {
   }
 
   static goToCreateTask(speed) {
-    return GuidedTourServiceClient.alert("Nous allons nous revenir avec que Bob l'Eponge pour créer une fiche tache qui prepera l'animation des chateaux de sables.",
-      5000 * speed, "center", "medium")
+    return GuidedTourServiceClient.alert("Nous allons nous revenir avec Bob l'Eponge pour créer une fiche tache qui prepera l'animation des chateaux de sables.",
+      10000 * speed, "center", "medium")
       .then(() => GuidedTourServiceClient.instantLogout(speed))
       .then(() => GuidedTourServiceClient.openMenu())
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
@@ -25,7 +25,7 @@ export class TaskScenarioServiceClient {
   }
 
   static fillCreateTaskForm(speed, options) {
-    return GuidedTourServiceClient.alert("<p>Meme histoire que pour les animations, uniquement les informations générales ici</p>", 600 * speed, "center", "medium")
+    return GuidedTourServiceClient.alert("<p>Meme histoire que pour les animations, uniquement les informations générales ici</p>", 3000 * speed, "center", "medium")
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
       .then(() => GuidedTourServiceClient.typeText(options.taskName, "[for=first_name] ~ input", 50 * speed))
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
@@ -63,7 +63,8 @@ export class TaskScenarioServiceClient {
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
       .then(() => GuidedTourServiceClient.alert("<p>Il n'y a que deux validations pour les fiches taches</p>" +
         "<p>1. Validation Equipement</p> " +
-        "<p>2. Validation Creneaux</p>", 3000 * speed, "center", "medium"))
+        "<p>2. Validation Creneaux</p>" +
+        "Nous allons nous concentrer sur l'affectation...", 10000 * speed, "center", "medium"))
       .then(() => GuidedTourServiceClient.typeText(" ", ".validation-comment-input[for='Time Slot'] input", 50 * speed))
       .then(() => GuidedTourServiceClient.clickOn(".validation-comment-input[for='Time Slot'] .askforvalidation-button", 200 * speed))
       .then(() => GuidedTourServiceClient.sleep(300 * speed))
@@ -72,9 +73,10 @@ export class TaskScenarioServiceClient {
   }
 
   static playWithTimeSlots(speed, options) {
-    return GuidedTourServiceClient.alert("<p>Les créneaux est la partie la plus importante de la taches. Ici nous définissons quand aura lieu la tache et de qui aura t'elle besoin.</p>" +
-      "<p>Commencons par choisir quand. Un evenement complexe peut etre divisé en plusieurs périodes, choissisons celle de la journée plage.</p>",
-      30000 * speed, "center", "large")
+    return GuidedTourServiceClient.alert("<p>Les créneaux sont la partie la plus importante de la taches. Ici nous définissons quand aura lieu la tache et de qui aura t'elle besoin.</p>" +
+      "<p>Commencons par choisir le quand.</p>" +
+      "<p>Un evenement complexe peut etre divisé en plusieurs périodes de durées variables. Choissisons la période de la 'journée plage'.</p>",
+      17000 * speed, "center", "large")
       .then(() => GuidedTourServiceClient.clickOn(`.assignments-terms-button:contains('${options.term.name}')`, speed * 300))
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
       .then(() => GuidedTourServiceClient.waitFor(`.calendar .quart_heure[quarter='${options.timeSlot.start2}']`))
@@ -84,9 +86,9 @@ export class TaskScenarioServiceClient {
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
       .then(() => GuidedTourServiceClient.clickOn(".add-time-slot .done-button", speed * 300))
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
-      .then(() => GuidedTourServiceClient.alert("<p>Le quand, c'est fait. Maintenant le qui.</p>" +
-        "<p>Les besoins orga peuvent réclamer quelqu'un d'une équipe, ou alors quelqu'un avec certaines compétences ou meme cummuler les deux. " +
-        "Il est possible de demander quelqu'un en particulier</p>", speed * 20000, "center", "small"))
+      .then(() => GuidedTourServiceClient.alert("<p>Le quand, c'est fait. Maintenant le avec qui.</p>" +
+        "<p>Les besoins en organisteurs peuvent demander n'importe qui d'une équipe, ou alors une personne avec certaines compétences voir meme cummuler les deux. " +
+        "Il est également possible de demander quelqu'un en particulier.</p>", speed * 25000, "center", "small"))
       .then(() => GuidedTourServiceClient.clickOn(".add-people-need .add-button", speed * 300))
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
       .then(() => GuidedTourServiceClient.selectOption("Need a specific team", "hard", speed * 300))
@@ -110,7 +112,7 @@ export class TaskScenarioServiceClient {
       // .then(() => GuidedTourServiceClient.sleep(200 * speed))
       // .then(() => GuidedTourServiceClient.clickOn(".add-people-need .done-button", speed * 300))
       .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".add-time-slot .duplicate-button[title=duplicate]"))
-      .then(() => GuidedTourServiceClient.alert("Sur le calendrier nous pouvons voir un petit résumé des besoins pour avoir un rapide coup d'oeil.", 10000 * speed, "top", "medium"))
+      .then(() => GuidedTourServiceClient.alert("Sur le calendrier nous pouvons voir un petit résumé des besoins pour avoir un rapide coup d'oeil.", 10000 * speed, "left-align-horizontal-.updateTimeSlotCalendar", "medium"))
       .then(() => GuidedTourServiceClient.clickOn(".add-time-slot .duplicate-button[title=duplicate]", speed * 300))
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
       .then(() => GuidedTourServiceClient.clickOn(".add-time-slot .done-button", speed * 300))
@@ -127,8 +129,8 @@ export class TaskScenarioServiceClient {
   }
 
   static validateTask(speed, options) {
-    return GuidedTourServiceClient.alert("Comme pour l'animation, nous allons validé la tache avec Sandy qui sera responsable de l'affectation (ce pourquoi tu es venu ici...)",
-      speed * 4000, "center", "medium")
+    return GuidedTourServiceClient.alert("Comme pour l'animation, nous allons valider la tache avec Sandy qui sera responsable de l'affectation (ce pourquoi tu es venu ici...)",
+      speed * 13000, "center", "medium")
       .then(() => GuidedTourServiceClient.logout(speed))
       .then(() => GuidedTourServiceClient.login(speed, options.assignmentUser))
       .then(() => GuidedTourServiceClient.openMenu())
@@ -136,7 +138,7 @@ export class TaskScenarioServiceClient {
       .then(() => GuidedTourServiceClient.sleep(200 * speed))
       .then(() => GuidedTourServiceClient.clickOn("#sidebar-task ~.dropdown-menu [href='/tasks']", speed * 400))
       .then(() => GuidedTourServiceClient.waitFor("Tasks List"))
-      .then(() => GuidedTourServiceClient.alert("<p>Hop, nous voulons les taches dont les creneaux sont a relire</p>",
+      .then(() => GuidedTourServiceClient.alert("<p>Hop, nous voulons uniquement les taches dont les creneaux sont a valider.</p>",
         speed * 4000, "center", "medium"))
       .then(() => GuidedTourServiceClient.clickOn("#advanced-search-button", 200 * speed))
       .then(() => GuidedTourServiceClient.sleep(100 * speed))
