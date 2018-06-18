@@ -1,6 +1,7 @@
 import {ActivityScenarioServiceClient} from "./ActivityScenarioServiceClient";
 import {TaskScenarioServiceClient} from "./TaskScenarioServiceClient";
 import {UserScenarioServiceClient} from "./UserScenarioServiceClient";
+import {GuidedTourServiceClient} from "./GuidedTourServiceClient";
 
 export class PlayTourServiceClient {
 
@@ -44,61 +45,23 @@ export class PlayTourServiceClient {
     };
     $("#guided-tour-overlapp").addClass("visible");
     console.log("using", options);
-    ActivityScenarioServiceClient.playScenario(options, speed)
+    PlayTourServiceClient.intro(speed)
+      .then(() => ActivityScenarioServiceClient.playScenario(options, speed))
       .then(() => TaskScenarioServiceClient.playScenario(options, speed))
       .then(() => UserScenarioServiceClient.playScenario(options, speed)).then(() => {
       $("#guided-tour-overlapp").removeClass("visible");
     })
   }
 
-  static playActivityScenario(speed = 1) {
-    let options = {
-      year: "2018",
-      activityName: "Sandcastle On The Beach " + new moment().format("hhmmss"),
-      regularUser: {  //ACTIVITY RW TASK RW
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
-      },
-      equipmentUser: {  //ACTIVITY RW TASK RW EQUIPMENTVALIDATION ACTIVIITYGENERALVALIDATION CONFMAKER
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
-      },
-      assignmentUser: {  //ACTIVITY RW TASK RW ASSIGNMENTVALIDAITON  ASSIGNMENTTASKUSER
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
-      },
-      guestUser: {  //read only (son planning et ses fiches tches)
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
-      }
-    };
-    ActivityScenarioServiceClient.playScenario(options, speed);
+  static intro(speed){
+    return new Promise(resolve => {
+      GuidedTourServiceClient.alert("<p>Bienvenue dans le tour guidé de Manfimaker</p>" +
+        "<p>Aujourd'hui nous allons suivre Bob l'Eponge et ses amis organiser une apres midi a la plage</p>" +
+        "<p>Ils veulent s'assurer de passer une bonne après midi bien organisée alors ils se sont tournés vers Manifmaker pour les aider dans l'organisation</p>" +
+        "<p>Je vais vous guider à travers l'application, vous n'avez qu'à suivre et me lire de temps en temps.</p>" +
+        "<p>C'est parti !</p>",10000 * speed, "center", "big")
+        .then(() => resolve)
+    })
   }
 
-  static playTaskScenario(speed = 1) {
-    //names in CamelCase because UI sometimes format it this way
-    let options = {
-      year: "2018",
-      activityName: "Sandcastle On The Beach " + new moment().format("hhmmss"),
-      taskName: "Pile Up Sand" + new moment().format("hhmmss"),
-      regularUser: {  //ACTIVITY RW TASK RW
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
-      },
-      equipmentUser: {  //ACTIVITY RW TASK RW EQUIPMENTVALIDATION ACTIVIITYGENERALVALIDATION CONFMAKER
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
-      },
-      assignmentUser: {  //ACTIVITY RW TASK RW ASSIGNMENTVALIDAITON  ASSIGNMENTTASKUSER
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
-      },
-      guestUser: {  //read only (son planning et ses fiches tches)
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
-      }
-    };
-    console.log("using", options)
-    TaskScenarioServiceClient.playScenario(options, speed);
-  }
 }

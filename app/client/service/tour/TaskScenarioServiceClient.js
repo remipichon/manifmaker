@@ -16,7 +16,13 @@ export class TaskScenarioServiceClient {
 
   static goToCreateTask(speed) {
     return new Promise(resolve => {
-      GuidedTourServiceClient.alert("We are going to create a task", 300 * speed, "center", "small")
+      GuidedTourServiceClient.alert("Nous allons nous revenir avec que Bob l'Eponge pour créer une fiche tache qui prepera l'animation des chateaux de sables.",
+        5000 * speed, "center", "medium")
+        .then(() => GuidedTourServiceClient.instantLogout(speed))
+        .then(() => GuidedTourServiceClient.openMenu())
+        .then(() => GuidedTourServiceClient.sleep(200 * speed))
+        .then(() => GuidedTourServiceClient.login(speed, options.regularUser))
+        .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.openMenu())
         .then(() => GuidedTourServiceClient.clickOn("#sidebar-task", 500 * speed))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
@@ -30,8 +36,7 @@ export class TaskScenarioServiceClient {
 
   static fillCreateTaskForm(speed, options) {
     return new Promise(resolve => {
-      GuidedTourServiceClient.alert("<p>This is the creation form where you only fill the principal information.</p>" +
-        "<p>More to come just after</p>", 600 * speed, "center", "medium")
+      GuidedTourServiceClient.alert("<p>Meme histoire que pour les animations, uniquement les informations générales ici</p>", 600 * speed, "center", "medium")
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.typeText(options.taskName, "[for=first_name] ~ input", 50 * speed))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
@@ -46,8 +51,6 @@ export class TaskScenarioServiceClient {
         .then(() => GuidedTourServiceClient.waitFor("Insert"))
         .then(() => GuidedTourServiceClient.clickOn(GuidedTourServiceClient.findComponentByContent("Insert"), 400 * speed))
         .then(() => GuidedTourServiceClient.waitFor("Delete " + options.taskName))
-        .then(() => GuidedTourServiceClient.alert("<p>Congrats ! First task created, now let's look at everything you can configured for it.</p>" +
-          "<p>It's all optional, you tune as you please</p>", 3000 * speed, "center", "medium"))
         .then(() => resolve());
     })
   }
@@ -57,7 +60,10 @@ export class TaskScenarioServiceClient {
     return new Promise(resolve => {
       GuidedTourServiceClient.selectOption("Linked Activity", options.activityName, 300 * speed)
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
-        .then(() => GuidedTourServiceClient.typeText("just make huge pile of sand, left and right",
+        .then(() => GuidedTourServiceClient.typeText("<p>Avec le fenwick et les pelles en plastiques disponobles, il faut faire des tres gros tas de sables.</p>" +
+          "<p>Le mieux c'est d'en faire a droite et a gauche ainsi que au millieu, devant et derriere.</p>" +
+          "<p>Oubliez pas les cotés ! Il faut faire des tas haut mais pas trop. </p>" +
+          "<p>Vive la plage ! </p>",
           "[name=description]", 10 * speed))
         .then(() => GuidedTourServiceClient.sleep(500 * speed))
         .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Equipment)"))
@@ -69,8 +75,10 @@ export class TaskScenarioServiceClient {
         .then(() => TaskScenarioServiceClient.playWithTimeSlots(speed, options))
         .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Validation)"))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
-        .then(() => GuidedTourServiceClient.alert("Validationnnnnnnnnnn explication\nLalalal\nPouet pouet", 3000 * speed, "center", "medium"))
-        .then(() => GuidedTourServiceClient.typeText("something about validaiton assignment", ".validation-comment-input[for='Time Slot'] input", 50 * speed))
+        .then(() => GuidedTourServiceClient.alert("<p>Il n'y a que deux validations pour les fiches taches</p>" +
+          "<p>1. Validation Equipement</p> " +
+          "<p>2. Validation Creneaux</p>", 3000 * speed, "center", "medium"))
+        .then(() => GuidedTourServiceClient.typeText(" ", ".validation-comment-input[for='Time Slot'] input", 50 * speed))
         .then(() => GuidedTourServiceClient.clickOn(".validation-comment-input[for='Time Slot'] .askforvalidation-button", 200 * speed))
         .then(() => GuidedTourServiceClient.sleep(300 * speed))
         .then(() => resolve());
@@ -81,7 +89,10 @@ export class TaskScenarioServiceClient {
 
   static playWithTimeSlots(speed, options) {
     return new Promise(resovle => {
-      GuidedTourServiceClient.clickOn(`.assignments-terms-button:contains('${options.term.name}')`, speed * 300)
+      GuidedTourServiceClient.alert("<p>Les créneaux est la partie la plus importante de la taches. Ici nous définissons quand aura lieu la tache et de qui aura t'elle besoin.</p>" +
+        "<p>Commencons par choisir quand. Un evenement complexe peut etre divisé en plusieurs périodes, choissisons celle de la journée plage.</p>",
+        30000 * speed, "center", "large")
+        .then(() => GuidedTourServiceClient.clickOn(`.assignments-terms-button:contains('${options.term.name}')`, speed * 300))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.waitFor(`.calendar .quart_heure[quarter='${options.timeSlot.start2}']`))
         .then(() => GuidedTourServiceClient.clickOn(`.calendar .quart_heure[quarter='${options.timeSlot.start2}']`, 100)) //tricks, there is a bug, first select doesn't work
@@ -90,13 +101,15 @@ export class TaskScenarioServiceClient {
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.clickOn(".add-time-slot .done-button", speed * 300))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
-        .then(() => GuidedTourServiceClient.alert("This, is, people neeeeeeed", speed * 100, "center", "small"))
+        .then(() => GuidedTourServiceClient.alert("<p>Le quand, c'est fait. Maintenant le qui.</p>" +
+          "<p>Les besoins orga peuvent réclamer quelqu'un d'une équipe, ou alors quelqu'un avec certaines compétences ou meme cummuler les deux. " +
+          "Il est possible de demander quelqu'un en particulier</p>", speed * 20000, "center", "small"))
         .then(() => GuidedTourServiceClient.clickOn(".add-people-need .add-button", speed * 300))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.selectOption("Need a specific team", "hard", speed * 300))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.clickOn(".add-people-need .done-button", speed * 300))
-        .then(() => GuidedTourServiceClient.alert("See, now we can duplicate the people need", 500 * speed, "center", "small"))
+        .then(() => GuidedTourServiceClient.alert("Hop, on copie un besoin orgas !", 500 * speed, "center", "small"))
         .then(() => GuidedTourServiceClient.clickOn(".people-need .duplicate", speed * 200))
         .then(() => GuidedTourServiceClient.clickOn(".people-need .duplicate", speed * 200))
         .then(() => GuidedTourServiceClient.clickOn(".people-need .duplicate", speed * 200))
@@ -114,7 +127,7 @@ export class TaskScenarioServiceClient {
         // .then(() => GuidedTourServiceClient.sleep(200 * speed))
         // .then(() => GuidedTourServiceClient.clickOn(".add-people-need .done-button", speed * 300))
         .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".add-time-slot .duplicate-button[title=duplicate]"))
-        .then(() => GuidedTourServiceClient.alert("See, the details on the calendar to quickly show which timesot requires how much", 200 * speed, "top", "medium"))
+        .then(() => GuidedTourServiceClient.alert("Sur le calendrier nous pouvons voir un petit résumé des besoins pour avoir un rapide coup d'oeil.", 10000 * speed, "top", "medium"))
         .then(() => GuidedTourServiceClient.clickOn(".add-time-slot .duplicate-button[title=duplicate]", speed * 300))
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.clickOn(".add-time-slot .done-button", speed * 300))
@@ -134,7 +147,7 @@ export class TaskScenarioServiceClient {
 
   static validateTask(speed, options) {
     return new Promise(resolve => {
-      GuidedTourServiceClient.alert("Now, we are going to validate this task. Manifmaker comes wih customizable roles access, let's use a user who has 'general information' and 'equipement' right to validade",
+      GuidedTourServiceClient.alert("Comme pour l'animation, nous allons validé la tache avec Sandy qui sera responsable de l'affectation (ce pourquoi tu es venu ici...)",
         speed * 4000, "center", "medium")
         .then(() => GuidedTourServiceClient.logout(speed))
         .then(() => GuidedTourServiceClient.login(speed, options.assignmentUser))
@@ -143,7 +156,7 @@ export class TaskScenarioServiceClient {
         .then(() => GuidedTourServiceClient.sleep(200 * speed))
         .then(() => GuidedTourServiceClient.clickOn("#sidebar-task ~.dropdown-menu [href='/tasks']", speed * 400))
         .then(() => GuidedTourServiceClient.waitFor("Tasks List"))
-        .then(() => GuidedTourServiceClient.alert("<p>You can filter the list in several ways, let's filter to highlights the ones pending validate</p><p>(I know, it doens't make sense to filter a such small list)</p>",
+        .then(() => GuidedTourServiceClient.alert("<p>Hop, nous voulons les taches dont les creneaux sont a relire</p>",
           speed * 4000, "center", "medium"))
         .then(() => GuidedTourServiceClient.clickOn("#advanced-search-button", 200 * speed))
         .then(() => GuidedTourServiceClient.sleep(100 * speed))
@@ -155,8 +168,6 @@ export class TaskScenarioServiceClient {
         .then(() => GuidedTourServiceClient.typeText("Ready for assignment, yeah !", ".validation-comment-input[for='Time Slot'] input", 0 * speed))
         .then(() => GuidedTourServiceClient.clickOn(".validation-comment-input[for='Time Slot'] .close-button", 400 * speed))
         .then(() => GuidedTourServiceClient.sleep(300 * speed))
-        .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Time slots)"))
-        .then(() => GuidedTourServiceClient.alert("<p>As you can see, time slots ca no longer be updated</p><p>Let's go to do some assignments</p>", speed * 2000, "top-right", "medium"))
         .then(() => resolve())
     })
   }
