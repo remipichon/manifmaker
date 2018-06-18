@@ -6,13 +6,14 @@ export class GuidedTourServiceClient {
    * @param duration    in ms
    * @param position
    *      'center'
-   *      horizontal placement: 'left' 'right' 'horizontal-align-CSS_SELECTOR'
-   *      vertical placement: 'top' 'bottom' 'vertical-align-CSS_SELECTOR'
+   *      horizontal placement: 'left' 'right' 'vertical-align-CSS_SELECTOR'
+   *      vertical placement: 'top' 'bottom' 'horizontal-align-CSS_SELECTOR'
    *      can combined one vertical with one horizontal, *-align-* being at the end like 'left-vertical-align-#menu'
    * @param size        small medium big
    * @returns {Promise}
    */
   static alert(message, duration, position, size) {
+    $("#guided-tour-overlapp").addClass("visible");
     return new Promise(resolve => {
       $("#guided-tour-overlapp").addClass("grayed");
       $("#message").addClass("visible");
@@ -37,17 +38,40 @@ export class GuidedTourServiceClient {
       if (position == "center") {
         top = windowHeight / 2 - height / 2;
         left = windowWidth / 2 - width / 2
+      }
 
-      } else if (position.indexOf("top") != -1) {
+      if (position.indexOf("top") != -1) {
         top = windowHeight * 0.05;
         left = windowWidth - (windowHeight - top) * windowWidth / windowHeight;
       } else if (position.indexOf("bottom") != -1) {
         top = windowHeight * 0.95 - height;
         left = (windowHeight - top - height) * windowWidth / windowHeight
       }
+
+      if(position.indexOf("horizontal-align-") != -1){
+        let cssSelector = position.substring(position.indexOf("horizontal-align-") + "horizontal-align-".length, position.length);
+        top = $(cssSelector)[0].getBoundingClientRect().y - height / 2;
+        left = windowWidth * 0.05
+      }
+
+      if(position.indexOf("vertical-align-") != -1){
+        let cssSelector = position.substring(position.indexOf("vertical-align-") + "vertical-align-".length, position.length);
+        left = $(cssSelector)[0].getBoundingClientRect().x - width / 2 + $(cssSelector)[0].getBoundingClientRect().width / 2;
+      }
+
       if (position.indexOf("right") != -1) {
         left = windowWidth - left - width;
+      } else if (position.indexOf("left") != -1) {
+        //nothing to do there
       }
+
+
+
+      console.log("top",top);
+
+
+
+
       $("#message").width(width);
       $("#message").height(height);
 
