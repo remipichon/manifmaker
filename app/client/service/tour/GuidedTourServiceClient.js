@@ -15,6 +15,17 @@ export class GuidedTourServiceClient {
   static alert(message, duration, position, size) {
     $("#guided-tour-overlapp").addClass("visible");
     return new Promise(resolve => {
+
+      let endOfAlert = function () {
+        clearInterval(counterBack);
+        $("#message").removeClass("visible");
+        $("#guide-progress-bar").removeClass("visible");
+        $("#guided-tour-overlapp").removeClass("grayed");
+        resolve();
+        $("#skip-guided-alert").off('click');
+      };
+
+      $("#skip-guided-alert").one('click', endOfAlert)
       $("#guided-tour-overlapp").addClass("grayed");
       $("#message").addClass("visible");
       $("#guide-progress-bar").addClass("visible");
@@ -40,6 +51,10 @@ export class GuidedTourServiceClient {
         left = windowWidth / 2 - width / 2
       }
 
+      //well, you will have to trust me it's working 'cause it's hell of a mess below
+      //the idea was to first position top and then deduce left in a way you would leave as much
+      //space on top/bottom than on the side, for harmony you know.
+      //then *-align- arrived and it became complex. Best way is to test it live.
       if (position.indexOf("top") != -1) {
         top = windowHeight * 0.05;
         left = windowWidth - (windowHeight - top) * windowWidth / windowHeight;
@@ -48,13 +63,13 @@ export class GuidedTourServiceClient {
         left = (windowHeight - top - height) * windowWidth / windowHeight
       }
 
-      if(position.indexOf("horizontal-align-") != -1){
+      if (position.indexOf("horizontal-align-") != -1) {
         let cssSelector = position.substring(position.indexOf("horizontal-align-") + "horizontal-align-".length, position.length);
         top = $(cssSelector)[0].getBoundingClientRect().y - height / 2;
         left = windowWidth * 0.05
       }
 
-      if(position.indexOf("vertical-align-") != -1){
+      if (position.indexOf("vertical-align-") != -1) {
         let cssSelector = position.substring(position.indexOf("vertical-align-") + "vertical-align-".length, position.length);
         left = $(cssSelector)[0].getBoundingClientRect().x - width / 2 + $(cssSelector)[0].getBoundingClientRect().width / 2;
       }
@@ -64,13 +79,6 @@ export class GuidedTourServiceClient {
       } else if (position.indexOf("left") != -1) {
         //nothing to do there
       }
-
-
-
-      console.log("top",top);
-
-
-
 
       $("#message").width(width);
       $("#message").height(height);
@@ -85,11 +93,7 @@ export class GuidedTourServiceClient {
         if (i > 0) {
           $('#guide-progress-bar').css('width', i + '%');
         } else {
-          clearInterval(counterBack);
-          $("#message").removeClass("visible");
-          $("#guide-progress-bar").removeClass("visible");
-          $("#guided-tour-overlapp").removeClass("grayed");
-          resolve()
+          endOfAlert()
         }
       }, duration / 100);
 
