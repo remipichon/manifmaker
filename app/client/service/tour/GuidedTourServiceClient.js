@@ -7,7 +7,7 @@ export class GuidedTourServiceClient {
    * @param position
    *      'center'
    *      horizontal placement: 'left' 'right' 'vertical-align-CSS_SELECTOR'
-   *      vertical placement: 'top' 'bottom' 'horizontal-align-CSS_SELECTOR'
+   *      vertical placement: 'top' 'bottom' 'vertical-align-CSS_SELECTOR'
    *      can combined one vertical with one horizontal, *-align-* being at the end like 'left-vertical-align-#menu'
    * @param size        small medium big
    * @returns {Promise}
@@ -63,14 +63,14 @@ export class GuidedTourServiceClient {
         left = (windowHeight - top - height) * windowWidth / windowHeight
       }
 
-      if (position.indexOf("horizontal-align-") != -1) {
-        let cssSelector = position.substring(position.indexOf("horizontal-align-") + "horizontal-align-".length, position.length);
+      if (position.indexOf("vertical-align-") != -1) {
+        let cssSelector = position.substring(position.indexOf("vertical-align-") + "vertical-align-".length, position.length);
         top = $(cssSelector)[0].getBoundingClientRect().y - height / 2;
         left = windowWidth * 0.05
       }
 
-      if (position.indexOf("vertical-align-") != -1) {
-        let cssSelector = position.substring(position.indexOf("vertical-align-") + "vertical-align-".length, position.length);
+      if (position.indexOf("horizontal-align-") != -1) {
+        let cssSelector = position.substring(position.indexOf("horizontal-align-") + "horizontal-align-".length, position.length);
         left = $(cssSelector)[0].getBoundingClientRect().x - width / 2 + $(cssSelector)[0].getBoundingClientRect().width / 2;
       }
 
@@ -140,10 +140,10 @@ export class GuidedTourServiceClient {
    * @param hours           string, format HH
    * @returns {Promise}
    */
-  static selectDate(datetimepickerSelector, date, month, hours, delay) {
+  static selectDate(datetimepickerSelector, date, month, hours, speed) {
     return new Promise(resolve => {
       let datetimepicker = GuidedTourServiceClient.getJqueryObject(datetimepickerSelector);
-      GuidedTourServiceClient.clickOn(datetimepicker, delay)
+      GuidedTourServiceClient.clickOn(datetimepicker, speed)
         .then(() => GuidedTourServiceClient.sleep(100))
         .then(() => {
           return new Promise(resolve => {
@@ -154,17 +154,17 @@ export class GuidedTourServiceClient {
           })
         })
         .then(() => GuidedTourServiceClient.waitFor(".bootstrap-datetimepicker-widget"))
-        .then(() => GuidedTourServiceClient.sleep(delay * 2))
+        .then(() => GuidedTourServiceClient.standardSleep())
         //if month and date
         .then(() => {
           return new Promise(resolve => {
             if (date && month) {
-              GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days .picker-switch`, delay)
-                .then(() => GuidedTourServiceClient.sleep(delay * 2))
-                .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-months [data-action=selectMonth]:contains(${month})`, delay))
-                .then(() => GuidedTourServiceClient.sleep(delay))
-                .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days [data-day='${date}']`, delay))
-                .then(() => GuidedTourServiceClient.sleep(delay))
+              GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days .picker-switch`, speed)
+                .then(() => GuidedTourServiceClient.standardSleep())
+                .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-months [data-action=selectMonth]:contains(${month})`, speed))
+                .then(() => GuidedTourServiceClient.standardSleep())
+                .then(() => GuidedTourServiceClient.clickOn(`.datepicker .datepicker-days [data-day='${date}']`, speed))
+                .then(() => GuidedTourServiceClient.standardSleep())
                 .then(() => resolve())
             } else {
               resolve()
@@ -175,11 +175,11 @@ export class GuidedTourServiceClient {
         .then(() => {
           return new Promise(resolve => {
             if (hours)
-              GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hour[data-action=showHours]`, delay)
+              GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hour[data-action=showHours]`, speed)
                 .then(() => GuidedTourServiceClient.waitFor(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`))
-                .then(() => GuidedTourServiceClient.sleep(delay))
-                .then(() => GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`, delay))
-                .then(() => GuidedTourServiceClient.sleep(delay))
+                .then(() => GuidedTourServiceClient.sleep(speed))
+                .then(() => GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`, speed))
+                .then(() => GuidedTourServiceClient.sleep(speed))
                 .then(() => resolve());
             else
               resolve()
@@ -245,7 +245,7 @@ export class GuidedTourServiceClient {
           GuidedTourServiceClient._waitFor(query.selector, resolve)
         })
       }
-    } else if ($(`body:contains(${query})`).length != 0) {
+    } else if ($(`body:contains('${query}')`).length != 0) {
       resolve()
     } else if ($(`${query}`).length != 0) {
       resolve();
@@ -313,7 +313,7 @@ export class GuidedTourServiceClient {
   /**
    * @param cssSelector either a CSS selector or a jQuery object
    */
-  static clickOn(cssSelector, delay) {
+  static clickOn(cssSelector, speed) {
     return new Promise(resolveClickOn => {
       let component = GuidedTourServiceClient.getJqueryObject(cssSelector);
       GuidedTourServiceClient.waitFor(component).then(resolveWaiting => {
@@ -330,7 +330,7 @@ export class GuidedTourServiceClient {
         clickHighlight.addClass("visible");
 
         GuidedTourServiceClient.scrollIfTargetOutOfWindow(cssSelector)
-          .then(() => GuidedTourServiceClient.sleep(delay))
+          .then(() => GuidedTourServiceClient.standardSleep(speed))
           .then(() => {
             $(cssSelector).click();
             $("#guided-tour-overlapp").removeClass("grayed");
@@ -344,11 +344,11 @@ export class GuidedTourServiceClient {
 
   }
 
-  static openMenu(toClose = false) {
+  static openMenu(speed, toClose = false) {
     return new Promise(resolve => {
       let isOpen = $(".top-bar button.sidebar-toggle .sidebar-arrow").hasClass("mdi-arrow-left");
       if (!toClose && !isOpen || toClose && isOpen)
-        GuidedTourServiceClient.clickOn(".top-bar button.sidebar-toggle .sidebar-arrow").then(resolve)
+        GuidedTourServiceClient.clickOn(".top-bar button.sidebar-toggle .sidebar-arrow", speed).then(resolve)
       else
         resolve()
     })
@@ -356,11 +356,11 @@ export class GuidedTourServiceClient {
 
   static logout(speed) {
     return new Promise(resolve => {
-      GuidedTourServiceClient.openMenu()
-        .then(() => GuidedTourServiceClient.sleep(200 * speed))
-        .then(() => GuidedTourServiceClient.clickOn("[href='#settings-dropdown']", speed * 300))
-        .then(() => GuidedTourServiceClient.sleep(200 * speed))
-        .then(() => GuidedTourServiceClient.clickOn("[href='/logout']", speed * 300))
+      GuidedTourServiceClient.openMenu(speed)
+        .then(() => GuidedTourServiceClient.standardSleep(speed))
+        .then(() => GuidedTourServiceClient.clickOn("[href='#settings-dropdown']", speed))
+        .then(() => GuidedTourServiceClient.standardSleep(speed))
+        .then(() => GuidedTourServiceClient.clickOn("[href='/logout']", speed))
         .then(() => GuidedTourServiceClient.waitFor(".at-pwd-form"))
         .then(() => resolve())
     })
@@ -386,19 +386,22 @@ export class GuidedTourServiceClient {
       GuidedTourServiceClient.waitFor(".at-pwd-form")
         .then(() => GuidedTourServiceClient.typeText(user.email, "#at-field-email", speed * 50))
         .then(() => GuidedTourServiceClient.typeText(user.pwd, "#at-field-password", speed * 50))
-        .then(() => GuidedTourServiceClient.clickOn("#sidebar #at-pwd-form .submit", speed * 200))
+        .then(() => GuidedTourServiceClient.clickOn("#sidebar #at-pwd-form .submit", speed))
         .then(() => GuidedTourServiceClient.waitFor("Home"))
         .then(() => resolve())
     })
   }
 
 
-  static closeMenu() {
-    return GuidedTourServiceClient.openMenu(true)
+  static closeMenu(speed) {
+    return GuidedTourServiceClient.openMenu(speed)(speed, true)
   }
 
   static sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
 
+  static standardSleep(speed) {
+    return new Promise((resolve) => setTimeout(resolve, speed * 600));
+  }
 }
