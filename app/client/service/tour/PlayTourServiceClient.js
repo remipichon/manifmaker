@@ -6,7 +6,7 @@ import {GuidedTourServiceClient} from "./GuidedTourServiceClient";
 export class PlayTourServiceClient {
 
   static playScenarii(speed = 1) {
-    let options = {
+    var options = {
       year: "2018",
       activityName: "Sandcastle On The Beach " + new moment().format("hhmmss"),
       taskName: "Pile Up Sand" + new moment().format("hhmmss"),
@@ -43,7 +43,9 @@ export class PlayTourServiceClient {
         start2: "Wed Jun 16 2021 02:00:00 GMT+0200" //tricks
       }
     };
+
     $("#guided-tour-overlapp").addClass("visible");
+
     console.log("using", options);
     PlayTourServiceClient.intro(speed)
       .then(() => ActivityScenarioServiceClient.playScenario(options, speed))

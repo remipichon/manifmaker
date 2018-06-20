@@ -39,14 +39,14 @@ export class GuidedTourServiceClient {
         height = 200;
       } else if (size == "small") {
         width = 150;
-        height = 100;
+        height = 150;
       }
 
       let windowWidth = window.innerWidth;
       let windowHeight = window.innerHeight;
 
       let top, left;
-      if (position == "center") {
+      if (position.indexOf("center") !== -1) {
         top = windowHeight / 2 - height / 2;
         left = windowWidth / 2 - width / 2
       }
@@ -66,16 +66,16 @@ export class GuidedTourServiceClient {
       if (position.indexOf("vertical-align-") != -1) {
         let cssSelector = position.substring(position.indexOf("vertical-align-") + "vertical-align-".length, position.length);
         top = $(cssSelector)[0].getBoundingClientRect().y - height / 2;
-        left = windowWidth * 0.05
+        if(!left) left = windowWidth * 0.05
       }
 
       if (position.indexOf("horizontal-align-") != -1) {
         let cssSelector = position.substring(position.indexOf("horizontal-align-") + "horizontal-align-".length, position.length);
-        left = $(cssSelector)[0].getBoundingClientRect().x - width / 2 + $(cssSelector)[0].getBoundingClientRect().width / 2;
+        if(!left) left = $(cssSelector)[0].getBoundingClientRect().x - width / 2 + $(cssSelector)[0].getBoundingClientRect().width / 2;
       }
 
       if (position.indexOf("right") != -1) {
-        left = windowWidth - left - width;
+        left = windowWidth * 0.95  - width;
       } else if (position.indexOf("left") != -1) {
         //nothing to do there
       }
@@ -276,7 +276,7 @@ export class GuidedTourServiceClient {
    * @param target  jQuery object
    * @returns {Promise}
    */
-  static scrollIfTargetOutOfWindow($target) {
+  static scrollIfTargetOutOfWindow($target, position) {
     return new Promise(resolve => {
       $target = GuidedTourServiceClient.getJqueryObject($target);
       let windowHeight = window.innerHeight;
@@ -285,7 +285,7 @@ export class GuidedTourServiceClient {
       let targetHeight = $target[0].getBoundingClientRect().height;
 
       let scrollToY;
-      if (targetYPosition < 60) {
+      if (targetYPosition < 60 || position == "top") {
         scrollToY = targetOffset - (50 + 20); //50px is the top nav bar height, 10px is a bit of margin
 
       } else if (targetYPosition > windowHeight - targetHeight) {
@@ -394,14 +394,16 @@ export class GuidedTourServiceClient {
 
 
   static closeMenu(speed) {
-    return GuidedTourServiceClient.openMenu(speed)(speed, true)
+    return GuidedTourServiceClient.openMenu(speed, true)
   }
 
   static sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
 
+  static getStandardSleepDuration(){ return 600}
+
   static standardSleep(speed) {
-    return new Promise((resolve) => setTimeout(resolve, speed * 600));
+    return new Promise((resolve) => setTimeout(resolve, speed * GuidedTourServiceClient.getStandardSleepDuration()));
   }
 }
