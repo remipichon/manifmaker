@@ -89,6 +89,9 @@ export class GuidedTourServiceClient {
 
       var i = 100;
       var counterBack = setInterval(function () {
+        //for pause
+        //at pause, we need to clear the interval and set another infite one
+        //at play, we reset the infinite interval and set a new interval with what's remaining of time
         i--;
         if (i > 0) {
           $('#guide-progress-bar').css('width', i + '%');
@@ -105,18 +108,24 @@ export class GuidedTourServiceClient {
    * @param labelToClickOn    the exact label of the customSelect
    * @param optionToSelect    the exact label of the option to select
    */
-  static selectOption(labelToClickOn, optionToSelect, delay) {
+  static selectOption(labelToClickOn, options, delay) {
+    if(typeof options != "object"){
+      options = [options];
+    }
     return new Promise(resolve => {
       let target = `[for='${labelToClickOn}']`;
       GuidedTourServiceClient.scrollIfTargetOutOfWindow(target)
         .then(() => GuidedTourServiceClient.clickOn(target, delay))
-        .then(() => GuidedTourServiceClient.waitFor(`.popover :contains(${optionToSelect})`))
+        .then(() => GuidedTourServiceClient.waitFor(`.popover :contains(${options[0]})`))
         .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(GuidedTourServiceClient.getJqueryObject(".popover")))
         .then(() => GuidedTourServiceClient.sleep(delay))
         .then(() => {
           return new Promise(resolve => {
-            let allOptionsThatMatches = $(`.popover-content .custom-select-options .list-group .list-group-item:contains(${optionToSelect}) input`).toArray();
-            GuidedTourServiceClient._selectionOption(allOptionsThatMatches, resolve, delay);
+            let optionToSelect = []
+            options.forEach(option => {
+              optionToSelect.push($(`.popover-content .custom-select-options .list-group .list-group-item:contains(${option}) input`))
+            });
+            GuidedTourServiceClient._selectionOption(optionToSelect, resolve, delay);
           })
         })
         .then(() => resolve())
@@ -125,9 +134,9 @@ export class GuidedTourServiceClient {
 
   static _selectionOption(allOptionsThatMatches, resolve, delay) {
     GuidedTourServiceClient.clickOn(allOptionsThatMatches[0], delay).then(() => {
-      allOptionsThatMatches.pop(0);
+      allOptionsThatMatches.shift();
       if (allOptionsThatMatches.length == 0)
-        resolve()
+        resolve();
       else
         GuidedTourServiceClient._selectionOption(allOptionsThatMatches, resolve, delay)
     });

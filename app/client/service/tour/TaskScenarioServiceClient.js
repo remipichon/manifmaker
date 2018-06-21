@@ -104,7 +104,7 @@ export class TaskScenarioServiceClient {
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.clickOn(".add-people-need .add-button", speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.selectOption("Need of set of skills", "Responsable", speed)) //trick to select several skills
+      .then(() => GuidedTourServiceClient.selectOption("Need of set of skills", ["Responsable Bar", "Responsable Anim"], speed)) //trick to select several skills
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.clickOn(".add-people-need .done-button", speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
