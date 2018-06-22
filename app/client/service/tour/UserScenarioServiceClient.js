@@ -6,6 +6,8 @@ export class UserScenarioServiceClient {
     return GuidedTourServiceClient.alert("<p>Avant de passer a l'affectation, nous avons besoin d'un premier benevole qui sera Squid. Il va pouvoir ajouter des disponibilités",
     speed * 8000, "center","medium")
       .then(() => GuidedTourServiceClient.instantLogout(speed))
+      .then(() => GuidedTourServiceClient.openMenu(speed))
+      .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.login(speed, options.volunteerUser))
       .then(() => UserScenarioServiceClient.goToUserProfile(speed))
       .then(() => UserScenarioServiceClient.fillUpdateUserForm(speed, options))

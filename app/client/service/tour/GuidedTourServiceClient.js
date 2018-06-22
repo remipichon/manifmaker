@@ -66,16 +66,16 @@ export class GuidedTourServiceClient {
       if (position.indexOf("vertical-align-") != -1) {
         let cssSelector = position.substring(position.indexOf("vertical-align-") + "vertical-align-".length, position.length);
         top = $(cssSelector)[0].getBoundingClientRect().y - height / 2;
-        if(!left) left = windowWidth * 0.05
+        if (!left) left = windowWidth * 0.05
       }
 
       if (position.indexOf("horizontal-align-") != -1) {
         let cssSelector = position.substring(position.indexOf("horizontal-align-") + "horizontal-align-".length, position.length);
-        if(!left) left = $(cssSelector)[0].getBoundingClientRect().x - width / 2 + $(cssSelector)[0].getBoundingClientRect().width / 2;
+        if (!left) left = $(cssSelector)[0].getBoundingClientRect().x - width / 2 + $(cssSelector)[0].getBoundingClientRect().width / 2;
       }
 
       if (position.indexOf("right") != -1) {
-        left = windowWidth * 0.95  - width;
+        left = windowWidth * 0.95 - width;
       } else if (position.indexOf("left") != -1) {
         //nothing to do there
       }
@@ -109,7 +109,7 @@ export class GuidedTourServiceClient {
    * @param optionToSelect    the exact label of the option to select
    */
   static selectOption(labelToClickOn, options, delay) {
-    if(typeof options != "object"){
+    if (typeof options != "object") {
       options = [options];
     }
     return new Promise(resolve => {
@@ -121,7 +121,7 @@ export class GuidedTourServiceClient {
         .then(() => GuidedTourServiceClient.sleep(delay))
         .then(() => {
           return new Promise(resolve => {
-            let optionToSelect = []
+            let optionToSelect = [];
             options.forEach(option => {
               optionToSelect.push($(`.popover-content .custom-select-options .list-group .list-group-item:contains(${option}) input`))
             });
@@ -133,13 +133,15 @@ export class GuidedTourServiceClient {
   }
 
   static _selectionOption(allOptionsThatMatches, resolve, delay) {
-    GuidedTourServiceClient.clickOn(allOptionsThatMatches[0], delay).then(() => {
-      allOptionsThatMatches.shift();
-      if (allOptionsThatMatches.length == 0)
-        resolve();
-      else
-        GuidedTourServiceClient._selectionOption(allOptionsThatMatches, resolve, delay)
-    });
+    GuidedTourServiceClient.clickOn(allOptionsThatMatches[0], delay)
+      .then(() => GuidedTourServiceClient.standardSleep(delay))
+      .then(() => {
+        allOptionsThatMatches.shift();
+        if (allOptionsThatMatches.length == 0)
+          resolve();
+        else
+          GuidedTourServiceClient._selectionOption(allOptionsThatMatches, resolve, delay)
+      });
   }
 
   /**
@@ -357,7 +359,9 @@ export class GuidedTourServiceClient {
     return new Promise(resolve => {
       let isOpen = $(".top-bar button.sidebar-toggle .sidebar-arrow").hasClass("mdi-arrow-left");
       if (!toClose && !isOpen || toClose && isOpen)
-        GuidedTourServiceClient.clickOn(".top-bar button.sidebar-toggle .sidebar-arrow", speed).then(resolve)
+        GuidedTourServiceClient.clickOn(".top-bar button.sidebar-toggle .sidebar-arrow", speed)
+          .then(() => GuidedTourServiceClient.sleep(300 * speed))
+          .then(resolve());
       else
         resolve()
     })
@@ -410,9 +414,11 @@ export class GuidedTourServiceClient {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
 
-  static getStandardSleepDuration(){ return 600}
+  static getStandardSleepDuration() {
+    return 400
+  }
 
-  static standardSleep(speed) {
-    return new Promise((resolve) => setTimeout(resolve, speed * GuidedTourServiceClient.getStandardSleepDuration()));
+  static standardSleep(speed, multiplicator = 1) {
+    return new Promise((resolve) => setTimeout(resolve, multiplicator * speed * GuidedTourServiceClient.getStandardSleepDuration()));
   }
 }

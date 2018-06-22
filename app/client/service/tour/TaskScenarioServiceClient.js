@@ -14,7 +14,6 @@ export class TaskScenarioServiceClient {
       10000 * speed, "center", "medium")
       .then(() => GuidedTourServiceClient.instantLogout(speed))
       .then(() => GuidedTourServiceClient.openMenu(speed))
-      .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.login(speed, options.regularUser))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.openMenu(speed))
@@ -51,13 +50,13 @@ export class TaskScenarioServiceClient {
         "<p>Oubliez pas les cotés ! Il faut faire des tas haut mais pas trop. </p>" +
         "<p>Vive la plage ! </p>",
         "[name=description]", 10 * speed))
-      .then(() => GuidedTourServiceClient.sleep(500 * speed))
+      .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Equipment)"))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.typeEquipment(10, "colson", 300 * speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.typeEquipment(5, "fenwick", 300 * speed))
-      .then(() => GuidedTourServiceClient.sleep(500 * speed))
+      .then(() => GuidedTourServiceClient.sleep(1200 * speed))
       .then(() => TaskScenarioServiceClient.playWithTimeSlots(speed, options))
       .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Validation)"))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
@@ -67,18 +66,18 @@ export class TaskScenarioServiceClient {
         "Nous allons nous concentrer sur l'affectation...", 10000 * speed, "center", "medium"))
       .then(() => GuidedTourServiceClient.typeText(" ", ".validation-comment-input[for='Time Slot'] input", 50 * speed))
       .then(() => GuidedTourServiceClient.clickOn(".validation-comment-input[for='Time Slot'] .askforvalidation-button", speed))
-      .then(() => GuidedTourServiceClient.sleep(300 * speed))
+      .then(() => GuidedTourServiceClient.sleep(1200 * speed))
     //did you noticed the update happening in the top bar ? All all your actions are right away recorded and save
     //some information needs a manual update though, it's always clear what needs to be manually updated.
   }
 
   static playWithTimeSlots(speed, options) {
 
-    return GuidedTourServiceClient.alert("<p>Les créneaux sont la partie la plus importante de la taches. Ici nous définissons quand aura lieu la tache et de qui aura t'elle besoin.</p>" +
-      "<p>Commencons par choisir le quand.</p>" +
-      "<p>Un evenement complexe peut etre divisé en plusieurs périodes de durées variables. Choissisons la période de la 'journée plage'.</p>",
-      17000 * speed, "center", "big")
-      .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains('Time slots')", "top"))
+    return GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains('Time slots')", "top")
+      .then(() => GuidedTourServiceClient.alert("<p>Les créneaux sont la partie la plus importante de la taches. Ici nous définissons quand aura lieu la tache et de qui aura t'elle besoin.</p>" +
+        "<p>Commencons par choisir le quand.</p>" +
+        "<p>Un evenement complexe peut etre divisé en plusieurs périodes de durées variables. Choissisons la période de la 'journée plage'.</p>",
+        17000 * speed, "center", "big"))
       .then(() => GuidedTourServiceClient.clickOn(`.assignments-terms-button:contains('${options.term.name}')`, speed)) //TODO this click works but doesn't show the cirle
       .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".updateTimeSlotCalendar", "top"))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
@@ -97,6 +96,7 @@ export class TaskScenarioServiceClient {
       .then(() => GuidedTourServiceClient.selectOption("Need a specific team", "hard", speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.clickOn(".add-people-need .done-button", speed))
+      .then(() => GuidedTourServiceClient.sleep(1200 * speed))
       .then(() => GuidedTourServiceClient.alert("Hop, on copie un besoin orgas !", speed * 2000, "center", "medium"))
       .then(() => GuidedTourServiceClient.clickOn(".people-need .duplicate", speed))
       .then(() => GuidedTourServiceClient.clickOn(".people-need .duplicate:first", speed))
@@ -130,7 +130,7 @@ export class TaskScenarioServiceClient {
       // .then(() => GuidedTourServiceClient.waitFor(`.calendar .quart_heure[quarter='${options.timeSlot.start}']`))
       // .then(() => GuidedTourServiceClient.clickOn(`.calendar .quart_heure[quarter='${options.timeSlot.start}'] .creneau .creneau-to-affect`, speed))
       // .then(() => GuidedTourServiceClient.selectDate(".from-date-time-picker-update-time-slot input", null, null, "02", 200 * speed))
-      .then(() => GuidedTourServiceClient.sleep(400 * speed))
+      .then(() => GuidedTourServiceClient.sleep(1200 * speed))
   }
 
   static validateTask(speed, options) {
@@ -146,14 +146,14 @@ export class TaskScenarioServiceClient {
       .then(() => GuidedTourServiceClient.alert("<p>Hop, nous voulons uniquement les taches dont les creneaux sont a valider.</p>",
         speed * 4000, "center", "medium"))
       .then(() => GuidedTourServiceClient.clickOn("#advanced-search-button", speed))
-      .then(() => GuidedTourServiceClient.sleep(100 * speed))
+      .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.selectOption("Validation Status", "Assignment validation In validation process", speed))
-      .then(() => GuidedTourServiceClient.sleep(100 * speed))
+      .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.clickOn(`td:contains('${options.taskName}') ~ td .btn[title=Edit]`, speed))
       .then(() => GuidedTourServiceClient.waitFor(`Delete ${options.taskName}`))
       .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Validation)"))
       .then(() => GuidedTourServiceClient.typeText("Ready for assignment, yeah !", ".validation-comment-input[for='Time Slot'] input", 0 * speed))
       .then(() => GuidedTourServiceClient.clickOn(".validation-comment-input[for='Time Slot'] .close-button", speed))
-      .then(() => GuidedTourServiceClient.sleep(300 * speed))
+      .then(() => GuidedTourServiceClient.standardSleep(speed))
   }
 }
