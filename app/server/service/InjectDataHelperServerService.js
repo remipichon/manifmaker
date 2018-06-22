@@ -4,6 +4,24 @@ import {SecurityServiceServer} from "./SecurityServiceServer";
 /** @class InjectDataHelperServerService */
 export class InjectDataHelperServerService {
 
+  static isInjectDataRequired(envReport) {
+    if (envReport.dataInjectEverytime) {
+      console.info("Meteor.startup: dev mode: inject data (env DATA_INJECT_EVERYTIME)");
+      return true;
+    } else if (envReport.dataInjectOnce) {
+      if (InjectDataInfo.findOne({triggerEnv: "DATA_INJECTED"})) {
+        console.info("Meteor.startup: dev mode: inject once skipped because it has already been injected (env DATA_INJECT_ONCE)");
+        return false;
+      } else {
+        console.info("Meteor.startup: dev mode: inject once (env DATA_INJECT_ONCE)");
+        return true;
+      }
+    } else {
+      console.info("Meteor.startup: dev mode: none of env DATA_INJECT_ONCE or env DATA_INJECT_EVERYTIME specified, injecting nothing");
+      return false;
+    }
+  }
+
   static setTeamsAndSkills(userId, teams, skills) {
     if (teams)
       Meteor.users.update(userId, {

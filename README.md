@@ -466,25 +466,35 @@ docker rm -fv nginx; docker run --name nginx -p 8080:80 -d -v $OUTPUTDIR:/usr/sh
 
 <a id="environment-variable" name="environment-variable"></a>
 ## Environment variable
+
+For Dev/Preprod:
     
-##### IS_PRODUCTION
     
-##### DATA_INJECTED_ONCE
+##### DATA_INJECT_ONCE
 Whatever data will be added only once, even if ManifMaker app is restarted. 
-    
-##### DELETE_ALL
-Delete absolutely all data. 
+
+##### DATA_INJECT_EVERYTIME
+Whatever data will wiped out for each anifMaker app restart. 
+
+##### DATA_INJECT_CLASS_ALL
+Which of the defined InjectDataServerService to use to inject various data. 
     
 ##### INJECT_MINIMUM_ACCESS_RIGHT
 Inject Roles define in Roles enum, add a superadmin group roles (not updatable) and a superadmin user (not updatable).
 
 Superadmin user has "superadmin" password in Development and a random one in Production. Superadmin password can be found in the app log when starting. 
     
-##### INJECT_24H_43_DATA
-Inject some Conf data for 24Heures, 43th, 2017. 
 
-##### INJECT_ALL_DATA
-Inject some development data
+
+For Production:
+
+##### SKIP_INIT_ACCESS_RIGHT
+Skip injected init access right (superadmin user and roles) even if it has never been injected. Either the roles and superadmin
+users are already there or you will seed your database differently (not recommended). 
+
+##### IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA
+Force isDevelopment mode to allow wiping out and injected data. It is only valid at startup, 'isProduction' remains
+true for the app lifecycle. Value should be 'truetrue', just because it's we don't want to easily allow deleting data in production. 
 
 ##### MAILGUN_PASSWORD
 
