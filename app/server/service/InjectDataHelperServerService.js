@@ -29,6 +29,7 @@ export class InjectDataHelperServerService {
           teams: teams,
         }
       });
+    console.log("setSkills",userId, skills);
     if (skills)
       Meteor.users.update(userId, {
         $set: {
@@ -38,11 +39,13 @@ export class InjectDataHelperServerService {
   }
 
   static createAccountAndUser(username, email, password, groupRoleId) {
-    return Accounts.createUser({
+    let userId = Accounts.createUser({
       username: username,
       email: email,
       password: password
     });
+    InjectDataHelperServerService.setGroupRolesToUsers(userId, groupRoleId);
+    return userId;
   }
 
   static setGroupRolesToUsers(userId, groupId) {

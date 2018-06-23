@@ -346,7 +346,7 @@ Schemas.User = new SimpleSchema({
     custom: function () {
       this.value = _.compact(this.value);
       if (Skills.find({_id: {$in: this.value}}).fetch().length !== this.value.length)
-        return "unknownIdOrDuplicateId"
+        return "unknownIdOrDuplicateId";
 
       var user = Meteor.users.findOne(this.docId);
       if (this.isUpdate && user.isReadyForAssignment && user.isReadyForAssignment === true)

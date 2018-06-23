@@ -2,6 +2,7 @@ import {InjectDataHelperServerService} from "../service/InjectDataHelperServerSe
 import {SecurityServiceServer} from "../service/SecurityServiceServer"
 import {ServerUserService} from "../service/ServerUserService"
 import {JwtService} from "../service/JwtService";
+import {InjectGuidedTourDataServerService} from "../service/InjectGuidedTourDataServerService"
 
 
 Meteor.methods({
@@ -13,6 +14,33 @@ Meteor.methods({
     Meteor.injectDataServerService.injectAllData();
     Meteor.isStartingUp = false;
   },
+  injectGuidedTourData: function () {
+    //TODO
+    let inject = new InjectGuidedTourDataServerService({
+      year: 2018,
+      month: 10,
+      date: 1
+    });
+
+    inject.injectGroupRoles();
+    inject.populateTeams();
+    inject.populateSkill();
+    inject.populateAssignmentTerms();
+    inject.populatePlaces();
+    inject.populateEquipmentCategories();
+    inject.populateEquipment();
+    inject.populateStorage();
+    inject.populatePowerSupply();
+    inject.populateWaterSupply();
+    inject.populateWaterDisposal();
+    inject.populateAccessPoint();
+    inject.populateUser();
+    inject.populateActivities();
+    inject.populateTaskGroups();
+    // inject.populateTasks();
+    inject.addSettings();
+  },
+
   updateUserName: function (userId, newUsername) {
     ServerUserService.updateUserName(userId, newUsername)
   },
@@ -65,9 +93,9 @@ Meteor.methods({
       fileName = new moment().format("YYYYMMDD:HHmm") + "_" + fileName;
       var item = {};
       item.url = Meteor.manifmakerEndpoint + "/jwt/" + JwtService.sign({
-        "target": Meteor.manifmakerEndpoint + option.url,
-        type: "url"
-      });
+          "target": Meteor.manifmakerEndpoint + option.url,
+          type: "url"
+        });
       item.fileName = fileName;
       items.push(item);
       var downloadUrl = Meteor.nginxEndpoint + item.fileName;

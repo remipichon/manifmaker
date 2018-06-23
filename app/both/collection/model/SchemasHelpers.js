@@ -42,6 +42,7 @@ SimpleSchema.messages({
   availabilitiesNoInEditableTerm: "Assignment Term deadline to add availabilities is over",
   timeSlotNotWithinTerms: "Time slot dates are not within a assignment term's periods",
   timeSlotTermAccuracyError: "Time slot dates doesn't respect term accuray.",
+  timeSlotNotInAnyTerm: "Time slot dates fall outside of any configure terms",
   userHasAssignments: "Cannot perform this action as user already has assignments.",
   userHasBeenValidatedNoSkillsUpdate: "User has been validated therefore its skills cannot be update",
   accuracyNotFound: "Accuracy value is not a valide one.",

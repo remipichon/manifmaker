@@ -58,16 +58,25 @@ Router.route('/', function () {
  */
 Router.route('/tour', function () {
 
+    Meteor.call("injectGuidedTourData", function (error, result) {
+      if (error) {
+        alert(error);
+      } else {
+        alert("inject happened without error, you can start the tour");
+        Router.go("/");
+      }
+    })
+
         this.render('home', {to: 'mainContent'})
 
-        PlayTourServiceClient.playScenarii(2);
+        //PlayTourServiceClient.playScenarii(2);
 
 
     },
     {
         data: {currentTab: 'Home'},
         name: 'tour',
-        controller: ManifMakerRouterController
+        // controller: ManifMakerRouterController
     }
 );
 

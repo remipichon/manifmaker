@@ -249,6 +249,7 @@ Schemas.TimeSlot = new SimpleSchema({
         return "timeSlotConflictDate";
 
       var term = TimeSlotService.timeSlotWithinAssignmentTerm(start, end);
+      if(!term) return "timeSlotNotInAnyTerm";
 
       var accuracy = term.calendarAccuracy;
       var diff = start.diff(end, "minute");

@@ -55,6 +55,6 @@ export class SecurityServiceServer {
 
   static isItProd(method) {
     if (Meteor.isProduction)
-        throw new Meteor.Error("403", method + " can not be used in production.");
+        throw new Meteor.Error("403", `'${method}' can not be used in production.`);
   }
 }
