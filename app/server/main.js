@@ -110,8 +110,9 @@ Meteor.startup(function () {
     injectGuidedTour: new InjectGuidedTourDataServerService( {
       year: 2018,
       month: 10,
-      date: 1
-    })
+      date: 1,
+      suffix: "_init"
+    }, true)
   };
 
 

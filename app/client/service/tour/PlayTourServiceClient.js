@@ -5,43 +5,49 @@ import {GuidedTourServiceClient} from "./GuidedTourServiceClient";
 
 export class PlayTourServiceClient {
 
-  static playScenarii(speed = 1) {
+  static playScenarii(speed = 1, params) {
+    let suffix = params.suffix;
     var options = {
-      year: "2018",
-      activityName: "Sandcastle On The Beach " + new moment().format("hhmmss"),
-      taskName: "Pile Up Sand" + new moment().format("hhmmss"),
+      options: {
+        year: params.year ,
+        month: params.month ,
+        date: params.date
+      },
+      activityName: "Sandcastle On The Beach " + suffix,
+      taskName: "Pile Up Sand" + suffix,
       regularUser: {  //ACTIVITY RW TASK RW
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
+        email: `spongebob${suffix}@yopmail.com`,
+        pwd: `spongebob`
       },
       equipmentUser: {  //ACTIVITY RW TASK RW EQUIPMENTVALIDATION ACTIVIITYGENERALVALIDATION CONFMAKER
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
+        email: `patrickstar${suffix}@yopmail.com`,
+        pwd: `patrickstar`
       },
       assignmentUser: {  //ACTIVITY RW TASK RW ASSIGNMENTVALIDAITON  ASSIGNMENTTASKUSER
-        email: "superadmin@yopmail.com",
-        pwd: "superadmin"
-      },
-      volunteerUser: {  //part of team with access to terms, already validated (son planning et ses fiches tches)
-        email: "hard@yopmail.com",
-        pwd: "hard",
-        availabilities: [
-          "Wed Jun 16 2021 02:00:00 GMT+0200",
-          "Wed Jun 16 2021 04:00:00 GMT+0200",
-          "Wed Jun 16 2021 06:00:00 GMT+0200",
-          "Wed Jun 16 2021 08:00:00 GMT+0200",
-          "Wed Jun 16 2021 10:00:00 GMT+0200",
-          "Wed Jun 16 2021 14:00:00 GMT+0200",
-          "Wed Jun 16 2021 16:00:00 GMT+0200",
-        ]
+        email: `sandycheeks${suffix}@yopmail.com`,
+        pwd: `sandycheeks`
       },
       term: {
-        name: "Premanif"
+        name: `Journée Plage ${suffix}`
       },
-      timeSlot: {
-        start: "Wed Jun 16 2021 04:00:00 GMT+0200",
-        start2: "Wed Jun 16 2021 02:00:00 GMT+0200" //tricks
-      }
+    };
+
+    let startDate = new moment(`${options.options.year}/${options.options.month}/${options.options.date}`,"YYYY/MM/DD");
+
+    options.timeSlot = {
+      start: startDate.set("h",10).toString(),
+      start2: startDate.set("h",8).toString() //tricks
+    };
+
+    options.volunteerUser = {  //part of team with access to terms, already validated
+      email: "squidwardtantacles@yopmail.com",
+      pwd: "squidwardtantacles",
+      availabilities: [
+        startDate.set("h",8).toString(),
+        startDate.set("h",10).toString(),
+        startDate.set("h",14).toString(),
+        startDate.set("h",16).toString()
+      ]
     };
 
     $("#guided-tour-overlapp").addClass("visible");
@@ -55,12 +61,12 @@ export class PlayTourServiceClient {
     })
   }
 
-  static intro(speed){
+  static intro(speed) {
     return GuidedTourServiceClient.alert("<p>Bienvenue dans le tour guidé de Manfimaker</p>" +
-        "<p>Aujourd'hui nous allons suivre Bob l'Eponge et ses amis organiser une apres midi a la plage</p>" +
-        "<p>Ils veulent s'assurer de passer une bonne après midi bien organisée alors ils se sont tournés vers Manifmaker pour les aider dans l'organisation</p>" +
-        "<p>Je vais te guider à travers l'application, tu n'as qu'à suivre et me lire de temps en temps.</p>" +
-        "<p>C'est parti !</p>",30000 * speed, "center", "big")
+      "<p>Aujourd'hui nous allons suivre Bob l'Eponge et ses amis organiser une apres midi a la plage</p>" +
+      "<p>Ils veulent s'assurer de passer une bonne après midi bien organisée alors ils se sont tournés vers Manifmaker pour les aider dans l'organisation</p>" +
+      "<p>Je vais te guider à travers l'application, tu n'as qu'à suivre et me lire de temps en temps.</p>" +
+      "<p>C'est parti !</p>", 30000 * speed, "center", "big")
   }
 
 }

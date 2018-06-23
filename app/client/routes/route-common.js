@@ -58,26 +58,24 @@ Router.route('/', function () {
  */
 Router.route('/tour', function () {
 
+    alert("about to inject data for your tour");
     Meteor.call("injectGuidedTourData", function (error, result) {
       if (error) {
         alert(error);
       } else {
         alert("inject happened without error, you can start the tour");
+        PlayTourServiceClient.playScenarii(2, result);
         Router.go("/");
       }
-    })
+    });
 
-        this.render('home', {to: 'mainContent'})
-
-        //PlayTourServiceClient.playScenarii(2);
-
-
-    },
-    {
-        data: {currentTab: 'Home'},
-        name: 'tour',
-        // controller: ManifMakerRouterController
-    }
+    this.render('home', {to: 'mainContent'})
+  },
+  {
+    data: {currentTab: 'Home'},
+    name: 'tour',
+    // controller: ManifMakerRouterController
+  }
 );
 
 /**

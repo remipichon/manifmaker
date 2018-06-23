@@ -52,7 +52,7 @@ export class InjectDataHelperServerService {
     if (!groupId) return;
     var groupArray;
     if (Array.isArray(groupId))
-      groupArray = groupId
+      groupArray = groupId;
     else
       groupArray = [groupId];
 

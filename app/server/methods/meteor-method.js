@@ -15,30 +15,23 @@ Meteor.methods({
     Meteor.isStartingUp = false;
   },
   injectGuidedTourData: function () {
-    //TODO
-    let inject = new InjectGuidedTourDataServerService({
-      year: 2018,
-      month: 10,
-      date: 1
-    });
+    var lastTour = InjectDataInfo.findOne({triggerEnv: "GUIDED_TOUR"});
+    let date = new moment(`${lastTour.options.year}/${lastTour.options.month}/${lastTour.options.date}`,"YYYY/MM/DD");
+    date.add("d",2);
+    let options = {
+      year: date.format("YYYY"),
+      month: date.format("MM"),
+      date: date.format("D"),
+      suffix: new moment().format("Dhhmmss")
+    };
+    InjectDataInfo.update(lastTour._id, {$set: {options: options}});
 
-    inject.injectGroupRoles();
-    inject.populateTeams();
-    inject.populateSkill();
-    inject.populateAssignmentTerms();
-    inject.populatePlaces();
-    inject.populateEquipmentCategories();
-    inject.populateEquipment();
-    inject.populateStorage();
-    inject.populatePowerSupply();
-    inject.populateWaterSupply();
-    inject.populateWaterDisposal();
-    inject.populateAccessPoint();
-    inject.populateUser();
-    inject.populateActivities();
-    inject.populateTaskGroups();
-    // inject.populateTasks();
-    inject.addSettings();
+    Meteor.isStartingUp = true;
+    console.log("injectGuidedTourData with options", options);
+    let inject = new InjectGuidedTourDataServerService(options, false);
+    inject.injectAllData();
+    Meteor.isStartingUp = false;
+    return options;
   },
 
   updateUserName: function (userId, newUsername) {

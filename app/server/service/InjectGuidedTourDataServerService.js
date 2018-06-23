@@ -3,17 +3,15 @@ import {InjectDataHelperServerService} from "./InjectDataHelperServerService";
 /** @class InjectGuidedTourDataServerService */
 export class InjectGuidedTourDataServerService {
 
-  InjectGuidedTourDataServerService(options) {
+  constructor(options, init) {
     this.options = options;
+    this.init = init;
   }
 
-
   injectAllData() {
-    this.options = {
-      year: 2018,
-      month: 10,
-      date: 1
-    };
+    if(this.init){
+      InjectDataInfo.insert({triggerEnv: "GUIDED_TOUR", date: new Date(), options: this.options});
+    }
     this.injectGroupRoles();
     this.populateTeams();
     this.addSettings();
@@ -21,107 +19,164 @@ export class InjectGuidedTourDataServerService {
     this.populateSkill();
     this.populateUser();
     this.populatePlaces();
-    this.populateEquipmentCategories();
-    this.populateEquipment();
-    this.populateStorage();
-    this.populatePowerSupply();
-    this.populateWaterSupply();
-    this.populateWaterDisposal();
-    this.populateAccessPoint();
-    this.populateActivities();
-    this.populateTaskGroups();
-    this.populateTasks();
+    if (this.init) {
+      this.populateEquipmentCategories();
+      this.populateEquipment();
+      this.populateStorage();
+      this.populatePowerSupply();
+      this.populateWaterSupply();
+      this.populateWaterDisposal();
+      this.populateAccessPoint();
+    } else {
+      this.populateActivities();
+      this.populateTaskGroups();
+      this.populateTasks();
+    }
     // throw new Meteor.Error("403", "InjectGuidedTourDataServerService is not made to inject data at startup");
   }
 
   injectGroupRoles() {
     this.groupRoles = {};
-    this.groupRoles['organizeGroupRole'] = GroupRoles.insert({
-      name: "organizer",
-      roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
-    });
-    this.groupRoles['volunteerGroupRole'] = GroupRoles.insert({
-      name: "volnteer",
-      roles: [RolesEnum.MANIFMAKER, RolesEnum.TASKREAD]
-    });
-    this.groupRoles['equipment'] = GroupRoles.insert({
-      name: "equipment",
-      roles: [RolesEnum.MANIFMAKER, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.CONFMAKER]
-    });
-    this.groupRoles['accessPass'] = GroupRoles.insert({
-      name: "acessPass",
-      roles: [RolesEnum.MANIFMAKER, RolesEnum.ACCESSPASSVALIDATION, RolesEnum.CONFMAKER]
-    });
-    this.groupRoles['assigment'] = GroupRoles.insert({
-      name: "assignment",
-      roles: [RolesEnum.MANIFMAKER, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.ASSIGNMENTVALIDATION, RolesEnum.ASSIGNMENTTASKUSER]
-    });
-    this.groupRoles['allUser'] = GroupRoles.insert({
-      name: "allUser",
-      roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.ROLE]
-    });
-    this.groupRoles['allTask'] = GroupRoles.insert({
-      name: "allTask",
-      roles: [RolesEnum.MANIFMAKER, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ACCESSPASSVALIDATION, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.ASSIGNMENTVALIDATION]
-    });
-    this.groupRoles['allActivity'] = GroupRoles.insert({
-      name: "allActivity",
-      roles: [RolesEnum.MANIFMAKER, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE, RolesEnum.ACTIVITYDELETE, RolesEnum.ACTIVITYGENERALVALIDATION, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.ACCESSPASSVALIDATION]
-    });
-    this.groupRoles['allConf'] = GroupRoles.insert({
-      name: "allConf",
-      roles: [RolesEnum.MANIFMAKER, RolesEnum.CONFMAKER]
-    });
-    this.groupRoles['minimal'] = GroupRoles.insert({
-      name: "minimal",
-      roles: [RolesEnum.MANIFMAKER]
-    });
+    if (!this.init) {
+      this.groupRoles['organizeGroupRole'] = GroupRoles.findOne({
+        name: "organizer",
+      })._id;
+      this.groupRoles['volunteerGroupRole'] = GroupRoles.findOne({
+        name: "volnteer",
+      })._id;
+      this.groupRoles['equipment'] = GroupRoles.findOne({
+        name: "equipment",
+      })._id;
+      this.groupRoles['accessPass'] = GroupRoles.findOne({
+        name: "acessPass",
+      })._id;
+      this.groupRoles['assigment'] = GroupRoles.findOne({
+        name: "assignment",
+      })._id;
+      this.groupRoles['allUser'] = GroupRoles.findOne({
+        name: "allUser",
+      })._id;
+      this.groupRoles['allTask'] = GroupRoles.findOne({
+        name: "allTask",
+      })._id;
+      this.groupRoles['allActivity'] = GroupRoles.findOne({
+        name: "allActivity",
+      })._id;
+      this.groupRoles['allConf'] = GroupRoles.findOne({
+        name: "allConf",
+      })._id;
+      this.groupRoles['minimal'] = GroupRoles.findOne({
+        name: "minimal",
+      })._id;
+    } else {
+      this.groupRoles['organizeGroupRole'] = GroupRoles.insert({
+        name: "organizer",
+        roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE]
+      });
+      this.groupRoles['volunteerGroupRole'] = GroupRoles.insert({
+        name: "volnteer",
+        roles: [RolesEnum.MANIFMAKER, RolesEnum.TASKREAD]
+      });
+      this.groupRoles['equipment'] = GroupRoles.insert({
+        name: "equipment",
+        roles: [RolesEnum.MANIFMAKER, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.CONFMAKER]
+      });
+      this.groupRoles['accessPass'] = GroupRoles.insert({
+        name: "acessPass",
+        roles: [RolesEnum.MANIFMAKER, RolesEnum.ACCESSPASSVALIDATION, RolesEnum.CONFMAKER]
+      });
+      this.groupRoles['assigment'] = GroupRoles.insert({
+        name: "assignment",
+        roles: [RolesEnum.MANIFMAKER, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.ASSIGNMENTVALIDATION, RolesEnum.ASSIGNMENTTASKUSER]
+      });
+      this.groupRoles['allUser'] = GroupRoles.insert({
+        name: "allUser",
+        roles: [RolesEnum.MANIFMAKER, RolesEnum.USERREAD, RolesEnum.USERWRITE, RolesEnum.USERDELETE, RolesEnum.ROLE]
+      });
+      this.groupRoles['allTask'] = GroupRoles.insert({
+        name: "allTask",
+        roles: [RolesEnum.MANIFMAKER, RolesEnum.TASKREAD, RolesEnum.TASKWRITE, RolesEnum.TASKDELETE, RolesEnum.ACCESSPASSVALIDATION, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.ASSIGNMENTVALIDATION]
+      });
+      this.groupRoles['allActivity'] = GroupRoles.insert({
+        name: "allActivity",
+        roles: [RolesEnum.MANIFMAKER, RolesEnum.ACTIVITYREAD, RolesEnum.ACTIVITYWRITE, RolesEnum.ACTIVITYDELETE, RolesEnum.ACTIVITYGENERALVALIDATION, RolesEnum.EQUIPMENTVALIDATION, RolesEnum.ACCESSPASSVALIDATION]
+      });
+      this.groupRoles['allConf'] = GroupRoles.insert({
+        name: "allConf",
+        roles: [RolesEnum.MANIFMAKER, RolesEnum.CONFMAKER]
+      });
+      this.groupRoles['minimal'] = GroupRoles.insert({
+        name: "minimal",
+        roles: [RolesEnum.MANIFMAKER]
+      });
+    }
   }
 
   populateTeams() {
     console.info("***********************************************************************");
     this.teams = {};
     console.info("inject Teams");
-    this.teams['dreamTeam'] = Teams.insert({name: "dreamTeam"});
-    this.teams['volunteers'] = Teams.insert({name: "volunteers"});
+    this.teams['dreamTeam'] = Teams.insert({name: "dreamTeam" + this.options.suffix});
+    this.teams['volunteers'] = Teams.insert({name: "volunteers" + this.options.suffix});
   }
 
   populateSkill() {
     console.info("***********************************************************************");
     this.skills = {};
     //skills
-    console.info("inject Skills");
-    this.skills['maitreNageur'] = Skills.insert({
-      key: "MAITRE_NAGEUR",
-      label: "Maitre Nageur",
-      teams: [this.teams.volunteers]
-    });
-    this.skills['dj'] = Skills.insert({
-      key: "DJ",
-      label: "Disc Jokey",
-      teams: [this.teams.dreamTeam]
-    });
-    this.skills['cuisinier'] = Skills.insert({
-      key: "CUISTO",
-      label: "Expert Burger",
-      teams: [this.teams.dreamTeam]
-    });
-    this.skills['conducteurFen'] = Skills.insert({
-      key: "CONDUCTEUR_FEN",
-      label: "Permis cariste pour le fen",
-      teams: [this.teams.volunteers, this.teams.dreamTeam]
-    });
+    if (!this.init) {
+      this.skills['maitreNageur'] = Skills.findOne({
+        key: "MAITRE_NAGEUR",
+      })._id;
+      this.skills['dj'] = Skills.findOne({
+        key: "DJ",
+      })._id;
+      this.skills['cuisinier'] = Skills.findOne({
+        key: "CUISTO",
+      })._id;
+      this.skills['conducteurFen'] = Skills.findOne({
+        key: "CONDUCTEUR_FEN",
+      })._id;
+      Skills.update(this.skills['maitreNageur'], {$push: {"teams": this.teams.volunteers}});
+      Skills.update(this.skills['dj'], {$push: {"teams": this.teams.dreamTeam}});
+      Skills.update(this.skills['cuisinier'], {$push: {"teams": this.teams.dreamTeam}});
+      Skills.update(this.skills['conducteurFen'], {$push: {"teams": this.teams.volunteers}});
+      Skills.update(this.skills['conducteurFen'], {$push: {"teams": this.teams.dreamTeam}});
+
+    } else {
+      console.info("inject Skills");
+      this.skills['maitreNageur'] = Skills.insert({
+        key: "MAITRE_NAGEUR",
+        label: "Maitre Nageur",
+        teams: [this.teams.volunteers]
+      });
+      this.skills['dj'] = Skills.insert({
+        key: "DJ",
+        label: "Disc Jokey",
+        teams: [this.teams.dreamTeam]
+      });
+      this.skills['cuisinier'] = Skills.insert({
+        key: "CUISTO",
+        label: "Expert Burger",
+        teams: [this.teams.dreamTeam]
+      });
+      this.skills['conducteurFen'] = Skills.insert({
+        key: "CONDUCTEUR_FEN",
+        label: "Permis cariste pour le fen",
+        teams: [this.teams.volunteers, this.teams.dreamTeam]
+      });
+    }
   }
 
   populateUser() {
     console.info("***********************************************************************");
     this.users = {};
     console.info("inject Meteor.users");
-    this.users['bob'] = InjectDataHelperServerService.createAccountAndUser("spongebob", "spongebob@yopmail.com", "spongebob", this.groupRoles.organizeGroupRole);
-    this.users['patrick'] = InjectDataHelperServerService.createAccountAndUser("patrickstar", "patrickstar@yopmail.com", "patrickstar", [this.groupRoles.organizeGroupRole, this.groupRoles.equipment]);
-    this.users['sandy'] = InjectDataHelperServerService.createAccountAndUser("sandycheeks", "sandycheeks@yopmail.com", "sandycheeks", this.groupRoles.assigment);
-    this.users['krab'] = InjectDataHelperServerService.createAccountAndUser("mrkrab", "mrkrab@yopmail.com", "mrkrab", this.groupRoles.minimal);
-    this.users['squidward'] = InjectDataHelperServerService.createAccountAndUser("squidwardtantacles", "squidwardtantacles@yopmail.com", "squidwardtantacles", this.groupRoles.minimal);
+    this.users['bob'] = InjectDataHelperServerService.createAccountAndUser("spongebob" + this.options.suffix, `spongebob${this.options.suffix}@yopmail.com`, "spongebob", this.groupRoles.organizeGroupRole);
+    this.users['patrick'] = InjectDataHelperServerService.createAccountAndUser("patrickstar" + this.options.suffix, `patrickstar${this.options.suffix}@yopmail.com`, "patrickstar", [this.groupRoles.organizeGroupRole, this.groupRoles.equipment]);
+    this.users['sandy'] = InjectDataHelperServerService.createAccountAndUser("sandycheeks" + this.options.suffix, `sandycheeks${this.options.suffix}@yopmail.com`, "sandycheeks", this.groupRoles.assigment);
+    this.users['krab'] = InjectDataHelperServerService.createAccountAndUser("mrkrab" + this.options.suffix, `mrkrab${this.options.suffix}@yopmail.com`, "mrkrab", this.groupRoles.minimal);
+    this.users['squidward'] = InjectDataHelperServerService.createAccountAndUser("squidwardtantacles" + this.options.suffix, `squidwardtantacles${this.options.suffix}@yopmail.com`, "squidwardtantacles", this.groupRoles.minimal);
 
     console.info("********");
     console.info("updating user bob");
@@ -159,7 +214,7 @@ export class InjectGuidedTourDataServerService {
         availabilities: [
           {
             start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 15, 0),
-            end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date , 18, 0)
+            end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 18, 0)
           }
         ]
       }
@@ -187,13 +242,21 @@ export class InjectGuidedTourDataServerService {
 
   populatePlaces() {
     console.info("***********************************************************************");
-    //places
-    console.info("inject Places");
-    this.qgPlace = Places.insert({name: "QG Orga", location: "45.783142, 4.874600"});
-    this.bocalPlace = Places.insert({name: "Bocal", location: "45.783142, 4.874600"});
-    this.humaPlace = Places.insert({name: "Pelouse Humas", location: "45.783142, 4.874600"});
-    this.petiteScenePlace = Places.insert({name: "Petite scene", location: "45.783142, 4.874600"});
-    this.grandeScenePlace = Places.insert({name: "Grande scene", location: "45.783142, 4.874600"});
+    if (!this.init) {
+      this.qgPlace = Places.findOne({name: "QG Orga"})._id;
+      this.bocalPlace = Places.findOne({name: "Bocal"})
+      this.humaPlace = Places.findOne({name: "Pelouse Humas"})._id;
+      this.petiteScenePlace = Places.findOne({name: "Petite scene"})._id;
+      this.grandeScenePlace = Places.findOne({name: "Grande scene"})._id;
+    } else {
+      //places
+      console.info("inject Places");
+      this.qgPlace = Places.insert({name: "QG Orga", location: "45.783142, 4.874600"});
+      this.bocalPlace = Places.insert({name: "Bocal", location: "45.783142, 4.874600"});
+      this.humaPlace = Places.insert({name: "Pelouse Humas", location: "45.783142, 4.874600"});
+      this.petiteScenePlace = Places.insert({name: "Petite scene", location: "45.783142, 4.874600"});
+      this.grandeScenePlace = Places.insert({name: "Grande scene", location: "45.783142, 4.874600"});
+    }
   }
 
   populateEquipmentCategories() {
@@ -331,7 +394,7 @@ export class InjectGuidedTourDataServerService {
     //assignmentCalendarDay
     console.info("inject AssignmentTerms");
     AssignmentTerms.insert({
-      name: "Journée Plage",
+      name: "Journée Plage" + this.options.suffix,
       start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 8, 0),
       end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 18, 0),
       teams: [this.teams.volunteers, this.teams.dreamTeam],
@@ -341,7 +404,7 @@ export class InjectGuidedTourDataServerService {
     });
 
     AssignmentTerms.insert({
-      name: "Soirée au Krusty Krab",
+      name: "Soirée au Krusty Krab" + this.options.suffix,
       start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 19, 0),
       end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 23, 0),
       teams: [this.teams.volunteers, this.teams.dreamTeam],
@@ -376,7 +439,7 @@ export class InjectGuidedTourDataServerService {
     console.info("***********************************************************************");
     console.info("populateActivities");
     Activities.insert({
-      name: "Tous au Krusty Krab !",
+      name: "Tous au Krusty Krab ! " + this.options.suffix,
       teamId: this.teams.dreamTeam,
       liveEventMasterId: this.users.bob,
       placeId: this.bocalPlace,
@@ -397,7 +460,7 @@ export class InjectGuidedTourDataServerService {
     //tasks
     this.tasks = {};
     this.tasks.burgers = Tasks.insert({
-      name: "Servir des burgers",
+      name: "Servir des burgers " + this.options.suffix,
       teamId: this.teams.dreamTeam,
       liveEventMasterId: this.users.sandy,
       placeId: this.bocalPlace,
@@ -440,6 +503,7 @@ export class InjectGuidedTourDataServerService {
   }
 
   addSettings() {
+    if (!this.init) return;
     console.info("***********************************************************************");
     console.info("add settings");
     Settings.insert({one: 1});
