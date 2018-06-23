@@ -3,13 +3,11 @@ import {Inject24h43emeDataServerService} from "./service/Inject24h43emeDataServe
 import {Inject24hDataServerService} from "./service/Inject24hDataServerService";
 import {InjectDataHelperServerService} from "./service/InjectDataHelperServerService";
 import {InjectDataServerService} from "./service/InjectDataServerService";
+import {InjectGuidedTourDataServerService} from "./service/InjectGuidedTourDataServerService";
 
 InjectDataInfo = new Mongo.Collection("inject_data_infos");
 
 Meteor.startup(function () {
-
-  Meteor.isProduction = true;
-  Meteor.isDevelopment = false;
 
   console.log("***********************************************************************");
   console.log("***********************************************************************");
@@ -97,8 +95,10 @@ Meteor.startup(function () {
     dataInjectClass: process.env.DATA_INJECT_CLASS,
     //production
     skipInitAccessRight: process.env.SKIP_INIT_ACCESS_RIGHT == "true",
-    itIsNotProductionItsOkToDeleteData: process.env.IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA == "truetrue"
+    itIsNotProductionItsOkToDeleteData: process.env.IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA == "truetrue",
+    iKnowWhatIAmDoing: process.env.IT_IS_REALLY_NOT_PRODUCTION == "iknowwhatiamdoing"
   };
+  if(!envReport.iKnowWhatIAmDoing) envReport.itIsNotProductionItsOkToDeleteData = false;
 
   console.info("Meteor.startup: using data inject configuration env ");
   console.info(envReport);
@@ -106,7 +106,12 @@ Meteor.startup(function () {
   let injectClasses = {
     injectData: new InjectDataServerService(),
     inject24hData: new Inject24hDataServerService(),
-    inject24h43emeData: new Inject24h43emeDataServerService()
+    inject24h43emeData: new Inject24h43emeDataServerService(),
+    injectGuidedTour: new InjectGuidedTourDataServerService( {
+      year: 2018,
+      month: 10,
+      date: 1
+    })
   };
 
 
@@ -125,12 +130,11 @@ Meteor.startup(function () {
     }
 
   } else if (Meteor.isDevelopment || envReport.itIsNotProductionItsOkToDeleteData) {
-    if(!Meteor.isDevelopment) {
+    if (!Meteor.isDevelopment) {
       console.warn("Meteor.startup: Meteor.isProduction has been forced to false because of IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA");
       Meteor.isProduction = false;
     }
     if (InjectDataHelperServerService.isInjectDataRequired(envReport)) {
-
       console.info("Meteor.startup: dev mode: wipe out all data and inject minimum access right, aka a superadmin user ");
       InjectDataHelperServerService.deleteAll();
       InjectDataHelperServerService.initAccessRightData();
@@ -139,7 +143,7 @@ Meteor.startup(function () {
       if (envReport.dataInjectClass != "") {
         if (injectClasses[envReport.dataInjectClass]) {
           console.info(`Meteor.startup: dev mode: inject data class ${envReport.dataInjectClass} (env DATA_INJECT_CLASS). Please note minimum access right should be present, you can use DATA_INJECT_MINIMUM_ACCESS_RIGHT.`);
-          //no support for injecting several class
+          //no support for injecting several class so far
           //InjectDataInfo.insert({triggerEnv: envReport.dataInjectClass, date: new Date(), envReport: envReport});
           Meteor.injectDataServerService = injectClasses[envReport.dataInjectClass];
           Meteor.injectDataServerService.injectAllData();
@@ -149,17 +153,15 @@ Meteor.startup(function () {
         }
       }
     }
-    if(!Meteor.isDevelopment) {
+    if (!Meteor.isDevelopment) {
       Meteor.isProduction = true;
       console.warn("Meteor.startup: Meteor.isProduction has been forced back to true");
     }
   }
 
-
   if (superadminpassword) {
     InjectDataHelperServerService.printSuperAdmin(superadminpassword);
   }
-
 
   console.info("Meteor.isStarting is complete");
   Meteor.isStartingUp = false;

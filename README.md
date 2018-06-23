@@ -494,7 +494,11 @@ users are already there or you will seed your database differently (not recommen
 
 ##### IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA
 Force isDevelopment mode to allow wiping out and injected data. It is only valid at startup, 'isProduction' remains
-true for the app lifecycle. Value should be 'truetrue', just because it's we don't want to easily allow deleting data in production. 
+true for the app lifecycle. Value should be 'truetrue', just because we don't want to easily allow deleting data in production. 
+
+##### IT_IS_REALLY_NOT_PRODUCTION
+Value should be 'iknowwhatiamdoing' to enable usage of IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA. The usage for both env
+is not being explained in the logs. 
 
 ##### MAILGUN_PASSWORD
 
