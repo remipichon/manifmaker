@@ -9,7 +9,7 @@ export class InjectGuidedTourDataServerService {
   }
 
   injectAllData() {
-    if(this.init){
+    if (this.init) {
       InjectDataInfo.insert({triggerEnv: "GUIDED_TOUR", date: new Date(), options: this.options});
     }
     this.injectGroupRoles();
@@ -116,8 +116,8 @@ export class InjectGuidedTourDataServerService {
     console.info("***********************************************************************");
     this.teams = {};
     console.info("inject Teams");
-    this.teams['dreamTeam'] = Teams.insert({name: "dreamTeam" + this.options.suffix});
-    this.teams['volunteers'] = Teams.insert({name: "volunteers" + this.options.suffix});
+    this.teams['dreamTeam'] = Teams.insert({name: "Dream Team " + this.options.suffix});
+    this.teams['volunteers'] = Teams.insert({name: "Volunteers " + this.options.suffix});
   }
 
   populateSkill() {
@@ -242,151 +242,91 @@ export class InjectGuidedTourDataServerService {
 
   populatePlaces() {
     console.info("***********************************************************************");
+    this.places = {}
     if (!this.init) {
-      this.qgPlace = Places.findOne({name: "QG Orga"})._id;
-      this.bocalPlace = Places.findOne({name: "Bocal"})
-      this.humaPlace = Places.findOne({name: "Pelouse Humas"})._id;
-      this.petiteScenePlace = Places.findOne({name: "Petite scene"})._id;
-      this.grandeScenePlace = Places.findOne({name: "Grande scene"})._id;
+      this.places['plage'] = Places.findOne({name: "Plage de Bikini Bottom"})._id;
+      this.places['ck'] = Places.findOne({name: "Crousty Krab Croustillant"})._id;
     } else {
       //places
       console.info("inject Places");
-      this.qgPlace = Places.insert({name: "QG Orga", location: "45.783142, 4.874600"});
-      this.bocalPlace = Places.insert({name: "Bocal", location: "45.783142, 4.874600"});
-      this.humaPlace = Places.insert({name: "Pelouse Humas", location: "45.783142, 4.874600"});
-      this.petiteScenePlace = Places.insert({name: "Petite scene", location: "45.783142, 4.874600"});
-      this.grandeScenePlace = Places.insert({name: "Grande scene", location: "45.783142, 4.874600"});
+      this.places['plage'] = Places.insert({name: "Plage de Bikini Bottom", location: "45.783142, 4.874600"});
+      this.places['ck'] = Places.insert({name: "Crousty Krab Croustillant", location: "45.783142, 4.874600"});
     }
   }
 
   populateEquipmentCategories() {
     console.info("***********************************************************************");
     //equipment categories
-    console.info("inject EquipmentCategories");
-    this.barriereEquipmentCategory = EquipmentCategories.insert({name: "barrière"});
-    this.attacheEquipmentCategory = EquipmentCategories.insert({name: "attache"});
-    this.vehiculeEquipmentCategory = EquipmentCategories.insert({name: "véhicule"});
-    this.elecEquipmentCategory = EquipmentCategories.insert({name: "élec", extraComputeRule: "SUM"});
+    this.equipmentCategories = {};
+    if (!this.init) {
+      this.equipmentCategories['plage'] = EquipmentCategories.findOne({name: "Necessaire de plage"})._id;
+    } else {
+      console.info("inject EquipmentCategories");
+      this.equipmentCategories['plage'] = EquipmentCategories.insert({name: "Necessaire de plage"});
+    }
   }
 
   populateEquipment() {
     console.info("***********************************************************************");
     //equipment
-    console.info("inject Equipments");
-    this.vauban = Equipments.insert({
-      name: "vauban",
-      quantity: 1500,
-      targetUsage: EquipementTargetUsage.ACTIVITY,
-      EquipmentCategories_Id: this.barriereEquipmentCategory
-    });
-    this.MI = Equipments.insert({
-      name: "MI",
-      quantity: 200,
-      targetUsage: EquipementTargetUsage.ACTIVITY,
-      EquipmentCategories_Id: this.barriereEquipmentCategory
-    });
-    this.herras = Equipments.insert({
-      name: "herras",
-      quantity: 400,
-      targetUsage: EquipementTargetUsage.ACTIVITY,
-      EquipmentCategories_Id: this.barriereEquipmentCategory
-    });
-    this.plotHerras = Equipments.insert({
-      name: "plot herras",
-      quantity: 10,
-      targetUsage: EquipementTargetUsage.ACTIVITY,
-      EquipmentCategories_Id: this.barriereEquipmentCategory
-    });
-    this.colson = Equipments.insert({
-      name: "colson",
-      quantity: 10000,
-      targetUsage: EquipementTargetUsage.TASK,
-      EquipmentCategories_Id: this.attacheEquipmentCategory
-    });
-    this.scotch = Equipments.insert({
-      name: "scotch",
-      quantity: 20,
-      targetUsage: EquipementTargetUsage.TASK,
-      EquipmentCategories_Id: this.attacheEquipmentCategory
-    });
-    var equipment24 = Equipments.insert({
-      name: "20m3",
-      quantity: 10,
-      targetUsage: EquipementTargetUsage.TASK,
-      EquipmentCategories_Id: this.attacheEquipmentCategory
-    });
-    this.dixCube = Equipments.insert({
-      name: "10m3",
-      quantity: 1,
-      targetUsage: EquipementTargetUsage.TASK,
-      EquipmentCategories_Id: this.vehiculeEquipmentCategory
-    });
-    this.sixCube = Equipments.insert({
-      name: "6m3",
-      quantity: 1,
-      targetUsage: EquipementTargetUsage.TASK,
-      EquipmentCategories_Id: this.vehiculeEquipmentCategory
-    });
-    this.fenwirk = Equipments.insert({
-      name: "fenwick",
-      quantity: 2,
-      targetUsage: EquipementTargetUsage.TASK,
-      EquipmentCategories_Id: this.vehiculeEquipmentCategory
-    });
-    this.voitureQuentin = Equipments.insert({
-      name: "Voiture Quentin",
-      quantity: 1,
-      targetUsage: EquipementTargetUsage.TASK,
-      EquipmentCategories_Id: this.vehiculeEquipmentCategory
-    });
-    this.grandFrigo = Equipments.insert({
-      name: "Grand Frigo",
-      quantity: 3,
-      extra: "30W",
-      targetUsage: EquipementTargetUsage.ACTIVITY,
-      EquipmentCategories_Id: this.elecEquipmentCategory
-    });
-    this.petitFrigo = Equipments.insert({
-      name: "Petit Frigo",
-      quantity: 7,
-      extra: "15W",
-      targetUsage: EquipementTargetUsage.ACTIVITY,
-      EquipmentCategories_Id: this.elecEquipmentCategory
-    });
+    this.equipments = {};
+    if (!this.init) {
+      this.equipments['chaise'] = Equipments.findOne({name: "chaise longue"})._id;
+      this.equipments['sautjaune'] = Equipments.findOne({name: "saut jaune en plastique"})._id;
+      this.equipments['sautbleu'] = Equipments.findOne({name: "saut bleu en plastique"})._id;
+      this.equipments['pelle'] = Equipments.findOne({name: "pelle en plastique"})._id;
+    } else {
+      console.info("inject Equipments");
+      this.equipments['chaise'] = Equipments.insert({
+        name: "chaise longue",
+        quantity: 20,
+        targetUsage: EquipementTargetUsage.ACTIVITY,
+        EquipmentCategories_Id: this.equipmentCategories.plage
+      });
+      this.equipments['sautjaune'] = Equipments.insert({
+        name: "saut jaune en plastique",
+        quantity: 1,
+        targetUsage: EquipementTargetUsage.ACTIVITY,
+        EquipmentCategories_Id: this.equipmentCategories.plage
+      });
+      this.equipments['sautbleu'] = Equipments.insert({
+        name: "saut bleue en plastique",
+        quantity: 1,
+        targetUsage: EquipementTargetUsage.ACTIVITY,
+        EquipmentCategories_Id: this.equipmentCategories.plage
+      });
+      this.equipments['pelle'] = Equipments.insert({
+        name: "pelle en plastique",
+        quantity: 30,
+        targetUsage: EquipementTargetUsage.TASK,
+        EquipmentCategories_Id: this.equipmentCategories.plage
+      });
+
+    }
+
+
   }
 
   populateStorage() {
     console.info("***********************************************************************");
-    //storage
     console.info("inject EquipmentStorages");
-    this.humasStorage = EquipmentStorages.insert({name: "Depot humas"});
-    this.AIPStorage = EquipmentStorages.insert({name: "Depot AIP"});
-    this.creuxStorage = EquipmentStorages.insert({name: "Creux GCU"});
   }
 
   populatePowerSupply() {
     console.info("***********************************************************************");
-    //power supply
     console.info("inject PowerSupplies");
-    this.AIPPowerSupply = PowerSupplies.insert({name: "AIP"});
-    this.GCUPowerSupply = PowerSupplies.insert({name: "GCU"});
 
   }
 
   populateWaterSupply() {
     console.info("***********************************************************************");
     console.info("inject WaterSupplies");
-    this.AIWaterSupply = WaterSupplies.insert({name: "AIP"});
-    this.GCUWaterSupply = WaterSupplies.insert({name: "GCU"});
 
   }
 
   populateWaterDisposal() {
     console.info("***********************************************************************");
     console.info("inject WaterDisposals");
-    this.AIWaterDisposal = WaterDisposals.insert({name: "AIP"});
-    this.GCUWaterDisposal = WaterDisposals.insert({name: "GCU"});
-
   }
 
   populateAssignmentTerms() {
@@ -394,7 +334,7 @@ export class InjectGuidedTourDataServerService {
     //assignmentCalendarDay
     console.info("inject AssignmentTerms");
     AssignmentTerms.insert({
-      name: "Journée Plage" + this.options.suffix,
+      name: "Journée Plage " + this.options.suffix,
       start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 8, 0),
       end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 18, 0),
       teams: [this.teams.volunteers, this.teams.dreamTeam],
@@ -404,7 +344,7 @@ export class InjectGuidedTourDataServerService {
     });
 
     AssignmentTerms.insert({
-      name: "Soirée au Krusty Krab" + this.options.suffix,
+      name: "Soirée au Krusty Krab " + this.options.suffix,
       start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 19, 0),
       end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 23, 0),
       teams: [this.teams.volunteers, this.teams.dreamTeam],
@@ -418,21 +358,6 @@ export class InjectGuidedTourDataServerService {
   populateAccessPoint() {
     console.info("***********************************************************************");
     console.info("populateAccessPoint");
-    this.accessPoint1 = AccessPoints.insert({
-      name: "PS1",
-      selectedImage: "PS1 selected image",
-      notSelectedImage: "PS1 not selected image"
-    });
-    this.accessPoint2 = AccessPoints.insert({
-      name: "PS2",
-      selectedImage: "PS2 selected image",
-      notSelectedImage: "PS2 not selected image"
-    });
-    this.accessPoint3 = AccessPoints.insert({
-      name: "PS3",
-      selectedImage: "PS3 selected image",
-      notSelectedImage: "PS3 not selected image"
-    });
   }
 
   populateActivities() {
@@ -442,7 +367,7 @@ export class InjectGuidedTourDataServerService {
       name: "Tous au Krusty Krab ! " + this.options.suffix,
       teamId: this.teams.dreamTeam,
       liveEventMasterId: this.users.bob,
-      placeId: this.bocalPlace,
+      placeId: this.places.ck,
       masterId: this.users.bob,
     });
   }
@@ -450,7 +375,6 @@ export class InjectGuidedTourDataServerService {
   populateTaskGroups() {
     console.info("***********************************************************************");
     console.info("populateTaskGroups");
-    //task groups
   }
 
   populateTasks() {
@@ -463,7 +387,7 @@ export class InjectGuidedTourDataServerService {
       name: "Servir des burgers " + this.options.suffix,
       teamId: this.teams.dreamTeam,
       liveEventMasterId: this.users.sandy,
-      placeId: this.bocalPlace,
+      placeId: this.places.ck,
       masterId: this.users.sandy,
       timeSlotValidation: {
         currentState: ValidationState.READY,

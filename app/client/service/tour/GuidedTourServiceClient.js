@@ -87,20 +87,24 @@ export class GuidedTourServiceClient {
       $("#message").css('left', left);
       $("#message").css('top', top);
 
-      var i = 100;
-      var counterBack = setInterval(function () {
-        //for pause
-        //at pause, we need to clear the interval and set another infite one
-        //at play, we reset the infinite interval and set a new interval with what's remaining of time
-        i--;
-        if (i > 0) {
-          $('#guide-progress-bar').css('width', i + '%');
-        } else {
-          endOfAlert()
-        }
-      }, duration / 100);
-
+      if(duration == 0){
+        endOfAlert();
+      } else {
+        var i = 100;
+        var counterBack = setInterval(function () {
+          //for pause
+          //at pause, we need to clear the interval and set another infite one
+          //at play, we reset the infinite interval and set a new interval with what's remaining of time
+          i--;
+          if (i > 0) {
+            $('#guide-progress-bar').css('width', i + '%');
+          } else {
+            endOfAlert()
+          }
+        }, duration / 100);
+      }
     })
+
   }
 
   /**
@@ -116,7 +120,7 @@ export class GuidedTourServiceClient {
       let target = `[for='${labelToClickOn}']`;
       GuidedTourServiceClient.scrollIfTargetOutOfWindow(target)
         .then(() => GuidedTourServiceClient.clickOn(target, delay))
-        .then(() => GuidedTourServiceClient.waitFor(`.popover :contains(${options[0]})`))
+        .then(() => GuidedTourServiceClient.waitFor(`.popover :contains('${options[0]}')`))
         .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(GuidedTourServiceClient.getJqueryObject(".popover")))
         .then(() => GuidedTourServiceClient.sleep(delay))
         .then(() => {
@@ -151,7 +155,9 @@ export class GuidedTourServiceClient {
    * @param hours           string, format HH
    * @returns {Promise}
    */
-  static selectDate(datetimepickerSelector, date, month, hours, speed) {
+  static selectDate(datetimepickerSelector, momentDate, hours, speed) {
+    let date = momentDate.format("MM/DD/YYYY");
+    let month = momentDate.format("MMM");
     return new Promise(resolve => {
       let datetimepicker = GuidedTourServiceClient.getJqueryObject(datetimepickerSelector);
       GuidedTourServiceClient.clickOn(datetimepicker, speed)
@@ -187,9 +193,9 @@ export class GuidedTourServiceClient {
           return new Promise(resolve => {
             if (hours)
               GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hour[data-action=showHours]`, speed)
-                .then(() => GuidedTourServiceClient.waitFor(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`))
+                .then(() => GuidedTourServiceClient.waitFor(`.timepicker .timepicker-hours [data-action='selectHour']:contains(${hours})`))
                 .then(() => GuidedTourServiceClient.sleep(speed))
-                .then(() => GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hours [data-action="selectHour"]:contains(${hours})`, speed))
+                .then(() => GuidedTourServiceClient.clickOn(`.timepicker .timepicker-hours [data-action='selectHour']:contains(${hours})`, speed))
                 .then(() => GuidedTourServiceClient.sleep(speed))
                 .then(() => resolve());
             else
@@ -256,7 +262,7 @@ export class GuidedTourServiceClient {
           GuidedTourServiceClient._waitFor(query.selector, resolve)
         })
       }
-    } else if ($(`body:contains('${query}')`).length != 0) {
+    } else if ($(`body:contains("${query}")`).length != 0) {
       resolve()
     } else if ($(`${query}`).length != 0) {
       resolve();
@@ -328,6 +334,8 @@ export class GuidedTourServiceClient {
     return new Promise(resolveClickOn => {
       let component = GuidedTourServiceClient.getJqueryObject(cssSelector);
       GuidedTourServiceClient.waitFor(component).then(resolveWaiting => {
+        component = GuidedTourServiceClient.getJqueryObject(cssSelector);
+        console.debug("clickOn ",cssSelector, component);
         let componentPosition = component[0].getBoundingClientRect() //component.offset(); //absolute top left position
         let componentHeight = component.height();
         let componentWidth = component.width();

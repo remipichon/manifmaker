@@ -17,11 +17,13 @@ export class PlayTourServiceClient {
       taskName: "Pile Up Sand" + suffix,
       regularUser: {  //ACTIVITY RW TASK RW
         email: `spongebob${suffix}@yopmail.com`,
-        pwd: `spongebob`
+        pwd: `spongebob`,
+        name: "spongebob" + suffix
       },
       equipmentUser: {  //ACTIVITY RW TASK RW EQUIPMENTVALIDATION ACTIVIITYGENERALVALIDATION CONFMAKER
         email: `patrickstar${suffix}@yopmail.com`,
-        pwd: `patrickstar`
+        pwd: `patrickstar`,
+        name: "patrickstar" + suffix
       },
       assignmentUser: {  //ACTIVITY RW TASK RW ASSIGNMENTVALIDAITON  ASSIGNMENTTASKUSER
         email: `sandycheeks${suffix}@yopmail.com`,
@@ -30,9 +32,28 @@ export class PlayTourServiceClient {
       term: {
         name: `Journée Plage ${suffix}`
       },
+      places:{
+        plage: "Plage de Bikini Bottom"
+      },
+      teams: {
+        regularTeam: "Dream Team " + suffix
+      },
+      equipments: {
+        sautjaune: "saut jaune en plastique",
+        sautbleu: "saut bleu en plastique",
+        chaise: "chaise longue",
+        pelle: "pelle en plastique"
+      },
+      skills: {
+        fen: "Permis cariste pour le fen"
+      }
     };
 
-    let startDate = new moment(`${options.options.year}/${options.options.month}/${options.options.date}`,"YYYY/MM/DD");
+
+    let startDate = new moment().year(options.options.year).month(options.options.month).date(options.options.date).hour(0).minute(0).second(0);
+
+
+    options.activityDate = startDate;
 
     options.timeSlot = {
       start: startDate.set("h",10).toString(),
@@ -40,7 +61,7 @@ export class PlayTourServiceClient {
     };
 
     options.volunteerUser = {  //part of team with access to terms, already validated
-      email: "squidwardtantacles@yopmail.com",
+      email: `squidwardtantacles${suffix}@yopmail.com`,
       pwd: "squidwardtantacles",
       availabilities: [
         startDate.set("h",8).toString(),

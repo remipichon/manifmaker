@@ -58,12 +58,12 @@ Router.route('/', function () {
  */
 Router.route('/tour', function () {
 
-    alert("about to inject data for your tour");
+    alert("about to inject data for your tour, click ok");
     Meteor.call("injectGuidedTourData", function (error, result) {
       if (error) {
         alert(error);
       } else {
-        alert("inject happened without error, you can start the tour");
+        alert("inject happened without error, the tour will start, click ok");
         PlayTourServiceClient.playScenarii(2, result);
         Router.go("/");
       }

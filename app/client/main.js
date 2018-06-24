@@ -3,7 +3,6 @@ import {AutoForm} from 'meteor/aldeed:autoform'
 import {UserServiceClient} from "../client/service/UserServiceClient";
 import {GuidedTourServiceClient} from "../client/service/tour/GuidedTourServiceClient";
 import {PlayTourServiceClient} from "../client/service/tour/PlayTourServiceClient";
-import {PlayTourServiceClient2} from "../client/service/tour/PlayTourServiceClient2";
 import {TaskScenarioServiceClient} from "../client/service/tour/TaskScenarioServiceClient";
 import {Utils} from "../client/service/Utils";
 
@@ -123,11 +122,6 @@ Meteor.startup(function () {
   });
 
   Status.setTemplate('semantic_ui');
-
-  window.GuidedTourServiceClient = GuidedTourServiceClient;
-  window.PlayTourServiceClient = PlayTourServiceClient;
-  window.PlayTourServiceClient2 = PlayTourServiceClient2;
-  window.TaskScenarioServiceClient = TaskScenarioServiceClient
 
 });
 

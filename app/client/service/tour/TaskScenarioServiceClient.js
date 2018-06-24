@@ -28,34 +28,32 @@ export class TaskScenarioServiceClient {
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.typeText(options.taskName, "[for=first_name] ~ input", 50 * speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.selectOption("Team", "confiance", speed))
+      .then(() => GuidedTourServiceClient.selectOption("Team", options.teams.regularTeam, speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.selectOption("User responsible", "hard3", speed))
+      .then(() => GuidedTourServiceClient.selectOption("User responsible", options.regularUser.name, speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.selectOption("Rendez-vous point", "Petite scene", speed))
+      .then(() => GuidedTourServiceClient.selectOption("Rendez-vous point", options.places.plage, speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.selectOption("Live event responsible", "bureau", speed))
+      .then(() => GuidedTourServiceClient.selectOption("Live event responsible", options.equipmentUser.name, speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed)) //poney trick, because doing both responsbiles in a row, the second click on the first one that didn't dissapear yet
       .then(() => GuidedTourServiceClient.waitFor("Insert"))
       .then(() => GuidedTourServiceClient.clickOn(GuidedTourServiceClient.findComponentByContent("Insert"), speed))
-      .then(() => GuidedTourServiceClient.waitFor("Delete " + options.taskName))
+      .then(() => GuidedTourServiceClient.waitFor("Linked Activity"))
   }
 
   //assuming where are already on the update form
   static fillUpdateTaskForm(speed, options) {
     return GuidedTourServiceClient.selectOption("Linked Activity", options.activityName, speed)
       .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.typeText("<p>Avec le fenwick et les pelles en plastiques disponobles, il faut faire des tres gros tas de sables.</p>" +
-        "<p>Le mieux c'est d'en faire a droite et a gauche ainsi que au millieu, devant et derriere.</p>" +
-        "<p>Oubliez pas les cotés ! Il faut faire des tas haut mais pas trop. </p>" +
-        "<p>Vive la plage ! </p>",
+      .then(() => GuidedTourServiceClient.typeText("Avec le fenwick et les pelles en plastiques disponobles, il faut faire des tres gros tas de sables.\n" +
+        "Le mieux c'est d'en faire a droite et a gauche ainsi que au millieu, devant et derriere.\n" +
+        "Oubliez pas les cotés ! Il faut faire des tas haut mais pas trop." +
+        "Vive la plage ! </p>",
         "[name=description]", 10 * speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Equipment)"))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.typeEquipment(10, "colson", 300 * speed))
-      .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.typeEquipment(5, "fenwick", 300 * speed))
+      .then(() => GuidedTourServiceClient.typeEquipment(10, options.equipments.pelle, 300 * speed))
       .then(() => GuidedTourServiceClient.sleep(1200 * speed))
       .then(() => TaskScenarioServiceClient.playWithTimeSlots(speed, options))
       .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Validation)"))
@@ -93,7 +91,7 @@ export class TaskScenarioServiceClient {
         "Il est également possible de demander quelqu'un en particulier.</p>", speed * 25000, "center", "big"))
       .then(() => GuidedTourServiceClient.clickOn(".add-people-need .add-button", speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.selectOption("Need a specific team", "hard", speed))
+      .then(() => GuidedTourServiceClient.selectOption("Need a specific team", options.teams.regularTeam, speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.clickOn(".add-people-need .done-button", speed))
       .then(() => GuidedTourServiceClient.sleep(1200 * speed))
@@ -104,7 +102,7 @@ export class TaskScenarioServiceClient {
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.clickOn(".add-people-need .add-button", speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
-      .then(() => GuidedTourServiceClient.selectOption("Need of set of skills", ["Responsable Bar", "Responsable Anim"], speed)) //trick to select several skills
+      .then(() => GuidedTourServiceClient.selectOption("Need of set of skills", [options.skills.fen], speed)) //trick to select several skills
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.clickOn(".add-people-need .done-button", speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
@@ -150,7 +148,7 @@ export class TaskScenarioServiceClient {
       .then(() => GuidedTourServiceClient.selectOption("Validation Status", "Assignment validation In validation process", speed))
       .then(() => GuidedTourServiceClient.standardSleep(speed))
       .then(() => GuidedTourServiceClient.clickOn(`td:contains('${options.taskName}') ~ td .btn[title=Edit]`, speed))
-      .then(() => GuidedTourServiceClient.waitFor(`Delete ${options.taskName}`))
+      .then(() => GuidedTourServiceClient.waitFor("Linked Activity"))
       .then(() => GuidedTourServiceClient.scrollIfTargetOutOfWindow(".panel-heading:contains(Validation)"))
       .then(() => GuidedTourServiceClient.typeText("Ready for assignment, yeah !", ".validation-comment-input[for='Time Slot'] input", 0 * speed))
       .then(() => GuidedTourServiceClient.clickOn(".validation-comment-input[for='Time Slot'] .close-button", speed))
