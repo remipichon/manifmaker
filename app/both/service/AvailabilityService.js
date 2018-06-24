@@ -170,7 +170,7 @@ export class AvailabilityService {
     var term = AssignmentTerms.findOne({
       teams: {$in: user.teams},
       start: {$lte: start},
-      end: {$gt: end},
+      end: {$gte: end},
       $or: [
         {
           assignmentTermPeriods: []
@@ -192,7 +192,7 @@ export class AvailabilityService {
       term = AssignmentTerms.findOne({
         teams: {$in: user.teams},
         start: {$lte: start},
-        end: {$gt: end},
+        end: {$gte: end},
       });
 
       //lets say an availabity start will always match a period start
