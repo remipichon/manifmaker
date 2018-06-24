@@ -32,13 +32,16 @@ services:
             - MONGO_URL=mongodb
             - MANIFMAKER_ENDPOINT=http://manifmaker:80
             - EXPORT_PDF_ENDPOINT=http://node_export_pdf:3030/export
-            - NGINX_ENDPOINT=http://preprod-manifmaker.remip.eu/pdf/
-            - PUBLIC_ACCESS=http://preprod-manifmaker.remip.eu
-            - VIRTUAL_HOST=preprod-manifmaker.remip.eu #for nginx-proxy
+            - NGINX_ENDPOINT=http://${VIRTUAL_HOST}/pdf/
+            - PUBLIC_ACCESS=http://${VIRTUAL_HOST}
+            - VIRTUAL_HOST=${VIRTUAL_HOST} #for nginx-proxy
             - GOOGLE_CLIENTID=${GOOGLE_CLIENTID}
             - GOOGLE_SECRET=${GOOGLE_SECRET}
             - FACEBOOK_APPID=${FACEBOOK_APPID}
             - FACEBOOK_SECRET=${FACEBOOK_SECRET}
+            - DATA_INJECT_EVERYTIME=${DATA_INJECT_EVERYTIME}
+            - DATA_INJECT_ONCE=${DATA_INJECT_ONCE}
+            - DATA_INJECT_CLASS=${DATA_INJECT_CLASS}
         networks:
           - voc_network
           - manifmaker
