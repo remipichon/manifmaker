@@ -23,7 +23,7 @@ services:
             - manifmaker
 
     manifmaker: #Main App
-        image: 'assomaker/manifmaker:0.3.2'
+        image: 'assomaker/manifmaker:0.3.3'
         depends_on:
           - mongodb
         environment:
