@@ -140,7 +140,6 @@ Meteor.startup(function () {
       console.info("Meteor.startup: dev mode: wipe out all data and inject minimum access right, aka a superadmin user ");
       InjectDataHelperServerService.deleteAll();
       InjectDataHelperServerService.initAccessRightData();
-      InjectDataInfo.insert({triggerEnv: "DATA_INJECTED", date: new Date(), envReport: envReport});
 
       if (envReport.dataInjectClass != "") {
         if (injectClasses[envReport.dataInjectClass]) {
@@ -149,6 +148,7 @@ Meteor.startup(function () {
           //InjectDataInfo.insert({triggerEnv: envReport.dataInjectClass, date: new Date(), envReport: envReport});
           Meteor.injectDataServerService = injectClasses[envReport.dataInjectClass];
           Meteor.injectDataServerService.injectAllData();
+          InjectDataInfo.insert({triggerEnv: "DATA_INJECTED", date: new Date(), envReport: envReport});
         } else {
           console.info(`Meteor.startup: dev mode: inject data class ${envReport.dataInjectClass} doesn't exist (env DATA_INJECT_CLASS). No more data to add.`);
           console.info(`Meteor.startup: dev mode: available data class are ${Object.keys(injectClasses)}`)
