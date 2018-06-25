@@ -4,6 +4,7 @@ import {Inject24hDataServerService} from "./service/Inject24hDataServerService";
 import {InjectDataHelperServerService} from "./service/InjectDataHelperServerService";
 import {InjectDataServerService} from "./service/InjectDataServerService";
 import {InjectGuidedTourDataServerService} from "./service/InjectGuidedTourDataServerService";
+var pjson = require('/package.json');
 
 InjectDataInfo = new Mongo.Collection("inject_data_infos");
 
@@ -16,7 +17,7 @@ Meteor.startup(function () {
   console.log("*");
   console.log("*");
   console.log("*");
-  console.info("Manifmaker is starting");
+  console.info(`Manifmaker is starting '${pjson.version}'`);
   console.log("*");
   console.log("*");
   console.log("*");
