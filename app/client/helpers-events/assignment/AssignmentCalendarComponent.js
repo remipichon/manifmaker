@@ -281,7 +281,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
           }
         };
 
-        timeSlotsFilter.$elemMatch.$or.push(
+        timeSlotsFilter.$elemMatch.$or.push(//need exact user
           {
             //userId filter
             peopleNeeded: {
@@ -294,7 +294,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
             end: {$gt: selectedDate.toDate(), $lte: availability.end}
           }
         );
-        timeSlotsFilter.$elemMatch.$or.push(
+        timeSlotsFilter.$elemMatch.$or.push(//need skills and team
           {
             //skills filter
             peopleNeeded: {
@@ -305,7 +305,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                   }
                 },
                 teamId: {
-                  $in: (user.teams.length === 0) ? [null] : user.teams
+                  $in: user.teams
                 }
               }
             },
@@ -314,7 +314,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
             end: {$gt: selectedDate.toDate(), $lte: availability.end}
           }
         );
-        timeSlotsFilter.$elemMatch.$or.push(
+        timeSlotsFilter.$elemMatch.$or.push(//need no skill but eam
           {
             //skills filter
             peopleNeeded: {
@@ -327,6 +327,24 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
                 teamId: {
                   $in: user.teams
                 }
+              }
+            },
+            //availabilities filter
+            start: {$gte: availability.start, $lte: selectedDate.toDate()},
+            end: {$gt: selectedDate.toDate(), $lte: availability.end}
+          }
+        );
+        timeSlotsFilter.$elemMatch.$or.push(//need skills and no team
+          {
+            //skills filter
+            peopleNeeded: {
+              $elemMatch: {
+                skills: {
+                  $elemMatch: {
+                    $in: user.skills
+                  }
+                },
+                teamId: null
               }
             },
             //availabilities filter
