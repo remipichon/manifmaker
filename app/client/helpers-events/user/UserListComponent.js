@@ -80,7 +80,8 @@ class UserListComponent extends BlazeComponent {
         headerClass: 'col-sm-3',
         fnAdjustColumnSizing: true,
         fn: _.bind(function (value) {
-          return Utils.camelize(value);
+          if(value) return Utils.camelize(value);
+          return ""
         }, this)
       },
       {
