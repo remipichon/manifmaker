@@ -43,6 +43,7 @@ branch deploy : [![Build Status](https://travis-ci.org/assomaker/manifmaker.svg?
          * [Data integrity](#data-integrity)
       * [JWT](#jwt)
       * [PDF Export](#pdf-export)
+      * [JSON Export](#json-export)
    * [Ops tools](#ops-tools)
       * [Environment variable](#environment-variable)
       * [Setup environment (production and preproduction available)](#setup-environment-production-and-preproduction-available)
@@ -458,8 +459,27 @@ docker rm -f nodeexport; docker run --env OUTPUTDIR=$OUTPUTDIR -v /var/run/docke
 docker rm -fv nginx; docker run --name nginx -p 8080:80 -d -v $OUTPUTDIR:/usr/share/nginx/html/pdf nginx
 ````
 
+<a id="json-export" name="json-export"></a>
+## JSON Export
+An endpoint is available to retrieve data as Json: `api/:resource/:action`. 
 
+Available resources and actions can be found at [ApiResourceActionService.js#L4](https://github.com/assomaker/manifmaker/blob/master/app/both/service/ApiResourceActionService.js#L4)
 
+### Add/Update JSON Export
+
+* add resources and actions entries in [ApiResourceActionService.js#L4](https://github.com/assomaker/manifmaker/blob/master/app/both/service/ApiResourceActionService.js#L4)
+* directly customize the model with
+  * `jsonExport: true` to enable simple type export (string, numbers...)
+  * `jsonExportCustom: function (value) { /*do something with value*/; return value}` to customise the data format. You can query the db to resolve _ids for example.
+     * it can also return an object to override the destination 'key' using 
+```
+return {
+    newValue: "newValue",
+    newKey: "newkeyinjson"
+}
+```
+
+> note that newKey can use the dot notation
     
 <a id="ops-tools" name="ops-tools"></a>
 # Ops tools
