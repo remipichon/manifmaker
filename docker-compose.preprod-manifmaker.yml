@@ -23,12 +23,12 @@ services:
             - manifmaker
 
     manifmaker: #Main App
-        image: 'assomaker/manifmaker:0.3.2'
+        image: 'assomaker/manifmaker:${MANIFMAKER_VERSION:-0.3.2}'
         depends_on:
           - mongodb
         environment:
             #- INJECT_ALL_DATA=true
-            - ROOT_URL=http://preprod-manifmaker.remip.eu/
+            - ROOT_URL=http://${VIRTUAL_HOST}/
             - MONGO_URL=mongodb
             - MANIFMAKER_ENDPOINT=http://manifmaker:80
             - EXPORT_PDF_ENDPOINT=http://node_export_pdf:3030/export
@@ -42,6 +42,8 @@ services:
             - DATA_INJECT_EVERYTIME=${DATA_INJECT_EVERYTIME}
             - DATA_INJECT_ONCE=${DATA_INJECT_ONCE}
             - DATA_INJECT_CLASS=${DATA_INJECT_CLASS}
+            - IT_IS_REALLY_NOT_PRODUCTION=${IT_IS_REALLY_NOT_PRODUCTION}
+            - IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA=${IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA}
         networks:
           - voc_network
           - manifmaker
