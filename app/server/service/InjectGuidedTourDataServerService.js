@@ -430,6 +430,7 @@ export class InjectGuidedTourDataServerService {
     if (!this.init) return;
     console.info("***********************************************************************");
     console.info("add settings");
+    Teams.insert({name: ASSIGNMENTREADYTEAM});
     Settings.insert({one: 1});
     Settings.update(Settings.findOne()._id, {
       $set: {createAccountDefaultTeam: this.teams.volunteers}

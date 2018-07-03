@@ -21,6 +21,7 @@ export class Inject24h43emeDataServerService {
 
 
   addSettings() {
+    Teams.insert({name: ASSIGNMENTREADYTEAM});
     Settings.insert({one: 1})
     Settings.update(Settings.findOne()._id, {
       $set: {createAccountDefaultTeam: Teams.findOne({name: "hard"})._id}

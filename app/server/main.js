@@ -105,10 +105,10 @@ Meteor.startup(function () {
   console.info(envReport);
 
   let injectClasses = {
-    injectData: new InjectDataServerService(),
-    inject24hData: new Inject24hDataServerService(),
-    inject24h43emeData: new Inject24h43emeDataServerService(),
-    injectGuidedTour: new InjectGuidedTourDataServerService( {
+    InjectData: new InjectDataServerService(),
+    Inject24hData: new Inject24hDataServerService(),
+    Inject24h43emeData: new Inject24h43emeDataServerService(),
+    InjectGuidedTourData: new InjectGuidedTourDataServerService( {
       year: 2018,
       month: 10,
       date: 1,
