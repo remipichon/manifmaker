@@ -3,6 +3,7 @@ const noSearchFilter = "";
 const noneFilter = {none: "none"};
 
 export var AssignmentReactiveVars = {
+  IsPopOverOpened: new ReactiveVar(false), //route and service
   UserFilter: new ReactiveVar(defaultFilter), //route and service
   UserIndexFilter: new ReactiveVar(noSearchFilter), //route and service
   TaskFilter: new ReactiveVar(defaultFilter), //route and calendar component

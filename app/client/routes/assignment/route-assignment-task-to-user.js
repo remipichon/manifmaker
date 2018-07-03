@@ -47,6 +47,7 @@ Router.route('/assignment/taskToUser/:taskId/:timeSlotId', function () {
     AssignmentReactiveVars.SelectedTimeSlot.set({_id: this.params.timeSlotId});
     AssignmentReactiveVars.isUsersListDeveloped.set(true);
     AssignmentReactiveVars.isTasksListDeveloped.set(false);
+    AssignmentReactiveVars.IsPopOverOpened.set(true);
 
     var task = Tasks.findOne({_id: this.params.taskId});
     var timeSlot = TimeSlotService.getTimeSlot(task, this.params.timeSlotId);
@@ -81,8 +82,8 @@ Router.route('/assignment/taskToUser/:taskId', function () {
     AssignmentReactiveVars.SelectedTask.set({_id: this.params.taskId});
     AssignmentReactiveVars.SelectedTimeSlot.set(null);
     AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.noneFilter);
-    AssignmentReactiveVars.isUsersListDeveloped.set(true);
-    AssignmentReactiveVars.isTasksListDeveloped.set(false);
+    AssignmentReactiveVars.isUsersListDeveloped.set(false);
+    AssignmentReactiveVars.isTasksListDeveloped.set(true);
 
 
   }, {

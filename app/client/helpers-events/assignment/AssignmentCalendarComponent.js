@@ -10,9 +10,6 @@ import {CalendarServiceClient} from "../../../client/service/CalendarServiceClie
 class AssignmentCalendarComponent extends BaseCalendarComponent {
   constructor() {
     super();
-    this.peopleNeedAssignedClick = 0; //to double click purpose..
-    this.isPopOverOpened = new ReactiveVar(false);
-    this.activeTimeSlot = new ReactiveVar(0);
   }
 
 
@@ -29,12 +26,12 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
   }
 
 
-  getActiveTimeSlot() {
-    return this.activeTimeSlot.get();
+  getActiveTimeSlotId() {
+    return AssignmentReactiveVars.SelectedTimeSlot.get()._id;
   }
 
   popOverIsOpen() {
-    return this.isPopOverOpened.get();
+    return AssignmentReactiveVars.IsPopOverOpened.get();
   }
 
   labelSkills() {
@@ -196,14 +193,13 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
   }
 
   openPopOver(event) {
-    event.stopPropagation();
-    this.activeTimeSlot.set(this.currentData()._id);
-    this.isPopOverOpened.set(true);
+    if (event) event.stopPropagation();
+    Router.go(`/assignment/taskToUser/${AssignmentReactiveVars.SelectedTask.get()._id}/${this.currentData()._id}`)
   }
 
   closePopOver(event) {
     event.stopPropagation();
-    this.isPopOverOpened.set(false);
+    AssignmentReactiveVars.IsPopOverOpened.set(false);
   }
 
   stopPropa(event) {

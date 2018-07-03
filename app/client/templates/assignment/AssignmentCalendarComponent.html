@@ -1,6 +1,6 @@
 <template name="assignmentTimeSlotCalendar">
     {{#if popOverIsOpen}}
-        {{#if equals getActiveTimeSlot _id}}
+        {{#if equals getActiveTimeSlotId _id}}
             <div class="popOver">
                 <div class="popOver-header">
                     {{#if taskName}}
