@@ -269,7 +269,7 @@ class AssignmentTasksList extends BlazeComponent {
         var date = AssignmentReactiveVars.SelectedDate.get();
         var start = new moment(timeSlot.start);
         var end = new moment(timeSlot.end);
-        if ((start.isBefore(date) || start.isSame(date)) &&
+        if ((start.isSame(date)) &&
           (end.isAfter(date) || end.isSame(date))) {
           result.push(timeSlot);
         }
