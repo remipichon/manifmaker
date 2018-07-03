@@ -2,18 +2,37 @@ import {ServerService} from "./service/ServerService";
 import {Inject24h43emeDataServerService} from "./service/Inject24h43emeDataServerService";
 import {Inject24hDataServerService} from "./service/Inject24hDataServerService";
 import {InjectDataHelperServerService} from "./service/InjectDataHelperServerService";
+import {InjectDataServerService} from "./service/InjectDataServerService";
+import {InjectGuidedTourDataServerService} from "./service/InjectGuidedTourDataServerService";
+var pjson = require('/package.json');
 
 InjectDataInfo = new Mongo.Collection("inject_data_infos");
 
-
 Meteor.startup(function () {
+
+  console.log("***********************************************************************");
+  console.log("***********************************************************************");
+  console.log("*");
+  console.log("*");
+  console.log("*");
+  console.log("*");
+  console.log("*");
+  console.info(`Manifmaker is starting '${pjson.version}'`);
+  console.log("*");
+  console.log("*");
+  console.log("*");
+  console.log("*");
+  console.log("*");
+  console.log("*");
+  console.log("***********************************************************************");
+  console.log("***********************************************************************");
 
   var mailGunPassword = process.env.MAILGUN_PASSWORD
   if (mailGunPassword) {
     process.env.MAIL_URL = `smtp://postmaster@mail.manifmaker.com:${mailGunPassword}@smtp.mailgun.org:587`;
-    console.log("MAIL_URL has been set to " + process.env.MAIL_URL);
+    console.info("MAIL_URL has been set to " + process.env.MAIL_URL);
   } else
-    console.info("MAILGUN_PASSWORD is not defined, this app will not send mail");
+    console.info("MAILGUN_PASSWORD is not defined, this app will not be able to send mail");
 
   if (!process.env.JWT_PRIVATE_KEY || !process.env.JWT_PUBLIC_KEY) {
     console.warn("JWT_PRIVATE_KEY and JWT_PUBLIC_KEY are not defined");
@@ -67,92 +86,84 @@ Meteor.startup(function () {
 
   Meteor.isStartingUp = true;
 
-  // code to run on server at startup
-
   ServerService.addCollectionHooks();
 
-  var injectDataServerService = new Inject24hDataServerService();
-  //var injectDataServerService = new InjectDataServerService();
-
-  Meteor.injectDataServerService = injectDataServerService;
-
-  var IS_PRODUCTION = process.env.IS_PRODUCTION;
-  var DATA_INJECTED_ONCE = process.env.DATA_INJECTED_ONCE;
-  var DELETE_ALL = process.env.DELETE_ALL;
-  var INJECT_MINIMUM_ACCESS_RIGHT = process.env.INJECT_MINIMUM_ACCESS_RIGHT;
-  var INJECT_24H_43_DATA = process.env.INJECT_24H_43_DATA;
-  var INJECT_ALL_DATA = process.env.INJECT_ALL_DATA;
-  var envReport = {
-    isProd: process.env.IS_PRODUCTION,
-    DATA_INJECTED_ONCE: process.env.DATA_INJECTED_ONCE,
-    DELETE_ALL: process.env.DELETE_ALL,
-    INJECT_MINIMUM_ACCESS_RIGHT: process.env.INJECT_MINIMUM_ACCESS_RIGHT,
-    INJECT_24H_43_DATA: process.env.INJECT_24H_43_DATA,
-    INJECT_ALL_DATA: process.env.INJECT_ALL_DATA
+  let envReport = {
+    //frequency
+    dataInjectOnce: (typeof process.env.DATA_INJECT_ONCE != "undefined") ? process.env.DATA_INJECT_ONCE == "true" : true,
+    dataInjectEverytime: process.env.DATA_INJECT_EVERYTIME == "true",
+    //what
+    dataInjectClass: process.env.DATA_INJECT_CLASS,
+    //production
+    skipInitAccessRight: process.env.SKIP_INIT_ACCESS_RIGHT == "true",
+    itIsNotProductionItsOkToDeleteData: process.env.IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA == "truetrue",
+    iKnowWhatIAmDoing: process.env.IT_IS_REALLY_NOT_PRODUCTION == "iknowwhatiamdoing"
   };
-  var password = null;
+  if(!envReport.iKnowWhatIAmDoing) envReport.itIsNotProductionItsOkToDeleteData = false;
+
+  console.info("Meteor.startup: using data inject configuration env ");
+  console.info(envReport);
+
+  let injectClasses = {
+    injectData: new InjectDataServerService(),
+    inject24hData: new Inject24hDataServerService(),
+    inject24h43emeData: new Inject24h43emeDataServerService(),
+    injectGuidedTour: new InjectGuidedTourDataServerService( {
+      year: 2018,
+      month: 10,
+      date: 1,
+      suffix: "_init"
+    }, true)
+  };
 
 
-  if (typeof(IS_PRODUCTION) !== 'undefined' && IS_PRODUCTION == "true") {
-    console.info("ManifMaker app has been started with ENV IS_PRODUCTION")
-  }
-
-  var dataInjectedOnce = false;
-  if (typeof(DATA_INJECTED_ONCE) !== 'undefined' && DATA_INJECTED_ONCE == "true") {
-    console.info("Meteor.startup : trigger by ENV DATA_INJECTED_ONCE");
-    dataInjectedOnce = true;
-  }
-
-  if (typeof(DELETE_ALL) !== 'undefined' && DELETE_ALL == "true") {
-    console.info("Meteor.startup : trigger by ENV DELETE_ALL (deleteAll)");
-    if (InjectDataInfo.findOne({triggerEnv: "DELETE_ALL"}) && dataInjectedOnce)
-      console.info("Meteor.startup : ENV DELETE_ALL skipped because it has already been injected and DATA_INJECTED_ONCE is true.");
-    else
-      InjectDataHelperServerService.deleteAll();
-    InjectDataInfo.insert({triggerEnv: "DELETE_ALL", date: new Date(), envReport: envReport});
-  }
-
-  if (typeof(INJECT_MINIMUM_ACCESS_RIGHT) !== 'undefined' && INJECT_MINIMUM_ACCESS_RIGHT == "true") {
-    console.info("Meteor.startup : trigger by ENV INJECT_MINIMUM_ACCESS_RIGHT (initAccessRightData)");
-    if (InjectDataInfo.findOne({triggerEnv: "INJECT_MINIMUM_ACCESS_RIGHT"}) && dataInjectedOnce)
-      console.info("Meteor.startup : ENV INJECT_MINIMUM_ACCESS_RIGHT skipped because it has already been injected and DATA_INJECTED_ONCE is true.");
-    else
-      password = InjectDataHelperServerService.initAccessRightData();
-    InjectDataInfo.insert({triggerEnv: "INJECT_MINIMUM_ACCESS_RIGHT", date: new Date(), envReport: envReport});
-  }
-
-  if (typeof(INJECT_24H_43_DATA) !== 'undefined' && INJECT_24H_43_DATA == "true") {
-    console.info("Meteor.startup : trigger by ENV INJECT_24H_43_DATA (initAccessRightData, inject24H43Data)");
-    if (InjectDataInfo.findOne({triggerEnv: "INJECT_24H_43_DATA"}) && dataInjectedOnce)
-      console.info("Meteor.startup : ENV INJECT_24H_43_DATA skipped because it has already been injected and DATA_INJECTED_ONCE is true.");
-    else {
-      let inject24h43emeDataServerService = new Inject24h43emeDataServerService();
-      inject24h43emeDataServerService.injectConfMakerData();
-      inject24h43emeDataServerService.populateTestData();
+  let superadminpassword;
+  if (Meteor.isProduction && !envReport.itIsNotProductionItsOkToDeleteData) {
+    if (envReport.skipInitAccessRight) {
+      console.info("Meteor.startup: production mode: init access right skipped because env SKIP_INIT_ACCESS_RIGHT");
+    } else if (InjectDataInfo.findOne({triggerEnv: "DATA_INJECTED"})) {
+      console.info("Meteor.startup: production mode: init access right skipped because it has already been done");
+      return false;
+    } else {
+      console.info("Meteor.startup: production mode: init access right once");
+      InjectDataInfo.insert({production: "DATA_INJECTED", date: new Date(), envReport: envReport});
+      console.info("Meteor.startup: production mode: if injecting ");
+      InjectDataHelperServerService.initAccessRightData();
     }
-    InjectDataInfo.insert({triggerEnv: "INJECT_24H_43_DATA", date: new Date(), envReport: envReport});
-  }
 
-
-  if (Meteor.isDevelopment || (typeof(INJECT_ALL_DATA) !== 'undefined' && INJECT_ALL_DATA == "true")) {
-    //     specific to the dev needs
-    if (Meteor.isDevelopment) console.info("Meteor.startup : isDevelopment, injecting or not");
-    else console.info("Meteor.startup : trigger by ENV INJECT_ALL_DATA (initAccessRightData, injectAllData)");
-
-    if (!Meteor.isDevelopment && InjectDataInfo.findOne({triggerEnv: "INJECT_ALL_DATA"}) && dataInjectedOnce)
-      console.info("Meteor.startup : ENV INJECT_2INJECT_ALL_DATA4H_43_DATA skipped because it has already been injected and DATA_INJECTED_ONCE is true.");
-    else {
-      InjectDataInfo.insert({triggerEnv: "INJECT_ALL_DATA", date: new Date(), envReport: envReport});
+  } else if (Meteor.isDevelopment || envReport.itIsNotProductionItsOkToDeleteData) {
+    if (!Meteor.isDevelopment) {
+      console.warn("Meteor.startup: Meteor.isProduction has been forced to false because of IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA");
+      Meteor.isProduction = false;
+    }
+    if (InjectDataHelperServerService.isInjectDataRequired(envReport)) {
+      console.info("Meteor.startup: dev mode: wipe out all data and inject minimum access right, aka a superadmin user ");
       InjectDataHelperServerService.deleteAll();
-      password = InjectDataHelperServerService.initAccessRightData();
-      Meteor.injectDataServerService.injectAllData();
+      InjectDataHelperServerService.initAccessRightData();
+
+      if (envReport.dataInjectClass != "") {
+        if (injectClasses[envReport.dataInjectClass]) {
+          console.info(`Meteor.startup: dev mode: inject data class ${envReport.dataInjectClass} (env DATA_INJECT_CLASS). Please note minimum access right should be present, you can use DATA_INJECT_MINIMUM_ACCESS_RIGHT.`);
+          //no support for injecting several class so far
+          //InjectDataInfo.insert({triggerEnv: envReport.dataInjectClass, date: new Date(), envReport: envReport});
+          Meteor.injectDataServerService = injectClasses[envReport.dataInjectClass];
+          Meteor.injectDataServerService.injectAllData();
+          InjectDataInfo.insert({triggerEnv: "DATA_INJECTED", date: new Date(), envReport: envReport});
+        } else {
+          console.info(`Meteor.startup: dev mode: inject data class ${envReport.dataInjectClass} doesn't exist (env DATA_INJECT_CLASS). No more data to add.`);
+          console.info(`Meteor.startup: dev mode: available data class are ${Object.keys(injectClasses)}`)
+        }
+      }
+    }
+    if (!Meteor.isDevelopment) {
+      Meteor.isProduction = true;
+      console.warn("Meteor.startup: Meteor.isProduction has been forced back to true");
     }
   }
 
-  if (password) {
-    InjectDataHelperServerService.printSuperAdmin(password);
+  if (superadminpassword) {
+    InjectDataHelperServerService.printSuperAdmin(superadminpassword);
   }
-
 
   console.info("Meteor.isStarting is complete");
   Meteor.isStartingUp = false;

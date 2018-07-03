@@ -3,7 +3,7 @@ import {InjectDataHelperServerService} from "./InjectDataHelperServerService";
 /** @class Inject24h43emeDataServerService */
 export class Inject24h43emeDataServerService {
 
-  injectConfMakerData() {
+  injectAllData() {
     this._injectGroupRoles();
     this._populateTeams();
     this._populatePlaces();

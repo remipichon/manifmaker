@@ -1,6 +1,9 @@
 import {AssignmentServiceClient} from "../client/service/AssignmentServiceClient"
 import {AutoForm} from 'meteor/aldeed:autoform'
 import {UserServiceClient} from "../client/service/UserServiceClient";
+import {GuidedTourServiceClient} from "../client/service/tour/GuidedTourServiceClient";
+import {PlayTourServiceClient} from "../client/service/tour/PlayTourServiceClient";
+import {TaskScenarioServiceClient} from "../client/service/tour/TaskScenarioServiceClient";
 import {Utils} from "../client/service/Utils";
 
 
@@ -119,7 +122,6 @@ Meteor.startup(function () {
   });
 
   Status.setTemplate('semantic_ui');
-
 
 });
 

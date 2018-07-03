@@ -14,8 +14,8 @@
     }
   },
   "action":{
-    "edit": "edit",
-    "read": "read"
+    "edit": "Edit",
+    "read": "Read"
   },
   "page": {
     "activity": {

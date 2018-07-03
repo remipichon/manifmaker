@@ -5,7 +5,7 @@
     {{reactiveConstructor}}
 
     <div class="col-md-12">
-        {{> AssignmentTermSelectComponent}}
+        {{> AssignmentTermButtonsComponent}}
     </div>
 
     <div class="col-md-8">
@@ -65,8 +65,8 @@
                 {{#if isTimeSlotUpdated.get}}
                     <div id="add-time-slot-form">
                         <div>
-                            From * {{>DateTimePickerComponent class="date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate readOnly=isTimeSlotsReadOnly}}
-                            to* {{>DateTimePickerComponent  class="date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate readOnly=isTimeSlotsReadOnly}}
+                            From * {{>DateTimePickerComponent class="from-date-time-picker-update-time-slot" date=currentTimeSlot.start updateDateCallback=updateTimeSlotStartDate readOnly=isTimeSlotsReadOnly}}
+                            to* {{>DateTimePickerComponent  class="to-date-time-picker-update-time-slot" date=currentTimeSlot.end updateDateCallback=updateTimeSlotEndDate readOnly=isTimeSlotsReadOnly}}
                         </div>
                         <div class="error-holder">
                             {{updatetimeSlotDatesError}}

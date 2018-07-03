@@ -45,10 +45,10 @@
                         <li><a href="/logout" tabindex="-1"><i class="sidebar-icon mdi mdi-logout"></i> Logout</a></li>
                     </ul>
                 </li>
-                <li class="{{#if equals currentTab "Home"}}active{{/if}}"><a class="home-link" href="{{pathFor route='home'}}"><i class="sidebar-icon mdi mdi-home"></i> Home</a></li>
+                <li id="sidebar-home" class="{{#if equals currentTab "Home"}}active{{/if}}"><a class="home-link" href="{{pathFor route='home'}}"><i class="sidebar-icon mdi mdi-home"></i> Home</a></li>
                 {{#if isInRole RolesEnum.ACTIVITYREAD}}
                     <li class="dropdown">
-                        <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
+                        <a id="sidebar-activity" class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
                             <i class="sidebar-icon mdi mdi-castle"></i> Activities
                             <b class="caret"></b>
                         </a>
@@ -62,7 +62,7 @@
                 {{/if}}
                 {{#if isInRole RolesEnum.TASKREAD}}
                     <li class="dropdown {{#if equals currentTab "Tasks"}}active{{/if}}">
-                        <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
+                        <a id="sidebar-task" class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
                             <i class="sidebar-icon mdi mdi-calendar-plus"></i> Tasks
                             <b class="caret"></b>
                         </a>
@@ -77,13 +77,13 @@
                     </li>
                 {{/if}}
                 {{#if isInRole RolesEnum.USERREAD}}
-                    <li class="{{#if equals currentTab "Users"}}active{{/if}}"><a href="{{pathFor route='user.list'}}"><i class="sidebar-icon mdi mdi-account-multiple"></i> Users</a></li>
+                    <li class="{{#if equals currentTab "Users"}}active{{/if}}"><a id="sidebar-user" href="{{pathFor route='user.list'}}"><i class="sidebar-icon mdi mdi-account-multiple"></i> Users</a></li>
                 {{/if}}
                 {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
-                    <li class="{{#if equals currentTab "Assignment"}}active{{/if}}"><a href="{{pathFor route='assignment.calendar'}}"><i class="sidebar-icon mdi mdi-calendar-multiple-check"></i> Assignment</a></li>
+                    <li class="{{#if equals currentTab "Assignment"}}active{{/if}}"><a id="sidebar-assignment" href="{{pathFor route='assignment.calendar'}}"><i class="sidebar-icon mdi mdi-calendar-multiple-check"></i> Assignment</a></li>
                 {{/if}}
                 {{#if isInRole RolesEnum.CONFMAKER}}
-                    <li class="{{#if equals currentTab "ConfMaker"}}active{{/if}}"><a href="{{pathFor route='conf-maker'}}"><i class="sidebar-icon mdi mdi-settings"></i> ConfMaker</a></li>
+                    <li class="{{#if equals currentTab "ConfMaker"}}active{{/if}}"><a id="sidebar-confmaker" href="{{pathFor route='conf-maker'}}"><i class="sidebar-icon mdi mdi-settings"></i> ConfMaker</a></li>
                 {{/if}}
                 <li class="application-version"><a href=""><i class="sidebar-icon mdi"></i> Version {{getVersion}}</a></li>
 

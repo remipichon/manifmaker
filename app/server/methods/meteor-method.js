@@ -2,6 +2,7 @@ import {InjectDataHelperServerService} from "../service/InjectDataHelperServerSe
 import {SecurityServiceServer} from "../service/SecurityServiceServer"
 import {ServerUserService} from "../service/ServerUserService"
 import {JwtService} from "../service/JwtService";
+import {InjectGuidedTourDataServerService} from "../service/InjectGuidedTourDataServerService"
 
 
 Meteor.methods({
@@ -13,6 +14,26 @@ Meteor.methods({
     Meteor.injectDataServerService.injectAllData();
     Meteor.isStartingUp = false;
   },
+  injectGuidedTourData: function () {
+    var lastTour = InjectDataInfo.findOne({triggerEnv: "GUIDED_TOUR"});
+    let date = new moment(`${lastTour.options.year}/${lastTour.options.month}/${lastTour.options.date}`,"YYYY/MM/DD");
+    date = date.add("d",2);
+    let options = {
+      year: date.format("YYYY"),
+      month: date.format("MM"),
+      date: date.format("D"),
+      suffix: new moment().format("Dhhmmss")
+    };
+    InjectDataInfo.update(lastTour._id, {$set: {options: options}});
+
+    Meteor.isStartingUp = true;
+    console.log("injectGuidedTourData with options", options);
+    let inject = new InjectGuidedTourDataServerService(options, false);
+    inject.injectAllData();
+    Meteor.isStartingUp = false;
+    return options;
+  },
+
   updateUserName: function (userId, newUsername) {
     ServerUserService.updateUserName(userId, newUsername)
   },
@@ -65,9 +86,9 @@ Meteor.methods({
       fileName = new moment().format("YYYYMMDD:HHmm") + "_" + fileName;
       var item = {};
       item.url = Meteor.manifmakerEndpoint + "/jwt/" + JwtService.sign({
-        "target": Meteor.manifmakerEndpoint + option.url,
-        type: "url"
-      });
+          "target": Meteor.manifmakerEndpoint + option.url,
+          type: "url"
+        });
       item.fileName = fileName;
       items.push(item);
       var downloadUrl = Meteor.nginxEndpoint + item.fileName;

@@ -53,8 +53,8 @@ Schemas.PeopleNeed = new SimpleSchema({
                 "timeSlots": {
                   $elemMatch: {
                     "peopleNeeded.userId": this.value,
-                    start: {$lte: timeSlot.end},
-                    end: {$gte: timeSlot.start}
+                    start: {$lt: timeSlot.end},
+                    end: {$gt: timeSlot.start}
                   }
                 }
               }
@@ -249,6 +249,7 @@ Schemas.TimeSlot = new SimpleSchema({
         return "timeSlotConflictDate";
 
       var term = TimeSlotService.timeSlotWithinAssignmentTerm(start, end);
+      if(!term) return "timeSlotNotInAnyTerm";
 
       var accuracy = term.calendarAccuracy;
       var diff = start.diff(end, "minute");

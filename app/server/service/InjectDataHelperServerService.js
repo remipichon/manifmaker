@@ -4,6 +4,24 @@ import {SecurityServiceServer} from "./SecurityServiceServer";
 /** @class InjectDataHelperServerService */
 export class InjectDataHelperServerService {
 
+  static isInjectDataRequired(envReport) {
+    if (envReport.dataInjectEverytime) {
+      console.info("Meteor.startup: dev mode: inject data (env DATA_INJECT_EVERYTIME)");
+      return true;
+    } else if (envReport.dataInjectOnce) {
+      if (InjectDataInfo.findOne({triggerEnv: "DATA_INJECTED"})) {
+        console.info("Meteor.startup: dev mode: inject once skipped because it has already been injected (env DATA_INJECT_ONCE)");
+        return false;
+      } else {
+        console.info("Meteor.startup: dev mode: inject once (env DATA_INJECT_ONCE)");
+        return true;
+      }
+    } else {
+      console.info("Meteor.startup: dev mode: none of env DATA_INJECT_ONCE or env DATA_INJECT_EVERYTIME specified, injecting nothing");
+      return false;
+    }
+  }
+
   static setTeamsAndSkills(userId, teams, skills) {
     if (teams)
       Meteor.users.update(userId, {
@@ -11,6 +29,7 @@ export class InjectDataHelperServerService {
           teams: teams,
         }
       });
+    console.log("setSkills",userId, skills);
     if (skills)
       Meteor.users.update(userId, {
         $set: {
@@ -20,18 +39,20 @@ export class InjectDataHelperServerService {
   }
 
   static createAccountAndUser(username, email, password, groupRoleId) {
-    return Accounts.createUser({
+    let userId = Accounts.createUser({
       username: username,
       email: email,
       password: password
     });
+    InjectDataHelperServerService.setGroupRolesToUsers(userId, groupRoleId);
+    return userId;
   }
 
   static setGroupRolesToUsers(userId, groupId) {
     if (!groupId) return;
     var groupArray;
     if (Array.isArray(groupId))
-      groupArray = groupId
+      groupArray = groupId;
     else
       groupArray = [groupId];
 

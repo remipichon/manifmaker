@@ -1,4 +1,5 @@
 import {ManifMakerRouterController} from "./ManifMakerRouterController"
+import {PlayTourServiceClient} from "../service/tour/PlayTourServiceClient"
 
 /**
  * @namespace Route
@@ -46,6 +47,34 @@ Router.route('/', function () {
     data: {currentTab: 'Home'},
     name: 'home',
     controller: ManifMakerRouterController
+  }
+);
+
+/**
+ * @memberOf Route.common
+ * @summary Tour
+ * @locus client
+ * @name 'home'  /
+ */
+Router.route('/tour', function () {
+
+    alert("about to inject data for your tour, click ok");
+    Meteor.call("injectGuidedTourData", function (error, result) {
+      if (error) {
+        alert(error);
+      } else {
+        alert("inject happened without error, the tour will start, click ok");
+        PlayTourServiceClient.playScenarii(2, result);
+        Router.go("/");
+      }
+    });
+
+    this.render('home', {to: 'mainContent'})
+  },
+  {
+    data: {currentTab: 'Home'},
+    name: 'tour',
+    // controller: ManifMakerRouterController
   }
 );
 
