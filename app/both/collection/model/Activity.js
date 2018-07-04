@@ -208,6 +208,12 @@ Schemas.Activities = new SimpleSchema({
   },
   placeId: {
     jsonExport: true,
+    jsonExportCustom: function (value) {
+      return {
+        newValue: ApiResourceActionService.readData(Schemas.references.Places, Places, {_id: value})[0],
+        newKey: "place"
+      }
+    },
     type: SimpleSchema.RegEx.Id,
     label: "Activity Place",
     custom: function () {
@@ -303,7 +309,6 @@ Schemas.Activities = new SimpleSchema({
     }
   },
   applicationData: {
-    jsonExport: true,
     type: Object,
     label: "Application Data",
     optional: true,
@@ -325,6 +330,12 @@ Schemas.Activities = new SimpleSchema({
   },
   'applicationData.categoryId': {
     jsonExport: true,
+    jsonExportCustom: function (value) {
+      return {
+        newValue: ApiResourceActionService.readData(Schemas.references.AndroidCategories, AndroidCategories, {_id: value})[0],
+        newKey: "applicationData.category"
+      }
+    },
     type: SimpleSchema.RegEx.Id,
     label: "Application Data Category",
     optional: true, //TODO should be mandatory but can't make it work
@@ -342,6 +353,9 @@ Schemas.Activities = new SimpleSchema({
   },
   'applicationData.picture': {
     jsonExport: true,
+    jsonExportCustom: function (value) {
+      return `${Meteor.manifmakerEndpoint}/cfs/files/images/${value}/${value}.JPG`;
+    },
     type: String,
     label: "Application Data Principal Picture",
     optional: true,
@@ -355,6 +369,13 @@ Schemas.Activities = new SimpleSchema({
   },
   'applicationData.pictures': {
     jsonExport: true,
+    jsonExportCustom: function(values){
+      let result = [];
+      values.forEach( value => {
+        result.push(`${Meteor.manifmakerEndpoint}/cfs/files/images/${value}/${value}.JPG`)
+      });
+      return result;
+    },
     type: [String],
     optional: true,
     label: "Add some other pictures"
@@ -371,7 +392,6 @@ Schemas.Activities = new SimpleSchema({
     },
   },
   webData: {
-    jsonExport: true,
     type: Object,
     label: "Web Data",
     optional: true,
@@ -386,11 +406,19 @@ Schemas.Activities = new SimpleSchema({
     }
   },
   'webData.description': {
+    jsonExport: true,
     type: String,
     optional: true,
     label: "Web Data Description",
   },
   'webData.categoryId': {
+    jsonExport: true,
+    jsonExportCustom: function (value) {
+      return {
+        newValue: ApiResourceActionService.readData(Schemas.references.WebCategories, WebCategories, {_id: value})[0],
+        newKey: "webData.category"
+      }
+    },
     type: SimpleSchema.RegEx.Id,
     label: "Web Data Category",
     optional: true, //TODO should be mandatory but can't make it work
