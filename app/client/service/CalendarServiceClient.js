@@ -16,6 +16,7 @@ export class CalendarServiceClient {
   static getCalendarSlotData(userId, userAvailabilitiesOrAssignments, startCalendarTimeSlot, isAssigned) {
     var data = {};
 
+    //TODO 378 will have to support an array
     var availabityOrAssignmentFound = TimeSlotService.getTimeSlotByStart(userAvailabilitiesOrAssignments, startCalendarTimeSlot);
     if (availabityOrAssignmentFound === null) return null;
 
@@ -27,10 +28,14 @@ export class CalendarServiceClient {
       var start = new moment(availabityOrAssignmentFound.start);
       var end = new moment(availabityOrAssignmentFound.end);
 
+      //TODO I guess this should be added to computeTimeSlotData as well, no ?
+      //(it's when availability start before the day )
       if (!start.isSame(startCalendarTimeSlot, "day")) {
         start = startCalendarTimeSlot
       }
 
+      //TODO I guess this should be added to computeTimeSlotData as well, no ?
+      //(it's when availability end after the day)
       if (!end.isSame(startCalendarTimeSlot, "day")) {
         end = new moment(startCalendarTimeSlot); //until the end of the day
         end.minute(0);
@@ -43,8 +48,12 @@ export class CalendarServiceClient {
 
     _.extend(data, availabityOrAssignmentFound);
 
+    //TODO #378 here data.height should adapt itself
+    //TODO #378 compute margin-top relative to parent (the 'creneau' if first timeslot found, on the previous timeslot else)
+
     data.height = this.computeTimeSlotAvailabilityHeight(availabityOrAssignmentFound, startCalendarTimeSlot) + "px";
 
+    //TODO #378 will return an array
     return data;
   }
 
@@ -52,6 +61,7 @@ export class CalendarServiceClient {
   static computeTimeSlotData(task, startCalendarTimeSlot) {
     var data = {}, baseOneHourHeight, accuracy, end, start, duration, height, founded;
 
+    //TODO 378 will have to support an array
     var timeSlotFound = TimeSlotService.getTimeSlotByStart(task.timeSlots, startCalendarTimeSlot);
     if (timeSlotFound === null) return null;
 
@@ -63,7 +73,6 @@ export class CalendarServiceClient {
 
       //people need
       data.peopleNeeded = timeSlotFound.peopleNeeded;
-      ;
     }
 
     //var assignmentsFound = AssignmentService.getAssignmentByStart(task.assignments, startCalendarTimeSlot, true);
@@ -79,8 +88,12 @@ export class CalendarServiceClient {
 
     _.extend(data, timeSlotFound);
 
+    //TODO #378 here data.height should adapt itself
+    //TODO #378 compute margin-top relative to parent (the 'creneau' if first timeslot found, on the previous timeslot else)
+
     data.height = this.computeTimeSlotAvailabilityHeight(timeSlotFound, startCalendarTimeSlot) + "px";
 
+    //TODO #378 will return an array
     return data;
   }
 

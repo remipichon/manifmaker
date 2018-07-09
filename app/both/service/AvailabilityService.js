@@ -284,6 +284,7 @@ export class AvailabilityService {
    * @return {timeSlot|null}
    */
   static getAvailabilityByStart(availabilities, start) {
+    //TODO 378 need a strict byStart
     return TimeSlotService.getTimeSlotByStart(availabilities, start);
   }
 

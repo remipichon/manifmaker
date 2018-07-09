@@ -28,6 +28,7 @@ export class AssignmentService {
    * @returns {timeSlot|null}
    */
   static getAssignmentByStart(assignment, start) {
+    //TODO 378 need a strict byStart
     return TimeSlotService.getTimeSlotByStart(assignment, start);
   }
 

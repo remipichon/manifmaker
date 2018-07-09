@@ -196,6 +196,7 @@ Schemas.TimeSlot = new SimpleSchema({
       var term = TimeSlotService.timeSlotWithinAssignmentTerm(start, end);
       if (!term) return "timeSlotNotWithinTerms";
 
+      //TODO #378 disable this if non-strict-mode
       var accuracy = term.calendarAccuracy;
       var diff = start.diff(end, "minute");
       if (diff % (accuracy * 60) !== 0) {
@@ -251,6 +252,7 @@ Schemas.TimeSlot = new SimpleSchema({
       var term = TimeSlotService.timeSlotWithinAssignmentTerm(start, end);
       if(!term) return "timeSlotNotInAnyTerm";
 
+      //TODO #378 disable this if non-strict-mode
       var accuracy = term.calendarAccuracy;
       var diff = start.diff(end, "minute");
       if (diff % (accuracy * 60) !== 0) {

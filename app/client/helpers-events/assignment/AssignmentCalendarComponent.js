@@ -162,6 +162,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         var task = AssignmentReactiveVars.SelectedTask.get() == null ? null : Tasks.findOne(AssignmentReactiveVars.SelectedTask.get());
         if (!task) return [];
 
+        //TODO #378 result is already an array
         var result = CalendarServiceClient.computeTimeSlotData(task, startCalendarTimeSlot);
         if (!result) return [];
         else data = result;

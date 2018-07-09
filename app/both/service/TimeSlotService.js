@@ -47,19 +47,22 @@ export class TimeSlotService {
 
   /**
    * @memberOf TimeSlotService
-   * @summary Get one (several = false) or an array (several = true) of all item of availabilitiesOrTimeSlotsOrAssignments that start date is the same as start param
+   * @summary Get of all item of availabilitiesOrTimeSlotsOrAssignments that start date is the same as start param
    * @locus Anywhere
    * @param availabilitiesOrTimeSlotsOrAssignments {Array<Availability|TimeSlot|Assignment>}
    * @param start {Date}
    * @returns {Array<TimeSlot> | TimeSlot  | null}
    */
   static getTimeSlotByStart(availabilitiesOrTimeSlotsOrAssignments, start) {
+    //TODO 378 add a strict mode or another method wich will use the .isSame only (thingStartDate == currentCalendarSlotStartDate)
     var found = null;
     var startDate = new moment(new Date(start));
+    //TODO #378 sort availabilitiesOrTimeSlotsOrAssignments by startDate (and it should be sorted by endDate as well, by definition)
     availabilitiesOrTimeSlotsOrAssignments.forEach(thing => {
       //we only take the first matching timeSlot, le css ne sait aps encore gerer deux data timeSlot sur un meme calendar timeSlot
       var thingStartDate = new moment(new Date(thing.start));
       var thingEndDate = new moment(new Date(thing.end));
+      //TODO #378 previousCalendarSlotStartDate < thingStartDate <= currentCalendarSlotStartDate (which is start)
       if (startDate.isSame(thingStartDate)) {
         found = thing;
         return false;
@@ -75,6 +78,7 @@ export class TimeSlotService {
         }
       }
     });
+    //TODO #378 will return an array
     return found;
   }
 
