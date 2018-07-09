@@ -5,14 +5,6 @@ Template.confMaker.events = ({
   },
 });
 
-Template.teamInsert.events = ({
-  "click [type=button]": e => {
-    window.confMakerReturnTo = true;
-    $(e.target).submit();
-  }
-});
-
-
 Template.confMaker.helpers({
   isExpanded(current, expanded) {
     console.log("==",current, expanded)

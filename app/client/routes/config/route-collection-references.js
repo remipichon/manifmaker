@@ -120,14 +120,18 @@ _.each(Schemas.references.options, function (referenceOptions) {
 //post
   Router.route('/' + REFERENCE_URL, function () {
       SecurityServiceClient.grantAccessToPage(RolesEnum.CONFMAKER);
-      AutoForm.addHooks(['insertTeamForm'], {
+      AutoForm.addHooks([`insert${REFERENCE_URL}Form`], {
         onSuccess: function () {
           sAlert.info(`${REFERENCE_LABEL} has been successfully created`);
-          console.log("truc")
+          if(window.confMakerReturnTo == true){
+            window.confMakerReturnTo = null
+            Router.go("/conf-maker/"+PLURAL_REFERENCE_URL)
+          }
+          window.confMakerReturnTo = null
         },
       }, true);
 
-      this.render(REFERENCE_URL + '-insert', {
+      this.render(REFERENCE_URL + 'Insert', {
         data: {
           options: referenceOptions
         },
@@ -158,6 +162,13 @@ _.each(Schemas.references.options, function (referenceOptions) {
     {controller: ManifMakerRouterController, name: REFERENCE_URL + '.update'}
   );
 
+  //insert and return to list button
+  Template[REFERENCE_URL + 'Insert'].events = ({
+    "click [type=button]": e => {
+      window.confMakerReturnTo = true;
+      this.$(e.target).submit();
+    }
+  });
 });
 
 /**
