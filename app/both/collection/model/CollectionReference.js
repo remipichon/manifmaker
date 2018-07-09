@@ -28,6 +28,7 @@ Schemas.references.Teams = new SimpleSchema({
     jsonExport: true,
     type: String,
     label: "Team Name",
+    unique: true,
     max: 100
   },
   type: {
@@ -73,6 +74,7 @@ Schemas.references.Places = new SimpleSchema({
     jsonExport: true,
     type: String,
     label: "Place Name",
+    unique: true,
     max: 100
   },
   location: {
@@ -530,6 +532,7 @@ Schemas.references.EquipmentCategories = new SimpleSchema({
   name: {
     type: String,
     label: "Equipment Category Name",
+    unique: true,
     max: 100
   },
   extraComputeRule: {
@@ -576,6 +579,7 @@ Schemas.references.Equipments = new SimpleSchema({
   name: {
     type: String,
     label: "Equipments Name",
+    unique: true,
     max: 100
   },
   quantity: {
@@ -663,6 +667,7 @@ Schemas.references.WaterSupplies = new SimpleSchema({
   name: {
     type: String,
     label: "WaterSupply Name",
+    unique: true,
     max: 100
   },
   type: {
@@ -704,6 +709,7 @@ Schemas.references.WaterDisposals = new SimpleSchema({
   name: {
     type: String,
     label: "WaterDisposal Name",
+    unique: true,
     max: 100
   },
   type: {
@@ -745,6 +751,7 @@ Schemas.references.PowerSupplies = new SimpleSchema({
   name: {
     type: String,
     label: "PowerSupply Name",
+    unique: true,
     max: 100
   },
   type: {
@@ -786,6 +793,7 @@ Schemas.references.EquipmentStorages = new SimpleSchema({
   name: {
     type: String,
     label: "EquipmentStorage Name",
+    unique: true,
     max: 100
   },
   type: {
@@ -828,6 +836,7 @@ Schemas.references.AccessPoints = new SimpleSchema({
   name: {
     type: String,
     label: "Access Point  Name",
+    unique: true,
     max: 100
   },
   selectedImage: {
@@ -879,6 +888,7 @@ Schemas.references.WebCategories = new SimpleSchema({
     jsonExport: true,
     type: String,
     label: "Web Category Name",
+    unique: true,
     max: 100
   },
   type: {
@@ -923,6 +933,7 @@ Schemas.references.AndroidCategories = new SimpleSchema({
     jsonExport: true,
     type: String,
     label: "Android Category Name",
+    unique: true,
     max: 100
   },
   iconName: {
