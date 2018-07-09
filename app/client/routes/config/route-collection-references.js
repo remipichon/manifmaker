@@ -82,6 +82,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
 
   var item = {
     REFERENCE_URL: REFERENCE_URL,
+    PLURAL_REFERENCE_URL: PLURAL_REFERENCE_URL,
     REFERENCE_LABEL: REFERENCE_LABEL,
     reactiveTableSettings: {
       collection: AllCollections[REFERENCE_COLLECTION_NAME],
@@ -179,6 +180,34 @@ Router.route('/conf-maker', function () {
   {
     data: {currentTab: 'ConfMaker'},
     name: 'conf-maker',
+    controller: ManifMakerRouterController
+  }
+);
+
+/**
+ * @memberOf Route.collectionReference
+ * @summary Display the conf homepage
+ * @locus client
+ * @name  'confMaker' /confMaker
+ */
+//get (list)
+Router.route('/conf-maker/:resource', function () {
+    if ($(".overall-wrapper #conf-maker-wrapper").length != 1) { //tricks to not render when it's already there
+      SecurityServiceClient.grantAccessToPage(RolesEnum.CONFMAKER);
+      this.render('confMaker', {
+        data: {
+          confMakerReactiveTables: confMakerReactiveTables,
+          settings: Settings.findOne(),
+          expanded: this.params.resource,
+        },
+        to: 'mainContent'
+      });
+    } else
+      console.log("nothing to do")
+  },
+  {
+    data: {currentTab: 'ConfMaker'},
+    name: 'conf-maker-expanded',
     controller: ManifMakerRouterController
   }
 );
