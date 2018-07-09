@@ -119,6 +119,13 @@ _.each(Schemas.references.options, function (referenceOptions) {
 //post
   Router.route('/' + REFERENCE_URL, function () {
       SecurityServiceClient.grantAccessToPage(RolesEnum.CONFMAKER);
+      AutoForm.addHooks(['insertTeamForm'], {
+        onSuccess: function () {
+          sAlert.info(`${REFERENCE_LABEL} has been successfully created`);
+          console.log("truc")
+        },
+      }, true);
+
       this.render(REFERENCE_URL + '-insert', {
         data: {
           options: referenceOptions
