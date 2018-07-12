@@ -4,6 +4,7 @@ import {Inject24hDataServerService} from "./service/Inject24hDataServerService";
 import {InjectDataHelperServerService} from "./service/InjectDataHelperServerService";
 import {InjectDataServerService} from "./service/InjectDataServerService";
 import {InjectGuidedTourDataServerService} from "./service/InjectGuidedTourDataServerService";
+import {InjectTestAssignmentDataServerService} from "./service/InjectTestAssignmentDataServerService";
 var pjson = require('/package.json');
 
 InjectDataInfo = new Mongo.Collection("inject_data_infos");
@@ -99,7 +100,7 @@ Meteor.startup(function () {
     itIsNotProductionItsOkToDeleteData: process.env.IT_IS_NOT_PRODUCTION_IT_IS_OK_TO_DELETE_DATA == "truetrue",
     iKnowWhatIAmDoing: process.env.IT_IS_REALLY_NOT_PRODUCTION == "iknowwhatiamdoing"
   };
-  if(!envReport.iKnowWhatIAmDoing) envReport.itIsNotProductionItsOkToDeleteData = false;
+  if (!envReport.iKnowWhatIAmDoing) envReport.itIsNotProductionItsOkToDeleteData = false;
 
   console.info("Meteor.startup: using data inject configuration env ");
   console.info(envReport);
@@ -108,7 +109,13 @@ Meteor.startup(function () {
     InjectData: new InjectDataServerService(),
     Inject24hData: new Inject24hDataServerService(),
     Inject24h43emeData: new Inject24h43emeDataServerService(),
-    InjectGuidedTourData: new InjectGuidedTourDataServerService( {
+    InjectGuidedTourData: new InjectGuidedTourDataServerService({
+      year: 2018,
+      month: 10,
+      date: 1,
+      suffix: "_init"
+    }, true),
+    InjectTestAssignmentData: new InjectTestAssignmentDataServerService({
       year: 2018,
       month: 10,
       date: 1,

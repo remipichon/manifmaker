@@ -318,6 +318,11 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
     label: "Assignment terms Name",
     max: 100
   },
+  isStrictMode: {
+    type: Boolean,
+    defaultValue: true,
+    label: "Assignment strict mode enabled (timeslots need to fit accuracy)",
+  },
   start: {
     type: Date,
     label: "Assignment terms Start",
@@ -382,7 +387,7 @@ Schemas.references.AssignmentTerms = new SimpleSchema({
   calendarAccuracy: {
     type: Number,
     decimal: true,
-    label: "Assignment calendar accuracy minimal duration for a timeslot or an availability (2 = 2 hours, 1 = 1 hour, 0.5 = 30 min, 0.25 = 15 min)",
+    label: "Assignment calendar accuracy minimal duration for availabilities and timeslots (only is isStrictMode=false) (2 = 2 hours, 1 = 1 hour, 0.5 = 30 min, 0.25 = 15 min)",
     custom: function () {
       if (!CalendarAccuracyEnum[this.value])
         return "accuracyNotFound"
