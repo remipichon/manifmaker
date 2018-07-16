@@ -1,5 +1,6 @@
 import {TimeSlotService} from "../../both/service/TimeSlotService"
 import {UserServiceClient} from "../../client/service/UserServiceClient"
+import {AssignmentService} from "../../both/service/AssignmentService"
 
 /** @class CalendarServiceClient*/
 export class CalendarServiceClient {
@@ -13,11 +14,13 @@ export class CalendarServiceClient {
    * @description
    * return : calendar data {userId, assigned, charisma, css height}
    */
+  //TODO #378 this is for user avail only and should deal with non accuray fit assigment/avail
+  //TODO #378 what to do with smaller than accurcy avail ?
   static getCalendarSlotData(userId, userAvailabilitiesOrAssignments, startCalendarTimeSlot, isAssigned) {
     var data = {};
 
-    //TODO 378 will have to support an array
-    var availabityOrAssignmentFound = TimeSlotService.getTimeSlotByStart(userAvailabilitiesOrAssignments, startCalendarTimeSlot);
+    //TODO #378 will have to support an array
+    var availabityOrAssignmentFound = TimeSlotService.getTimeResourcesByStart(userAvailabilitiesOrAssignments, startCalendarTimeSlot);
     if (availabityOrAssignmentFound === null) return null;
 
     if (availabityOrAssignmentFound !== null) {
@@ -51,53 +54,106 @@ export class CalendarServiceClient {
     //TODO #378 here data.height should adapt itself
     //TODO #378 compute margin-top relative to parent (the 'creneau' if first timeslot found, on the previous timeslot else)
 
-    data.height = this.computeTimeSlotAvailabilityHeight(availabityOrAssignmentFound, startCalendarTimeSlot) + "px";
+    data.height = this.computeTimeResourceHeight(availabityOrAssignmentFound, startCalendarTimeSlot) + "px";
 
     //TODO #378 will return an array
     return data;
   }
 
+  //TODO #378 maybe we can merge computeTimeSlotData and getCalendarSlotData
 
-  static computeTimeSlotData(task, startCalendarTimeSlot) {
-    var data = {}, baseOneHourHeight, accuracy, end, start, duration, height, founded;
+  //this is for assigment only
+  static computeAvailabilitiesAssignmentsData(user, startCalendarTimeSlot){
+    //TODO #378 what happens when we get the eventual previous term that end just before the current one ?
+    let term = TimeSlotService.timeSlotWithinAssignmentTerm(startCalendarTimeSlot, startCalendarTimeSlot); //to read .isStrictMode
 
-    //TODO 378 will have to support an array
-    var timeSlotFound = TimeSlotService.getTimeSlotByStart(task.timeSlots, startCalendarTimeSlot);
-    if (timeSlotFound === null) return null;
-
-    if (timeSlotFound !== null) {
-      data.state = "available";
-      data.taskName = task.name;
-      //Template.parentData() doesn't work so we use a trick
-      data.taskId = task._id;
-
-      //people need
-      data.peopleNeeded = timeSlotFound.peopleNeeded;
+    if (!term) {
+      console.log("skip, no term for",startCalendarTimeSlot.toString())
+      return [];
     }
 
-    //var assignmentsFound = AssignmentService.getAssignmentByStart(task.assignments, startCalendarTimeSlot, true);
-    //if (assignmentsFound.length !== 0) { //at least one assignment TODO code couleur d'avancement en fonction des peoples needed
-    //    data.name = assignmentsFound[0].taskName; //idem, la meme task
-    //    data.state = "in-progress";
-    //    data.taskId = task._id;
-    //
-    //
-    //    founded = assignmentsFound[0]; //normalement ils ont tous les memes date, TODO controler ca
-    //}
+    let chosenCalendarAccuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy;
 
+    let availabilitiesFound, assignmentsFound;
+    let userAssignments = AssignmentService.getAssignmentForUser(user);
+    if(term.isStrictMode){
+      availabilitiesFound = TimeSlotService.getTimeResourcesByStart(user.availabilities, startCalendarTimeSlot);
+      assignmentsFound = TimeSlotService.getTimeResourcesByStart(userAssignments, startCalendarTimeSlot);
+    } else {
+      let nextTimeSlotStartDate = new moment(startCalendarTimeSlot).add("hours", chosenCalendarAccuracy);
+      availabilitiesFound = TimeSlotService.getTimeResourcesStartingBetween(user.availabilities, startCalendarTimeSlot, nextTimeSlotStartDate);
+      assignmentsFound = TimeSlotService.getTimeResourcesStartingBetween(userAssignments, startCalendarTimeSlot, nextTimeSlotStartDate);
+    }
 
-    _.extend(data, timeSlotFound);
+    if (availabilitiesFound.length == 0 && assignmentsFound == 0) return [];
 
-    //TODO #378 here data.height should adapt itself
-    //TODO #378 compute margin-top relative to parent (the 'creneau' if first timeslot found, on the previous timeslot else)
+    availabilitiesFound.forEach(avail => {
+      avail.name = user.username;
+    });
+    assignmentsFound.forEach(assi => {
+      assi.name = assi.taskName;
+      assi.state = "affecte";
+    });
 
-    data.height = this.computeTimeSlotAvailabilityHeight(timeSlotFound, startCalendarTimeSlot) + "px";
+    let availabilitiesAndAssignments = assignmentsFound.concat(availabilitiesFound);
 
-    //TODO #378 will return an array
-    return data;
+    let result = [];
+    availabilitiesAndAssignments.sort((a, b) => {
+      if (new moment(a.start).isBefore(new moment(b.start)))
+        return -1;
+      return 1;
+    });
+    let previousTimeSlots = [];
+    availabilitiesAndAssignments.forEach(availOrAssign => {
+      availOrAssign.height = this.computeTimeResourceHeight(availOrAssign, startCalendarTimeSlot);
+      availOrAssign.marginTop = this.computeTimeResourceMarginTop(availOrAssign, startCalendarTimeSlot, previousTimeSlots)
+      result.push(availOrAssign);
+      previousTimeSlots.push(availOrAssign);
+    });
+    return result;
   }
 
-  static computeTimeSlotAvailabilityHeight(timeSlotAvailability, startCalendarTimeSlot) {
+  static computeTimeSlotsData(task, startCalendarTimeSlot) {
+    //TODO #378 what happens when we get the eventual previous term that end just before the current one ?
+    let term = TimeSlotService.timeSlotWithinAssignmentTerm(startCalendarTimeSlot, startCalendarTimeSlot); //to read .isStrictMode
+
+    if (!term) {
+      console.log("skip, no term for",startCalendarTimeSlot.toString())
+      return [];
+    }
+
+    //TODO #378 we need to read the calendarAccuracy from whatever is used on the UI
+    let chosenCalendarAccuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy;
+
+    let timeSlotsFound;
+    if(term.isStrictMode){
+      timeSlotsFound = TimeSlotService.getTimeResourcesByStart(task.timeSlots, startCalendarTimeSlot);
+    } else {
+      let nextTimeSlotStartDate = new moment(startCalendarTimeSlot).add("hours", chosenCalendarAccuracy);
+      timeSlotsFound = TimeSlotService.getTimeResourcesStartingBetween(task.timeSlots, startCalendarTimeSlot, nextTimeSlotStartDate);
+    }
+    if (timeSlotsFound.length == 0) return [];
+
+    let result = [];
+    timeSlotsFound.sort((a, b) => {
+      if (new moment(a.start).isBefore(new moment(b.start)))
+        return -1;
+      return 1;
+    });
+    let previousTimeSlots = [];
+    timeSlotsFound.forEach(timeSlotFound => {
+      // timeSlotFound.taskName = task.name;
+      // timeSlotFound.taskId = task._id;
+
+      timeSlotFound.height = this.computeTimeResourceHeight(timeSlotFound, startCalendarTimeSlot);
+      timeSlotFound.marginTop = this.computeTimeResourceMarginTop(timeSlotFound, startCalendarTimeSlot, previousTimeSlots)
+      result.push(timeSlotFound);
+      previousTimeSlots.push(timeSlotFound);
+    });
+    return result;
+  }
+
+  static computeTimeResourceHeight(timeSlotAvailability, startCalendarTimeSlot) {
     var baseOneHourHeight = 40, start, end, duration;
     var startDate = new moment(new Date(startCalendarTimeSlot));
     if (startDate.hour() === 0) {//midnight
@@ -110,5 +166,31 @@ export class CalendarServiceClient {
     duration = end.diff(start) / (3600 * 1000);
 
     return baseOneHourHeight * duration;
+  }
+
+  static computeTimeResourceMarginTop(timeSlotAvailability, startCalendarTimeSlot, previousTimeSlots) {
+    let baseOneHourHeight = 40, start, end, duration, marginTop;
+    let startDate = new moment(new Date(startCalendarTimeSlot));
+    let timeSlotStart = new moment(timeSlotAvailability.start);
+
+    //TODO #378 is the midnight thing working ?
+    // if (startDate.hour() === 0) {//midnight
+    //   start = startDate;
+    //   end = new moment(timeSlotAvailability.end);
+    // } else {
+    //   end = new moment(timeSlotAvailability.end);
+    //   start = new moment(timeSlotAvailability.start);
+    // }
+
+    let offset = timeSlotStart.diff(startDate) / (3600 * 1000);
+    marginTop = offset * baseOneHourHeight;
+
+    if(previousTimeSlots.length != 0) { //because it's margin top from the previous
+      previousTimeSlots.forEach(timeSlot => {
+        marginTop = marginTop - timeSlot.height - timeSlot.marginTop;
+      });
+    }
+
+    return marginTop;
   }
 }

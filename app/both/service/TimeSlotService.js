@@ -45,41 +45,64 @@ export class TimeSlotService {
     return found;
   }
 
+  static getTimeResourcesStartingBetween(availabilitiesOrTimeSlotsOrAssignments, start, end) {
+    return TimeSlotService.getTimeResourcesByDates(availabilitiesOrTimeSlotsOrAssignments,start, end)
+  }
+
+  static getTimeResourcesByStart(availabilitiesOrTimeSlotsOrAssignments, start) {
+    return TimeSlotService.getTimeResourcesByDates(availabilitiesOrTimeSlotsOrAssignments,start)
+  }
+
   /**
    * @memberOf TimeSlotService
-   * @summary Get of all item of availabilitiesOrTimeSlotsOrAssignments that start date is the same as start param
+   * @summary Get of all item of availabilitiesOrTimeSlotsOrAssignments whose start dates matches given start or is between start and end if given
    * @locus Anywhere
    * @param availabilitiesOrTimeSlotsOrAssignments {Array<Availability|TimeSlot|Assignment>}
    * @param start {Date}
+   * @param end {Date} if not defined, will look for time resource whose start exactly matches given start
    * @returns {Array<TimeSlot> | TimeSlot  | null}
    */
-  static getTimeSlotByStart(availabilitiesOrTimeSlotsOrAssignments, start) {
-    //TODO 378 add a strict mode or another method wich will use the .isSame only (thingStartDate == currentCalendarSlotStartDate)
-    var found = null;
+  static getTimeResourcesByDates(availabilitiesOrTimeSlotsOrAssignments, start, end = null) {
+    var founds = [];
     var startDate = new moment(new Date(start));
-    //TODO #378 sort availabilitiesOrTimeSlotsOrAssignments by startDate (and it should be sorted by endDate as well, by definition)
+    let endDate;
+    if (end) endDate = new moment(new Date(end));
+
     availabilitiesOrTimeSlotsOrAssignments.forEach(thing => {
       //we only take the first matching timeSlot, le css ne sait aps encore gerer deux data timeSlot sur un meme calendar timeSlot
       var thingStartDate = new moment(new Date(thing.start));
       var thingEndDate = new moment(new Date(thing.end));
-      //TODO #378 previousCalendarSlotStartDate < thingStartDate <= currentCalendarSlotStartDate (which is start)
-      if (startDate.isSame(thingStartDate)) {
-        found = thing;
-        return false;
+      if (!endDate) {
+        if (startDate.isSame(thingStartDate)) {
+          founds.push(thing);
+        }
       } else {
-        //is start midnight ? we should retrieve timeslot which started 'yesterday' and finish 'today' or later
-        if (startDate.hour() === 0 && startDate.minute() === 0) {
-          //=> is thing.start lt start and thing.end gt start ?
-          if (thingStartDate.isBefore(startDate) && thingEndDate.isAfter(startDate)) {
-            //=> => thing is a match
-            found = thing;
-            return false;
-          }
+        //startDate <= thingDate < date + accuracy
+        if (
+          (startDate.isSame(thingStartDate) || startDate.isBefore(thingStartDate))
+          &&
+          thingStartDate.isBefore(endDate)
+        ) {
+          founds.push(thing);
         }
       }
+
+      //TODO #378 support time resource than started the day before and ended just today (one at most, no overlap)
+      // if (startDate.isSame(thingStartDate)) {
+      //   founds.push(thing);
+      // } else {
+      //   //is start midnight ? we should retrieve timeslot which started 'yesterday' and finish 'today' or later
+      //   if (startDate.hour() === 0 && startDate.minute() === 0) {
+      //     //=> is thing.start lt start and thing.end gt start ?
+      //     if (thingStartDate.isBefore(startDate) && thingEndDate.isAfter(startDate)) {
+      //       //=> => thing is a match
+      //       founds.push(thing);
+      //     }
+      //   }
+      // }
     });
-    //TODO #378 will return an array
-    return found;
+
+    return founds;
   }
 
 

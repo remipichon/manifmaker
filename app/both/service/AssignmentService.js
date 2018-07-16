@@ -21,19 +21,6 @@ export class AssignmentService {
 
   /**
    * @memberOf AssignmentService
-   * @summary Proxy for TimeSlotService.getTimeSlotByStart
-   * @locus Anywhere
-   * @param assignment
-   * @param start
-   * @returns {timeSlot|null}
-   */
-  static getAssignmentByStart(assignment, start) {
-    //TODO 378 need a strict byStart
-    return TimeSlotService.getTimeSlotByStart(assignment, start);
-  }
-
-  /**
-   * @memberOf AssignmentService
    * @locus Anywhere
    * @summary return assignment with start/end date, taskName
    * @param user

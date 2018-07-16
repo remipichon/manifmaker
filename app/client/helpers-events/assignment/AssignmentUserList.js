@@ -138,7 +138,7 @@ class AssignmentUserList extends BlazeComponent {
       availabilities: {
         $elemMatch: {
           start: {$gte: currentAssignmentTerm.start},
-          end: {$lt: currentAssignmentTerm.end}
+          end: {$lte: currentAssignmentTerm.end}
         }
       }
     };

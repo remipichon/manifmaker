@@ -114,11 +114,7 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
     var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours, minutes);
     var task = this.data().task;
     if (!task) return [];
-
-    //TODO #378 data is already an array
-    var data = CalendarServiceClient.computeTimeSlotData(task, startCalendarTimeSlot);
-    if (!data) return [];
-    return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
+    return CalendarServiceClient.computeTimeSlotsData(task, startCalendarTimeSlot);
   }
 
   getPeopleNeededMerged(timeSlotId) {

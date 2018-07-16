@@ -119,61 +119,18 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours, minutes);
     var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
-    var data = {}, baseOneHourHeight, accuracy, end, start, duration, height, founded;
-
     switch (currentAssignmentType) {
       case AssignmentType.USERTOTASK:
         var user = AssignmentReactiveVars.SelectedUser.get() == null ? null : Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get());
         if (user === null) return [];
-
-
-        var availabilityFound = AvailabilityService.getAvailabilityByStart(user.availabilities, startCalendarTimeSlot);
-        var userAssignments = AssignmentService.getAssignmentForUser(user);
-        var assignmentFound = AssignmentService.getAssignmentByStart(userAssignments, startCalendarTimeSlot);
-
-        if (availabilityFound === null && assignmentFound === null) return [];
-        if (availabilityFound !== null && assignmentFound !== null) {
-          console.error("Calendar.timeSlot : error while displaying user info, both availability and assignment has been found. \nuser", user, " => availability", availabilityFound, " and assignment", assignmentFound);
-          return [];
-        }
-
-        baseOneHourHeight = 40;
-        accuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy;
-
-        if (availabilityFound !== null) {
-          data.state = "available";
-          data.name = user.username;
-
-          founded = availabilityFound;
-        } else if (assignmentFound !== null) {
-          data.name = assignmentFound.taskName;
-          data.state = "affecte";
-
-          founded = assignmentFound;
-
-          data.taskName = founded.taskName;
-        }
-
-        _.extend(data, founded);
-        data.height = CalendarServiceClient.computeTimeSlotAvailabilityHeight(founded, startCalendarTimeSlot) + "px";
-
-        break;
+        return CalendarServiceClient.computeAvailabilitiesAssignmentsData(user, startCalendarTimeSlot);
       case AssignmentType.TASKTOUSER:
         var task = AssignmentReactiveVars.SelectedTask.get() == null ? null : Tasks.findOne(AssignmentReactiveVars.SelectedTask.get());
         if (!task) return [];
-
-        //TODO #378 result is already an array
-        var result = CalendarServiceClient.computeTimeSlotData(task, startCalendarTimeSlot);
-        if (!result) return [];
-        else data = result;
-
-        break;
+        return CalendarServiceClient.computeTimeSlotsData(task, startCalendarTimeSlot);
       case AssignmentType.ALL:
         return [];
     }
-
-
-    return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
   }
 
 
