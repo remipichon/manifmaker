@@ -5,6 +5,9 @@ import {AssignmentService} from "../../both/service/AssignmentService"
 /** @class CalendarServiceClient*/
 export class CalendarServiceClient {
 
+  //TODO #378 maybe we can merge getCalendarSlotData and computeTimeSlotData and getCalendarSlotData
+
+
   /**
    * @summary Given a user and a specific time, retrieve an assignment or and availability and add calendar related data
    * @param userId
@@ -60,9 +63,9 @@ export class CalendarServiceClient {
     return data;
   }
 
-  //TODO #378 maybe we can merge computeTimeSlotData and getCalendarSlotData
-
   //this is for assigment only
+  //TODO #378 refactor filter task list when click on avail (use betweenDate instead of start), list should display all timeslot for all task in between, with exact matching timeslot in title
+  //TODO #378 refactor click to remove assignment, make sure it falls on the righ avail or assign
   static computeAvailabilitiesAssignmentsData(user, startCalendarTimeSlot){
     //TODO #378 what happens when we get the eventual previous term that end just before the current one ?
     let term = TimeSlotService.timeSlotWithinAssignmentTerm(startCalendarTimeSlot, startCalendarTimeSlot); //to read .isStrictMode

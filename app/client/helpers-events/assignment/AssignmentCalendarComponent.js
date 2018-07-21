@@ -197,6 +197,11 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     switch (currentAssignmentType) {
       case AssignmentType.USERTOTASK://only display task that have at least one time slot matching the selected availability slot
 
+        //TODO #378 non strict mode is tricky here, make sure to get the proper target
+        // TODO #378 read the selectedDate which is either clicked calendarSlotStart or the previous assi/avail end
+        // TODO #378 endDate, either clicker calendarSlotEnd or the new assi/avail start
+        // TODO #378 correctly get the avail or assi status of the click
+        // TODO #378 filter task list with proper start/end
         var selectedDate = null;
         if (typeof $target.attr("hours") !== "undefined") {
           selectedDate = new moment(new Date($target.attr("hours")));
@@ -216,6 +221,8 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
           AssignmentReactiveVars.IsUnassignment.set(false)
         }
         AssignmentReactiveVars.SelectedAvailability.set(availability);
+
+        console.debug("filterTaskList")
 
 
         /*
@@ -239,80 +246,74 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
           }
         };
 
-        timeSlotsFilter.$elemMatch.$or.push(//need exact user
-          {
-            //userId filter
-            peopleNeeded: {
-              $elemMatch: {
-                userId: user._id
-              }
-            },
-            //availabilities filter
-            start: {$gte: availability.start, $lte: selectedDate.toDate()},
-            end: {$gt: selectedDate.toDate(), $lte: availability.end}
+        //availabilities filter
+        let availabilitiesFilterStart = {$gte: availability.start, $lte: selectedDate.toDate()};
+        let availabilitiesFilterEnd = {$gt: selectedDate.toDate(), $lte: availability.end};
+
+        let exactUser = {
+          //userId filter
+          peopleNeeded: {
+            $elemMatch: {
+              userId: user._id
+            }
           }
-        );
-        timeSlotsFilter.$elemMatch.$or.push(//need skills and team
-          {
-            //skills filter
-            peopleNeeded: {
-              $elemMatch: {
-                skills: {
-                  $elemMatch: {
-                    $in: user.skills
-                  }
-                },
-                teamId: {
-                  $in: user.teams
+        };
+        exactUser.start = availabilitiesFilterStart;
+        exactUser.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(exactUser);
+        let skillsAndTeam = {
+          //skills filter
+          peopleNeeded: {
+            $elemMatch: {
+              skills: {
+                $elemMatch: {
+                  $in: user.skills
                 }
+              },
+              teamId: {
+                $in: user.teams
               }
-            },
-            //availabilities filter
-            start: {$gte: availability.start, $lte: selectedDate.toDate()},
-            end: {$gt: selectedDate.toDate(), $lte: availability.end}
+            }
           }
-        );
-        timeSlotsFilter.$elemMatch.$or.push(//need no skill but eam
-          {
-            //skills filter
-            peopleNeeded: {
-              $elemMatch: {
-                skills: { // $eq : [] doesn't work with miniMongo, here is a trick
-                  $not: {
-                    $ne: []
-                  }
-                },
-                teamId: {
-                  $in: user.teams
+        };
+        skillsAndTeam.start = availabilitiesFilterStart;
+        skillsAndTeam.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(skillsAndTeam);
+        let teamNoSkill = {
+          //skills filter
+          peopleNeeded: {
+            $elemMatch: {
+              skills: { // $eq : [] doesn't work with miniMongo, here is a trick
+                $not: {
+                  $ne: []
                 }
+              },
+              teamId: {
+                $in: user.teams
               }
-            },
-            //availabilities filter
-            start: {$gte: availability.start, $lte: selectedDate.toDate()},
-            end: {$gt: selectedDate.toDate(), $lte: availability.end}
+            }
           }
-        );
-        timeSlotsFilter.$elemMatch.$or.push(//need skills and no team
-          {
-            //skills filter
-            peopleNeeded: {
-              $elemMatch: {
-                skills: {
-                  $elemMatch: {
-                    $in: user.skills
-                  }
-                },
-                teamId: null
-              }
-            },
-            //availabilities filter
-            start: {$gte: availability.start, $lte: selectedDate.toDate()},
-            end: {$gt: selectedDate.toDate(), $lte: availability.end}
+        };
+        teamNoSkill.start = availabilitiesFilterStart;
+        teamNoSkill.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(teamNoSkill);
+        let skillsNoTeam = {
+          //skills filter
+          peopleNeeded: {
+            $elemMatch: {
+              skills: {
+                $elemMatch: {
+                  $in: user.skills
+                }
+              },
+              teamId: null
+            }
           }
-        );
+        };
+        skillsNoTeam.start = availabilitiesFilterStart;
+        skillsNoTeam.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(skillsNoTeam);
         //aggregate is not supported by mini mongo
-
-
         AssignmentReactiveVars.TaskFilter.set(timeSlotsFilter);
         break;
       case

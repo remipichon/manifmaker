@@ -277,19 +277,6 @@ export class AvailabilityService {
 
   /**
    * @memberOf AvailabilityService
-   * @summary Proxy for TimeSlotService.getTimeSlotByStart
-   * @locus Anywhere
-   * @param {Array<Availability>} availabilities
-   * @param {Date}start
-   * @return {timeSlot|null}
-   */
-  static getAvailabilityByStart(availabilities, start) {
-    //TODO 378 need a strict byStart
-    return TimeSlotService.getTimeSlotByStart(availabilities, start);
-  }
-
-  /**
-   * @memberOf AvailabilityService
    * @summary Return true if user is available between start and end params.
    * @locus Anywhere
    * @param {Array<Availability>} availabilities
