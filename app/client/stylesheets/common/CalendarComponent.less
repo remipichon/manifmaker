@@ -48,7 +48,12 @@
         background : lightgray !important;
       }
       .quart_heure {
-        pointer-events: none; //in order to allow selecting a below calendar time slot instead of the whole user availability
+        .calendar-wrapper { //only used to format whatever inside the calendar slot, no actions on it
+          pointer-events: none;
+        }
+        .dispo {
+          pointer-events: none; //in order to allow selecting a below calendar time slot instead of the whole user availability
+        }
       }
     }
   }

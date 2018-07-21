@@ -40,42 +40,9 @@ Router.route('/assignment/userToTask', function () {
 Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
     console.info("routing", '/assignment/userToTask/' + this.params.userId + '/' + this.params.selectedDate);
 
-    //TODO this is never used !!!
-    var selectedDate = parseInt(this.params.selectedDate);
-    selectedDate = new moment(selectedDate);
-    var userId = AssignmentReactiveVars.SelectedUser.get()._id;
-    var user = Meteor.users.findOne({_id: userId});
-    var availability = AvailabilityService.getSurroundingAvailability(user, selectedDate);
+    console.error("Route not implemented !!!")
 
-    if (typeof availability === "undefined") {
-      console.error("Template.assignmentCalendar.events.click .heure, .quart_heure", "User can't normally click on this kind of element when in userToTask");
-      return;
-    }
-
-    AssignmentReactiveVars.SelectedDate.set(selectedDate);
-    AssignmentReactiveVars.SelectedAvailability.set(availability);
-
-    AssignmentReactiveVars.isUsersListDeveloped.set(false);
-    AssignmentReactiveVars.isTasksListDeveloped.set(true);
-
-    /*
-     Task whose have at least one timeSlot (to begin, just one) as
-
-     user.Dispocorrespante.start <= task.timeslot.start <= selectedDate and
-     selectedDate <=  task.timeslot.end <=  user.Dispocorrespante.end
-
-     */
-
-    var newFilter = {
-      timeSlots: {
-        $elemMatch: {
-          start: {$gte: availability.start, $lte: selectedDate.toDate()},
-          end: {$gt: selectedDate.toDate(), $lte: availability.end}
-        }
-      }
-    };
-
-    AssignmentReactiveVars.TaskFilter.set(newFilter);
+    //TODO #378 AssignmentCalendarComponent.quartHeureOnClick should be done here, we need to pass two dates
 
   }, {
     controller: 'AssignmentController',
@@ -99,7 +66,7 @@ Router.route('/assignment/userToTask/:userId', function () {
     AssignmentReactiveVars.isUsersListDeveloped.set(false);
     AssignmentReactiveVars.isTasksListDeveloped.set(true);
 
-    AssignmentReactiveVars.SelectedAvailability.set(null);
+    AssignmentReactiveVars.isSelectedAvailability.set(false);
     AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);
     //TODO reduire la liste à ses amis
 

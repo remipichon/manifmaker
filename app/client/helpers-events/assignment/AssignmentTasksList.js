@@ -75,7 +75,7 @@ class AssignmentTasksList extends BlazeComponent {
               AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
 
               //reset workflow
-              AssignmentReactiveVars.SelectedAvailability.set(null);
+              AssignmentReactiveVars.isSelectedAvailability.set(false);
 
               AssignmentServiceClient.congratsAssignment(AssignmentType.USERTOTASK, _idTask);
             }

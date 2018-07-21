@@ -25,7 +25,7 @@ export class AssignmentServiceClient {
       case AssignmentType.USERTOTASK:
 
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
-        var selectedDate = AssignmentReactiveVars.SelectedDate.get()
+        var selectedDate = AssignmentReactiveVars.SelectedDate.get(); //TODO #378 ca c'est ok
 
 
         var userAssignments = AssignmentService.getAssignmentForUser({_id: userId});
@@ -167,7 +167,7 @@ export class AssignmentServiceClient {
 
     var number = ((accuracy <= 1) ? 1 : accuracy);
     for (var i = 0; i < 24; i = i + number)
-      AssignmentCalendarDisplayedHours.insert({date: i});
+      AssignmentCalendarDisplayedHours.insert({date: i, endDate: i + number});
 
     var number2 = ((accuracy < 1) ? 60 * accuracy : 60);
     for (var i = 0; i <= 45; i = i + number2)
@@ -181,6 +181,7 @@ export class AssignmentServiceClient {
    * @param _idAssignmentTerms {AssignmentTerms}
    */
   static setCalendarTerms(_idTerms) {
+    //TODO we need to clear some state, which ones ?
     _.each(AssignmentCalendarDisplayedDays.find().fetch(), function (doc) {
       AssignmentCalendarDisplayedDays.remove(doc._id)
     });

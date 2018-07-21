@@ -15,13 +15,17 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
   events() {
     return super.events().concat({
-      "click .popOver .peopleNeed": this.peopleNeedOnClick,
-      "click .popOver .peopleNeed.assigned": this.peopleNeedAssignedOnClick,
+      //userToTask
+      "click .heure .affecte": this.clickOnAssignment,
+      //click on availabilities is managed by the super.quartHeureOnClick
+      //taskToUser popover management
       "click .creneau": this.openPopOver,
       "click .calendar": this.closePopOver,
       "click .close-popover": this.closePopOver,
       "click .popOver": this.stopPropa,
-      "click .heure": this.heureOnClick
+      //taskToUser in-popover events
+      "click .popOver .peopleNeed": this.peopleNeedOnClick,
+      "click .popOver .peopleNeed.assigned": this.peopleNeedAssignedOnClick,
     })
   }
 
@@ -151,8 +155,10 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
   }
 
   openPopOver(event) {
-    if (event) event.stopPropagation();
-    Router.go(`/assignment/taskToUser/${AssignmentReactiveVars.SelectedTask.get()._id}/${this.currentData()._id}`)
+    if (AssignmentReactiveVars.CurrentAssignmentType.get() == AssignmentType.TASKTOUSER) {
+      if (event) event.stopPropagation();
+      Router.go(`/assignment/taskToUser/${AssignmentReactiveVars.SelectedTask.get()._id}/${this.currentData()._id}`)
+    }
   }
 
   closePopOver(event) {
@@ -170,59 +176,76 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     AssignmentServiceClient.taskToUserPerformUserFilter();
   }
 
+  clickOnAssignment(event){
+    console.log("clickOnAssignment")
+    event.stopPropagation()
 
-  heureOnClick() {
-    //what time did we click on ?
-    console.log("heureOnClick");
+    //TODO #378 selectedDate to find clicked assignment...
+    AssignmentReactiveVars.SelectedDate.set(new moment($(event.target).attr('start')));
 
-    var $target = $(event.target);
-
-    this.filterTaskList($target)
+    AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
   }
 
 
   //userToTask (we click on a creneau, not on the entire availability)
   quartHeureOnClick(event) {
+    if (AssignmentReactiveVars.CurrentAssignmentType.get() == AssignmentType.USERTOTASK) {
 
-    //what time did we click on ?
-    var $target = $(event.target);
+      //what time did we click on ?
+      var $target = $(event.target);
+      let startDate, endDate;
 
-    this.filterTaskList($target)
+      console.log("quartHeureOnClick");
+      if (typeof $target.attr("quarter") !== "undefined") {
+        startDate = new moment($target.attr('quarter'));
+        endDate = new moment($target.attr('quarterend'));
+      } else {
+        startDate = new moment($target.attr('start'));
+        endDate = new moment($target.attr('end'));
+      }
+
+      //TODO #378 fuck, we should be using the route...
+
+      AssignmentReactiveVars.isSelectedAvailability.set(true);
+
+
+      AssignmentReactiveVars.SelectedDate.set(startDate);
+
+      this.filterTaskList(startDate, endDate)
+    }
   }
 
-  filterTaskList($target) {
+  /**
+   * @summary filter task list which have timeslots within given start and end dates as long as the user has enclosing enclosingAvailability (user read from AssignmentReactiveVars.SelectedUser)
+   * @param startDate
+   * @param endDate
+   * @returns {Array}
+   */
+  filterTaskList(startDate, endDate) {
+    console.log("filterTaskList get all tasks from",startDate.toDate(),"   to   ", endDate.toDate());
 
     var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
     switch (currentAssignmentType) {
-      case AssignmentType.USERTOTASK://only display task that have at least one time slot matching the selected availability slot
+      case AssignmentType.USERTOTASK://only display task that have at least one time slot matching the selected enclosingAvailability slot
 
         //TODO #378 non strict mode is tricky here, make sure to get the proper target
         // TODO #378 read the selectedDate which is either clicked calendarSlotStart or the previous assi/avail end
         // TODO #378 endDate, either clicker calendarSlotEnd or the new assi/avail start
         // TODO #378 correctly get the avail or assi status of the click
         // TODO #378 filter task list with proper start/end
-        var selectedDate = null;
-        if (typeof $target.attr("hours") !== "undefined") {
-          selectedDate = new moment(new Date($target.attr("hours")));
-        } else if (typeof $target.attr("quarter") !== "undefined") {
-          selectedDate = new moment(new Date($target.attr("quarter")));
-        }
-        AssignmentReactiveVars.SelectedDate.set(selectedDate);
 
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
         var user = Meteor.users.findOne({_id: userId});
-        var availability = AvailabilityService.getSurroundingAvailability(user, selectedDate);
 
-        if (typeof availability === "undefined") {
-          AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
-          return;
-        } else {
-          AssignmentReactiveVars.IsUnassignment.set(false)
-        }
-        AssignmentReactiveVars.SelectedAvailability.set(availability);
+        AssignmentReactiveVars.isSelectedAvailability.set(true);
 
-        console.debug("filterTaskList")
+        //availabilities filter
+        let availabilitiesFilterStart = {$gte: startDate.toDate()}//, $lte: selectedDate.toDate()};
+        let availabilitiesFilterEnd = {$lte: endDate.toDate()}//, $lte: enclosingAvailability.end};
+
+
+        console.debug("filterTaskList");
 
 
         /*
@@ -233,7 +256,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
          Task whose have at least one timeSlot (to begin, just one) as
          user.selectedAvailabilities.start <= task.timeslot.start <= selectedDate and
          selectedDate <=  task.timeslot.end <=  user.Dispocorrespante.end
-         Foreach task's time slot, we need a matching skills and a matching availability
+         Foreach task's time slot, we need a matching skills and a matching enclosingAvailability
          */
 
         var timeSlotsFilter = {
@@ -245,11 +268,6 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
             ]
           }
         };
-
-        //availabilities filter
-        let availabilitiesFilterStart = {$gte: availability.start, $lte: selectedDate.toDate()};
-        let availabilitiesFilterEnd = {$gt: selectedDate.toDate(), $lte: availability.end};
-
         let exactUser = {
           //userId filter
           peopleNeeded: {
@@ -318,7 +336,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
         break;
       case
       AssignmentType.TASKTOUSER:
-        //only display users that have at least one availability matching the selected time slot
+        //only display users that have at least one enclosingAvailability matching the selected time slot
         //we let the event bubbles to the parent
         return [];
     }

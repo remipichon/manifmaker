@@ -14,7 +14,7 @@ export var AssignmentReactiveVars = {
   SelectedTaskBreadCrumb: new ReactiveVar(null), //TODO voir si on peut la merger avec AssignmentReactiveVars.SelectedTask
   SelectedTimeSlot: new ReactiveVar(null), //route and menu
   SelectedDate: new ReactiveVar(null),//rpute and menu
-  SelectedAvailability: new ReactiveVar(null), //rpute and menu
+  isSelectedAvailability: new ReactiveVar(false), //rpute and menu
   SelectedPeopleNeed: new ReactiveVar(null), //service and cmponentn
   IsUnassignment: new ReactiveVar(false), //menu and service,
   isUsersListDeveloped: new ReactiveVar(false),

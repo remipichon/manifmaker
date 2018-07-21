@@ -37,7 +37,7 @@ class AssignmentNavbar extends BlazeComponent {
           url: "/assignment/userToTask/" + selectedUser._id
         });
 
-        if (AssignmentReactiveVars.SelectedAvailability.get() === null) {//TODO pas top
+        if (!AssignmentReactiveVars.isSelectedAvailability.get()) {
           result.push({
             label: "Select one of the availability",
             url: ""

@@ -92,6 +92,7 @@ export class CalendarServiceClient {
 
     availabilitiesFound.forEach(avail => {
       avail.name = user.username;
+      avail.state = "dispo";
     });
     assignmentsFound.forEach(assi => {
       assi.name = assi.taskName;

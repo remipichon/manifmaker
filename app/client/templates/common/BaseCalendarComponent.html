@@ -20,7 +20,7 @@
                                 {{#with num_quarter=@index}}
                                 <div class="quart_heure {{isSelected ../../../date ../../date}} {{quarterHeight}}
                                     {{#unless enableAction ../../../date ../../date}}no-action{{/unless}}"
-                                     quarter="{{quarterDate ../../../date ../../date}}">
+                                     quarter="{{quarterDate ../../../date ../../date}}" quarterEnd="{{quarterDate ../../../date ../../endDate}}">
                                         {{#each timeSlot  ../../../date ../../date this}}
                                             {{#if equals ../num_quarter 0}}
                                                 {{>Template.dynamic template=../../../../../timeSlotTemplate}}
