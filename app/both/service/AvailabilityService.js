@@ -69,7 +69,7 @@ export class AvailabilityService {
    */
   static removeAvailabilities(user, start, end) {
     console.info("AvailabilityService.splitAvailabilities for user", user, " from", start, "to", end);
-    var availabilities = user.availabilities;
+    var availabilities = Meteor.users.findOne(user._id).availabilities;
 
     var availabilityIndex = AvailabilityService.getIndexOfSurroundingAvailability(user, start, end);
     //remove old availability
@@ -86,7 +86,11 @@ export class AvailabilityService {
         end: availability.end
       });
 
-    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
+    console.log("availabilities",availabilities)
+    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}}, (result, error) => {
+      console.log(error);
+      console.log(result);
+    });
 
   }
 

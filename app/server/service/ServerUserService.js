@@ -255,8 +255,6 @@ export class ServerUserService {
     }
 
     var superadminGroupRoles = GroupRoles.findOne({name: "superadmin"});
-    console.log("========")
-    console.log(modifier)
 
     if (modifier.$set && modifier.$set.roles
       && modifier.$set.roles.length === superadminGroupRoles.roles.length
