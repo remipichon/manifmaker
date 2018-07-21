@@ -27,7 +27,13 @@
                                             {{/if}}
                                         {{else}}
                                             {{#if enableAction ../../../date ../../date}}
-                                                {{#if ../../../../displayCharisma}}<div class="calendar-charisma noselect" title="{{getCharisma ../../../date ../date}} pts of charisma">{{getCharisma ../../../date ../../date}}</div>{{/if}}
+                                                {{#if ../../../../displayCharisma}}
+                                                <div class="charisma non-clickable">
+                                                    <div class="calendar-wrapper on-calendar">
+                                                    <div class="calendar-charisma noselect" title="{{getCharisma ../../../date ../date}} pts of charisma">{{getCharisma ../../../date ../../date}}</div>
+                                                    </div>
+                                                </div>
+                                                {{/if}}
                                             {{/if}}
                                         {{/each}}
                                 </div>

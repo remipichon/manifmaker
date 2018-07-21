@@ -5,63 +5,13 @@ import {AssignmentService} from "../../both/service/AssignmentService"
 /** @class CalendarServiceClient*/
 export class CalendarServiceClient {
 
+
+  static computeCalendarSlotData(resource, date){
+
+  }
+
   //TODO #378 maybe we can merge getCalendarSlotData and computeTimeSlotData and getCalendarSlotData
 
-
-  /**
-   * @summary Given a user and a specific time, retrieve an assignment or and availability and add calendar related data
-   * @param userId
-   * @param userAvailabilitiesOrAssignments array of assignments or array of availabilities
-   * @param startCalendarTimeSlot
-   * @param isAssigned
-   * @description
-   * return : calendar data {userId, assigned, charisma, css height}
-   */
-  //TODO #378 this is for user avail only and should deal with non accuray fit assigment/avail
-  //TODO #378 what to do with smaller than accurcy avail ?
-  static getCalendarSlotData(userId, userAvailabilitiesOrAssignments, startCalendarTimeSlot, isAssigned) {
-    var data = {};
-
-    //TODO #378 will have to support an array
-    var availabityOrAssignmentFound = TimeSlotService.getTimeResourcesByStart(userAvailabilitiesOrAssignments, startCalendarTimeSlot);
-    if (availabityOrAssignmentFound === null) return null;
-
-    if (availabityOrAssignmentFound !== null) {
-      //Template.parentData() doesn't work so we use a trick
-      data.userId = userId;
-      data.assigned = isAssigned;
-
-      var start = new moment(availabityOrAssignmentFound.start);
-      var end = new moment(availabityOrAssignmentFound.end);
-
-      //TODO I guess this should be added to computeTimeSlotData as well, no ?
-      //(it's when availability start before the day )
-      if (!start.isSame(startCalendarTimeSlot, "day")) {
-        start = startCalendarTimeSlot
-      }
-
-      //TODO I guess this should be added to computeTimeSlotData as well, no ?
-      //(it's when availability end after the day)
-      if (!end.isSame(startCalendarTimeSlot, "day")) {
-        end = new moment(startCalendarTimeSlot); //until the end of the day
-        end.minute(0);
-        end.hour(0);
-        end.add(1, 'day');
-      }
-
-      data.charisma = UserServiceClient.computeCharismaBetweenDate(start, end);
-    }
-
-    _.extend(data, availabityOrAssignmentFound);
-
-    //TODO #378 here data.height should adapt itself
-    //TODO #378 compute margin-top relative to parent (the 'creneau' if first timeslot found, on the previous timeslot else)
-
-    data.height = this.computeTimeResourceHeight(availabityOrAssignmentFound, startCalendarTimeSlot) + "px";
-
-    //TODO #378 will return an array
-    return data;
-  }
 
   //this is for assigment only
   //TODO #378 refactor filter task list when click on avail (use betweenDate instead of start), list should display all timeslot for all task in between, with exact matching timeslot in title
@@ -93,11 +43,17 @@ export class CalendarServiceClient {
     availabilitiesFound.forEach(avail => {
       avail.name = user.username;
       avail.state = "dispo";
+      avail.assigned = false;
+      avail.charisma = UserServiceClient.computeCharismaBetweenDate(new moment(avail.start), new moment(avail.end));
+
     });
     assignmentsFound.forEach(assi => {
       assi.name = assi.taskName;
       assi.state = "affecte";
+      assi.assigned = true;
+      assi.charisma = UserServiceClient.computeCharismaBetweenDate(new moment(assi.start), new moment(assi.end));
     });
+
 
     let availabilitiesAndAssignments = assignmentsFound.concat(availabilitiesFound);
 
