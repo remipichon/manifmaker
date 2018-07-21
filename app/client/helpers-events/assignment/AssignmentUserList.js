@@ -200,6 +200,12 @@ class AssignmentUserList extends BlazeComponent {
     });
     return result;
   }
+
+  isUnassignment(){
+    if(AssignmentReactiveVars.IsUnassignment.get()){
+      return "is-unassignment"
+    }
+  }
 }
 
 

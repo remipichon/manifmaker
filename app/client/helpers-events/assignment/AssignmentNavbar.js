@@ -20,6 +20,7 @@ class AssignmentNavbar extends BlazeComponent {
     if (isUnassignment) {
       result.push({
         label: "! Remove assignment !",
+        class: "is-unassignment",
         url: ""
       });
     }
@@ -38,10 +39,16 @@ class AssignmentNavbar extends BlazeComponent {
         });
 
         if (!AssignmentReactiveVars.isSelectedAvailability.get()) {
-          result.push({
-            label: "Select one of the availability",
-            url: ""
-          });
+          if(isUnassignment)
+            result.push({
+              label: "Select the task to confirm unassignment",
+              url: ""
+            });
+          else
+            result.push({
+              label: "Select one of the availabilities",
+              url: ""
+            });
           AssignmentReactiveVars.SelectedTaskBreadCrumb.set(null);
           //apres de amples reflexion, disons que je vois pas ou reinit ce SelectedTaskBreadcrum
           //ca risque d'avoir des effets de bords pénibles, mais l'avantage c'est que ca ne fait
@@ -102,7 +109,7 @@ class AssignmentNavbar extends BlazeComponent {
 
           if (isUnassignment)
             result.push({
-              label: "Select the assigned user to remove assignment",
+              label: "Select the user to confirm unassignment",
               url: ""
             });
           else

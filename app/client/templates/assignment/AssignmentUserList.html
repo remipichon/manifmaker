@@ -39,7 +39,7 @@
             <div id="assignment-user-list-collapsible" class="panel-group">
                 {{#each users}}
                     <div class="user panel panel-default" data-_id="{{_id}}">
-                        <div class="panel-heading" data-toggle="collapse" data-parent="#assignment-user-list-collapsible"
+                        <div class="panel-heading {{isUnassignment}}" data-toggle="collapse" data-parent="#assignment-user-list-collapsible"
                              data-target="#{{_id}}">
                             <h4 class="panel-title">
                                 <a class="href-assignment-user clickable">{{profile.firstName}} {{profile.familyName}} ({{username}})</a>

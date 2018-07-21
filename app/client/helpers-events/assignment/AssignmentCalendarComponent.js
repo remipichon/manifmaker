@@ -210,8 +210,13 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
 
       AssignmentReactiveVars.SelectedDate.set(startDate);
+      AssignmentReactiveVars.RelevantSelectedDates.set({
+        start: startDate,
+        end: endDate
+      });
 
-      this.filterTaskList(startDate, endDate)
+      this.filterTaskList(startDate, endDate);
+
     }
   }
 
@@ -222,6 +227,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
    * @returns {Array}
    */
   filterTaskList(startDate, endDate) {
+
     console.log("filterTaskList get all tasks from",startDate.toDate(),"   to   ", endDate.toDate());
 
     var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
@@ -237,9 +243,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
         var user = Meteor.users.findOne({_id: userId});
-
-        AssignmentReactiveVars.isSelectedAvailability.set(true);
-
+        
         //availabilities filter
         let availabilitiesFilterStart = {$gte: startDate.toDate()}//, $lte: selectedDate.toDate()};
         let availabilitiesFilterEnd = {$lte: endDate.toDate()}//, $lte: enclosingAvailability.end};

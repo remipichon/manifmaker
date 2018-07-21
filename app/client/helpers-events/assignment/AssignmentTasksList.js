@@ -1,6 +1,7 @@
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
 import {TeamService} from "../../../both/service/TeamService"
 import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
+import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {AssignmentService} from "../../../both/service/AssignmentService"
 import {AssignmentServiceClient} from "../../service/AssignmentServiceClient"
 
@@ -33,6 +34,20 @@ class AssignmentTasksList extends BlazeComponent {
 
   onClickTask(event) {
     AssignmentReactiveVars.SelectedTaskBreadCrumb.set(this.currentData());
+    if (AssignmentReactiveVars.CurrentAssignmentType.get() == AssignmentType.USERTOTASK) {
+      if (AssignmentReactiveVars.IsUnassignment.get()) {
+        Meteor.call("removeAssignUserToTaskTimeSlot",
+          AssignmentReactiveVars.SelectedPeopleNeed.get()._id,
+          AssignmentReactiveVars.SelectedUser.get()._id,
+          function (error, result) {
+            if (!error) {
+              let _idTask = "not_implemented";
+              AssignmentServiceClient.congratsRemoveAssignment(AssignmentType.USERTOTASK, _idTask);
+            }
+          });
+        AssignmentReactiveVars.IsUnassignment.set(false);
+      }
+    }
   }
 
   onClickPeopleNeed(event) {
@@ -59,12 +74,8 @@ class AssignmentTasksList extends BlazeComponent {
     switch (currentAssignmentType) {
       case AssignmentType.USERTOTASK:
         if (isUnassignment) {
-          Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, userId, function (error, result) {
-            if (!error) {
-              AssignmentServiceClient.congratsRemoveAssignment(AssignmentType.USERTOTASK, _idTask);
-            }
-          });
-          AssignmentReactiveVars.IsUnassignment.set(false);
+          console.error("USERTOTASK, onClickPeopleNeed with isUnassignment: shouldn't happen");
+          return;
         } else
           Meteor.call("assignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, userId, function (error, result) {
             if (!error) {
@@ -261,44 +272,40 @@ class AssignmentTasksList extends BlazeComponent {
   }
 
   timeSlotsInfo() {
-    var task = this.currentData();
-    var timeSlots = task.timeSlots;
-    if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
-      var result = [];
-      _.each(timeSlots, (timeSlot) => {
-        var date = AssignmentReactiveVars.SelectedDate.get();
-        var start = new moment(timeSlot.start);
-        var end = new moment(timeSlot.end);
-        if ((start.isSame(date)) &&
-          (end.isAfter(date) || end.isSame(date))) {
-          result.push(timeSlot);
-        }
-      });
+    let timeSlots = this.timeSlots();
+    if (timeSlots.length == 0) return ""; //timeSlot infos can be directly see in the calendar
 
-      var string = " - "
-      _.each(result, function (timeSlot) {
-        string += new moment(timeSlot.start).format("H[h]mm") + " - " + new moment(timeSlot.end).format("H[h]mm");
-      });
-      return string;
-    } else {
-      return; //timeSlot infos can be directly see in the calendar
-    }
+    var string = " • ";
+    _.each(timeSlots, function (timeSlot) {
+      string += new moment(timeSlot.start).format("H[h]mm") + " - " + new moment(timeSlot.end).format("H[h]mm") + " • ";
+    });
+    return string;
   }
 
   timeSlots() {
     var task = this.currentData();
     var timeSlots = task.timeSlots;
     if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
+
+      var relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get();
+      var selectedStartDate = relevantSelectedDates.start;
+      var selectedEndDate = relevantSelectedDates.end;
+
       var result = [];
       _.each(timeSlots, (timeSlot) => {
-        var date = AssignmentReactiveVars.SelectedDate.get();
+        //todo #378 check if it's relevant to display that timeslot to the user
         var start = new moment(timeSlot.start);
         var end = new moment(timeSlot.end);
-        if ((start.isBefore(date) || start.isSame(date)) &&
-          (end.isAfter(date) || end.isSame(date))) {
-          result.push(timeSlot);
+        //is timeslot within selected dates ?
+        if ((selectedStartDate.isBefore(start) || selectedStartDate.isSame(start)) &&
+          (selectedEndDate.isAfter(end) || selectedEndDate.isSame(end))) {
+          //is user available during this timeslot ?
+          if(AvailabilityService.checkUserAvailabilty( Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get()), start, end)) {
+            result.push(timeSlot);
+          }
         }
       });
+      console.log("timeSlots", result, "for", selectedStartDate.toDate(), "  to   ", selectedEndDate.toDate())
       return result;
     } else {
       return []; //timeSlot infos can be directly see in the calendar
@@ -312,7 +319,12 @@ class AssignmentTasksList extends BlazeComponent {
       if (AssignmentReactiveVars.IsUnassignment.get()) {
 
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
+        //TODO #378 SelectedDate
         var selectedDate = AssignmentReactiveVars.SelectedDate.get()
+
+        // var relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get();
+        // var selectedStartDate = relevantSelectedDates.start;
+        // var selectedEndDate = relevantSelectedDates.end;
 
 
         var userAssignments = AssignmentService.getAssignmentForUser({_id: userId});
@@ -371,6 +383,7 @@ class AssignmentTasksList extends BlazeComponent {
           }
         });
 
+        console.log("peopleneeded", peopleNeeded, " => ", result)
         return result;
       }
 
@@ -392,6 +405,12 @@ class AssignmentTasksList extends BlazeComponent {
     return {
       chooseLabel: "Choose a responsible team",
     };
+  }
+
+  isUnassignment(){
+    if(AssignmentReactiveVars.IsUnassignment.get()){
+      return "is-unassignment"
+    }
   }
 
 

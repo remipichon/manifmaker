@@ -445,20 +445,8 @@ export class InjectTestAssignmentDataServerService {
       },
       timeSlots: [
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 8, 0),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 9, 0),
-          peopleNeeded: [
-            {
-              teamId: this.teams.dreamTeam
-            },
-            {
-              skills: [this.skills.conducteurFen]
-            }
-          ],
-        },
-        {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 9, 0),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 10, 0),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 10, 0),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 11, 0),
           peopleNeeded: [
             {
               teamId: this.teams.dreamTeam
@@ -470,7 +458,7 @@ export class InjectTestAssignmentDataServerService {
         },
         {
           start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 11, 0),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 12, 0),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 12, 0),
           peopleNeeded: [
             {
               teamId: this.teams.dreamTeam
@@ -482,7 +470,7 @@ export class InjectTestAssignmentDataServerService {
         },
         {
           start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 13, 0),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 15, 0),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 14, 0),
           peopleNeeded: [
             {
               teamId: this.teams.dreamTeam
@@ -493,20 +481,20 @@ export class InjectTestAssignmentDataServerService {
           ],
         },
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 16, 0),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 16, 30),
-          peopleNeeded: [
-            {
-              teamId: this.teams.dreamTeam
-            },
-            {
-              skills: [this.skills.conducteurFen]
-            }
-          ],
-        },
-        {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 16, 30),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 15, 0),
           end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 17, 0),
+          peopleNeeded: [
+            {
+              teamId: this.teams.dreamTeam
+            },
+            {
+              skills: [this.skills.conducteurFen]
+            }
+          ],
+        },
+        {
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 17, 0),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 17, 30),
           peopleNeeded: [
             {
               teamId: this.teams.dreamTeam
