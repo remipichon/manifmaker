@@ -12,7 +12,9 @@ class AssignmentNavbar extends BlazeComponent {
       selectedUser = AssignmentReactiveVars.SelectedUser.get(),
       selectedTask = AssignmentReactiveVars.SelectedTask.get(),
       selectedTaskBreadCrumb = AssignmentReactiveVars.SelectedTaskBreadCrumb.get(),
-      selectedDate = AssignmentReactiveVars.SelectedDate.get(),
+      relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get(),
+      selectedStartDate = relevantSelectedDates.start,
+      selectedEndDate = relevantSelectedDates.end,
       selectedTimeSlot = AssignmentReactiveVars.SelectedTimeSlot.get(),
       isUnassignment = AssignmentReactiveVars.IsUnassignment.get(),
       result = [];
@@ -55,8 +57,8 @@ class AssignmentNavbar extends BlazeComponent {
           //que planter le breadcrumb, d'ou le pertinence de ce code ici
         } else {
           result.push({
-            label: selectedDate.format("ddd D HH:mm"),
-            url: "/assignment/userToTask/" + selectedUser._id + "/" + selectedDate.format('x')
+            label: selectedStartDate.format("ddd D HH:mm"),
+            url: "/assignment/userToTask/" + selectedUser._id + "/" + selectedStartDate.format('x')
           });
 
           if (!selectedTaskBreadCrumb) {

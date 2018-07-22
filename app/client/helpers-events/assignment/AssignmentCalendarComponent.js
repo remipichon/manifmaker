@@ -108,7 +108,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
   //works for .heure et .quart d'heure
   isSelected(date, timeHours) {
-    if (this.getCalendarDateTime(date, timeHours, 0).isSame(AssignmentReactiveVars.SelectedDate.get())) {
+    if (this.getCalendarDateTime(date, timeHours, 0).isSame(AssignmentReactiveVars.RelevantSelectedDates.get().start)) {
       return "selected"
     }
     return ""
@@ -181,8 +181,10 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     console.log("clickOnAssignment")
     event.stopPropagation()
 
-    //TODO #378 selectedDate to find clicked assignment...
-    AssignmentReactiveVars.SelectedDate.set(new moment($(event.target).attr('start')));
+    AssignmentReactiveVars.RelevantSelectedDates.set({
+      start: new moment($(event.target).attr('start')),
+      end: new moment($(event.target).attr('end'))
+    });
 
     AssignmentServiceClient.taskToUserPerformUserFilterRemoveAssignment();
   }
@@ -205,7 +207,6 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
       //TODO #378 fuck, we should be using the route...
 
       AssignmentReactiveVars.isSelectedAvailability.set(true);
-      AssignmentReactiveVars.SelectedDate.set(startDate);
       AssignmentReactiveVars.RelevantSelectedDates.set({
         start: startDate,
         end: endDate

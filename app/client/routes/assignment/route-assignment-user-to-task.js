@@ -20,7 +20,10 @@ Router.route('/assignment/userToTask', function () {
     AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);
     AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
     AssignmentReactiveVars.SelectedUser.set(null);
-    AssignmentReactiveVars.SelectedDate.set(null);
+    AssignmentReactiveVars.RelevantSelectedDates.set({
+      start: null,
+      end: null
+    });
 
     AssignmentReactiveVars.isUsersListDeveloped.set(true);
     AssignmentReactiveVars.isTasksListDeveloped.set(false);

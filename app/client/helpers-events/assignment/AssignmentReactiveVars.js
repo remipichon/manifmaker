@@ -15,7 +15,6 @@ export var AssignmentReactiveVars = {
   SelectedTask: new ReactiveVar(null),//route and menu
   SelectedTaskBreadCrumb: new ReactiveVar(null), //TODO voir si on peut la merger avec AssignmentReactiveVars.SelectedTask
   SelectedTimeSlot: new ReactiveVar(null), //route and menu
-  SelectedDate: new ReactiveVar(null),//DEPRECATED
   RelevantSelectedDates: new ReactiveVar({ //??
     start: null,
     end: null

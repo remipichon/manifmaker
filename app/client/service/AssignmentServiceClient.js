@@ -25,14 +25,16 @@ export class AssignmentServiceClient {
       case AssignmentType.USERTOTASK:
 
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
-        var selectedDate = AssignmentReactiveVars.SelectedDate.get(); //TODO #378 ca c'est ok
+        let relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get();
+        let start =  relevantSelectedDates.start;
+        //TODO #378, why don't we need end ?
 
 
         var userAssignments = AssignmentService.getAssignmentForUser({_id: userId});
         var assignmentFound;
         userAssignments.forEach(assignment => {
-          if ((new moment(assignment.start).isBefore(selectedDate) || new moment(assignment.start).isSame(selectedDate)
-            ) && new moment(assignment.end).isAfter(selectedDate)) {
+          if ((new moment(assignment.start).isBefore(start) || new moment(assignment.start).isSame(start)
+            ) && new moment(assignment.end).isAfter(start)) {
             assignmentFound = assignment;
           }
         });
