@@ -148,7 +148,7 @@ export class AssignmentServiceClient {
 
   /**
    * @summary seed AssignmentCalendarDisplayedDays according to term and accuracy
-   * @description if _idTerms or accuracy are not defined, respectively CurrentSelectedTerm and AssignmentCalendarDisplayedAccuracy will be used
+   * @description if _idTerms or accuracy are not defined, respectively CurrentSelectedTerm and CurrentSelectedAccuracy will be used
    * @locus client
    * @param _idTerms {AssignmentTerms}
    * @param accuracy {Number}
@@ -173,23 +173,17 @@ export class AssignmentServiceClient {
       AssignmentReactiveVars.CurrentSelectedTerm.set(_idTerms);
     }
 
-    //TODO #378 refactor AssignmentCalendarDisplayedAccuracy with ReactiveVar
-    if (accuracy) {
-      _.each(AssignmentCalendarDisplayedAccuracy.find().fetch(), function (doc) {
-        AssignmentCalendarDisplayedAccuracy.remove(doc._id)
-      });
-      AssignmentCalendarDisplayedAccuracy.insert({accuracy: accuracy});
-    } else {
-      if (AssignmentCalendarDisplayedAccuracy.findOne())
-        accuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy
+    if (!accuracy) {
+      if (AssignmentReactiveVars.CurrentSelectedAccuracy.get() != null)
+        accuracy = AssignmentReactiveVars.CurrentSelectedAccuracy.get();
       else {
-        accuracy = displayedTerm.calendarAccuracy;
-      _.each(AssignmentCalendarDisplayedAccuracy.find().fetch(), function (doc) {
-          AssignmentCalendarDisplayedAccuracy.remove(doc._id)
-        });
-        AssignmentCalendarDisplayedAccuracy.insert({accuracy: accuracy});
+        accuracy = displayedTerm.calendarAccuracy
+        AssignmentReactiveVars.CurrentSelectedAccuracy.set(accuracy);
       }
+    } else {
+      AssignmentReactiveVars.CurrentSelectedAccuracy.set(accuracy);
     }
+
     // AssignmentServiceClient.setCalendarAccuracy(accuracy);
     var quarterIncrement = ((accuracy < 1) ? 60 * accuracy : 60);
     let quarters = [];

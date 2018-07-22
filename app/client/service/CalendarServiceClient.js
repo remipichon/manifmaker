@@ -1,6 +1,7 @@
 import {TimeSlotService} from "../../both/service/TimeSlotService"
 import {UserServiceClient} from "../../client/service/UserServiceClient"
 import {AssignmentService} from "../../both/service/AssignmentService"
+import {AssignmentReactiveVars} from "../../client/helpers-events/assignment/AssignmentReactiveVars"
 
 /** @class CalendarServiceClient*/
 export class CalendarServiceClient {
@@ -25,7 +26,7 @@ export class CalendarServiceClient {
       return [];
     }
 
-    let chosenCalendarAccuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy;
+    let chosenCalendarAccuracy = AssignmentReactiveVars.CurrentSelectedAccuracy.get();
 
     let availabilitiesFound, assignmentsFound;
     let userAssignments = AssignmentService.getAssignmentForUser(user);
@@ -83,7 +84,7 @@ export class CalendarServiceClient {
     }
 
     //TODO #378 we need to read the calendarAccuracy from whatever is used on the UI
-    let chosenCalendarAccuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy;
+    let chosenCalendarAccuracy = AssignmentReactiveVars.CurrentSelectedAccuracy.get();
 
     let timeSlotsFound;
     if(term.isStrictMode){

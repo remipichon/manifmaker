@@ -80,7 +80,7 @@ export class BaseCalendarComponent extends BlazeComponent {
 
 
   sideHoursHeight() {
-    switch (AssignmentCalendarDisplayedAccuracy.findOne({}).accuracy) {
+    switch (AssignmentReactiveVars.CurrentSelectedAccuracy.get()) {
       case 0.25 :
         return "oneHour";
       case  0.5 :
@@ -95,7 +95,7 @@ export class BaseCalendarComponent extends BlazeComponent {
   }
 
   quarterHeight() {
-    switch (AssignmentCalendarDisplayedAccuracy.findOne({}).accuracy) {
+    switch (AssignmentReactiveVars.CurrentSelectedAccuracy.get()) {
       case 0.25 :
         return "quarterHour";
       case  0.5 :
@@ -115,7 +115,7 @@ export class BaseCalendarComponent extends BlazeComponent {
   }
 
   isAccuracySelected(value, extra) {
-    return (AssignmentCalendarDisplayedAccuracy.findOne().accuracy == value) ? extra : "";
+    return (AssignmentReactiveVars.CurrentSelectedAccuracy.get() == value) ? extra : "";
   }
 
 
