@@ -47,10 +47,8 @@ export class AssignmentService {
     return res;
   }
 
-  //TODO #378 use also end date
   static userHasAssignmentBetweenDates(user, startDate, endDate) {
     var userAssignments = AssignmentService.getAssignmentForUser(user);
-    //TODO #378 support array
     var assignmentsFound = TimeSlotService.getTimeResourcesByStart(userAssignments, startDate);
     if (assignmentsFound.length != 0) {
       return true;

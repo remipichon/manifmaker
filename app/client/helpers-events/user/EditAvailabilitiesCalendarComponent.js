@@ -77,7 +77,6 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
 
   addAvailability(event) {
     var firstDate = this.readFirstDate(event);
-    //TODO #378 read date comme il faut
     var user = this.parentComponent().parentComponent().data();
     var secondDate = new moment(firstDate).add(this.addHourAccordingToAccuracy(), "hour");
     if (!firstDate || !secondDate) return;

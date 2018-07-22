@@ -1,4 +1,3 @@
-import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
 /**
