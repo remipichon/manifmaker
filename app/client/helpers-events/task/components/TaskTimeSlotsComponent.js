@@ -215,7 +215,7 @@ class TaskTimeSlotsComponent extends BlazeComponent {
     //The trick here is to prevent user to click before 200ms, letting the delete to end.
     setTimeout(_.bind(function () {
       this.updatedTimeSlotId.set(newVar);
-      AssignmentServiceClient.setCalendarTerms(val);
+      AssignmentServiceClient.setCalendarTerms(val); //TODO #378, not sure if it's needed
       console.warn("People Need section flickered ? It's because of me : TaskTimeSlotsComponent.deletePeopleNeeded");
     }, this), 200);
 

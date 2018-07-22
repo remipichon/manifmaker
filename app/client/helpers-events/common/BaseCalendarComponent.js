@@ -17,14 +17,12 @@ export class BaseCalendarComponent extends BlazeComponent {
     //to implement
   }
 
-  onAccuracyChange(event){
-    //to implement
-    console.log("onAccurayChange",event)
-    AssignmentServiceClient.setCalendarAccuracy(parseInt($(event.target).attr('id')));
-  }
-
   quartHeureNoActionOnClick(event) {
     sAlert.info("There is no action at this date, please select another one")
+  }
+
+  onAccuracyChange(event) {
+    AssignmentServiceClient.setCalendarTerms(null, parseFloat($(event.target).attr('id')));
   }
 
   timeSlot(date, timeHours, idTask) {
@@ -53,12 +51,8 @@ export class BaseCalendarComponent extends BlazeComponent {
     return AssignmentCalendarDisplayedDays.find({});
   }
 
-  hours() {
-    return AssignmentCalendarDisplayedHours.find({});
-  }
-
-  quarter() {
-    return AssignmentCalendarDisplayedQuarter.find({});
+  sideHours() {
+    return AssignmentCalendarDisplayedDays.findOne({}).hours; //so far, all displayed days have the same hours
   }
 
   displayCalendarTitleDate(date) {
@@ -120,11 +114,8 @@ export class BaseCalendarComponent extends BlazeComponent {
     return ""
   }
 
-  isAccuracySelected(value, extra){
-    var truc = (AssignmentCalendarDisplayedAccuracy.findOne().accuracy == value)? extra: "";
-
-    console.log(value, extra, truc)
-    return truc
+  isAccuracySelected(value, extra) {
+    return (AssignmentCalendarDisplayedAccuracy.findOne().accuracy == value) ? extra : "";
   }
 
 

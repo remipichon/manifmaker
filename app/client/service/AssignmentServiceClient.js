@@ -147,66 +147,70 @@ export class AssignmentServiceClient {
   }
 
   /**
-   * @summary On the assignment calendar, display more or less hours accuracy
+   * @summary seed AssignmentCalendarDisplayedDays according to term and accuracy
+   * @description if _idTerms or accuracy are not defined, respectively CurrentSelectedTerm and AssignmentCalendarDisplayedAccuracy will be used
    * @locus client
-   * @param accuracy {CalendarAccuracy}
+   * @param _idTerms {AssignmentTerms}
+   * @param accuracy {Number}
    */
-  static setCalendarAccuracy(accuracy) {
-
-    _.each(AssignmentCalendarDisplayedHours.find().fetch(), function (doc) {
-      AssignmentCalendarDisplayedHours.remove(doc._id)
-    });
-    _.each(AssignmentCalendarDisplayedQuarter.find().fetch(), function (doc) {
-      AssignmentCalendarDisplayedQuarter.remove(doc._id)
-    });
-    _.each(AssignmentCalendarDisplayedAccuracy.find().fetch(), function (doc) {
-      AssignmentCalendarDisplayedAccuracy.remove(doc._id)
-    });
-
-    AssignmentCalendarDisplayedAccuracy.insert({accuracy: accuracy});
-
-    var number = ((accuracy <= 1) ? 1 : accuracy);
-    for (var i = 0; i < 24; i = i + number)
-      AssignmentCalendarDisplayedHours.insert({date: i, endDate: i + number});
-
-    var number2 = ((accuracy < 1) ? 60 * accuracy : 60);
-    for (var i = 0; i <= 45; i = i + number2)
-      AssignmentCalendarDisplayedQuarter.insert({quarter: i});
-
-  }
-
-  /**
-   * @summary On the assignment calendar, all the days covered by the given assignment term
-   * @locus client
-   * @param _idAssignmentTerms {AssignmentTerms}
-   */
-  static setCalendarTerms(_idTerms) {
-    //TODO we need to clear some state, which ones ?
+  //it is triggered (with not args) whenever AssignmentTerm collection is ready, therefore we can assume it's reactive (the Tracker monitors it)
+  static setCalendarTerms(_idTerms, accuracy) {
     _.each(AssignmentCalendarDisplayedDays.find().fetch(), function (doc) {
       AssignmentCalendarDisplayedDays.remove(doc._id)
     });
 
     var displayedTerm;
     if (!_idTerms) {
-      var terms = AssignmentTerms.find({}).fetch();
-      displayedTerm = terms[0];           //TODO which is default ?
+      if (AssignmentReactiveVars.CurrentSelectedTerm.get() != null)
+        displayedTerm = AssignmentTerms.findOne(AssignmentReactiveVars.CurrentSelectedTerm.get());
+      else {
+        var terms = AssignmentTerms.find({}).fetch();
+        displayedTerm = terms[0];           //TODO which one is default ?
+        AssignmentReactiveVars.CurrentSelectedTerm.set(displayedTerm._id);
+      }
     } else {
-      displayedTerm = AssignmentTerms.findOne(_idTerms)
+      displayedTerm = AssignmentTerms.findOne(_idTerms);
+      AssignmentReactiveVars.CurrentSelectedTerm.set(_idTerms);
     }
 
-    AssignmentServiceClient.setCalendarAccuracy(displayedTerm.calendarAccuracy);
+    //TODO #378 refactor AssignmentCalendarDisplayedAccuracy with ReactiveVar
+    if (accuracy) {
+      _.each(AssignmentCalendarDisplayedAccuracy.find().fetch(), function (doc) {
+        AssignmentCalendarDisplayedAccuracy.remove(doc._id)
+      });
+      AssignmentCalendarDisplayedAccuracy.insert({accuracy: accuracy});
+    } else {
+      if (AssignmentCalendarDisplayedAccuracy.findOne())
+        accuracy = AssignmentCalendarDisplayedAccuracy.findOne().accuracy
+      else {
+        accuracy = displayedTerm.calendarAccuracy;
+      _.each(AssignmentCalendarDisplayedAccuracy.find().fetch(), function (doc) {
+          AssignmentCalendarDisplayedAccuracy.remove(doc._id)
+        });
+        AssignmentCalendarDisplayedAccuracy.insert({accuracy: accuracy});
+      }
+    }
+    // AssignmentServiceClient.setCalendarAccuracy(accuracy);
+    var quarterIncrement = ((accuracy < 1) ? 60 * accuracy : 60);
+    let quarters = [];
+    for (var i = 0; i <= 45; i = i + quarterIncrement)
+      quarters.push({quarter: i})
+
+    var hourIncrement = ((accuracy <= 1) ? 1 : accuracy);
+    let hours = [];
+    for (var i = 0; i < 24; i = i + hourIncrement)
+      hours.push({date: i, endDate: i + hourIncrement, quarter: quarters});
 
     var start = new moment(displayedTerm.start);
     var end = new moment(displayedTerm.end);
-
     while (start.isBefore(end)) {
       AssignmentCalendarDisplayedDays.insert({
+        hours: hours,
         date: start,
         assignmentTermId: displayedTerm._id //we store the selected term id in each days
       });
       start.add(1, 'days');
     }
-
   }
 
   /**

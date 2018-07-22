@@ -9,6 +9,7 @@ export var AssignmentReactiveVars = {
   TaskFilter: new ReactiveVar(defaultFilter), //route and calendar component
   TaskIndexFilter: new ReactiveVar(noSearchFilter), //route
   CurrentAssignmentType: new ReactiveVar(AssignmentType.ALL), //service and route
+  CurrentSelectedTerm: new ReactiveVar(null),
   SelectedUser: new ReactiveVar(null), //route and menu
   SelectedTask: new ReactiveVar(null),//route and menu
   SelectedTaskBreadCrumb: new ReactiveVar(null), //TODO voir si on peut la merger avec AssignmentReactiveVars.SelectedTask
