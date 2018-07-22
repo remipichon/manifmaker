@@ -10,6 +10,7 @@ import {CalendarServiceClient} from "../../../client/service/CalendarServiceClie
 class AssignmentCalendarComponent extends BaseCalendarComponent {
   constructor() {
     super();
+    this.displayAccuracySelector = true
   }
 
 

@@ -6,6 +6,10 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
    this.data().parentInstance
 
    */
+  constructor(){
+    super();
+    this.displayAccuracySelector = true;
+  }
 
   events() {
     return super.events().concat({

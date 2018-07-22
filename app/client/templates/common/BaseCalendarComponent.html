@@ -1,4 +1,22 @@
 <template name="baseCalendarComponent">
+
+    {{#if displayAccuracySelector}}
+        <div class="btn-group" data-toggle="buttons" style="display: table; margin: auto;">
+            <label class="btn btn-primary active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> 15 minutes
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option2" autocomplete="off"> 30 minutes
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option3" autocomplete="off"> 1 hour
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option3" autocomplete="off"> 2 hours
+            </label>
+        </div>
+    {{/if}}
+
     <div class="calendar {{assignmentType}} {{class}}" id="calendar">
         <div id="titres" class="titres">
             {{#each days}}
