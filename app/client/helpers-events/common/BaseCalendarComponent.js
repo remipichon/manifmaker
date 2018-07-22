@@ -1,5 +1,6 @@
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 import {UserServiceClient} from "../../../client/service/UserServiceClient"
+import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 
 export class BaseCalendarComponent extends BlazeComponent {
 
@@ -14,6 +15,12 @@ export class BaseCalendarComponent extends BlazeComponent {
 
   quartHeureOnClick(event) {
     //to implement
+  }
+
+  onAccuracyChange(event){
+    //to implement
+    console.log("onAccurayChange",event)
+    AssignmentServiceClient.setCalendarAccuracy(parseInt($(event.target).attr('id')));
   }
 
   quartHeureNoActionOnClick(event) {
@@ -33,6 +40,7 @@ export class BaseCalendarComponent extends BlazeComponent {
       {
         "click  .quart_heure:not(.no-action)": this.quartHeureOnClick,
         "click  .quart_heure.no-action": this.quartHeureNoActionOnClick,
+        "change .accuracy-selector [name='accuracySelector']": this.onAccuracyChange,
       }
     ]
   }
@@ -110,6 +118,13 @@ export class BaseCalendarComponent extends BlazeComponent {
   //works for .heure et .quart d'heure
   isSelected(date, timeHours) {
     return ""
+  }
+
+  isAccuracySelected(value, extra){
+    var truc = (AssignmentCalendarDisplayedAccuracy.findOne().accuracy == value)? extra: "";
+
+    console.log(value, extra, truc)
+    return truc
   }
 
 

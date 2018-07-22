@@ -1,18 +1,18 @@
 <template name="baseCalendarComponent">
 
     {{#if displayAccuracySelector}}
-        <div class="btn-group" data-toggle="buttons" style="display: table; margin: auto;">
-            <label class="btn btn-primary active">
-                <input type="radio" name="options" id="option1" autocomplete="off" checked> 15 minutes
+        <div class="accuracy-selector btn-group" data-toggle="buttons" style="display: table; margin: auto;">
+            <label class="btn btn-primary{{isAccuracySelected 0.25 'active'}}">
+                <input type="radio" name="accuracySelector" id="0.25" autocomplete="off" {{isAccuracySelected 0.25 'checked'}}> 15 minutes
             </label>
-            <label class="btn btn-primary">
-                <input type="radio" name="options" id="option2" autocomplete="off"> 30 minutes
+            <label class="btn btn-primary {{isAccuracySelected 0.5 'active'}}">
+                <input type="radio" name="accuracySelector" id="0.5" autocomplete="off" {{isAccuracySelected 0.5 'checked'}}> 30 minutes
             </label>
-            <label class="btn btn-primary">
-                <input type="radio" name="options" id="option3" autocomplete="off"> 1 hour
+            <label class="btn btn-primary {{isAccuracySelected 1 'active'}}">
+                <input type="radio" name="accuracySelector" id="1" autocomplete="off" {{isAccuracySelected 1 'checked'}}> 1 hour
             </label>
-            <label class="btn btn-primary">
-                <input type="radio" name="options" id="option3" autocomplete="off"> 2 hours
+            <label class="btn btn-primary {{isAccuracySelected 2 'active'}}">
+                <input type="radio" name="accuracySelector" id="2" autocomplete="off" {{isAccuracySelected 2 'checked'}}> 2 hours
             </label>
         </div>
     {{/if}}
