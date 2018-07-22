@@ -65,6 +65,9 @@ class AssignmentTasksList extends BlazeComponent {
 
     var userId = AssignmentReactiveVars.SelectedUser.get()._id;
 
+    let moreThanOneAvailableTimeSlot = target.parents(".time-slot").siblings().length > 0;
+    console.log("moreThanOneAvailableTimeSlot",moreThanOneAvailableTimeSlot)
+
 
     if (target.hasClass("time-slot"))
       _idTimeSlot = target.data("_id");
@@ -79,16 +82,14 @@ class AssignmentTasksList extends BlazeComponent {
         } else
           Meteor.call("assignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, userId, function (error, result) {
             if (!error) {
-              //we have to reset the task list this way because once assigned, the task can't propose any peopleNeed for the user as he is
-              //no longer available but the task can still be theoretically assigned to him because we didn't recompute the AssignmentReactiveVars.TaskFilter job done
-              //by the event on the calendar.
-              //we don't need to do that for the mode TASKTOUSER as the user naturally disappears from the list once assigned
-              AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
-
-              //reset workflow
-              AssignmentReactiveVars.isSelectedAvailability.set(false);
-
+              if(!moreThanOneAvailableTimeSlot) {
+                //reset workflow
+                AssignmentReactiveVars.isSelectedAvailability.set(false);
+                AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
+              }
               AssignmentServiceClient.congratsAssignment(AssignmentType.USERTOTASK, _idTask);
+            } else {
+              console.error(error);
             }
           });
         break;
@@ -297,8 +298,11 @@ class AssignmentTasksList extends BlazeComponent {
         var start = new moment(timeSlot.start);
         var end = new moment(timeSlot.end);
         //is timeslot within selected dates ?
-        if ((selectedStartDate.isBefore(start) || selectedStartDate.isSame(start)) &&
-          (selectedEndDate.isAfter(end) || selectedEndDate.isSame(end))) {
+        //match with
+        // timeSlotStart = {$lt: endDate.toDate()};
+        // timeSlotEnd = {$gt: startDate.toDate()};
+        //from filterTaskList
+        if (start.isBefore(selectedEndDate) && end.isAfter(selectedStartDate)){
           //is user available during this timeslot ?
           if(AvailabilityService.checkUserAvailabilty( Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get()), start, end)) {
             result.push(timeSlot);

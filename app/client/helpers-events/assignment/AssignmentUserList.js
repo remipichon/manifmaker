@@ -58,9 +58,10 @@ class AssignmentUserList extends BlazeComponent {
           Meteor.call("assignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, _id, function (error, result) {
             if (!error) {
               AssignmentServiceClient.congratsAssignment(AssignmentType.TASKTOUSER, _id);
+            } else {
+              console.error(error);
             }
           });
-        AssignmentReactiveVars.SelectedTimeSlot.set(null);
         break;
     }
 

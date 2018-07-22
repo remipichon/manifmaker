@@ -233,13 +233,17 @@ export class InjectTestAssignmentDataServerService {
     });
     console.info("********");
     console.info("updating squidward");
-    InjectDataHelperServerService.setTeamsAndSkills(this.users.squidward, [this.teams.volunteers], [this.skills.conducteurFen]);
+    InjectDataHelperServerService.setTeamsAndSkills(this.users.squidward, [this.teams.dreamTeam], [this.skills.conducteurFen]);
     Meteor.users.update(this.users.squidward, {
       $set: {
         availabilities: [
           {
             start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 10, 0),
             end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 18, 0),
+          },
+          {
+            start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 10, 0),
+            end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 18, 0),
           }
         ],
         isReadyForAssignment: true

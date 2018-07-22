@@ -66,9 +66,9 @@
                                     {{#each timeSlots}}
                                         <li class="time-slot" data-_id="{{_id}}">
                                             from {{displayHours start}} to {{displayHours end}}
-                                            <ul>
+                                            <ul class="list-group">
                                                 {{#each peopleNeeded}}
-                                                    <li class="peopleNeed">
+                                                    <li class="peopleNeed list-group-item">
                                                         <div>
                                                             {{#each skills}}
                                                                 <div>{{skillLabel}}</div>

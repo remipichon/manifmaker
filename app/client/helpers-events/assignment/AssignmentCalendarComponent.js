@@ -239,24 +239,20 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
 
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
         var user = Meteor.users.findOne({_id: userId});
+
+        /*
+        ** Availabilities filter :
+        Task's timeslots happening between start/end dates who are still withing user availabilities
+        */
         
         //availabilities filter
-        let availabilitiesFilterStart = {$gte: startDate.toDate()}//, $lte: selectedDate.toDate()};
-        let availabilitiesFilterEnd = {$lte: endDate.toDate()}//, $lte: enclosingAvailability.end};
-
-
-        console.debug("filterTaskList");
-
+        let availabilitiesFilterStart = {$lt: endDate.toDate()};
+        let availabilitiesFilterEnd = {$gt: startDate.toDate()};
 
         /*
          ** Skills filter
          User is eligible for a task if he has all skills for at least one task' people need's skills.
          The query looks like something like this : 'foreach timeSlot foreach peopleNeeded foreach skills' = at least user.skills
-         ** Availabilities filter :
-         Task whose have at least one timeSlot (to begin, just one) as
-         user.selectedAvailabilities.start <= task.timeslot.start <= selectedDate and
-         selectedDate <=  task.timeslot.end <=  user.Dispocorrespante.end
-         Foreach task's time slot, we need a matching skills and a matching enclosingAvailability
          */
 
         var timeSlotsFilter = {
