@@ -185,7 +185,8 @@ export class InjectDataHelperServerService {
       $set: {
         username: username,
         _id: id,
-        groupRoles: groupArray
+        groupRoles: groupArray,
+        hideAllDismissible: true
       }
     });
 

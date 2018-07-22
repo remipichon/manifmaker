@@ -19,7 +19,10 @@ class DismissibleHelperComponent extends BlazeComponent {
   isDisplayed() {
     return ( Meteor.users.findOne({
       _id: Meteor.userId(),
-      dismissible: this.currentData().uniqueId
+      $or: [
+        {dismissible: this.currentData().uniqueId},
+        {hideAllDismissible: true}
+      ]
     })) ? false : true;
   }
 
