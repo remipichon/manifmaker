@@ -86,10 +86,8 @@ export class AvailabilityService {
         end: availability.end
       });
 
-    console.log("availabilities",availabilities)
-    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}}, (result, error) => {
-      console.log(error);
-      console.log(result);
+    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}}, (error, result) => {
+      if(error) console.log(error);
     });
 
   }
@@ -168,7 +166,9 @@ export class AvailabilityService {
     }
 
 
-    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
+    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}}, (error, result) => {
+      if(error) console.error(error);
+    });
 
 
     var term = AssignmentTerms.findOne({

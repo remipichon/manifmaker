@@ -1,5 +1,6 @@
 import {AssignmentService} from "../../../both/service/AssignmentService"
 import {AvailabilityService} from "../../../both/service/AvailabilityService"
+import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 import {ReadAvailabilitiesCalendarComponent} from "./ReadAvailabilitiesCalendarComponent"
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
@@ -17,6 +18,10 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
     this.firstDate = new ReactiveVar(null);
     this.secondDate = new ReactiveVar(null);
     this.isSelecting = false;
+
+    AssignmentServiceClient.setCalendarTerms(null, AssignmentTerms.findOne(
+      AssignmentReactiveVars.CurrentSelectedTerm.get()).calendarAccuracy);
+
   }
 
   events() {
