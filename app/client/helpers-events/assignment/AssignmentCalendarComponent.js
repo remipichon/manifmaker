@@ -200,16 +200,11 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
       if (typeof $target.attr("quarter") !== "undefined") {
         startDate = new moment($target.attr('quarter'));
         endDate = new moment($target.attr('quarterend'));
-      } else {
-        startDate = new moment($target.attr('start'));
-        endDate = new moment($target.attr('end'));
       }
 
       //TODO #378 fuck, we should be using the route...
 
       AssignmentReactiveVars.isSelectedAvailability.set(true);
-
-
       AssignmentReactiveVars.SelectedDate.set(startDate);
       AssignmentReactiveVars.RelevantSelectedDates.set({
         start: startDate,

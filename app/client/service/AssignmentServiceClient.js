@@ -194,12 +194,12 @@ export class AssignmentServiceClient {
     var quarterIncrement = ((accuracy < 1) ? 60 * accuracy : 60);
     let quarters = [];
     for (var i = 0; i <= 45; i = i + quarterIncrement)
-      quarters.push({quarter: i})
+      quarters.push({quarter: i, quarterLengthMinute: 60 * accuracy })
 
     var hourIncrement = ((accuracy <= 1) ? 1 : accuracy);
     let hours = [];
     for (var i = 0; i < 24; i = i + hourIncrement)
-      hours.push({date: i, endDate: i + hourIncrement, quarter: quarters});
+      hours.push({date: i, quarter: quarters});
 
     var start = new moment(displayedTerm.start);
     var end = new moment(displayedTerm.end);
