@@ -67,6 +67,116 @@ export class AssignmentServiceClient {
   }
 
   /**
+   * @summary filter task list which have timeslots within given start and end dates as long as the user has enclosing enclosingAvailability (user read from AssignmentReactiveVars.SelectedUser)
+   * @param startDate
+   * @param endDate
+   */
+  static filterTaskList(startDate, endDate) {
+
+    console.log("filterTaskList get all tasks from",startDate.toDate(),"   to   ", endDate.toDate());
+
+    var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
+
+    switch (currentAssignmentType) {
+      case AssignmentType.USERTOTASK://only display task that have at least one time slot matching the selected enclosingAvailability slot
+        var userId = AssignmentReactiveVars.SelectedUser.get()._id;
+        var user = Meteor.users.findOne({_id: userId});
+
+        /*
+         ** Availabilities filter :
+         Task's timeslots happening between start/end dates who are still withing user availabilities
+         */
+        let availabilitiesFilterStart = {$lt: endDate.toDate()};
+        let availabilitiesFilterEnd = {$gt: startDate.toDate()};
+
+        /*
+         ** Skills filter
+         User is eligible for a task if he has all skills for at least one task' people need's skills.
+         The query looks like something like this : 'foreach timeSlot foreach peopleNeeded foreach skills' = at least user.skills
+         */
+        var timeSlotsFilter = {
+          $elemMatch: {
+            $or: [
+              //userIdFilter,
+              //skillsFilter,
+              //noSkillsFilter
+            ]
+          }
+        };
+        let exactUser = {
+          //userId filter
+          peopleNeeded: {
+            $elemMatch: {
+              userId: user._id
+            }
+          }
+        };
+        exactUser.start = availabilitiesFilterStart;
+        exactUser.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(exactUser);
+        let skillsAndTeam = {
+          //skills filter
+          peopleNeeded: {
+            $elemMatch: {
+              skills: {
+                $elemMatch: {
+                  $in: user.skills
+                }
+              },
+              teamId: {
+                $in: user.teams
+              }
+            }
+          }
+        };
+        skillsAndTeam.start = availabilitiesFilterStart;
+        skillsAndTeam.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(skillsAndTeam);
+        let teamNoSkill = {
+          //skills filter
+          peopleNeeded: {
+            $elemMatch: {
+              skills: { // $eq : [] doesn't work with miniMongo, here is a trick
+                $not: {
+                  $ne: []
+                }
+              },
+              teamId: {
+                $in: user.teams
+              }
+            }
+          }
+        };
+        teamNoSkill.start = availabilitiesFilterStart;
+        teamNoSkill.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(teamNoSkill);
+        let skillsNoTeam = {
+          //skills filter
+          peopleNeeded: {
+            $elemMatch: {
+              skills: {
+                $elemMatch: {
+                  $in: user.skills
+                }
+              },
+              teamId: null
+            }
+          }
+        };
+        skillsNoTeam.start = availabilitiesFilterStart;
+        skillsNoTeam.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(skillsNoTeam);
+        //aggregate is not supported by mini mongo
+        AssignmentReactiveVars.TaskFilter.set(timeSlotsFilter);
+        break;
+      case
+      AssignmentType.TASKTOUSER:
+      //only display users that have at least one enclosingAvailability matching the selected time slot
+      //we let the event bubbles to the parent
+    }
+  }
+
+  /**
    * @summary Filter user list in task to user mode only.
    * Reactive Var :
    *

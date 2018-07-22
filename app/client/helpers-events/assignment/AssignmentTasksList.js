@@ -294,7 +294,6 @@ class AssignmentTasksList extends BlazeComponent {
 
       var result = [];
       _.each(timeSlots, (timeSlot) => {
-        //todo #378 check if it's relevant to display that timeslot to the user
         var start = new moment(timeSlot.start);
         var end = new moment(timeSlot.end);
         //is timeslot within selected dates ?
@@ -323,7 +322,6 @@ class AssignmentTasksList extends BlazeComponent {
       if (AssignmentReactiveVars.IsUnassignment.get()) {
 
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
-        //TODO #378 why don't we need enddate ?
         var relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get();
         var selectedStartDate = relevantSelectedDates.start;
         var selectedEndDate = relevantSelectedDates.end;
@@ -332,6 +330,7 @@ class AssignmentTasksList extends BlazeComponent {
         var userAssignments = AssignmentService.getAssignmentForUser({_id: userId});
         var assignmentFound;
         userAssignments.forEach(assignment => {
+          //TODO #378 why don't we need enddate ?
           if ((new moment(assignment.start).isBefore(selectedStartDate) || new moment(assignment.start).isSame(selectedStartDate)
             ) && new moment(assignment.end).isAfter(selectedStartDate)) {
             assignmentFound = assignment;

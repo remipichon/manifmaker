@@ -1,4 +1,5 @@
 import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 
 /**
  * @memberOf Route.Assignment
@@ -39,13 +40,24 @@ Router.route('/assignment/userToTask', function () {
  * @locus client
  * @name 'assignment.calendar.userToTask.user.date'  /assignment/userToTask/:userId/:selectedDate
  */
-Router.route('/assignment/userToTask/:userId/:selectedDate', function () {
+Router.route('/assignment/userToTask/:userId/:startDate/:endDate', function () {
     console.info("routing", '/assignment/userToTask/' + this.params.userId + '/' + this.params.selectedDate);
+    let startDate = new moment(parseInt(this.params.startDate));
+    let endDate = new moment(parseInt(this.params.endDate));
+    AssignmentReactiveVars.RelevantSelectedDates.set({
+      start: startDate,
+      end: endDate
+    });
 
-    console.error("Route not implemented !!!")
+    AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
+    AssignmentReactiveVars.SelectedUser.set({_id: this.params.userId});
+    AssignmentServiceClient.filterTaskList(startDate, endDate);
+    AssignmentReactiveVars.isUsersListDeveloped.set(false);
+    AssignmentReactiveVars.isTasksListDeveloped.set(true);
 
-    //TODO #378 AssignmentCalendarComponent.quartHeureOnClick should be done here, we need to pass two dates
-
+    AssignmentReactiveVars.isSelectedAvailability.set(true);
+    AssignmentReactiveVars.UserFilter.set(AssignmentReactiveVars.defaultFilter);
+    //TODO reduire la liste à ses amis
   }, {
     controller: 'AssignmentController',
     name: 'assignment.calendar.userToTask.user.date'
