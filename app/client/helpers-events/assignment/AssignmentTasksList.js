@@ -349,27 +349,7 @@ class AssignmentTasksList extends BlazeComponent {
 
     if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
       if (AssignmentReactiveVars.IsUnassignment.get()) {
-
-        var userId = AssignmentReactiveVars.SelectedUser.get()._id;
-        var relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get();
-        var selectedStartDate = relevantSelectedDates.start;
-        var selectedEndDate = relevantSelectedDates.end;
-
-
-        var userAssignments = AssignmentService.getAssignmentForUser({_id: userId});
-        var assignmentFound;
-        userAssignments.forEach(assignment => {
-          //TODO #378 why don't we need enddate ?
-          if ((new moment(assignment.start).isBefore(selectedStartDate) || new moment(assignment.start).isSame(selectedStartDate)
-            ) && new moment(assignment.end).isAfter(selectedStartDate)) {
-            assignmentFound = assignment;
-          }
-        });
-
-        var timeSlotPeopleNeed = PeopleNeedService.getPeopleNeedByIdAndTask(assignmentFound.peopleNeedId, Tasks.findOne(assignmentFound.taskId));
-
-        return [timeSlotPeopleNeed.peopleNeed]
-
+        return [];
       } else {
         var result = [];
 

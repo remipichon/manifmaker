@@ -15,7 +15,7 @@ export class AssignmentServiceClient {
    *  - Set AssignmentReactiveVars.SelectedTimeSlot
    *  - Set AssignmentReactiveVars.IsUnassignment
    *
-   * @locus Anywhere
+   * @locus Client
    * @returns {timeSlot|null}
    */
   static taskToUserPerformUserFilterRemoveAssignment() {
@@ -27,8 +27,7 @@ export class AssignmentServiceClient {
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
         let relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get();
         let start =  relevantSelectedDates.start;
-        //TODO #378, why don't we need end ?
-
+        //we don't need end because in that case, start date IS the start of an assignment (we are in remove assignment mode, the name hints it
 
         var userAssignments = AssignmentService.getAssignmentForUser({_id: userId});
         var assignmentFound;
