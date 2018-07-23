@@ -6,20 +6,10 @@ import {AssignmentReactiveVars} from "../../client/helpers-events/assignment/Ass
 /** @class CalendarServiceClient*/
 export class CalendarServiceClient {
 
-
-  static computeCalendarSlotData(resource, date){
-
-  }
-
-  //TODO #378 maybe we can merge getCalendarSlotData and computeTimeSlotData and getCalendarSlotData
-
-
-  //this is for assigment only
-  //TODO #378 refactor filter task list when click on avail (use betweenDate instead of start), list should display all timeslot for all task in between, with exact matching timeslot in title
-  //TODO #378 refactor click to remove assignment, make sure it falls on the righ avail or assign
   static computeAvailabilitiesAssignmentsData(user, startCalendarTimeSlot){
-    //TODO #378 what happens when we get the eventual previous term that end just before the current one ?
-    let term = TimeSlotService.timeSlotWithinAssignmentTerm(startCalendarTimeSlot, startCalendarTimeSlot); //to read .isStrictMode
+    let startPlusOneMinute = new moment(startCalendarTimeSlot);
+    startPlusOneMinute.add(1,"minute"); //this way, no risk to get a term that would end exactly when this one start
+    let term = TimeSlotService.timeSlotWithinAssignmentTerm(startCalendarTimeSlot, startPlusOneMinute); //to read .isStrictMode
 
     if (!term) {
       console.log("skip, no term for",startCalendarTimeSlot.toString())
@@ -75,15 +65,15 @@ export class CalendarServiceClient {
   }
 
   static computeTimeSlotsData(task, startCalendarTimeSlot) {
-    //TODO #378 what happens when we get the eventual previous term that end just before the current one ?
-    let term = TimeSlotService.timeSlotWithinAssignmentTerm(startCalendarTimeSlot, startCalendarTimeSlot); //to read .isStrictMode
+    let startPlusOneMinute = new moment(startCalendarTimeSlot);
+    startPlusOneMinute.add(1,"minute"); //this way, no risk to get a term that would end exactly when this one start
+    let term = TimeSlotService.timeSlotWithinAssignmentTerm(startCalendarTimeSlot, startPlusOneMinute); //to read .isStrictMode
 
     if (!term) {
       console.log("skip, no term for",startCalendarTimeSlot.toString())
       return [];
     }
 
-    //TODO #378 we need to read the calendarAccuracy from whatever is used on the UI
     let chosenCalendarAccuracy = AssignmentReactiveVars.CurrentSelectedAccuracy.get();
 
     let timeSlotsFound;
@@ -103,9 +93,6 @@ export class CalendarServiceClient {
     });
     let previousTimeSlots = [];
     timeSlotsFound.forEach(timeSlotFound => {
-      // timeSlotFound.taskName = task.name;
-      // timeSlotFound.taskId = task._id;
-
       timeSlotFound.height = this.computeTimeResourceHeight(timeSlotFound, startCalendarTimeSlot);
       timeSlotFound.marginTop = this.computeTimeResourceMarginTop(timeSlotFound, startCalendarTimeSlot, previousTimeSlots)
       result.push(timeSlotFound);
@@ -133,17 +120,12 @@ export class CalendarServiceClient {
     let baseOneHourHeight = 40, start, end, duration, marginTop;
     let startDate = new moment(new Date(startCalendarTimeSlot));
     let timeSlotStart = new moment(timeSlotAvailability.start);
-
-    //TODO #378 is the midnight thing working ?
-    // if (startDate.hour() === 0) {//midnight
-    //   start = startDate;
-    //   end = new moment(timeSlotAvailability.end);
-    // } else {
-    //   end = new moment(timeSlotAvailability.end);
-    //   start = new moment(timeSlotAvailability.start);
-    // }
-
-    let offset = timeSlotStart.diff(startDate) / (3600 * 1000);
+    let offset;
+    if (startDate.hour() === 0) {//midnight
+      offset = 0;
+    } else {
+      offset = timeSlotStart.diff(startDate) / (3600 * 1000);
+    }
     marginTop = offset * baseOneHourHeight;
 
     if(previousTimeSlots.length != 0) { //because it's margin top from the previous

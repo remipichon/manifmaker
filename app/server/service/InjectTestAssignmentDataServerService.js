@@ -190,6 +190,10 @@ export class InjectTestAssignmentDataServerService {
           {
             start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 10, 0),
             end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 18, 0),
+          },
+          {
+            start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 2, 10, 0),
+            end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 3, 18, 0),
           }
         ],
         isReadyForAssignment: true
@@ -365,6 +369,16 @@ export class InjectTestAssignmentDataServerService {
       calendarAccuracy: 2,
       isStrictMode: false
     });
+    AssignmentTerms.insert({
+      name: "Two days in a row 2h strict mode" + this.options.suffix,
+      start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 2, 0, 0),
+      end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 4, 0, 0),
+      teams: [this.teams.volunteers, this.teams.dreamTeam],
+      charisma: 100,
+      addAvailabilitiesDeadline: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year + 1, this.options.month, this.options.date, 0, 0),
+      calendarAccuracy: 2,
+      isStrictMode: true
+    });
 
   }
 
@@ -421,8 +435,20 @@ export class InjectTestAssignmentDataServerService {
           ],
         },
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date , 12, 0),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date , 14, 0),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 12, 0),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 14, 0),
+          peopleNeeded: [
+            {
+              teamId: this.teams.dreamTeam
+            },
+            {
+              skills: [this.skills.conducteurFen]
+            }
+          ],
+        },
+        {
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 2 , 12, 0),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 3, 12, 0),
           peopleNeeded: [
             {
               teamId: this.teams.dreamTeam
@@ -436,7 +462,7 @@ export class InjectTestAssignmentDataServerService {
     });
     Tasks.update(this.tasks.pillingUp, {$set: {"equipmentValidation.currentState": ValidationState.READY}})
 
-    this.tasks.pillingUpNonStricte = Tasks.insert({
+    this.tasks.pillingUpStricte = Tasks.insert({
       name: "(non stricte) Pilling up sand " + this.options.suffix,
       teamId: this.teams.dreamTeam,
       liveEventMasterId: this.users.sandy,

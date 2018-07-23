@@ -87,19 +87,14 @@ export class TimeSlotService {
         }
       }
 
-      //TODO #378 support time resource than started the day before and ended just today (one at most, no overlap)
-      // if (startDate.isSame(thingStartDate)) {
-      //   founds.push(thing);
-      // } else {
-      //   //is start midnight ? we should retrieve timeslot which started 'yesterday' and finish 'today' or later
-      //   if (startDate.hour() === 0 && startDate.minute() === 0) {
-      //     //=> is thing.start lt start and thing.end gt start ?
-      //     if (thingStartDate.isBefore(startDate) && thingEndDate.isAfter(startDate)) {
-      //       //=> => thing is a match
-      //       founds.push(thing);
-      //     }
-      //   }
-      // }
+      //is start midnight ? we should retrieve timeslot which started 'yesterday' and finish 'today' or later
+      if (startDate.hour() === 0 && startDate.minute() === 0) {
+        //=> is thing.start lt start and thing.end gt start ?
+        if (thingStartDate.isBefore(startDate) && thingEndDate.isAfter(startDate)) {
+          //=> => thing is a match
+          founds.push(thing);
+        }
+      }
     });
 
     return founds;

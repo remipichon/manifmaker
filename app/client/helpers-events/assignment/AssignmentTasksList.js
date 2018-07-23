@@ -308,7 +308,7 @@ class AssignmentTasksList extends BlazeComponent {
           }
         }
       });
-      console.log("timeSlots", result, "for", selectedStartDate.toDate(), "  to   ", selectedEndDate.toDate())
+      console.log("from timeSlots",timeSlots, "selected are",result, "for", selectedStartDate.toDate(), "  to   ", selectedEndDate.toDate())
       return result;
     } else {
       return []; //timeSlot infos can be directly see in the calendar
