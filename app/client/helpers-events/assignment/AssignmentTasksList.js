@@ -264,7 +264,7 @@ class AssignmentTasksList extends BlazeComponent {
     let result = _.intersectionObjects(searchResult, filterResult);
     let finalResult = [];
     //check if selected user has availabilities for at leat one timeslot for each task
-    if (AssignmentReactiveVars.SelectedUser.get()) {
+    if (AssignmentReactiveVars.SelectedUser.get() && !AssignmentReactiveVars.IsUnassignment.get()) {
       result.forEach(task => {
         let breakIt = false;
         task.timeSlots.forEach(timeSlot => {
@@ -278,7 +278,7 @@ class AssignmentTasksList extends BlazeComponent {
             let termEnd = new moment(currentAssignmentTerm.end);
             if( (timeSlotStart.isAfter(termStart) || timeSlotStart.isSame(termStart)) &&
               (timeSlotEnd.isBefore(termEnd) || timeSlotEnd.isSame(termEnd))) {
-              if (AvailabilityService.checkUserAvailabilty(Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get()), timeSlot.start, timeSlot.end)) {
+              if(AvailabilityService.checkUserAvailabilty(Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get()), timeSlot.start, timeSlot.end)) {
                 finalResult.push(task);
                 breakIt = true;
               }
