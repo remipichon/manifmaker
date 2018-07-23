@@ -261,7 +261,36 @@ class AssignmentTasksList extends BlazeComponent {
     }, {limit: 20}).fetch();
 
     searchResult = TasksIndex.search(filterIndex, {limit: 20}).fetch();
-    return _.intersectionObjects(searchResult, filterResult);
+    let result = _.intersectionObjects(searchResult, filterResult);
+    let finalResult = [];
+    //check if selected user has availabilities for at leat one timeslot for each task
+    if (AssignmentReactiveVars.SelectedUser.get()) {
+      result.forEach(task => {
+        let breakIt = false;
+        task.timeSlots.forEach(timeSlot => {
+          if (!breakIt) {
+            //get only the timeslot for the term, match with mongo query above
+            // timeSlotsFilter.$elemMatch.start = {$gte: currentAssignmentTerm.start};
+            // timeSlotsFilter.$elemMatch.end = {$lt: currentAssignmentTerm.end};
+            let timeSlotStart = new moment(timeSlot.start);
+            let timeSlotEnd = new moment(timeSlot.end);
+            let termStart = new moment(currentAssignmentTerm.start);
+            let termEnd = new moment(currentAssignmentTerm.end);
+            if( (timeSlotStart.isAfter(termStart) || timeSlotStart.isSame(termStart)) &&
+              (timeSlotEnd.isBefore(termEnd) || timeSlotEnd.isSame(termEnd))) {
+              if (AvailabilityService.checkUserAvailabilty(Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get()), timeSlot.start, timeSlot.end)) {
+                finalResult.push(task);
+                breakIt = true;
+              }
+            }
+          }
+        });
+      });
+    } else {
+      finalResult = result;
+    }
+
+    return finalResult;
   }
 
   team() {
