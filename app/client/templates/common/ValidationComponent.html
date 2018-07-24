@@ -2,7 +2,8 @@
 
     <h4><i class="mdi {{mdiIcon}}"></i> {{validationTypeLabel}} validation</h4>
 
-    <div class="validation-comments-list-header toggle-validation-comments-list" data-toggle="collapse" data-target="#{{validationTypeName}}-validation-comments-list">
+    <div class="validation-comments-list-header toggle-validation-comments-list" data-toggle="collapse"
+         data-target="#{{validationTypeName}}-validation-comments-list">
         <!-- Show the expand/collapse icon if there is more than 1 validation states -->
         <!-- comment between lines are here to avoid a white space between element, keeping a clean code with incrementations -->
         {{#if isMore validationData.comments.length 1}}
@@ -14,8 +15,13 @@
 
         <!-- Show the first validation state or the "no comment" message -->
         {{#if validationData.comments}}
-            <span title="{{displayDateTime validationData.comments.[0].creationDate}} : {{validationData.comments.[0].author}} updated {{validationTypeLabel}} validation from {{displayValidationState validationData.comments.[0].stateBefore}} to {{displayValidationState validationData.comments.[0].stateAfter}}  {{#if validationData.comments.[0].content}}with '{{validationData.comments.[0].content}}'{{else}}without any comment{{/if}}">
-                {{displayDateTime validationData.comments.[0].creationDate}} : has been updated to <b>{{displayValidationState validationData.comments.[0].stateAfter}}</b>
+            <span title="{{displayDateTime
+                    validationData.comments.[0].creationDate}} : {{validationData.comments.[0].author}} updated {{validationTypeLabel}} validation from {{displayValidationState
+                    validationData.comments.[0].stateBefore}} to {{displayValidationState
+                    validationData.comments.[0].stateAfter}}  {{#if
+                    validationData.comments.[0].content}}with '{{validationData.comments.[0].content}}'{{else}}without any comment{{/if}}">
+                {{displayDateTime validationData.comments.[0].creationDate}}
+                : has been updated to <b>{{displayValidationState validationData.comments.[0].stateAfter}}</b>
                 {{#if validationData.comments.[0].content}}
                     with "{{validationData.comments.[0].content}}"
                 {{else}}
@@ -34,9 +40,13 @@
 
             {{#each validationData.comments}}
                 {{#unless equals @index 0}}
-                    <span title="{{displayDateTime creationDate}} : {{author}} updated {{validationTypeLabel}} validation from {{displayValidationState stateBefore}} to {{displayValidationState stateAfter}}  {{#if content}}with '{{content}}'{{else}}without any comment{{/if}}">
+                    <span title="{{displayDateTime
+                            creationDate}} : {{author}} updated {{validationTypeLabel}} validation from {{displayValidationState
+                            stateBefore}} to {{displayValidationState stateAfter}}  {{#if
+                            content}}with '{{content}}'{{else}}without any comment{{/if}}">
                         <i class="mdi {{../mdiIcon}} mdi-inline {{stateAfter.toLowerCase}}"></i>
-                        {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState stateAfter}}</b>
+                        {{displayDateTime creationDate}} : has been updated to <b>{{displayValidationState
+                            stateAfter}}</b>
                         {{#if content}}
                             with "{{content}}"
                         {{else}}
@@ -55,7 +65,8 @@
 
         <!-- Input to add a new validation state -->
         <div class="input-group validation-comment-input" for="{{validationTypeLabel}}">
-            <input type="text" class="form-control validation-new-comment" placeholder="You can type a new comment for {{validationTypeLabel}} validation">
+            <input type="text" class="form-control validation-new-comment"
+                   placeholder="You can type a new comment for {{validationTypeLabel}} validation">
 
             <!-- button to display -->
             {{#if equals validationData.currentState "OPEN"}}
@@ -80,11 +91,13 @@
             <!-- if you can't because it's in validation -->
             {{#if equals validationData.currentState "TOBEVALIDATED"}}
 
-                <input type="text" class="form-control tobevalidated-locked-input" placeholder="Task {{validationTypeLabel}} in validation" disabled>
+                <input type="text" class="form-control tobevalidated-locked-input"
+                       placeholder="Task {{validationTypeLabel}} in validation" disabled>
             {{/if}}
             <!-- if you can't because it's closed -->
             {{#if equals validationData.currentState "READY"}}
-                <input type="text" class="form-control ready-locked-input" placeholder="Task {{validationTypeLabel}} closed" disabled>
+                <input type="text" class="form-control ready-locked-input"
+                       placeholder="Task {{validationTypeLabel}} closed" disabled>
             {{/if}}
         </div>
     {{/if}}

@@ -1,5 +1,5 @@
-import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
-import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars";
+import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient";
 
 /**
  * @memberOf Route.Assignment

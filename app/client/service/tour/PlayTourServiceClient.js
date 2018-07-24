@@ -9,8 +9,8 @@ export class PlayTourServiceClient {
     let suffix = params.suffix;
     var options = {
       options: {
-        year: params.year ,
-        month: params.month ,
+        year: params.year,
+        month: params.month,
         date: params.date
       },
       activityName: "Sandcastle On The Beach " + suffix,
@@ -32,7 +32,7 @@ export class PlayTourServiceClient {
       term: {
         name: `Journée Plage ${suffix}`
       },
-      places:{
+      places: {
         plage: "Plage de Bikini Bottom"
       },
       teams: {
@@ -56,18 +56,18 @@ export class PlayTourServiceClient {
     options.activityDate = startDate;
 
     options.timeSlot = {
-      start: startDate.set("h",10).toString(),
-      start2: startDate.set("h",8).toString() //tricks
+      start: startDate.set("h", 10).toString(),
+      start2: startDate.set("h", 8).toString() //tricks
     };
 
     options.volunteerUser = {  //part of team with access to terms, already validated
       email: `squidwardtantacles${suffix}@yopmail.com`,
       pwd: "squidwardtantacles",
       availabilities: [
-        startDate.set("h",8).toString(),
-        startDate.set("h",10).toString(),
-        startDate.set("h",14).toString(),
-        startDate.set("h",16).toString()
+        startDate.set("h", 8).toString(),
+        startDate.set("h", 10).toString(),
+        startDate.set("h", 14).toString(),
+        startDate.set("h", 16).toString()
       ]
     };
 

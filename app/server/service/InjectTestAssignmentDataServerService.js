@@ -423,7 +423,7 @@ export class InjectTestAssignmentDataServerService {
       },
       timeSlots: [
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date , 10, 0),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 10, 0),
           end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date, 12, 0),
           peopleNeeded: [
             {
@@ -447,7 +447,7 @@ export class InjectTestAssignmentDataServerService {
           ],
         },
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 2 , 12, 0),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 2, 12, 0),
           end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 3, 12, 0),
           peopleNeeded: [
             {
@@ -475,7 +475,7 @@ export class InjectTestAssignmentDataServerService {
       },
       timeSlots: [
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 10, 0),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 10, 0),
           end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 11, 0),
           peopleNeeded: [
             {
@@ -487,7 +487,7 @@ export class InjectTestAssignmentDataServerService {
           ],
         },
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 11, 0),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 11, 0),
           end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 12, 0),
           peopleNeeded: [
             {
@@ -499,8 +499,8 @@ export class InjectTestAssignmentDataServerService {
           ],
         },
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 13, 0),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 14, 0),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 13, 0),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 14, 0),
           peopleNeeded: [
             {
               teamId: this.teams.dreamTeam
@@ -511,8 +511,8 @@ export class InjectTestAssignmentDataServerService {
           ],
         },
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 15, 0),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 17, 0),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 15, 0),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 17, 0),
           peopleNeeded: [
             {
               teamId: this.teams.dreamTeam
@@ -523,8 +523,8 @@ export class InjectTestAssignmentDataServerService {
           ],
         },
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 17, 0),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 17, 30),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 17, 0),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 17, 30),
           peopleNeeded: [
             {
               teamId: this.teams.dreamTeam
@@ -535,8 +535,8 @@ export class InjectTestAssignmentDataServerService {
           ],
         },
         {
-          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1 , 17, 30),
-          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date +1 , 18, 0),
+          start: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 17, 30),
+          end: InjectDataHelperServerService.getDateFromDateAndHourMinute(this.options.year, this.options.month, this.options.date + 1, 18, 0),
           peopleNeeded: [
             {
               teamId: this.teams.dreamTeam

@@ -36,11 +36,11 @@ class TestAssignmentComponent extends BlazeComponent {
   //asynchronous result (because Collection Hooks occur some time later)
   remove_assign_nominal_case_after() {
     return "After : " + this.assignmentResultToString(
-      Meteor.users.findOne({name: "user1"}),
-      Tasks.findOne({name: "task 1"}),
-      Tasks.findOne({name: "task 1"}).timeSlots[0],
-      Tasks.findOne({name: "task 1"}).timeSlots[0].peopleNeeded[0]
-    );
+        Meteor.users.findOne({name: "user1"}),
+        Tasks.findOne({name: "task 1"}),
+        Tasks.findOne({name: "task 1"}).timeSlots[0],
+        Tasks.findOne({name: "task 1"}).timeSlots[0].peopleNeeded[0]
+      );
   }
 
 
@@ -70,11 +70,11 @@ class TestAssignmentComponent extends BlazeComponent {
   //asynchronous result (because Collection Hooks occur some time later)
   assign_nominal_case_after() {
     return "Befpre " + this.assignmentResultToString(
-      Meteor.users.findOne({name: "user1"}),
-      Tasks.findOne({name: "task 1"}),
-      Tasks.findOne({name: "task 1"}).timeSlots[0],
-      Tasks.findOne({name: "task 1"}).timeSlots[0].peopleNeeded[0]
-    );
+        Meteor.users.findOne({name: "user1"}),
+        Tasks.findOne({name: "task 1"}),
+        Tasks.findOne({name: "task 1"}).timeSlots[0],
+        Tasks.findOne({name: "task 1"}).timeSlots[0].peopleNeeded[0]
+      );
   }
 
 

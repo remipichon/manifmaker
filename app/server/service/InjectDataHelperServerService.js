@@ -29,7 +29,7 @@ export class InjectDataHelperServerService {
           teams: teams,
         }
       });
-    console.log("setSkills",userId, skills);
+    console.log("setSkills", userId, skills);
     if (skills)
       Meteor.users.update(userId, {
         $set: {

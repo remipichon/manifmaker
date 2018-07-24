@@ -1,5 +1,5 @@
-import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
-import {ManifMakerRouterController} from "./ManifMakerRouterController"
+import {SecurityServiceClient} from "../../client/service/SecurityServiceClient";
+import {ManifMakerRouterController} from "./ManifMakerRouterController";
 
 /**
  * @memberOf Route

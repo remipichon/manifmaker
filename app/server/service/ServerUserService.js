@@ -1,5 +1,5 @@
-import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
-import {Accounts} from 'meteor/accounts-base'
+import {SecurityServiceServer} from "../../server/service/SecurityServiceServer";
+import {Accounts} from "meteor/accounts-base";
 
 
 /** @class ServerUserService */

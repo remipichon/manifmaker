@@ -1,4 +1,4 @@
-import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
+import {SecurityServiceServer} from "../../server/service/SecurityServiceServer";
 
 /** @class ServerReferenceCollectionsService */
 export class ServerReferenceCollectionsService {

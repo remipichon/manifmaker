@@ -1,8 +1,8 @@
-import {Schemas} from './SchemasHelpers'
-import {ValidationService} from "../../../both/service/ValidationService"
-import "/both/collection/model/T-Validation.js"
-import {Match} from 'meteor/check'
-import {ApiResourceActionService} from "../../../both/service/ApiResourceActionService.js"
+import {Schemas} from "./SchemasHelpers";
+import {ValidationService} from "../../../both/service/ValidationService";
+import "/both/collection/model/T-Validation.js";
+import {Match} from "meteor/check";
+import {ApiResourceActionService} from "../../../both/service/ApiResourceActionService.js";
 
 SimpleSchema.extendOptions({
   jsonExport: Match.Optional(Boolean)
@@ -369,9 +369,9 @@ Schemas.Activities = new SimpleSchema({
   },
   'applicationData.pictures': {
     jsonExport: true,
-    jsonExportCustom: function(values){
+    jsonExportCustom: function (values) {
       let result = [];
-      values.forEach( value => {
+      values.forEach(value => {
         result.push(`${Meteor.manifmakerEndpoint}/cfs/files/images/${value}/${value}.JPG`)
       });
       return result;

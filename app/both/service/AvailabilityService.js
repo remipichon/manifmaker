@@ -1,4 +1,4 @@
-import {TimeSlotService} from "./TimeSlotService"
+import {TimeSlotService} from "./TimeSlotService";
 
 export class AvailabilityService {
   /**
@@ -87,7 +87,7 @@ export class AvailabilityService {
       });
 
     Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}}, (error, result) => {
-      if(error) console.log(error);
+      if (error) console.log(error);
     });
 
   }
@@ -167,7 +167,7 @@ export class AvailabilityService {
 
 
     Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}}, (error, result) => {
-      if(error) console.error(error);
+      if (error) console.error(error);
     });
 
 
@@ -256,7 +256,7 @@ export class AvailabilityService {
       previousAvailability = availabilities.splice(previousAvailabilityIndex, 1)[0];
     }
     if (typeof nextAvailabilityIndex !== "undefined") {//if next is after previous, its index just decreased (we could have sorted it)
-      nextAvailability = availabilities.splice((nextAvailabilityIndex > previousAvailabilityIndex)? nextAvailabilityIndex - 1: nextAvailabilityIndex, 1)[0];
+      nextAvailability = availabilities.splice((nextAvailabilityIndex > previousAvailabilityIndex) ? nextAvailabilityIndex - 1 : nextAvailabilityIndex, 1)[0];
     }
 
     var newAvailability = {};

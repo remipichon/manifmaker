@@ -1,6 +1,6 @@
-import {Schemas} from '../../../both/collection/model/SchemasHelpers'
-import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
-import {ManifMakerRouterController} from "../ManifMakerRouterController"
+import {Schemas} from "../../../both/collection/model/SchemasHelpers";
+import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient";
+import {ManifMakerRouterController} from "../ManifMakerRouterController";
 
 /**
  * This namespace describes the auto-generated routes for all Collection references described belove
@@ -123,9 +123,9 @@ _.each(Schemas.references.options, function (referenceOptions) {
       AutoForm.addHooks([`insert${REFERENCE_URL}Form`], {
         onSuccess: function () {
           sAlert.info(`${REFERENCE_LABEL} has been successfully created`);
-          if(window.confMakerReturnTo == true){
+          if (window.confMakerReturnTo == true) {
             window.confMakerReturnTo = null
-            Router.go("/conf-maker/"+PLURAL_REFERENCE_URL)
+            Router.go("/conf-maker/" + PLURAL_REFERENCE_URL)
           }
           window.confMakerReturnTo = null
         },

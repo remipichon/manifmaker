@@ -15,7 +15,8 @@
             {{#unless isForGroup}}
                 <a class="btn btn-primary pull-right" href="/task">Create a new Task</a>
             {{else}}
-                <a class="btn btn-primary pull-right" href="/task?groupId={{group._id}}">Create a new Task in {{group.name}}</a>
+                <a class="btn btn-primary pull-right" href="/task?groupId={{group._id}}">Create a new Task
+                    in {{group.name}}</a>
             {{/unless}}
         {{/if}}
 
@@ -45,18 +46,18 @@
 
             <div class="col-md-3 col-md-offset-1">
                 {{> SingleNonMandatorySelectComponent selectLabel="Task responsible" title="Task responsible"
-                optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                nothingSelectedLabel="No one" quickSelectLabel="select yourself" quickSelectId=currentUserId
-                updateCallback=filterResponsible
-                displayUpdateResult=false
+                        optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                        nothingSelectedLabel="No one" quickSelectLabel="select yourself" quickSelectId=currentUserId
+                        updateCallback=filterResponsible
+                        displayUpdateResult=false
                 }}
             </div>
 
             <div class="col-md-3 col-md-offset-1">
                 {{> SingleNonMandatorySelectComponent selectLabel="Team" title="Select a team"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned
-                displayUpdateResult=false
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned
+                        displayUpdateResult=false
                 }}
             </div>
 
@@ -73,7 +74,8 @@
                 {{/if}}
             </div>
             <div class="col-md-2 col-md-offset-5">
-                <button class="btn btn-primary pull-right" id="advanced-search-button"  data-toggle="collapse" data-target="#advanced-search">
+                <button class="btn btn-primary pull-right" id="advanced-search-button" data-toggle="collapse"
+                        data-target="#advanced-search">
                     {{#if isSearchAdvanced}}
                         Less <i class="mdi mdi-chevron-up mdi-inline"></i>
                     {{else}}
@@ -90,8 +92,8 @@
                 <div class="col-md-3">
                     <!-- TODO rendre fonctionnel le custom picker -->
                     {{> SingleNonMandatorySelectComponent title="Select a validation and its validation status" selectLabel="Validation Status"
-                    optionCollection=optionValidationStatus optionValueName="label"
-                    updateCallback=filterValidationStatus displayUpdateResult=false
+                            optionCollection=optionValidationStatus optionValueName="label"
+                            updateCallback=filterValidationStatus displayUpdateResult=false
                     }}
 
                 </div>
@@ -124,12 +126,10 @@
                 </div>
             {{/if}}
         </div>
-        </div>
+    </div>
     {{> reactiveTable settings=tasksList }}
 
 </template>
-
-
 
 
 <template name="taskButtons">
@@ -141,15 +141,14 @@
         {{/if}}
     {{/if}}
     {{#if isInRole RolesEnum.TASKDELETE}}
-        {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}
+        {{#quickRemoveButton class="btn btn-default" collection="Tasks" _id=this._id onSuccess=onDeleteSuccess
+                             beforeRemove=beforeRemove onError=onDeleteError}}
             <span title="Delete">
                 <i class="mdi mdi-delete"></i>
             </span>
         {{/quickRemoveButton}}
     {{/if}}
 </template>
-
-
 
 
 <template name="validationStateForTaskList">

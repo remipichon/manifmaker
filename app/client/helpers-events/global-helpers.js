@@ -1,4 +1,4 @@
-import {Utils} from "../service/Utils"
+import {Utils} from "../service/Utils";
 
 Template.registerHelper(
   "displayHours", function (date) {

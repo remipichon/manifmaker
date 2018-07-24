@@ -33,8 +33,8 @@
 
             <div class="col-md-3 col-md-offset-1">
                 {{> SingleNonMandatorySelectComponent selectLabel="Team" title="Select a team"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned displayUpdateResult=false
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCallback=filterTeam optionQuery=optionQueryTeamsWithoutAlreadyAssigned displayUpdateResult=false
                 }}
             </div>
 
@@ -56,8 +56,6 @@
 </template>
 
 
-
-
 <template name="userButtons">
     {{#if isInRole RolesEnum.USERWRITE}}
         <a class="btn btn-primary" href="/user/{{_id}}" role="button" title="Edit"> <i class="mdi mdi-pencil"></i></a>
@@ -67,7 +65,8 @@
         {{/if}}
     {{/if}}
     {{#if isInRole RolesEnum.USERDELETE}}
-        {{#quickRemoveButton class="btn btn-default" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}
+        {{#quickRemoveButton class="btn btn-default" collection="Meteor.users" _id=this._id onSuccess=onDeleteSuccess
+                             beforeRemove=beforeRemove onError=onDeleteError}}
             <span title="Delete">
                 <i class="mdi mdi-delete"></i>
             </span>

@@ -1,4 +1,4 @@
-import {sign, verify} from 'jsonwebtoken';
+import {sign, verify} from "jsonwebtoken";
 
 export class JwtService {
 

@@ -5,14 +5,14 @@
 <template name="AssignmentNavbar">
 
     <div class="row assignment-navbar">
-    <div class="inline">
-        <i class="mdi mdi-help-circle"></i>
-        {{> DismissibleHelperComponent message="Below is the next step you need to do an assignment (don't forget to dissmiss this helper)" uniqueId="assignment-bread"}}
-        {{#each breadCrumbAssignment}}
-            <i class="mdi mdi-chevron-right"></i>
-            <a class="{{class}}" href="{{url}}">{{label}}</a>
-        {{/each}}
-    </div>
+        <div class="inline">
+            <i class="mdi mdi-help-circle"></i>
+            {{> DismissibleHelperComponent message="Below is the next step you need to do an assignment (don't forget to dissmiss this helper)" uniqueId="assignment-bread"}}
+            {{#each breadCrumbAssignment}}
+                <i class="mdi mdi-chevron-right"></i>
+                <a class="{{class}}" href="{{url}}">{{label}}</a>
+            {{/each}}
+        </div>
     </div>
 
     <div class="row">

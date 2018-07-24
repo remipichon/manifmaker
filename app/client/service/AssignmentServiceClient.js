@@ -1,7 +1,7 @@
-import {AssignmentService} from "../../both/service/AssignmentService"
-import {PeopleNeedService} from "../../both/service/PeopleNeedService"
-import {TimeSlotService} from "../../both/service/TimeSlotService"
-import {AssignmentReactiveVars} from "../../client/helpers-events/assignment/AssignmentReactiveVars"
+import {AssignmentService} from "../../both/service/AssignmentService";
+import {PeopleNeedService} from "../../both/service/PeopleNeedService";
+import {TimeSlotService} from "../../both/service/TimeSlotService";
+import {AssignmentReactiveVars} from "../../client/helpers-events/assignment/AssignmentReactiveVars";
 
 /** @class AssignmentServiceClient */
 export class AssignmentServiceClient {
@@ -26,7 +26,7 @@ export class AssignmentServiceClient {
 
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
         let relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get();
-        let start =  relevantSelectedDates.start;
+        let start = relevantSelectedDates.start;
         //we don't need end because in that case, start date IS the start of an assignment (we are in remove assignment mode, the name hints it
 
         var userAssignments = AssignmentService.getAssignmentForUser({_id: userId});
@@ -72,7 +72,7 @@ export class AssignmentServiceClient {
    */
   static filterTaskList(startDate, endDate) {
 
-    console.log("filterTaskList get all tasks from",startDate.toDate(),"   to   ", endDate.toDate());
+    console.log("filterTaskList get all tasks from", startDate.toDate(), "   to   ", endDate.toDate());
 
     var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
 
@@ -299,7 +299,7 @@ export class AssignmentServiceClient {
     var quarterIncrement = ((accuracy < 1) ? 60 * accuracy : 60);
     let quarters = [];
     for (var i = 0; i <= 45; i = i + quarterIncrement)
-      quarters.push({quarter: i, quarterLengthMinute: 60 * accuracy })
+      quarters.push({quarter: i, quarterLengthMinute: 60 * accuracy})
 
     var hourIncrement = ((accuracy <= 1) ? 1 : accuracy);
     let hours = [];

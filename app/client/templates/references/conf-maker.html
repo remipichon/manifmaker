@@ -5,11 +5,13 @@
         {{#each confMakerReactiveTables}}
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title" data-toggle="collapse" data-parent="#conf-maker-wrapper" data-target="#{{REFERENCE_URL}}">
+                    <h4 class="panel-title" data-toggle="collapse" data-parent="#conf-maker-wrapper"
+                        data-target="#{{REFERENCE_URL}}">
                         {{REFERENCE_LABEL}}<a href="/{{REFERENCE_URL}}">Create a new {{REFERENCE_LABEL}}</a>
                     </h4>
                 </div>
-                <div id="{{REFERENCE_URL}}" listUrl="{{PLURAL_REFERENCE_URL}}" class="panel-collapse collapse {{isExpanded PLURAL_REFERENCE_URL ../expanded}}">
+                <div id="{{REFERENCE_URL}}" listUrl="{{PLURAL_REFERENCE_URL}}"
+                     class="panel-collapse collapse {{isExpanded PLURAL_REFERENCE_URL ../expanded}}">
                     <div class="panel-body">
                         {{> reactiveTable settings=reactiveTableSettings}}
                     </div>

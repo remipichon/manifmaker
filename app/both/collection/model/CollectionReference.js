@@ -1,8 +1,7 @@
-import {Schemas} from './SchemasHelpers'
-import {TimeSlotService} from "../../../both/service/TimeSlotService"
-
-import "/both/collection/model/enum/EquipementTargetUsage.js"
-import {Match} from 'meteor/check'
+import {Schemas} from "./SchemasHelpers";
+import {TimeSlotService} from "../../../both/service/TimeSlotService";
+import "/both/collection/model/enum/EquipementTargetUsage.js";
+import {Match} from "meteor/check";
 
 SimpleSchema.extendOptions({
   jsonExport: Match.Optional(Boolean)

@@ -1,7 +1,7 @@
-import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
-import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient"
-import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
-import {ManifMakerRouterController} from "../ManifMakerRouterController"
+import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient";
+import {SecurityServiceClient} from "../../../client/service/SecurityServiceClient";
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars";
+import {ManifMakerRouterController} from "../ManifMakerRouterController";
 
 /**
  * @memberOf Route

@@ -41,11 +41,15 @@
 
                 <li class="dropdown">
                     <ul id="settings-dropdown" class="dropdown-menu">
-                        <li><a href="{{pathFor route='user.write' data=currentUserIdObject}}" tabindex="-1"><i class="sidebar-icon mdi mdi-account"></i> Profile</a></li>
+                        <li><a href="{{pathFor route='user.write' data=currentUserIdObject}}" tabindex="-1"><i
+                                class="sidebar-icon mdi mdi-account"></i> Profile</a></li>
                         <li><a href="/logout" tabindex="-1"><i class="sidebar-icon mdi mdi-logout"></i> Logout</a></li>
                     </ul>
                 </li>
-                <li id="sidebar-home" class="{{#if equals currentTab "Home"}}active{{/if}}"><a class="home-link" href="{{pathFor route='home'}}"><i class="sidebar-icon mdi mdi-home"></i> Home</a></li>
+                <li id="sidebar-home" class="{{#if equals currentTab "Home"}}active{{/if}}"><a class="home-link"
+                                                                                               href="{{pathFor
+                                                                                                       route='home'}}"><i
+                        class="sidebar-icon mdi mdi-home"></i> Home</a></li>
                 {{#if isInRole RolesEnum.ACTIVITYREAD}}
                     <li class="dropdown">
                         <a id="sidebar-activity" class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
@@ -53,9 +57,11 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{pathFor route='activity.list'}}"><i class="sidebar-icon mdi mdi-format-list-bulleted"></i> List</a></li>
+                            <li><a href="{{pathFor route='activity.list'}}"><i
+                                    class="sidebar-icon mdi mdi-format-list-bulleted"></i> List</a></li>
                             {{#if isInRole RolesEnum.ACTIVITYWRITE}}
-                                <li><a href="{{pathFor route='activity.create'}}"><i class="sidebar-icon mdi mdi-plus"></i> Create</a></li>
+                                <li><a href="{{pathFor route='activity.create'}}"><i
+                                        class="sidebar-icon mdi mdi-plus"></i> Create</a></li>
                             {{/if}}
                         </ul>
                     </li>
@@ -67,25 +73,37 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{pathFor route='task.list'}}"><i class="sidebar-icon mdi mdi-format-list-bulleted"></i> List</a></li>
-                            <li><a href="{{pathFor route='task-group.list'}}"><i class="sidebar-icon mdi mdi-folder"></i>  Groups</a></li>
+                            <li><a href="{{pathFor route='task.list'}}"><i
+                                    class="sidebar-icon mdi mdi-format-list-bulleted"></i> List</a></li>
+                            <li><a href="{{pathFor route='task-group.list'}}"><i
+                                    class="sidebar-icon mdi mdi-folder"></i> Groups</a></li>
                             {{#if isInRole RolesEnum.TASKWRITE}}
-                                <li><a href="{{pathFor route='task.create'}}"><i class="sidebar-icon mdi mdi-plus"></i> Create</a></li>
+                                <li><a href="{{pathFor route='task.create'}}"><i class="sidebar-icon mdi mdi-plus"></i>
+                                    Create</a></li>
                             {{/if}}
-                            <!--<li><a href="{{pathFor route='task.stats'}}"><i class="sidebar-icon mdi mdi-chart-line"></i>  Stats</a></li>-->
+                            <!--<li><a href="{{pathFor
+                                    route='task.stats'}}"><i class="sidebar-icon mdi mdi-chart-line"></i>  Stats</a></li>-->
                         </ul>
                     </li>
                 {{/if}}
                 {{#if isInRole RolesEnum.USERREAD}}
-                    <li class="{{#if equals currentTab "Users"}}active{{/if}}"><a id="sidebar-user" href="{{pathFor route='user.list'}}"><i class="sidebar-icon mdi mdi-account-multiple"></i> Users</a></li>
+                    <li class="{{#if equals currentTab "Users"}}active{{/if}}"><a id="sidebar-user" href="{{pathFor
+                            route='user.list'}}"><i class="sidebar-icon mdi mdi-account-multiple"></i> Users</a></li>
                 {{/if}}
                 {{#if isInRole RolesEnum.ASSIGNMENTTASKUSER}}
-                    <li class="{{#if equals currentTab "Assignment"}}active{{/if}}"><a id="sidebar-assignment" href="{{pathFor route='assignment.calendar'}}"><i class="sidebar-icon mdi mdi-calendar-multiple-check"></i> Assignment</a></li>
+                    <li class="{{#if equals currentTab "Assignment"}}active{{/if}}"><a id="sidebar-assignment"
+                                                                                       href="{{pathFor
+                                                                                               route='assignment.calendar'}}"><i
+                            class="sidebar-icon mdi mdi-calendar-multiple-check"></i> Assignment</a></li>
                 {{/if}}
                 {{#if isInRole RolesEnum.CONFMAKER}}
-                    <li class="{{#if equals currentTab "ConfMaker"}}active{{/if}}"><a id="sidebar-confmaker" href="{{pathFor route='conf-maker'}}"><i class="sidebar-icon mdi mdi-settings"></i> ConfMaker</a></li>
+                    <li class="{{#if equals currentTab "ConfMaker"}}active{{/if}}"><a id="sidebar-confmaker"
+                                                                                      href="{{pathFor
+                                                                                              route='conf-maker'}}"><i
+                            class="sidebar-icon mdi mdi-settings"></i> ConfMaker</a></li>
                 {{/if}}
-                <li class="application-version"><a href=""><i class="sidebar-icon mdi"></i> Version {{getVersion}}</a></li>
+                <li class="application-version"><a href=""><i class="sidebar-icon mdi"></i> Version {{getVersion}}</a>
+                </li>
 
             </ul>
             <!-- Sidebar divider -->

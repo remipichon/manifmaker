@@ -1,4 +1,4 @@
-import {Schemas} from './SchemasHelpers'
+import {Schemas} from "./SchemasHelpers";
 
 Schemas.Settings = new SimpleSchema({
   one: {

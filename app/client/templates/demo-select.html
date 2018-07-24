@@ -16,33 +16,33 @@
         <div class="row">
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select with mininum params to update an item in a collection"
-                optionCollection="Teams" optionValueName="name"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        optionCollection="Teams" optionValueName="name"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
                 }}
             </div>
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select to update an item in a collection and providing a search filter"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
                 }}
             </div>
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select with mininum params to handle result in a callback only"
-                optionCollection="Teams" optionValueName="name"
-                updateCallback=updateCallbackDisplayArgs
+                        optionCollection="Teams" optionValueName="name"
+                        updateCallback=updateCallbackDisplayArgs
                 }}
             </div>
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select to update an item in a collection and user a callback"
-                optionCollection="Teams" optionValueName="name"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
-                updateCallback=updateCallbackDisplayArgs
+                        optionCollection="Teams" optionValueName="name"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        updateCallback=updateCallbackDisplayArgs
                 }}
             </div>
             <div class="col-md-3">
                 {{> SingleSelectComponent selectLabel="Single slect with updateCallback only"
-                optionCollection="Teams" optionValueName="name"
-                updateCallback=updateCallbackDisplayArgs
+                        optionCollection="Teams" optionValueName="name"
+                        updateCallback=updateCallbackDisplayArgs
                 }}
             </div>
         </div>
@@ -54,26 +54,26 @@
         <div class="row">
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select providing a search filter"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
                 }}
             </div>
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select with a pre-filtered options list coming from a Mongo collection"
-                optionCollection="Teams" optionValueName="name" optionQuery=optionQueryteamsWithoutAlreadyAssigned
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        optionCollection="Teams" optionValueName="name" optionQuery=optionQueryteamsWithoutAlreadyAssigned
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
                 }}
             </div>
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select with options coming from an array "
-                optionCollection=optionCollectionAsArray optionValueName="label"
-                updateCallback=updateCallbackDisplayArgs
+                        optionCollection=optionCollectionAsArray optionValueName="label"
+                        updateCallback=updateCallbackDisplayArgs
                 }}
             </div>
             <div class="col-md-3">
                 {{> SingleSelectComponent selectLabel="Single select with options coming from an array "
-                optionCollection=optionCollectionAsArray optionValueName="label"
-                updateCallback=updateCallbackDisplayArgs
+                        optionCollection=optionCollectionAsArray optionValueName="label"
+                        updateCallback=updateCallbackDisplayArgs
                 }}
             </div>
         </div>
@@ -90,21 +90,21 @@
         <div class="row">
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select that doesn't display any selected options"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
-                maxSelectedOptionDisplayed=0}}
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        maxSelectedOptionDisplayed=0}}
             </div>
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select that display 2 at most selected options"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
-                maxSelectedOptionDisplayed=2}}
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        maxSelectedOptionDisplayed=2}}
             </div>
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select that display 1 at most selected options with a custom label"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
-                maxSelectedOptionDisplayed=1 maxSelectedOptionDisplayedLabel=" selected, over space ! Over !"}}
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        maxSelectedOptionDisplayed=1 maxSelectedOptionDisplayedLabel=" selected, over space ! Over !"}}
             </div>
         </div>
         <div class="row">
@@ -115,15 +115,15 @@
         <div class="row">
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Multiple select where selected options are sorted at the top of the popover list"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
-                selectedOptionSortedOnTopOfList=true}}
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        selectedOptionSortedOnTopOfList=true}}
             </div>
             <div class="col-md-3">
                 <p>Multiple without label (this is not the label but just a span</p>
                 {{> MultipleSelectComponent withoutLabel=true
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
                 }}
             </div>
         </div>
@@ -135,14 +135,14 @@
         <div class="row">
             <div class="col-md-3">
                 {{> MultipleSelectComponent selectLabel="Custom label/title/search place holder" filterPlaceHolder="Pssst, you can search stuff here" title="My name is popover !"
-                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
+                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                        updateCollection="Meteor.users" updateItemId=user1Id updateItemPath="teams"
                 }}
             </div>
             <div class="col-md-3">
                 {{> SingleNonMandatorySelectComponent title="Non mandatory single select" clearMessage="Custorm clear selected"
-                optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
-                updateCollection="Tasks" updateItemId=task2Id updateItemPath="powerSupplyId"}}
+                        optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
+                        updateCollection="Tasks" updateItemId=task2Id updateItemPath="powerSupplyId"}}
             </div>
         </div>
         <div class="row">
@@ -153,16 +153,16 @@
         <div class="row">
             <div class="col-md-3">
                 {{> MultipleNonMandatorySelectComponent title="Non mandatory Multiple with quick selection"
-                optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="Nothing yet buddy..."
-                updateCollection="Meteor.users" updateItemId=user2Id updateItemPath="skills"
-                quickSelectLabel="Quick ! Click to select skill1 and skill2" quickSelectIds=skill1Idskill2Id
+                        optionCollection="Skills" optionValueName="label" optionCollectionIndex="SkillsIndex" nothingSelectedLabel="Nothing yet buddy..."
+                        updateCollection="Meteor.users" updateItemId=user2Id updateItemPath="skills"
+                        quickSelectLabel="Quick ! Click to select skill1 and skill2" quickSelectIds=skill1Idskill2Id
                 }}
             </div>
             <div class="col-md-3">
                 {{> SingleNonMandatorySelectComponent title="Single with quick selection"
-                optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
-                updateCollection="Tasks" updateItemId=task2Id updateItemPath="powerSupplyId"
-                quickSelectLabel="Assign to powersupply1" quickSelectId=powersupply1
+                        optionCollection="PowerSupplies" optionValueName="name" optionCollectionIndex="PowerSuppliesIndex"
+                        updateCollection="Tasks" updateItemId=task2Id updateItemPath="powerSupplyId"
+                        quickSelectLabel="Assign to powersupply1" quickSelectId=powersupply1
                 }}
             </div>
         </div>

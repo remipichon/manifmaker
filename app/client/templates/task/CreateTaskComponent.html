@@ -25,27 +25,27 @@
 
                     <div>
                         {{> SingleSelectComponent selectLabel="Team" title="Update team"
-                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teamId"
-                        nothingSelectedLabel="None yet"
+                                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="teamId"
+                                nothingSelectedLabel="None yet"
                         }}
                     </div>
 
 
                     <div>
                         {{> SingleSelectComponent selectLabel="User responsible" title="Task responsible"
-                        optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                        updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="masterId"
-                        nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                                optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                                updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="masterId"
+                                nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
                         }}
                     </div>
 
                     <div>
                         <div>
                             {{> SingleSelectComponent selectLabel="Live event responsible" title="Live event responsible"
-                            optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
-                            updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="liveEventMasterId"
-                            nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
+                                    optionCollection="Meteor.users" optionValueName="username" optionCollectionIndex="UsersIndex"
+                                    updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="liveEventMasterId"
+                                    nothingSelectedLabel="No one" quickSelectLabel="assign to yourself" quickSelectId=currentUserId
                             }}
                         </div>
                     </div>
@@ -53,8 +53,8 @@
                     <div>
                         <div>
                             {{> SingleSelectComponent selectLabel="Rendez-vous point" title="Rendez-vous point"
-                            optionCollection="Places" optionValueName="name" optionCollectionIndex="PlacesIndex"
-                            updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="placeId"
+                                    optionCollection="Places" optionValueName="name" optionCollectionIndex="PlacesIndex"
+                                    updateCollection="TempCollection" updateItemId=tempItemId updateItemPath="placeId"
                             }}
                         </div>
                     </div>

@@ -1,5 +1,3 @@
-
-
 <template name="updateUserFormXXX">
 
     {{# autoForm collection="Meteor.users" doc=this id="updateUserForm" type="update"}}
@@ -18,7 +16,8 @@
         </fieldset>
         <button type="submit" class="btn btn-primary">Update</button>
         {{#if isInRole RolesEnum.USERDELETE}}
-            {{#quickRemoveButton class="btn btn-default" collection="Meteor.users" _id=this._id}}Delete{{/quickRemoveButton}}
+            {{#quickRemoveButton class="btn btn-default" collection="Meteor.users" _id=this._id}}
+                Delete{{/quickRemoveButton}}
         {{/if}}
     {{/autoForm}}
 </template>

@@ -1,8 +1,8 @@
-import {Schemas} from './SchemasHelpers'
-import {TimeSlotService} from "../../../both/service/TimeSlotService"
-import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
-import {ValidationService} from "../../../both/service/ValidationService"
-import "/both/collection/model/T-Validation.js"
+import {Schemas} from "./SchemasHelpers";
+import {TimeSlotService} from "../../../both/service/TimeSlotService";
+import {PeopleNeedService} from "../../../both/service/PeopleNeedService";
+import {ValidationService} from "../../../both/service/ValidationService";
+import "/both/collection/model/T-Validation.js";
 
 //order matters !
 
@@ -196,7 +196,7 @@ Schemas.TimeSlot = new SimpleSchema({
       var term = TimeSlotService.timeSlotWithinAssignmentTerm(start, end);
       if (!term) return "timeSlotNotWithinTerms";
 
-      if(term.isStrictMode) {
+      if (term.isStrictMode) {
         var accuracy = term.calendarAccuracy;
         var diff = start.diff(end, "minute");
         if (diff % (accuracy * 60) !== 0) {
@@ -251,9 +251,9 @@ Schemas.TimeSlot = new SimpleSchema({
         return "timeSlotConflictDate";
 
       var term = TimeSlotService.timeSlotWithinAssignmentTerm(start, end);
-      if(!term) return "timeSlotNotInAnyTerm";
+      if (!term) return "timeSlotNotInAnyTerm";
 
-      if(term.isStrictMode) {
+      if (term.isStrictMode) {
         var accuracy = term.calendarAccuracy;
         var diff = start.diff(end, "minute");
         if (diff % (accuracy * 60) !== 0) {

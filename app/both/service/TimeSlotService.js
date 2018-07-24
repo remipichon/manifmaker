@@ -1,4 +1,4 @@
-import {ValidationService} from "./ValidationService"
+import {ValidationService} from "./ValidationService";
 
 export class TimeSlotService {
 
@@ -46,11 +46,11 @@ export class TimeSlotService {
   }
 
   static getTimeResourcesStartingBetween(availabilitiesOrTimeSlotsOrAssignments, start, end) {
-    return TimeSlotService.getTimeResourcesByDates(availabilitiesOrTimeSlotsOrAssignments,start, end)
+    return TimeSlotService.getTimeResourcesByDates(availabilitiesOrTimeSlotsOrAssignments, start, end)
   }
 
   static getTimeResourcesByStart(availabilitiesOrTimeSlotsOrAssignments, start) {
-    return TimeSlotService.getTimeResourcesByDates(availabilitiesOrTimeSlotsOrAssignments,start)
+    return TimeSlotService.getTimeResourcesByDates(availabilitiesOrTimeSlotsOrAssignments, start)
   }
 
   /**

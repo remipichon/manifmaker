@@ -1,6 +1,6 @@
-import {Meteor} from 'meteor/meteor';
-import {assert} from 'meteor/practicalmeteor:chai';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
+import {Meteor} from "meteor/meteor";
+import {assert} from "meteor/practicalmeteor:chai";
+import {resetDatabase} from "meteor/xolvio:cleaner";
 
 
 describe("TaskSchema", () => {

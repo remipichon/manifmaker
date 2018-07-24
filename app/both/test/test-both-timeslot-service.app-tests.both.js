@@ -1,6 +1,5 @@
-import {assert} from 'meteor/practicalmeteor:chai';
-
-import {TimeSlotService} from "/both/service/TimeSlotService"
+import {assert} from "meteor/practicalmeteor:chai";
+import {TimeSlotService} from "/both/service/TimeSlotService";
 
 describe("B : TimeSlotService", () => {
   describe("getTimeSlot(task, timeSlotId)", () => {

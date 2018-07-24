@@ -1,4 +1,4 @@
-import {Schemas} from './model/SchemasHelpers'
+import {Schemas} from "./model/SchemasHelpers";
 
 Images = new FS.Collection("images", {
   stores: [new FS.Store.FileSystem("images")]

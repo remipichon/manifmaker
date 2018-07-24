@@ -87,7 +87,7 @@ export class GuidedTourServiceClient {
       $("#message").css('left', left);
       $("#message").css('top', top);
 
-      if(duration == 0){
+      if (duration == 0) {
         endOfAlert();
       } else {
         var i = 100;
@@ -335,7 +335,7 @@ export class GuidedTourServiceClient {
       let component = GuidedTourServiceClient.getJqueryObject(cssSelector);
       GuidedTourServiceClient.waitFor(component).then(resolveWaiting => {
         component = GuidedTourServiceClient.getJqueryObject(cssSelector);
-        console.debug("clickOn ",cssSelector, component);
+        console.debug("clickOn ", cssSelector, component);
         let componentPosition = component[0].getBoundingClientRect() //component.offset(); //absolute top left position
         let componentHeight = component.height();
         let componentWidth = component.width();

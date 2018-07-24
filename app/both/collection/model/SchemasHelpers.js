@@ -1,5 +1,5 @@
 export var Schemas = {};
-import {Match} from 'meteor/check'
+import {Match} from "meteor/check";
 
 SimpleSchema.extendOptions({
   /**

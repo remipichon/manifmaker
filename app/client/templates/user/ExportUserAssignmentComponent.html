@@ -8,19 +8,27 @@
 
         <div class="row">
             <div class="col-md-12">
-                <a href="/jwt/{{token}}"><button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Dev : JWT url to get HTML agenda</button></a>
+                <a href="/jwt/{{token}}">
+                    <button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Dev : JWT url to get HTML
+                        agenda
+                    </button>
+                </a>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <a href="/user/{{_id}}/export/pdf"><button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Download PDF</button></a>
+                <a href="/user/{{_id}}/export/pdf">
+                    <button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Download PDF</button>
+                </a>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <a href="/user/{{_id}}/export/html/clean"><button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Clean HTML</button></a>
+                <a href="/user/{{_id}}/export/html/clean">
+                    <button type="button" class="col-md-offset-4 col-md-4 btn btn-success">Clean HTML</button>
+                </a>
             </div>
         </div>
 
@@ -38,29 +46,29 @@
     <br>
 
     {{#unless equals groupedTasksResponsible.length 0}}
-    <div class="panel panel-info">
+        <div class="panel panel-info">
             <div class="panel-heading">
                 <h3>Tasks that you are in charge of</h3>
             </div>
 
-        {{#each groupedTasksResponsible}}
-            <div class="panel panel-default planning-group-wrapper">
-                <div class="panel-heading">
-                    <h5>
-                        {{#unless equals groupId "null"}}
-                            {{groupName groupId}}
-                        {{else}}
-                            Ungrouped Tasks
-                        {{/unless}}
-                    </h5>
-                </div>
-                <div class="panel-body container-fluid">
-                    {{#each tasksGrouped}}
+            {{#each groupedTasksResponsible}}
+                <div class="panel panel-default planning-group-wrapper">
+                    <div class="panel-heading">
                         <h5>
-                            {{name}}
+                            {{#unless equals groupId "null"}}
+                                {{groupName groupId}}
+                            {{else}}
+                                Ungrouped Tasks
+                            {{/unless}}
                         </h5>
-                        <table class="table table-bordered">
-                            <tbody>
+                    </div>
+                    <div class="panel-body container-fluid">
+                        {{#each tasksGrouped}}
+                            <h5>
+                                {{name}}
+                            </h5>
+                            <table class="table table-bordered">
+                                <tbody>
                                 <tr>
                                     <td class="col-sm-9" rowspan="{{timeSlots.length}}" style="vertical-align:top">
                                         <div class="row">
@@ -70,7 +78,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5>
-                                                   Where ?
+                                                    Where ?
                                                 </h5>
                                                 <i class="mdi mdi-map-marker"></i>{{place placeId}}
                                                 <div class="wrapper-map">
@@ -87,7 +95,8 @@
                                                     {{#each equipments}}
                                                         {{#unless equals this.quantity 0}}
                                                             <div class="col-sm-6  small">
-                                                                <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment this}}
+                                                                <i class="mdi mdi-wrench mdi-small"></i>  {{displayEquipment
+                                                                    this}}
                                                                 <br>
                                                             </div>
                                                         {{/unless}}
@@ -107,15 +116,15 @@
                                                     <span class="small">
                                                         <br><strong>Assigned :</strong>
                                                     </span>
-                                                        <ul class="small">
-                                                            {{#each taskAssignments}}
-                                                                {{#unless equals userId null}}
-                                                                    <li>
-                                                                        {{displayUserInfo userId}}
-                                                                    </li>
-                                                                {{/unless}}
-                                                            {{/each}}
-                                                        </ul>
+                                                    <ul class="small">
+                                                        {{#each taskAssignments}}
+                                                            {{#unless equals userId null}}
+                                                                <li>
+                                                                    {{displayUserInfo userId}}
+                                                                </li>
+                                                            {{/unless}}
+                                                        {{/each}}
+                                                    </ul>
                                                 </td>
                                             {{/if}}
                                         {{/each}}
@@ -149,14 +158,14 @@
                                         </tr>
                                     {{/unless}}
                                 {{/each}}
-                            </tbody>
-                        </table>
-                    {{/each}}
+                                </tbody>
+                            </table>
+                        {{/each}}
+                    </div>
                 </div>
-            </div>
-        {{/each}}
+            {{/each}}
 
-    </div>
+        </div>
 
     {{/unless}}
     <div class="panel panel-info">

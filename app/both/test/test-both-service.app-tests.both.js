@@ -1,7 +1,6 @@
-import {assert} from 'meteor/practicalmeteor:chai';
-
-import "../collection/model/enum/ValidationState.js"
-import {ValidationService} from "/both/service/ValidationService"
+import {assert} from "meteor/practicalmeteor:chai";
+import "../collection/model/enum/ValidationState.js";
+import {ValidationService} from "/both/service/ValidationService";
 
 describe("B : ValidationService", () => {
   it("isUpdateAllowed for OPEN and REFUSE only", () => {

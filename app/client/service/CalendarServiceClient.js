@@ -1,18 +1,18 @@
-import {TimeSlotService} from "../../both/service/TimeSlotService"
-import {UserServiceClient} from "../../client/service/UserServiceClient"
-import {AssignmentService} from "../../both/service/AssignmentService"
-import {AssignmentReactiveVars} from "../../client/helpers-events/assignment/AssignmentReactiveVars"
+import {TimeSlotService} from "../../both/service/TimeSlotService";
+import {UserServiceClient} from "../../client/service/UserServiceClient";
+import {AssignmentService} from "../../both/service/AssignmentService";
+import {AssignmentReactiveVars} from "../../client/helpers-events/assignment/AssignmentReactiveVars";
 
 /** @class CalendarServiceClient*/
 export class CalendarServiceClient {
 
-  static computeAvailabilitiesAssignmentsData(user, startCalendarTimeSlot){
+  static computeAvailabilitiesAssignmentsData(user, startCalendarTimeSlot) {
     let startPlusOneMinute = new moment(startCalendarTimeSlot);
-    startPlusOneMinute.add(1,"minute"); //this way, no risk to get a term that would end exactly when this one start
+    startPlusOneMinute.add(1, "minute"); //this way, no risk to get a term that would end exactly when this one start
     let term = TimeSlotService.timeSlotWithinAssignmentTerm(startCalendarTimeSlot, startPlusOneMinute); //to read .isStrictMode
 
     if (!term) {
-      console.log("skip, no term for",startCalendarTimeSlot.toString())
+      console.log("skip, no term for", startCalendarTimeSlot.toString())
       return [];
     }
 
@@ -20,7 +20,7 @@ export class CalendarServiceClient {
 
     let availabilitiesFound, assignmentsFound;
     let userAssignments = AssignmentService.getAssignmentForUser(user);
-    if(term.isStrictMode){
+    if (term.isStrictMode) {
       availabilitiesFound = TimeSlotService.getTimeResourcesByStart(user.availabilities, startCalendarTimeSlot);
       assignmentsFound = TimeSlotService.getTimeResourcesByStart(userAssignments, startCalendarTimeSlot);
     } else {
@@ -66,18 +66,18 @@ export class CalendarServiceClient {
 
   static computeTimeSlotsData(task, startCalendarTimeSlot) {
     let startPlusOneMinute = new moment(startCalendarTimeSlot);
-    startPlusOneMinute.add(1,"minute"); //this way, no risk to get a term that would end exactly when this one start
+    startPlusOneMinute.add(1, "minute"); //this way, no risk to get a term that would end exactly when this one start
     let term = TimeSlotService.timeSlotWithinAssignmentTerm(startCalendarTimeSlot, startPlusOneMinute); //to read .isStrictMode
 
     if (!term) {
-      console.log("skip, no term for",startCalendarTimeSlot.toString())
+      console.log("skip, no term for", startCalendarTimeSlot.toString())
       return [];
     }
 
     let chosenCalendarAccuracy = AssignmentReactiveVars.CurrentSelectedAccuracy.get();
 
     let timeSlotsFound;
-    if(term.isStrictMode){
+    if (term.isStrictMode) {
       timeSlotsFound = TimeSlotService.getTimeResourcesByStart(task.timeSlots, startCalendarTimeSlot);
     } else {
       let nextTimeSlotStartDate = new moment(startCalendarTimeSlot).add("hours", chosenCalendarAccuracy);
@@ -128,7 +128,7 @@ export class CalendarServiceClient {
     }
     marginTop = offset * baseOneHourHeight;
 
-    if(previousTimeSlots.length != 0) { //because it's margin top from the previous
+    if (previousTimeSlots.length != 0) { //because it's margin top from the previous
       previousTimeSlots.forEach(timeSlot => {
         marginTop = marginTop - timeSlot.height - timeSlot.marginTop;
       });

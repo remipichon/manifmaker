@@ -1,8 +1,8 @@
-import {InjectDataHelperServerService} from "../service/InjectDataHelperServerService"
-import {SecurityServiceServer} from "../service/SecurityServiceServer"
-import {ServerUserService} from "../service/ServerUserService"
+import {InjectDataHelperServerService} from "../service/InjectDataHelperServerService";
+import {SecurityServiceServer} from "../service/SecurityServiceServer";
+import {ServerUserService} from "../service/ServerUserService";
 import {JwtService} from "../service/JwtService";
-import {InjectGuidedTourDataServerService} from "../service/InjectGuidedTourDataServerService"
+import {InjectGuidedTourDataServerService} from "../service/InjectGuidedTourDataServerService";
 
 
 Meteor.methods({
@@ -16,8 +16,8 @@ Meteor.methods({
   },
   injectGuidedTourData: function () {
     var lastTour = InjectDataInfo.findOne({triggerEnv: "GUIDED_TOUR"});
-    let date = new moment(`${lastTour.options.year}/${lastTour.options.month}/${lastTour.options.date}`,"YYYY/MM/DD");
-    date = date.add("d",2);
+    let date = new moment(`${lastTour.options.year}/${lastTour.options.month}/${lastTour.options.date}`, "YYYY/MM/DD");
+    date = date.add("d", 2);
     let options = {
       year: date.format("YYYY"),
       month: date.format("MM"),

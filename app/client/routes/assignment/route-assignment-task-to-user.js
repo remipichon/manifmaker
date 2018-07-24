@@ -1,5 +1,5 @@
-import {TimeSlotService} from "../../../both/service/TimeSlotService"
-import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
+import {TimeSlotService} from "../../../both/service/TimeSlotService";
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars";
 
 /**
  * @memberOf Route.Assignment

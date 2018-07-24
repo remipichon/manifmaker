@@ -14,7 +14,9 @@
                 <div class="col-md-12">
                     {{>EditNameComponent collection="TaskGroups" name=name _id=_id}}
                     {{#if isInRole RolesEnum.TASKGROUPDELETE}}
-                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="TaskGroups" _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
+                        {{#quickRemoveButton class="btn btn-default delete-task-button" collection="TaskGroups"
+                                             _id=this._id onSuccess=onDeleteSuccess beforeRemove=beforeRemove
+                                             onError=onDeleteError}}Delete {{this.name}}{{/quickRemoveButton}}
                     {{/if}}
                 </div>
             </div>
@@ -29,11 +31,10 @@
 
                             <div>
                                 {{> SingleSelectComponent selectLabel="Team" title="Update team"
-                                optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
-                                updateCollection="TaskGroups" updateItemId=this._id updateItemPath="teamId" readOnly=readOnly
+                                        optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex"
+                                        updateCollection="TaskGroups" updateItemId=this._id updateItemPath="teamId" readOnly=readOnly
                                 }}
                             </div>
-
 
 
                         </div>

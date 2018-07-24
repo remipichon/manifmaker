@@ -1,4 +1,4 @@
-import {SecurityServiceClient} from "../../client/service/SecurityServiceClient"
+import {SecurityServiceClient} from "../../client/service/SecurityServiceClient";
 
 export var ManifMakerRouterController = RouteController.extend({
   onBeforeAction: function () {

@@ -1,4 +1,4 @@
-import {TimeSlotService} from "../../both/service/TimeSlotService"
+import {TimeSlotService} from "../../both/service/TimeSlotService";
 
 export class UserServiceClient {
 

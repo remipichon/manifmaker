@@ -1,5 +1,5 @@
-import {TimeSlotService} from "./TimeSlotService"
-import {ValidationService} from "./ValidationService"
+import {TimeSlotService} from "./TimeSlotService";
+import {ValidationService} from "./ValidationService";
 
 export class PeopleNeedService {
 

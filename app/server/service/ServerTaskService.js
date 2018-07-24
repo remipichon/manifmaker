@@ -1,4 +1,4 @@
-import {SecurityServiceServer} from "../../server/service/SecurityServiceServer"
+import {SecurityServiceServer} from "../../server/service/SecurityServiceServer";
 
 /** @class ServerTaskService */
 export class ServerTaskService {
@@ -35,7 +35,7 @@ export class ServerTaskService {
 
     if (_.contains(fieldNames, "equipmentValidation"))
       if (( modifier.$set.equipmentValidation && modifier.$set.equipmentValidation.currentState !== ValidationState.TOBEVALIDATED &&
-          modifier.$set["equipmentValidation.currentState"] !== ValidationState.TOBEVALIDATED))
+        modifier.$set["equipmentValidation.currentState"] !== ValidationState.TOBEVALIDATED))
         SecurityServiceServer.grantAccessToItem(userId, RolesEnum.EQUIPMENTVALIDATION, doc, 'task');
 
 

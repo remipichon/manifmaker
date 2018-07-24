@@ -1,6 +1,6 @@
-import {PeopleNeedService} from "../../both/service/PeopleNeedService"
-import {AvailabilityService} from "../../both/service/AvailabilityService"
-import {TimeSlotService} from "../../both/service/TimeSlotService"
+import {PeopleNeedService} from "../../both/service/PeopleNeedService";
+import {AvailabilityService} from "../../both/service/AvailabilityService";
+import {TimeSlotService} from "../../both/service/TimeSlotService";
 
 /**
  * @namespace Meteor Methods

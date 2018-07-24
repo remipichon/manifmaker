@@ -1,6 +1,6 @@
-import {Schemas} from './SchemasHelpers'
-import {TimeSlotService} from "../../../both/service/TimeSlotService"
-import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
+import {Schemas} from "./SchemasHelpers";
+import {TimeSlotService} from "../../../both/service/TimeSlotService";
+import {PeopleNeedService} from "../../../both/service/PeopleNeedService";
 
 //order matters !
 Schemas.UserAvailabilities = new SimpleSchema({

@@ -5,17 +5,22 @@
             </span>
     {{/if}}
     {{#if equals dataValidation.currentState "TOBEVALIDATED"}}
-        <span class="tobevalidated"  title='{{validationTypeLabel}} has been submitted to validation by {{lastComment "author"}} on {{displayDateTime dataValidation.lastUpdateDate}} with "{{lastComment "content"}}"'>
+        <span class="tobevalidated" title='{{validationTypeLabel}} has been submitted to validation by {{lastComment
+                "author"}} on {{displayDateTime dataValidation.lastUpdateDate}} with "{{lastComment "content"}}"'>
                <i class="mdi {{mdiIcon}} mdi-big"></i>
             </span>
     {{/if}}
     {{#if equals dataValidation.currentState "REFUSED"}}
-        <span class="refused" title='{{validationTypeLabel}} has been refused by {{lastComment "author" "timeSlotValidation"}} on {{displayDateTime dataValidation.lastUpdateDate}} with "{{lastComment "content"}}"'>
+        <span class="refused" title='{{validationTypeLabel}} has been refused by {{lastComment "author"
+                                                                                               "timeSlotValidation"}} on {{displayDateTime
+                dataValidation.lastUpdateDate}} with "{{lastComment "content"}}"'>
                <i class="mdi {{mdiIcon}} mdi-big"></i>
             </span>
     {{/if}}
     {{#if equals dataValidation.currentState "READY"}}
-        <span class="ready" title='{{validationTypeLabel}} has been validated by {{lastComment "author"}} on {{displayDateTime dataValidation.lastUpdateDate}}'>
+        <span class="ready"
+              title='{{validationTypeLabel}} has been validated by {{lastComment "author"}} on {{displayDateTime
+                      dataValidation.lastUpdateDate}}'>
                <i class="mdi {{mdiIcon}} mdi-big"></i>
             </span>
     {{/if}}

@@ -1,4 +1,4 @@
-import {Schemas} from '../collection/model/SchemasHelpers'
+import {Schemas} from "../collection/model/SchemasHelpers";
 
 
 ApiResourceAction = {
@@ -92,7 +92,7 @@ export class ApiResourceActionService {
             lastDot = split.pop();
             iterator = ApiResourceActionService.walkInDepth(resource, split);
             iterator[lastDot] = newKeyValue.newValue;
-          } else{
+          } else {
             //replace value by custom value
             let lastDot = split.pop();
             iterator = ApiResourceActionService.walkInDepth(resource, split);

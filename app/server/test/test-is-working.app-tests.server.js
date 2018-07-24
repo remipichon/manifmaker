@@ -1,4 +1,4 @@
-import {assert} from 'meteor/practicalmeteor:chai';
+import {assert} from "meteor/practicalmeteor:chai";
 
 
 describe('Test on server', () => {

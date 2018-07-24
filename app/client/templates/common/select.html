@@ -6,7 +6,8 @@
         {{#if readOnly}}
             <div class="custom-select-label-wrapper">
                 {{#unless withoutLabel}}
-                    <span class="custom-select-label"><label class="custom-select-label" for="{{selectLabel}}">{{selectLabel}}</label></span>
+                    <span class="custom-select-label"><label class="custom-select-label"
+                                                             for="{{selectLabel}}">{{selectLabel}}</label></span>
                 {{/unless}}
             </div>
         {{else}}
@@ -27,7 +28,9 @@
                     </div>
              '>
                 {{#unless withoutLabel}}
-                    <span class="custom-select-label" data-required><label class="custom-select-label" for="{{selectLabel}}">{{selectLabel}}</label></span>{{#unless readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit clickable"></i>{{/unless}}
+                    <span class="custom-select-label" data-required><label class="custom-select-label"
+                                                                           for="{{selectLabel}}">{{selectLabel}}</label></span>{{#unless
+                        readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit clickable"></i>{{/unless}}
                 {{/unless}}
             </div>
         {{/if}}
@@ -44,10 +47,12 @@
                         {{#each collectionSelectedItems}}
                             <li class="list-group-item">{{optionValue}}</li>
                         {{else}}
-                            <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
+                            <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}}
+                                - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
                         {{/each}}
                     {{else}}
-                        <li class="list-group-item">{{cursorLength collectionSelectedItems}}{{maxSelectedOptionDisplayedLabel}}</li>
+                        <li class="list-group-item">{{cursorLength
+                                collectionSelectedItems}}{{maxSelectedOptionDisplayedLabel}}</li>
                     {{/unless}}
                 </ul>
             {{/if}}
@@ -68,7 +73,8 @@
         {{#if readOnly}}
             <div class="custom-select-label-wrapper">
                 {{#unless withoutLabel}}
-                    <span class="custom-select-label"><label class="custom-select-label" for="{{selectLabel}}">{{selectLabel}}</label></span>
+                    <span class="custom-select-label"><label class="custom-select-label"
+                                                             for="{{selectLabel}}">{{selectLabel}}</label></span>
                 {{/unless}}
             </div>
         {{else}}
@@ -92,7 +98,9 @@
                 </div>
          '>
                 {{#unless withoutLabel}}
-                    <span class="custom-select-label"><label class="custom-select-label" for="{{selectLabel}}">{{selectLabel}}</label></span>{{#unless readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit clickable"></i>{{/unless}}
+                    <span class="custom-select-label"><label class="custom-select-label"
+                                                             for="{{selectLabel}}">{{selectLabel}}</label></span>{{#unless
+                        readOnly}}<i class="custom-select-icon mdi mdi-tooltip-edit clickable"></i>{{/unless}}
                 {{/unless}}
             </div>
         {{/if}}
@@ -109,10 +117,12 @@
                         {{#each collectionSelectedItems}}
                             <li class="list-group-item">{{optionValue}}</li>
                         {{else}}
-                            <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}} - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
+                            <li class="list-group-item">{{nothingSelectedLabel}}{{#if quickSelectLabel}}
+                                - <span class="quick-select">{{quickSelectLabel}}</span>{{/if}}</li>
                         {{/each}}
                     {{else}}
-                        <li class="list-group-item">{{cursorLength collectionSelectedItems}}{{maxSelectedOptionDisplayedLabel}}</li>
+                        <li class="list-group-item">{{cursorLength
+                                collectionSelectedItems}}{{maxSelectedOptionDisplayedLabel}}</li>
                     {{/unless}}
                 </ul>
             {{/if}}
@@ -128,7 +138,8 @@
 <template name="customSelectPopoverOption">
     <ul class="list-group">
         {{#each collectionItemsPopover}}
-            <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label for="{{_id}}">{{optionValue}}</label></li>
+            <li class="list-group-item"><input id="{{_id}}" type="checkbox" {{isChecked}}/><label
+                    for="{{_id}}">{{optionValue}}</label></li>
         {{/each}}
     </ul>
 </template>

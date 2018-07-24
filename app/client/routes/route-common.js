@@ -1,5 +1,5 @@
-import {ManifMakerRouterController} from "./ManifMakerRouterController"
-import {PlayTourServiceClient} from "../service/tour/PlayTourServiceClient"
+import {ManifMakerRouterController} from "./ManifMakerRouterController";
+import {PlayTourServiceClient} from "../service/tour/PlayTourServiceClient";
 
 /**
  * @namespace Route
@@ -159,42 +159,42 @@ Router.route('/forbidden', function () {
  */
 Router.route('/demo-select', function () {
     let users = Meteor.users.find().fetch();
-      this.render('demoSelect', {
-        to: 'mainContent',
-        data: {
-          user1Id: users[1]._id,
-          user2Id: users[2]._id,
-          task2Id: Tasks.findOne()._id,
-          team1Id: Teams.find().fetch()[1]._id,
-          team1Idteam2Id: [Teams.find().fetch()[1], Teams.find().fetch()[2]._id],
-          skill1Idskill2Id: [Skills.find().fetch()[1]._id,Skills.find().fetch()[2]._id],
-          // powersupply1: PowerSupplies.findOne()._id,
-          updateCallbackDisplayArgs: function () {
-            return function () {
-              console.info("updateCallbackDisplayArgs", arguments[0], arguments[1], arguments[2]);
-            }
+    this.render('demoSelect', {
+      to: 'mainContent',
+      data: {
+        user1Id: users[1]._id,
+        user2Id: users[2]._id,
+        task2Id: Tasks.findOne()._id,
+        team1Id: Teams.find().fetch()[1]._id,
+        team1Idteam2Id: [Teams.find().fetch()[1], Teams.find().fetch()[2]._id],
+        skill1Idskill2Id: [Skills.find().fetch()[1]._id, Skills.find().fetch()[2]._id],
+        // powersupply1: PowerSupplies.findOne()._id,
+        updateCallbackDisplayArgs: function () {
+          return function () {
+            console.info("updateCallbackDisplayArgs", arguments[0], arguments[1], arguments[2]);
+          }
+        },
+        optionQueryteamsWithoutAlreadyAssigned: {
+          name: {
+            $not: ASSIGNMENTREADYTEAM
+          }
+        },
+        optionCollectionAsArray: [
+          {
+            label: "First option",
+            value: "ONE"
           },
-          optionQueryteamsWithoutAlreadyAssigned: {
-            name: {
-              $not: ASSIGNMENTREADYTEAM
-            }
+          {
+            label: "Second cat",
+            value: "TWO"
           },
-          optionCollectionAsArray: [
-            {
-              label: "First option",
-              value: "ONE"
-            },
-            {
-              label: "Second cat",
-              value: "TWO"
-            },
-            {
-              label: "Cypress",
-              value: "THREE"
-            }
-          ]
-        }
-      });
+          {
+            label: "Cypress",
+            value: "THREE"
+          }
+        ]
+      }
+    });
   },
   {name: 'demo-select', controller: ManifMakerRouterController}
 );
