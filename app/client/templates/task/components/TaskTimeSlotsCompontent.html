@@ -204,7 +204,7 @@
                                     {{> SingleNonMandatorySelectComponent selectLabel="Need a specific team" title="Select a needed team"
                                     optionCollection="Teams" optionValueName="name" optionCollectionIndex="TeamsIndex" nothingSelectedLabel="No team"
                                     updateCollection="TempCollection" updateItemId=tempPeopleNeedId updateItemPath="teamId"
-                                    nothingSelectedLabel="None yet" quickSelectLabel="assign to your team" quickSelectId=currentUserTeamId
+                                    nothingSelectedLabel="None yet"
                                     }}
                                 </div>
                                 <div class="col-md-6">
@@ -233,7 +233,7 @@
 </template>
 
 <template name="updateTimeSlotCalendar">
-    <div class="creneau {{state}} {{#if equals currentTimeSlot._id this._id}}currentTimeSlot{{/if}}" data-timeslotdid="{{this._id}}" style="height: {{height}};">
+    <div class="creneau {{state}} {{#if equals currentTimeSlot._id this._id}}currentTimeSlot{{/if}}" data-timeslotdid="{{this._id}}" style="height: {{height}}px; margin-top: {{marginTop}}px; ">
         <div class="on-calendar">
 
             <div class="col-xs-2 no-padding creneau-userId" title="{{getUserIdNeedCount _id}} particular {{#if isMore (getUserIdNeedCount _id) 1}}people are{{else}}person is{{/if}} needed">

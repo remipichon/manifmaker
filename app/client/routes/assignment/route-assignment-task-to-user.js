@@ -22,7 +22,10 @@ Router.route('/assignment/taskToUser', function () {
     AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
     AssignmentReactiveVars.SelectedUser.set(null);
     AssignmentReactiveVars.SelectedTask.set(null);
-    AssignmentReactiveVars.SelectedDate.set(null);
+    AssignmentReactiveVars.RelevantSelectedDates.set({
+      start: null,
+      end: null
+    });
 
     AssignmentReactiveVars.isUsersListDeveloped.set(false);
     AssignmentReactiveVars.isTasksListDeveloped.set(true);

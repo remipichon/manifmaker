@@ -14,6 +14,7 @@ class AssignmentIndicationsBar extends BlazeComponent {
     AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.USERTOTASK);
     AssignmentReactiveVars.isUsersListDeveloped.set(true);
     AssignmentReactiveVars.isTasksListDeveloped.set(false);
+    AssignmentReactiveVars.IsUnassignment.set(false);
   }
 
   onClickTaskToUser(event) {
@@ -22,6 +23,7 @@ class AssignmentIndicationsBar extends BlazeComponent {
     AssignmentReactiveVars.CurrentAssignmentType.set(AssignmentType.TASKTOUSER);
     AssignmentReactiveVars.isUsersListDeveloped.set(false);
     AssignmentReactiveVars.isTasksListDeveloped.set(true);
+    AssignmentReactiveVars.IsUnassignment.set(false);
   }
 
   isSelected(mode) {

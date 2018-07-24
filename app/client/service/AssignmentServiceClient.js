@@ -15,7 +15,7 @@ export class AssignmentServiceClient {
    *  - Set AssignmentReactiveVars.SelectedTimeSlot
    *  - Set AssignmentReactiveVars.IsUnassignment
    *
-   * @locus Anywhere
+   * @locus Client
    * @returns {timeSlot|null}
    */
   static taskToUserPerformUserFilterRemoveAssignment() {
@@ -25,14 +25,15 @@ export class AssignmentServiceClient {
       case AssignmentType.USERTOTASK:
 
         var userId = AssignmentReactiveVars.SelectedUser.get()._id;
-        var selectedDate = AssignmentReactiveVars.SelectedDate.get()
-
+        let relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get();
+        let start =  relevantSelectedDates.start;
+        //we don't need end because in that case, start date IS the start of an assignment (we are in remove assignment mode, the name hints it
 
         var userAssignments = AssignmentService.getAssignmentForUser({_id: userId});
         var assignmentFound;
         userAssignments.forEach(assignment => {
-          if ((new moment(assignment.start).isBefore(selectedDate) || new moment(assignment.start).isSame(selectedDate)
-            ) && new moment(assignment.end).isAfter(selectedDate)) {
+          if ((new moment(assignment.start).isBefore(start) || new moment(assignment.start).isSame(start)
+            ) && new moment(assignment.end).isAfter(start)) {
             assignmentFound = assignment;
           }
         });
@@ -61,6 +62,116 @@ export class AssignmentServiceClient {
         AssignmentReactiveVars.UserFilter.set(newFilter);
         AssignmentReactiveVars.IsUnassignment.set(true);
         break;
+    }
+  }
+
+  /**
+   * @summary filter task list which have timeslots within given start and end dates as long as the user has enclosing enclosingAvailability (user read from AssignmentReactiveVars.SelectedUser)
+   * @param startDate
+   * @param endDate
+   */
+  static filterTaskList(startDate, endDate) {
+
+    console.log("filterTaskList get all tasks from",startDate.toDate(),"   to   ", endDate.toDate());
+
+    var currentAssignmentType = AssignmentReactiveVars.CurrentAssignmentType.get();
+
+    switch (currentAssignmentType) {
+      case AssignmentType.USERTOTASK://only display task that have at least one time slot matching the selected enclosingAvailability slot
+        var userId = AssignmentReactiveVars.SelectedUser.get()._id;
+        var user = Meteor.users.findOne({_id: userId});
+
+        /*
+         ** Availabilities filter :
+         Task's timeslots happening between start/end dates who are still withing user availabilities
+         */
+        let availabilitiesFilterStart = {$lt: endDate.toDate()};
+        let availabilitiesFilterEnd = {$gt: startDate.toDate()};
+
+        /*
+         ** Skills filter
+         User is eligible for a task if he has all skills for at least one task' people need's skills.
+         The query looks like something like this : 'foreach timeSlot foreach peopleNeeded foreach skills' = at least user.skills
+         */
+        var timeSlotsFilter = {
+          $elemMatch: {
+            $or: [
+              //userIdFilter,
+              //skillsFilter,
+              //noSkillsFilter
+            ]
+          }
+        };
+        let exactUser = {
+          //userId filter
+          peopleNeeded: {
+            $elemMatch: {
+              userId: user._id
+            }
+          }
+        };
+        exactUser.start = availabilitiesFilterStart;
+        exactUser.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(exactUser);
+        let skillsAndTeam = {
+          //skills filter
+          peopleNeeded: {
+            $elemMatch: {
+              skills: {
+                $elemMatch: {
+                  $in: user.skills
+                }
+              },
+              teamId: {
+                $in: user.teams
+              }
+            }
+          }
+        };
+        skillsAndTeam.start = availabilitiesFilterStart;
+        skillsAndTeam.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(skillsAndTeam);
+        let teamNoSkill = {
+          //skills filter
+          peopleNeeded: {
+            $elemMatch: {
+              skills: { // $eq : [] doesn't work with miniMongo, here is a trick
+                $not: {
+                  $ne: []
+                }
+              },
+              teamId: {
+                $in: user.teams
+              }
+            }
+          }
+        };
+        teamNoSkill.start = availabilitiesFilterStart;
+        teamNoSkill.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(teamNoSkill);
+        let skillsNoTeam = {
+          //skills filter
+          peopleNeeded: {
+            $elemMatch: {
+              skills: {
+                $elemMatch: {
+                  $in: user.skills
+                }
+              },
+              teamId: null
+            }
+          }
+        };
+        skillsNoTeam.start = availabilitiesFilterStart;
+        skillsNoTeam.end = availabilitiesFilterEnd;
+        timeSlotsFilter.$elemMatch.$or.push(skillsNoTeam);
+        //aggregate is not supported by mini mongo
+        AssignmentReactiveVars.TaskFilter.set(timeSlotsFilter);
+        break;
+      case
+      AssignmentType.TASKTOUSER:
+      //only display users that have at least one enclosingAvailability matching the selected time slot
+      //we let the event bubbles to the parent
     }
   }
 
@@ -147,65 +258,64 @@ export class AssignmentServiceClient {
   }
 
   /**
-   * @summary On the assignment calendar, display more or less hours accuracy
+   * @summary seed AssignmentCalendarDisplayedDays according to term and accuracy
+   * @description if _idTerms or accuracy are not defined, respectively CurrentSelectedTerm and CurrentSelectedAccuracy will be used
    * @locus client
-   * @param accuracy {CalendarAccuracy}
+   * @param _idTerms {AssignmentTerms}
+   * @param accuracy {Number}
    */
-  static setCalendarAccuracy(accuracy) {
-
-    _.each(AssignmentCalendarDisplayedHours.find().fetch(), function (doc) {
-      AssignmentCalendarDisplayedHours.remove(doc._id)
-    });
-    _.each(AssignmentCalendarDisplayedQuarter.find().fetch(), function (doc) {
-      AssignmentCalendarDisplayedQuarter.remove(doc._id)
-    });
-    _.each(AssignmentCalendarDisplayedAccuracy.find().fetch(), function (doc) {
-      AssignmentCalendarDisplayedAccuracy.remove(doc._id)
-    });
-
-    AssignmentCalendarDisplayedAccuracy.insert({accuracy: accuracy});
-
-    var number = ((accuracy <= 1) ? 1 : accuracy);
-    for (var i = 0; i < 24; i = i + number)
-      AssignmentCalendarDisplayedHours.insert({date: i});
-
-    var number2 = ((accuracy < 1) ? 60 * accuracy : 60);
-    for (var i = 0; i <= 45; i = i + number2)
-      AssignmentCalendarDisplayedQuarter.insert({quarter: i});
-
-  }
-
-  /**
-   * @summary On the assignment calendar, all the days covered by the given assignment term
-   * @locus client
-   * @param _idAssignmentTerms {AssignmentTerms}
-   */
-  static setCalendarTerms(_idTerms) {
+  //it is triggered (with not args) whenever AssignmentTerm collection is ready, therefore we can assume it's reactive (the Tracker monitors it)
+  static setCalendarTerms(_idTerms, accuracy) {
     _.each(AssignmentCalendarDisplayedDays.find().fetch(), function (doc) {
       AssignmentCalendarDisplayedDays.remove(doc._id)
     });
 
     var displayedTerm;
     if (!_idTerms) {
-      var terms = AssignmentTerms.find({}).fetch();
-      displayedTerm = terms[0];           //TODO which is default ?
+      if (AssignmentReactiveVars.CurrentSelectedTerm.get() != null)
+        displayedTerm = AssignmentTerms.findOne(AssignmentReactiveVars.CurrentSelectedTerm.get());
+      else {
+        var terms = AssignmentTerms.find({}).fetch();
+        displayedTerm = terms[0];           //TODO which one is default ?
+        AssignmentReactiveVars.CurrentSelectedTerm.set(displayedTerm._id);
+      }
     } else {
-      displayedTerm = AssignmentTerms.findOne(_idTerms)
+      displayedTerm = AssignmentTerms.findOne(_idTerms);
+      AssignmentReactiveVars.CurrentSelectedTerm.set(_idTerms);
     }
 
-    AssignmentServiceClient.setCalendarAccuracy(displayedTerm.calendarAccuracy);
+    if (!accuracy) {
+      if (AssignmentReactiveVars.CurrentSelectedAccuracy.get() != null)
+        accuracy = AssignmentReactiveVars.CurrentSelectedAccuracy.get();
+      else {
+        accuracy = displayedTerm.calendarAccuracy
+        AssignmentReactiveVars.CurrentSelectedAccuracy.set(accuracy);
+      }
+    } else {
+      AssignmentReactiveVars.CurrentSelectedAccuracy.set(accuracy);
+    }
+
+    // AssignmentServiceClient.setCalendarAccuracy(accuracy);
+    var quarterIncrement = ((accuracy < 1) ? 60 * accuracy : 60);
+    let quarters = [];
+    for (var i = 0; i <= 45; i = i + quarterIncrement)
+      quarters.push({quarter: i, quarterLengthMinute: 60 * accuracy })
+
+    var hourIncrement = ((accuracy <= 1) ? 1 : accuracy);
+    let hours = [];
+    for (var i = 0; i < 24; i = i + hourIncrement)
+      hours.push({date: i, quarter: quarters});
 
     var start = new moment(displayedTerm.start);
     var end = new moment(displayedTerm.end);
-
     while (start.isBefore(end)) {
       AssignmentCalendarDisplayedDays.insert({
+        hours: hours,
         date: start,
         assignmentTermId: displayedTerm._id //we store the selected term id in each days
       });
       start.add(1, 'days');
     }
-
   }
 
   /**

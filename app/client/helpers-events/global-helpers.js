@@ -154,11 +154,6 @@ Template.registerHelper(
   }
 );
 
-Template.registerHelper(
-  "currentUserTeamId", function () {
-    return Meteor.users.findOne({_id: Meteor.userId()}).teams[0]; //TODO which team to choose ?
-  }
-);
 
 Template.registerHelper("cursorLength", function (array) {
     return array.fetch().length;

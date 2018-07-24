@@ -21,18 +21,6 @@ export class AssignmentService {
 
   /**
    * @memberOf AssignmentService
-   * @summary Proxy for TimeSlotService.getTimeSlotByStart
-   * @locus Anywhere
-   * @param assignment
-   * @param start
-   * @returns {timeSlot|null}
-   */
-  static getAssignmentByStart(assignment, start) {
-    return TimeSlotService.getTimeSlotByStart(assignment, start);
-  }
-
-  /**
-   * @memberOf AssignmentService
    * @locus Anywhere
    * @summary return assignment with start/end date, taskName
    * @param user
@@ -59,11 +47,10 @@ export class AssignmentService {
     return res;
   }
 
-  //TODO use also end date
   static userHasAssignmentBetweenDates(user, startDate, endDate) {
     var userAssignments = AssignmentService.getAssignmentForUser(user);
-    var assignmentFound = AssignmentService.getAssignmentByStart(userAssignments, startDate);
-    if (assignmentFound) {
+    var assignmentsFound = TimeSlotService.getTimeResourcesByStart(userAssignments, startDate);
+    if (assignmentsFound.length != 0) {
       return true;
     }
     return false;

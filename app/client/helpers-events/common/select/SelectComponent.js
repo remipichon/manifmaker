@@ -583,7 +583,10 @@ export class SelectComponent extends BlazeComponent {
       if (removedOptions.length !== 0) {
         updateQuery = {
           $pull: {
-            [pathOrPathWithIndex]: {$in: removedOptions}
+            [pathOrPathWithIndex]: removedOptions[0]
+            //{$in: removedOptions} doesn't work with local collection (client side only)
+            //but works with regular collection because the update is done by the server
+            //de toutes facon, we mostly delete one by one 
           }
         };
       } else if (addedOptions.length !== 0) {

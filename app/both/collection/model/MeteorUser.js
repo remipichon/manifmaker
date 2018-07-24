@@ -380,6 +380,11 @@ Schemas.User = new SimpleSchema({
     defaultValue: [],
     optional: true
   },
+  hideAllDismissible: {
+    type: Boolean,
+    label: "Hide all dismissible help",
+    defaultValue: false
+  },
 
   username: {
     type: String,

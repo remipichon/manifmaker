@@ -1,28 +1,30 @@
-<template name="team-insert">
-    {{# autoForm collection="Teams" id="insertTeamForm" type="insert"}}
+<template name="teamInsert">
+    {{# autoForm collection="Teams" id="insertteamForm" type="insert"}}
         <fieldset>
             <legend>Add a Team</legend>
             {{> afQuickField placeHolder="This team doesn't have a name yet" name='name'}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
-<template name="place-insert">
-    {{# autoForm collection="Places" id="insertPlaceForm" type="insert"}}
+<template name="placeInsert">
+    {{# autoForm collection="Places" id="insertplaceForm" type="insert"}}
         <fieldset>
             <legend>Add a Place</legend>
             {{> afQuickField placeHolder="This place doesn't have a name yet" name='name'}}
             {{> afQuickField name='location'}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
-<template name="skill-insert">
-    {{# autoForm collection="Skills" id="insertSkillForm" type="insert"}}
+<template name="skillInsert">
+    {{# autoForm collection="Skills" id="insertskillForm" type="insert"}}
         <fieldset>
             <legend>Add a Skill</legend>
             {{> DismissibleHelperComponent message="Unique key in capital letter and without spaces or special char" uniqueId="skill-key"}}
@@ -30,18 +32,20 @@
             {{> afQuickField placeHolder="This skill doesn't have a label yet" name='label'}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
-<template name="assignment-term-insert">
+<template name="assignment-termInsert">
     {{> DismissibleHelperComponent message="An Assignment Term has a beginning and an end and can have periods inside these dates in order to be not contiguous." uniqueId="term-home"}}
-    {{# autoForm collection="AssignmentTerms" id="insertAssignmentTerm" type="insert"}}
+    {{# autoForm collection="AssignmentTerms" id="insertassignmentTerm" type="insert"}}
         <fieldset>
             <legend>Add a term</legend>
             {{> afQuickField name="name"}}
             {{> afQuickField name="start"}}
             {{> afQuickField name="end"}}
+            {{> afQuickField name="isStrictMode"}}
             {{> DismissibleHelperComponent message="Only users with one of these teams can add availabilities during this term" uniqueId="term-team"}}
             {{> afQuickField name="teams"}}
             {{> DismissibleHelperComponent message="After this deadline, only TIMESLOTVALIDATION users can update availabilities" uniqueId="term-dealine"}}
@@ -50,39 +54,42 @@
             {{> afQuickField name="calendarAccuracy"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
 
-<template name="group-role-insert">
+<template name="group-roleInsert">
     {{> DismissibleHelperComponent message="Roles (not editable) can be put together to form a group role. To access ressources (like Tasks), a user need roles (like TASKREAD) which are given by group role (like 'hard')" uniqueId="group-role-home"}}
     {{> DismissibleHelperComponent message="Users should have at least once MANIFMAKER role to access the app." uniqueId="group-role-manifmaker"}}
     {{> DismissibleHelperComponent message="A spécial role, nammed ROLE is needed to update group roles conf and updat group roles on user." uniqueId="group-role-role"}}
-    {{# autoForm collection="GroupRoles" id="insertGroupRole" type="insert"}}
+    {{# autoForm collection="GroupRoles" id="insertgroupRole" type="insert"}}
         <fieldset>
             <legend>Add a Group Role</legend>
             {{> afQuickField name="name"}}
             {{> afQuickField name="roles"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
-<template name="equipment-category-insert">
+<template name="equipment-categoryInsert">
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
             <legend>Add a {{options.REFERENCE_LABEL}}</legend>
             {{> afQuickField name="name"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
 
-<template name="equipment-insert">
+<template name="equipmentInsert">
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
             <legend>Add a {{options.REFERENCE_LABEL}}</legend>
@@ -92,60 +99,65 @@
             {{> afQuickField name="EquipmentCategories_Id"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
 
-<template name="water-supply-insert">
+<template name="water-supplyInsert">
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
             <legend>Add a {{options.REFERENCE_LABEL}}</legend>
             {{> afQuickField name="name"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
 
-<template name="water-disposal-insert">
+<template name="water-disposalInsert">
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
             <legend>Add a {{options.REFERENCE_LABEL}}</legend>
             {{> afQuickField name="name"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
 
-<template name="power-supply-insert">
+<template name="power-supplyInsert">
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
             <legend>Add a {{options.REFERENCE_LABEL}}</legend>
             {{> afQuickField name="name"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
 
-<template name="equipment-storage-insert">
+<template name="equipment-storageInsert">
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
             <legend>Add a {{options.REFERENCE_LABEL}}</legend>
             {{> afQuickField name="name"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
 
-<template name="access-point-insert">
+<template name="access-pointInsert">
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
             <legend>Add a {{options.REFERENCE_LABEL}}</legend>
@@ -154,12 +166,13 @@
             {{> afQuickField name="notSelectedImage"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
 
-<template name="web-category-insert">
+<template name="web-categoryInsert">
     {{> DismissibleHelperComponent message="Activity Category for web export" uniqueId="webcategory-home"}}
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
@@ -167,12 +180,13 @@
             {{> afQuickField name="name"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>
 
 
-<template name="android-category-insert">
+<template name="android-categoryInsert">
     {{> DismissibleHelperComponent message="Activity Category for Android export" uniqueId="androidcategory-home"}}
     {{# autoForm collection=options.REFERENCE_COLLECTION_NAME id="insert" type="insert"}}
         <fieldset>
@@ -182,6 +196,7 @@
             {{> afQuickField name="categoryName"}}
         </fieldset>
         <button type="submit" class="btn btn-primary">Insert</button>
+        <button type="button" class="btn btn-primary">Insert and return</button>
         <button type="reset" class="btn btn-default">Reset</button>
     {{/autoForm}}
 </template>

@@ -1,6 +1,7 @@
 import {AssignmentReactiveVars} from "./AssignmentReactiveVars"
 import {TeamService} from "../../../both/service/TeamService"
 import {PeopleNeedService} from "../../../both/service/PeopleNeedService"
+import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {AssignmentService} from "../../../both/service/AssignmentService"
 import {AssignmentServiceClient} from "../../service/AssignmentServiceClient"
 
@@ -33,6 +34,20 @@ class AssignmentTasksList extends BlazeComponent {
 
   onClickTask(event) {
     AssignmentReactiveVars.SelectedTaskBreadCrumb.set(this.currentData());
+    if (AssignmentReactiveVars.CurrentAssignmentType.get() == AssignmentType.USERTOTASK) {
+      if (AssignmentReactiveVars.IsUnassignment.get()) {
+        Meteor.call("removeAssignUserToTaskTimeSlot",
+          AssignmentReactiveVars.SelectedPeopleNeed.get()._id,
+          AssignmentReactiveVars.SelectedUser.get()._id,
+          function (error, result) {
+            if (!error) {
+              let _idTask = "not_implemented";
+              AssignmentServiceClient.congratsRemoveAssignment(AssignmentType.USERTOTASK, _idTask);
+            }
+          });
+        AssignmentReactiveVars.IsUnassignment.set(false);
+      }
+    }
   }
 
   onClickPeopleNeed(event) {
@@ -50,6 +65,9 @@ class AssignmentTasksList extends BlazeComponent {
 
     var userId = AssignmentReactiveVars.SelectedUser.get()._id;
 
+    let moreThanOneAvailableTimeSlot = target.parents(".time-slot").siblings().length > 0;
+    console.log("moreThanOneAvailableTimeSlot",moreThanOneAvailableTimeSlot)
+
 
     if (target.hasClass("time-slot"))
       _idTimeSlot = target.data("_id");
@@ -59,25 +77,19 @@ class AssignmentTasksList extends BlazeComponent {
     switch (currentAssignmentType) {
       case AssignmentType.USERTOTASK:
         if (isUnassignment) {
-          Meteor.call("removeAssignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, userId, function (error, result) {
-            if (!error) {
-              AssignmentServiceClient.congratsRemoveAssignment(AssignmentType.USERTOTASK, _idTask);
-            }
-          });
-          AssignmentReactiveVars.IsUnassignment.set(false);
+          console.error("USERTOTASK, onClickPeopleNeed with isUnassignment: shouldn't happen");
+          return;
         } else
           Meteor.call("assignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, userId, function (error, result) {
             if (!error) {
-              //we have to reset the task list this way because once assigned, the task can't propose any peopleNeed for the user as he is
-              //no longer available but the task can still be theoretically assigned to him because we didn't recompute the AssignmentReactiveVars.TaskFilter job done
-              //by the event on the calendar.
-              //we don't need to do that for the mode TASKTOUSER as the user naturally disappears from the list once assigned
-              AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
-
-              //reset workflow
-              AssignmentReactiveVars.SelectedAvailability.set(null);
-
+              if(!moreThanOneAvailableTimeSlot) {
+                //reset workflow
+                AssignmentReactiveVars.isSelectedAvailability.set(false);
+                AssignmentReactiveVars.TaskFilter.set(AssignmentReactiveVars.noneFilter);
+              }
               AssignmentServiceClient.congratsAssignment(AssignmentType.USERTOTASK, _idTask);
+            } else {
+              console.error(error);
             }
           });
         break;
@@ -249,7 +261,36 @@ class AssignmentTasksList extends BlazeComponent {
     }, {limit: 20}).fetch();
 
     searchResult = TasksIndex.search(filterIndex, {limit: 20}).fetch();
-    return _.intersectionObjects(searchResult, filterResult);
+    let result = _.intersectionObjects(searchResult, filterResult);
+    let finalResult = [];
+    //check if selected user has availabilities for at leat one timeslot for each task
+    if (AssignmentReactiveVars.SelectedUser.get() && !AssignmentReactiveVars.IsUnassignment.get()) {
+      result.forEach(task => {
+        let breakIt = false;
+        task.timeSlots.forEach(timeSlot => {
+          if (!breakIt) {
+            //get only the timeslot for the term, match with mongo query above
+            // timeSlotsFilter.$elemMatch.start = {$gte: currentAssignmentTerm.start};
+            // timeSlotsFilter.$elemMatch.end = {$lt: currentAssignmentTerm.end};
+            let timeSlotStart = new moment(timeSlot.start);
+            let timeSlotEnd = new moment(timeSlot.end);
+            let termStart = new moment(currentAssignmentTerm.start);
+            let termEnd = new moment(currentAssignmentTerm.end);
+            if( (timeSlotStart.isAfter(termStart) || timeSlotStart.isSame(termStart)) &&
+              (timeSlotEnd.isBefore(termEnd) || timeSlotEnd.isSame(termEnd))) {
+              if(AvailabilityService.checkUserAvailabilty(Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get()), timeSlot.start, timeSlot.end)) {
+                finalResult.push(task);
+                breakIt = true;
+              }
+            }
+          }
+        });
+      });
+    } else {
+      finalResult = result;
+    }
+
+    return finalResult;
   }
 
   team() {
@@ -261,44 +302,42 @@ class AssignmentTasksList extends BlazeComponent {
   }
 
   timeSlotsInfo() {
-    var task = this.currentData();
-    var timeSlots = task.timeSlots;
-    if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
-      var result = [];
-      _.each(timeSlots, (timeSlot) => {
-        var date = AssignmentReactiveVars.SelectedDate.get();
-        var start = new moment(timeSlot.start);
-        var end = new moment(timeSlot.end);
-        if ((start.isSame(date)) &&
-          (end.isAfter(date) || end.isSame(date))) {
-          result.push(timeSlot);
-        }
-      });
+    let timeSlots = this.timeSlots();
+    if (timeSlots.length == 0) return ""; //timeSlot infos can be directly see in the calendar
 
-      var string = " - "
-      _.each(result, function (timeSlot) {
-        string += new moment(timeSlot.start).format("H[h]mm") + " - " + new moment(timeSlot.end).format("H[h]mm");
-      });
-      return string;
-    } else {
-      return; //timeSlot infos can be directly see in the calendar
-    }
+    var string = " • ";
+    _.each(timeSlots, function (timeSlot) {
+      string += new moment(timeSlot.start).format("H[h]mm") + " - " + new moment(timeSlot.end).format("H[h]mm") + " • ";
+    });
+    return string;
   }
 
   timeSlots() {
     var task = this.currentData();
     var timeSlots = task.timeSlots;
     if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
+
+      var relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get();
+      var selectedStartDate = relevantSelectedDates.start;
+      var selectedEndDate = relevantSelectedDates.end;
+
       var result = [];
       _.each(timeSlots, (timeSlot) => {
-        var date = AssignmentReactiveVars.SelectedDate.get();
         var start = new moment(timeSlot.start);
         var end = new moment(timeSlot.end);
-        if ((start.isBefore(date) || start.isSame(date)) &&
-          (end.isAfter(date) || end.isSame(date))) {
-          result.push(timeSlot);
+        //is timeslot within selected dates ?
+        //match with
+        // timeSlotStart = {$lt: endDate.toDate()};
+        // timeSlotEnd = {$gt: startDate.toDate()};
+        //from filterTaskList
+        if (start.isBefore(selectedEndDate) && end.isAfter(selectedStartDate)){
+          //is user available during this timeslot ?
+          if(AvailabilityService.checkUserAvailabilty( Meteor.users.findOne(AssignmentReactiveVars.SelectedUser.get()), start, end)) {
+            result.push(timeSlot);
+          }
         }
       });
+      console.log("from timeSlots",timeSlots, "selected are",result, "for", selectedStartDate.toDate(), "  to   ", selectedEndDate.toDate())
       return result;
     } else {
       return []; //timeSlot infos can be directly see in the calendar
@@ -310,24 +349,7 @@ class AssignmentTasksList extends BlazeComponent {
 
     if (AssignmentReactiveVars.CurrentAssignmentType.get() === AssignmentType.USERTOTASK) {
       if (AssignmentReactiveVars.IsUnassignment.get()) {
-
-        var userId = AssignmentReactiveVars.SelectedUser.get()._id;
-        var selectedDate = AssignmentReactiveVars.SelectedDate.get()
-
-
-        var userAssignments = AssignmentService.getAssignmentForUser({_id: userId});
-        var assignmentFound;
-        userAssignments.forEach(assignment => {
-          if ((new moment(assignment.start).isBefore(selectedDate) || new moment(assignment.start).isSame(selectedDate)
-            ) && new moment(assignment.end).isAfter(selectedDate)) {
-            assignmentFound = assignment;
-          }
-        });
-
-        var timeSlotPeopleNeed = PeopleNeedService.getPeopleNeedByIdAndTask(assignmentFound.peopleNeedId, Tasks.findOne(assignmentFound.taskId));
-
-        return [timeSlotPeopleNeed.peopleNeed]
-
+        return [];
       } else {
         var result = [];
 
@@ -371,6 +393,7 @@ class AssignmentTasksList extends BlazeComponent {
           }
         });
 
+        console.log("peopleneeded", peopleNeeded, " => ", result)
         return result;
       }
 
@@ -392,6 +415,12 @@ class AssignmentTasksList extends BlazeComponent {
     return {
       chooseLabel: "Choose a responsible team",
     };
+  }
+
+  isUnassignment(){
+    if(AssignmentReactiveVars.IsUnassignment.get()){
+      return "is-unassignment"
+    }
   }
 
 

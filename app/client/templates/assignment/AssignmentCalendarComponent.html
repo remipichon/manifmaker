@@ -57,7 +57,7 @@
             </div>
         {{/if}}
     {{/if}}
-    <div class="creneau usedByTask {{state}} clickable" style="height: {{height}}; background : indianred" title="{{displayHoursMinute start}} to {{displayHoursMinute end}} ,  affected at {{percentAffected}}%">
+    <div class="creneau usedByTask {{state}} clickable" start="{{start}}" end="{{end}}" style="margin-top: {{marginTop}}px; height: {{height}}px; background : indianred" title="{{displayHoursMinute start}} to {{displayHoursMinute end}} ,  affected at {{percentAffected}}%">
 
         {{#if isTaskToUser}}
             <div class="assignementProgress" style="width:{{percentAffected}}%"></div>

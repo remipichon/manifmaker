@@ -45,7 +45,7 @@ SimpleSchema.messages({
   timeSlotNotInAnyTerm: "Time slot dates fall outside of any configure terms",
   userHasAssignments: "Cannot perform this action as user already has assignments.",
   userHasBeenValidatedNoSkillsUpdate: "User has been validated therefore its skills cannot be update",
-  accuracyNotFound: "Accuracy value is not a valide one.",
+  accuracyNotFound: "Accuracy value is not a valid one.",
   moreThanOneSettings: "There can be only one doc in Settings collection",
   userAccessToSkills: "User does not have access to this skills",
   availabilityOverlapAssignment: "Availability can not overlap an assignment"

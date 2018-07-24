@@ -1,3 +1,4 @@
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 import {AvailabilityService} from "../../../both/service/AvailabilityService"
 import {ReadAvailabilitiesCalendarComponent} from "./ReadAvailabilitiesCalendarComponent"
 
@@ -81,7 +82,7 @@ class SwipeEditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalenda
   }
 
   addHourAccordingToAccuracy() {
-    return AssignmentCalendarDisplayedAccuracy.findOne().accuracy
+    return AssignmentReactiveVars.CurrentSelectedAccuracy.get()
   }
 
   quartHeureOnClick(event) { //event is disabled

@@ -12,7 +12,9 @@ class AssignmentNavbar extends BlazeComponent {
       selectedUser = AssignmentReactiveVars.SelectedUser.get(),
       selectedTask = AssignmentReactiveVars.SelectedTask.get(),
       selectedTaskBreadCrumb = AssignmentReactiveVars.SelectedTaskBreadCrumb.get(),
-      selectedDate = AssignmentReactiveVars.SelectedDate.get(),
+      relevantSelectedDates = AssignmentReactiveVars.RelevantSelectedDates.get(),
+      selectedStartDate = relevantSelectedDates.start,
+      selectedEndDate = relevantSelectedDates.end,
       selectedTimeSlot = AssignmentReactiveVars.SelectedTimeSlot.get(),
       isUnassignment = AssignmentReactiveVars.IsUnassignment.get(),
       result = [];
@@ -20,6 +22,7 @@ class AssignmentNavbar extends BlazeComponent {
     if (isUnassignment) {
       result.push({
         label: "! Remove assignment !",
+        class: "is-unassignment",
         url: ""
       });
     }
@@ -37,19 +40,25 @@ class AssignmentNavbar extends BlazeComponent {
           url: "/assignment/userToTask/" + selectedUser._id
         });
 
-        if (AssignmentReactiveVars.SelectedAvailability.get() === null) {//TODO pas top
-          result.push({
-            label: "Select one of the availability",
-            url: ""
-          });
+        if (!AssignmentReactiveVars.isSelectedAvailability.get()) {
+          if(isUnassignment)
+            result.push({
+              label: "Select the task to confirm unassignment",
+              url: ""
+            });
+          else
+            result.push({
+              label: "Select one of the availabilities",
+              url: ""
+            });
           AssignmentReactiveVars.SelectedTaskBreadCrumb.set(null);
           //apres de amples reflexion, disons que je vois pas ou reinit ce SelectedTaskBreadcrum
           //ca risque d'avoir des effets de bords pénibles, mais l'avantage c'est que ca ne fait
           //que planter le breadcrumb, d'ou le pertinence de ce code ici
         } else {
           result.push({
-            label: selectedDate.format("ddd D HH:mm"),
-            url: "/assignment/userToTask/" + selectedUser._id + "/" + selectedDate.format('x')
+            label: selectedStartDate.format("ddd D HH:mm"),
+            url: "/assignment/userToTask/" + selectedUser._id + "/" + selectedStartDate.format('x')
           });
 
           if (!selectedTaskBreadCrumb) {
@@ -102,7 +111,7 @@ class AssignmentNavbar extends BlazeComponent {
 
           if (isUnassignment)
             result.push({
-              label: "Select the assigned user to remove assignment",
+              label: "Select the user to confirm unassignment",
               url: ""
             });
           else

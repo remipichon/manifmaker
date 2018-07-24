@@ -69,7 +69,7 @@ export class AvailabilityService {
    */
   static removeAvailabilities(user, start, end) {
     console.info("AvailabilityService.splitAvailabilities for user", user, " from", start, "to", end);
-    var availabilities = user.availabilities;
+    var availabilities = Meteor.users.findOne(user._id).availabilities;
 
     var availabilityIndex = AvailabilityService.getIndexOfSurroundingAvailability(user, start, end);
     //remove old availability
@@ -86,7 +86,9 @@ export class AvailabilityService {
         end: availability.end
       });
 
-    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
+    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}}, (error, result) => {
+      if(error) console.log(error);
+    });
 
   }
 
@@ -164,7 +166,9 @@ export class AvailabilityService {
     }
 
 
-    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
+    Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}}, (error, result) => {
+      if(error) console.error(error);
+    });
 
 
     var term = AssignmentTerms.findOne({
@@ -251,8 +255,8 @@ export class AvailabilityService {
     if (typeof previousAvailabilityIndex !== "undefined") {
       previousAvailability = availabilities.splice(previousAvailabilityIndex, 1)[0];
     }
-    if (typeof nextAvailabilityIndex !== "undefined") {
-      nextAvailability = availabilities.splice(nextAvailabilityIndex, 1)[0];
+    if (typeof nextAvailabilityIndex !== "undefined") {//if next is after previous, its index just decreased (we could have sorted it)
+      nextAvailability = availabilities.splice((nextAvailabilityIndex > previousAvailabilityIndex)? nextAvailabilityIndex - 1: nextAvailabilityIndex, 1)[0];
     }
 
     var newAvailability = {};
@@ -273,18 +277,6 @@ export class AvailabilityService {
 
     Meteor.users.update({_id: user._id}, {$set: {availabilities: availabilities}});
 
-  }
-
-  /**
-   * @memberOf AvailabilityService
-   * @summary Proxy for TimeSlotService.getTimeSlotByStart
-   * @locus Anywhere
-   * @param {Array<Availability>} availabilities
-   * @param {Date}start
-   * @return {timeSlot|null}
-   */
-  static getAvailabilityByStart(availabilities, start) {
-    return TimeSlotService.getTimeSlotByStart(availabilities, start);
   }
 
   /**

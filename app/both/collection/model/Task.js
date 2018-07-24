@@ -196,10 +196,12 @@ Schemas.TimeSlot = new SimpleSchema({
       var term = TimeSlotService.timeSlotWithinAssignmentTerm(start, end);
       if (!term) return "timeSlotNotWithinTerms";
 
-      var accuracy = term.calendarAccuracy;
-      var diff = start.diff(end, "minute");
-      if (diff % (accuracy * 60) !== 0) {
-        return "timeSlotTermAccuracyError"
+      if(term.isStrictMode) {
+        var accuracy = term.calendarAccuracy;
+        var diff = start.diff(end, "minute");
+        if (diff % (accuracy * 60) !== 0) {
+          return "timeSlotTermAccuracyError"
+        }
       }
     },
     autoform: {
@@ -251,10 +253,12 @@ Schemas.TimeSlot = new SimpleSchema({
       var term = TimeSlotService.timeSlotWithinAssignmentTerm(start, end);
       if(!term) return "timeSlotNotInAnyTerm";
 
-      var accuracy = term.calendarAccuracy;
-      var diff = start.diff(end, "minute");
-      if (diff % (accuracy * 60) !== 0) {
-        return "timeSlotTermAccuracyError"
+      if(term.isStrictMode) {
+        var accuracy = term.calendarAccuracy;
+        var diff = start.diff(end, "minute");
+        if (diff % (accuracy * 60) !== 0) {
+          return "timeSlotTermAccuracyError"
+        }
       }
     },
     autoform: {

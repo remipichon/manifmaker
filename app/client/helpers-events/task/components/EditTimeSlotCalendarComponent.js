@@ -6,11 +6,14 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
    this.data().parentInstance
 
    */
+  constructor(){
+    super();
+    this.displayAccuracySelector = true;
+  }
 
   events() {
     return super.events().concat({
       "click .creneau": this.selectTimeSlot,
-      "click .quart_heure": this.clickFreeTimeSlot
     })
   }
 
@@ -65,38 +68,12 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
 
   }
 
-  clickFreeTimeSlot(e) {
+  quartHeureOnClick(e) {
     var $target = $(e.target);
     console.log("clickFreeTimeSlot", $target)
     this.data().parentInstance.addTimeSlot();
-    let start, end;
-
-    start = new moment($target.parent().attr('hours'));
-
-    let accuracy = $target.attr('class').replace("quart_heure", "").trim()
-    let hour;
-    switch (accuracy) {
-      case "quarterHour":
-        hour = 0.25;
-        break;
-      case "halfHour":
-        hour = 0.5;
-        break;
-      case   "oneHour":
-        hour = 1;
-        break;
-      case "twoHour":
-        hour = 2;
-        break;
-      case "fourHour":
-        hour = 4;
-        break;
-    }
-
-    end = new moment(start).add('hour', hour);
-
-    console.log(start.date(), end.date());
-
+    let start = new moment($target.attr('quarter'));
+    let end = new moment($target.attr('quarterend'));
     this.data().parentInstance.createTimeSlotDefaultStartDate.set(start);
     this.data().parentInstance.createTimeSlotDefaultEndDate.set(end)
   }
@@ -114,10 +91,7 @@ class EditTimeSlotCalendarComponent extends BaseCalendarComponent {
     var startCalendarTimeSlot = this.getCalendarDateTime(date, timeHours, minutes);
     var task = this.data().task;
     if (!task) return [];
-
-    var data = CalendarServiceClient.computeTimeSlotData(task, startCalendarTimeSlot);
-    if (!data) return [];
-    return [data];  //le css ne sait pas encore gerer deux data timeSlot sur un meme calendar timeSlot
+    return CalendarServiceClient.computeTimeSlotsData(task, startCalendarTimeSlot);
   }
 
   getPeopleNeededMerged(timeSlotId) {

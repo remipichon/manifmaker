@@ -82,6 +82,7 @@ _.each(Schemas.references.options, function (referenceOptions) {
 
   var item = {
     REFERENCE_URL: REFERENCE_URL,
+    PLURAL_REFERENCE_URL: PLURAL_REFERENCE_URL,
     REFERENCE_LABEL: REFERENCE_LABEL,
     reactiveTableSettings: {
       collection: AllCollections[REFERENCE_COLLECTION_NAME],
@@ -119,7 +120,18 @@ _.each(Schemas.references.options, function (referenceOptions) {
 //post
   Router.route('/' + REFERENCE_URL, function () {
       SecurityServiceClient.grantAccessToPage(RolesEnum.CONFMAKER);
-      this.render(REFERENCE_URL + '-insert', {
+      AutoForm.addHooks([`insert${REFERENCE_URL}Form`], {
+        onSuccess: function () {
+          sAlert.info(`${REFERENCE_LABEL} has been successfully created`);
+          if(window.confMakerReturnTo == true){
+            window.confMakerReturnTo = null
+            Router.go("/conf-maker/"+PLURAL_REFERENCE_URL)
+          }
+          window.confMakerReturnTo = null
+        },
+      }, true);
+
+      this.render(REFERENCE_URL + 'Insert', {
         data: {
           options: referenceOptions
         },
@@ -150,6 +162,13 @@ _.each(Schemas.references.options, function (referenceOptions) {
     {controller: ManifMakerRouterController, name: REFERENCE_URL + '.update'}
   );
 
+  //insert and return to list button
+  Template[REFERENCE_URL + 'Insert'].events = ({
+    "click [type=button]": e => {
+      window.confMakerReturnTo = true;
+      this.$(e.target).submit();
+    }
+  });
 });
 
 /**
@@ -172,6 +191,34 @@ Router.route('/conf-maker', function () {
   {
     data: {currentTab: 'ConfMaker'},
     name: 'conf-maker',
+    controller: ManifMakerRouterController
+  }
+);
+
+/**
+ * @memberOf Route.collectionReference
+ * @summary Display the conf homepage
+ * @locus client
+ * @name  'confMaker' /confMaker
+ */
+//get (list)
+Router.route('/conf-maker/:resource', function () {
+    if ($(".overall-wrapper #conf-maker-wrapper").length != 1) { //tricks to not render when it's already there
+      SecurityServiceClient.grantAccessToPage(RolesEnum.CONFMAKER);
+      this.render('confMaker', {
+        data: {
+          confMakerReactiveTables: confMakerReactiveTables,
+          settings: Settings.findOne(),
+          expanded: this.params.resource,
+        },
+        to: 'mainContent'
+      });
+    } else
+      console.log("nothing to do")
+  },
+  {
+    data: {currentTab: 'ConfMaker'},
+    name: 'conf-maker-expanded',
     controller: ManifMakerRouterController
   }
 );

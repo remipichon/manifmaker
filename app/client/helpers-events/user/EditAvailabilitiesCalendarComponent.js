@@ -1,6 +1,8 @@
 import {AssignmentService} from "../../../both/service/AssignmentService"
 import {AvailabilityService} from "../../../both/service/AvailabilityService"
+import {AssignmentServiceClient} from "../../../client/service/AssignmentServiceClient"
 import {ReadAvailabilitiesCalendarComponent} from "./ReadAvailabilitiesCalendarComponent"
+import {AssignmentReactiveVars} from "../../../client/helpers-events/assignment/AssignmentReactiveVars"
 
 class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComponent {
   /* available in data
@@ -16,6 +18,10 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
     this.firstDate = new ReactiveVar(null);
     this.secondDate = new ReactiveVar(null);
     this.isSelecting = false;
+
+    AssignmentServiceClient.setCalendarTerms(null, AssignmentTerms.findOne(
+      AssignmentReactiveVars.CurrentSelectedTerm.get()).calendarAccuracy);
+
   }
 
   events() {
@@ -158,7 +164,7 @@ class EditAvailabilitiesCalendarComponent extends ReadAvailabilitiesCalendarComp
   }
 
   addHourAccordingToAccuracy() {
-    return AssignmentCalendarDisplayedAccuracy.findOne().accuracy
+    return AssignmentReactiveVars.CurrentSelectedAccuracy.get()
   }
 
   //works for .heure et .quart d'heure

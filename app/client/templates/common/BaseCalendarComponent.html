@@ -1,4 +1,22 @@
 <template name="baseCalendarComponent">
+
+    {{#if displayAccuracySelector}}
+        <div class="accuracy-selector btn-group" data-toggle="buttons" style="display: table; margin: auto;">
+            <label class="btn btn-primary{{isAccuracySelected 0.25 'active'}}">
+                <input type="radio" name="accuracySelector" id="0.25" autocomplete="off" {{isAccuracySelected 0.25 'checked'}}> 15 minutes
+            </label>
+            <label class="btn btn-primary {{isAccuracySelected 0.5 'active'}}">
+                <input type="radio" name="accuracySelector" id="0.5" autocomplete="off" {{isAccuracySelected 0.5 'checked'}}> 30 minutes
+            </label>
+            <label class="btn btn-primary {{isAccuracySelected 1 'active'}}">
+                <input type="radio" name="accuracySelector" id="1" autocomplete="off" {{isAccuracySelected 1 'checked'}}> 1 hour
+            </label>
+            <label class="btn btn-primary {{isAccuracySelected 2 'active'}}">
+                <input type="radio" name="accuracySelector" id="2" autocomplete="off" {{isAccuracySelected 2 'checked'}}> 2 hours
+            </label>
+        </div>
+    {{/if}}
+
     <div class="calendar {{assignmentType}} {{class}}" id="calendar">
         <div id="titres" class="titres">
             {{#each days}}
@@ -8,7 +26,7 @@
 
         <div class="jours" id="jours">
             <div class="hours" id="hours">
-                {{#each hours}}
+                {{#each sideHours}}
                     <div class="hour {{sideHoursHeight}}">{{date}}h</div>
                 {{/each}}
             </div>
@@ -20,14 +38,20 @@
                                 {{#with num_quarter=@index}}
                                 <div class="quart_heure {{isSelected ../../../date ../../date}} {{quarterHeight}}
                                     {{#unless enableAction ../../../date ../../date}}no-action{{/unless}}"
-                                     quarter="{{quarterDate ../../../date ../../date}}">
+                                     quarter="{{quarterDate ../../../date ../../date ../quarter}}" quarterend="{{quarterDate ../../../date ../../date ../quarter ../quarterLengthMinute}}">
                                         {{#each timeSlot  ../../../date ../../date this}}
                                             {{#if equals ../num_quarter 0}}
                                                 {{>Template.dynamic template=../../../../../timeSlotTemplate}}
                                             {{/if}}
                                         {{else}}
                                             {{#if enableAction ../../../date ../../date}}
-                                                {{#if ../../../../displayCharisma}}<div class="calendar-charisma noselect" title="{{getCharisma ../../../date ../date}} pts of charisma">{{getCharisma ../../../date ../../date}}</div>{{/if}}
+                                                {{#if ../../../../displayCharisma}}
+                                                <div class="charisma non-clickable">
+                                                    <div class="calendar-wrapper on-calendar">
+                                                    <div class="calendar-charisma noselect" title="{{getCharisma ../../../date ../date}} pts of charisma">{{getCharisma ../../../date ../../date}}</div>
+                                                    </div>
+                                                </div>
+                                                {{/if}}
                                             {{/if}}
                                         {{/each}}
                                 </div>

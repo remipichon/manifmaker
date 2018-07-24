@@ -158,23 +158,17 @@ Router.route('/forbidden', function () {
  * @name 'demo-select'  /demo-select
  */
 Router.route('/demo-select', function () {
-    this.wait(Meteor.subscribe('users'));
-    this.wait(Meteor.subscribe('tasks'));
-    this.wait(Meteor.subscribe('teams'));
-    this.wait(Meteor.subscribe('skills'));
-    this.wait(Meteor.subscribe('power-supplies'));
-
-    if (this.ready()) {
+    let users = Meteor.users.find().fetch();
       this.render('demoSelect', {
         to: 'mainContent',
         data: {
-          user1Id: Meteor.users.findOne({username: "user1"})._id,
-          user2Id: Meteor.users.findOne({username: "user2"})._id,
-          task2Id: Tasks.findOne({name: "task 2"})._id,
-          team1Id: Teams.findOne({name: "team1"})._id,
-          team1Idteam2Id: [Teams.findOne({name: "team1"})._id, Teams.findOne({name: "team2"})._id],
-          skill1Idskill2Id: [Skills.findOne({"label": "Responsable tache 1"})._id, Skills.findOne({"label": "Responsable tache 2"})._id],
-          powersupply1: PowerSupplies.findOne({name: "powerSupply1"})._id,
+          user1Id: users[1]._id,
+          user2Id: users[2]._id,
+          task2Id: Tasks.findOne()._id,
+          team1Id: Teams.find().fetch()[1]._id,
+          team1Idteam2Id: [Teams.find().fetch()[1], Teams.find().fetch()[2]._id],
+          skill1Idskill2Id: [Skills.find().fetch()[1]._id,Skills.find().fetch()[2]._id],
+          // powersupply1: PowerSupplies.findOne()._id,
           updateCallbackDisplayArgs: function () {
             return function () {
               console.info("updateCallbackDisplayArgs", arguments[0], arguments[1], arguments[2]);
@@ -201,13 +195,8 @@ Router.route('/demo-select', function () {
           ]
         }
       });
-    } else {
-      console.info("Route /demo-select : waiting data");
-    }
-
-
   },
-  {name: 'demo-select'}
+  {name: 'demo-select', controller: ManifMakerRouterController}
 );
 
 /**

@@ -58,9 +58,10 @@ class AssignmentUserList extends BlazeComponent {
           Meteor.call("assignUserToTaskTimeSlot", AssignmentReactiveVars.SelectedPeopleNeed.get()._id, _id, function (error, result) {
             if (!error) {
               AssignmentServiceClient.congratsAssignment(AssignmentType.TASKTOUSER, _id);
+            } else {
+              console.error(error);
             }
           });
-        AssignmentReactiveVars.SelectedTimeSlot.set(null);
         break;
     }
 
@@ -138,7 +139,7 @@ class AssignmentUserList extends BlazeComponent {
       availabilities: {
         $elemMatch: {
           start: {$gte: currentAssignmentTerm.start},
-          end: {$lt: currentAssignmentTerm.end}
+          end: {$lte: currentAssignmentTerm.end}
         }
       }
     };
@@ -199,6 +200,12 @@ class AssignmentUserList extends BlazeComponent {
         result.push(teamId)
     });
     return result;
+  }
+
+  isUnassignment(){
+    if(AssignmentReactiveVars.IsUnassignment.get()){
+      return "is-unassignment"
+    }
   }
 }
 
