@@ -255,8 +255,8 @@ export class AvailabilityService {
     if (typeof previousAvailabilityIndex !== "undefined") {
       previousAvailability = availabilities.splice(previousAvailabilityIndex, 1)[0];
     }
-    if (typeof nextAvailabilityIndex !== "undefined") {
-      nextAvailability = availabilities.splice(nextAvailabilityIndex, 1)[0];
+    if (typeof nextAvailabilityIndex !== "undefined") {//if next is after previous, its index just decreased (we could have sorted it)
+      nextAvailability = availabilities.splice((nextAvailabilityIndex > previousAvailabilityIndex)? nextAvailabilityIndex - 1: nextAvailabilityIndex, 1)[0];
     }
 
     var newAvailability = {};
