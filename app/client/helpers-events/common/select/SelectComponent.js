@@ -216,7 +216,7 @@ export class SelectComponent extends BlazeComponent {
          *   }
      *  ```
      *
-     *  Called with an error object as the first argument and, if no error, the number of affected documents as
+     *  Called with an error object as the first argument and, if no error, the number of updated documents as
      *  the second and an array of the selected options as the third.
      *  Required if updateCollection is not provided but can be used even if updateCollection is provided
      */
@@ -607,11 +607,11 @@ export class SelectComponent extends BlazeComponent {
 
     this._getObjectUpdateCollection().update(this.updateItemId,
       updateQuery
-      , _.bind(function (error, numberAffected) {
+      , _.bind(function (error, updatedCount) {
         if (this.displayUpdateResult)
-          Utils.onUpdateCollectionResult(error, numberAffected);
+          Utils.onUpdateCollectionResult(error, updatedCount);
         if (this.updateCallback)
-          this.updateCallback(error, numberAffected, updateCallbackOptions);
+          this.updateCallback(error, updatedCount, updateCallbackOptions);
       }, this)
     );
   }

@@ -201,7 +201,7 @@ class AssignmentCalendarComponent extends BaseCalendarComponent {
     }
   }
 
-  percentAffected() {
+  percentAssigned() {
     var nbr_assigned = this.peopleNeededAssigned().length;
     var nbr_total = this.currentData().peopleNeeded.length;
     if (nbr_total > 0)
