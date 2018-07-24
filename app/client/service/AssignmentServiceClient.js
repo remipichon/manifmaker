@@ -513,5 +513,35 @@ export class AssignmentServiceClient {
       }
     })
   }
+
+  static isAfterSame(one, two){
+    one = new moment(one);
+    two = new moment(two)
+    return one.isAfter(two) || one.isSame(two);
+  }
+
+  static isBeforeSame(one, two){
+    one = new moment(one);
+    two = new moment(two)
+    return one.isBefore(two) || one.isSame(two);
+  }
+
+  static getTaskAssignmentProgressForTerm(term, task) {
+    //get all timeslot for this term, get all their people need ids
+    let allPeopleNeeded = _.reduce(task.timeSlots, (memo, timeSlot) => {
+      if(AssignmentServiceClient.isAfterSame(timeSlot.start, term.start)
+        && AssignmentServiceClient.isBeforeSame(timeSlot.end, term.end)) {
+        let peopleNeededIds = _.reduce(timeSlot.peopleNeeded, (memo, peopleNeed) => {
+          memo.push(peopleNeed._id);
+          return memo
+        }, []);
+        return memo.concat(peopleNeededIds);
+      } else {
+        return memo;
+      }
+    }, []);
+    let assignedPeopleNeed = Assignments.find({peopleNeedId: {$in:allPeopleNeeded}}).count();
+    return parseInt(assignedPeopleNeed / allPeopleNeeded.length * 100);
+  }
 }
 

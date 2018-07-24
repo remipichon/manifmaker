@@ -55,6 +55,8 @@
                     <div class="task panel panel-default" data-_id="{{_id}}">
 
                         <div class="panel-heading {{isUnassignment}}" data-toggle="{{#if timeSlots}}collapse{{/if}}"
+                             style="{{assignmentProgressCss}}"
+                             title="assigned at {{assignmentProgressPercent}}%"
                              data-parent="#assignment-task-list-collapsible"
                              data-target="#{{_id}}">
                             <h4 class="panel-title">

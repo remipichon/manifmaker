@@ -290,6 +290,15 @@ class AssignmentTasksList extends BlazeComponent {
       finalResult = result;
     }
 
+    if (AssignmentReactiveVars.CurrentAssignmentType.get() == AssignmentType.TASKTOUSER)
+      finalResult.forEach(task => {
+        let assignmentProgress = AssignmentServiceClient.getTaskAssignmentProgressForTerm(currentAssignmentTerm, task);
+        let green = "#26ca1e";  //from @green1 in CalendarComponent.less
+        let gray = "#f5f5f5";  //from bootstrap.css .panel-default > .panel-heading
+        task.assignmentProgressCss = `background: linear-gradient(90deg, ${green} ${assignmentProgress}%, ${gray} 0%)`;
+        task.assignmentProgressPercent = assignmentProgress;
+      });
+
     return finalResult;
   }
 
